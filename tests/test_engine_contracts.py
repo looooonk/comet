@@ -94,3 +94,30 @@ def test_recovery_admission_denial_preserves_transcript_and_allowance(pool, avai
     assert not result.admitted and result.reason == reason
     assert engine.raw_token_ids == [1, 2, 3]
     assert engine.recovery_count == 0
+
+
+def test_warmup_covers_all_conditions_once_and_restores_selected_policy():
+    engine = MiniSGLangEngine.__new__(MiniSGLangEngine)
+    engine.settings = settings(method="rkv", retention=0.25)
+    engine._warmup_record = None
+    engine.tokenizer = SimpleNamespace(encode=lambda *args, **kwargs: [42])
+    calls = []
+
+    def set_policy(method, retention):
+        engine.settings = replace(engine.settings, method=method, retention=retention)
+        engine._session_id = None
+
+    def start(seed):
+        engine._session_id = "warmup"
+
+    def generate(tokens, count, temperature, top_p, deadline, **kwargs):
+        calls.append((engine.settings.method, engine.settings.retention, tokens, count, kwargs))
+
+    engine.set_policy, engine.start, engine.generate = set_policy, start, generate
+    record = engine.warmup()
+    assert len(calls) == 10
+    assert all(len(call[2]) == 128 and call[3] == 2 and call[4]["ignore_eos"] for call in calls)
+    assert (engine.settings.method, engine.settings.retention) == ("rkv", 0.25)
+    assert engine._session_id is None
+    assert engine.warmup() is record
+    assert len(calls) == 10

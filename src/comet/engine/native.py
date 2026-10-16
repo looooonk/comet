@@ -44,6 +44,8 @@ class MiniSGLangEngine:
         if settings.peak_vram_bytes > properties.total_memory:
             raise MemoryCapExceeded("configured VRAM cap exceeds device capacity")
         model_config, self.parameter_count = model_storage(settings.model_path, settings.model_revision)
+        if settings.max_context_tokens > model_config["max_position_embeddings"]:
+            raise UnsupportedPath("configured context exceeds the pinned model's supported positions")
         self._attention_flop_factor = (4 * model_config["num_hidden_layers"]
                                       * model_config["num_attention_heads"] * model_config["head_dim"])
         self.kv_bytes_per_token = (
@@ -148,6 +150,13 @@ class MiniSGLangEngine:
                 versions[name] = importlib.metadata.version(name)
             except importlib.metadata.PackageNotFoundError:
                 versions[name] = None
+        try:
+            driver = subprocess.run(
+                ["nvidia-smi", "--query-gpu=driver_version", "--format=csv,noheader"],
+                capture_output=True, text=True, timeout=5, check=True,
+            ).stdout.splitlines()[0].strip()
+        except (OSError, subprocess.SubprocessError, IndexError):
+            driver = None
         return {
             "backend": "native_minisgl", "minisgl_revision": MINISGL_REVISION,
             "patch_file_sha256": PATCH_FILE_HASHES,
@@ -157,6 +166,7 @@ class MiniSGLangEngine:
             "model_parameter_count": self.parameter_count,
             "dtype": "bfloat16", "device_name": self.device_name,
             "device_total_bytes": self.device_total_bytes, "cuda_runtime": self.torch.version.cuda,
+            "driver_version": driver,
             "packages": versions, "attention_backend": "flashinfer_fa2", "cuda_graphs": False,
             "query_ring_stages": 4, "query_ring_capacity_per_stage": 8,
             "estimated_flops_method": "dense_2P_per_forward_token_plus_causal_qk_av_4LHD_per_attention_pair",

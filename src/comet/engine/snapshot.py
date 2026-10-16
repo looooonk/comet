@@ -9,6 +9,7 @@ from pathlib import Path
 
 from comet.errors import MemoryCapExceeded, UnsupportedPath
 
+from ._pins import PATCH_FILE_HASHES
 from .contracts import MINISGL_REVISION
 
 
@@ -47,7 +48,7 @@ def save_snapshot(engine, path: Path) -> dict:
         engine._check_memory()
     ring = scheduler.engine.query_ring
     payload = {
-        "schema": 1,
+        "schema": 2,
         "request": req_data,
         "kv": kv,
         "query_ring": {name: getattr(ring, name)[req.table_idx].cpu().clone()
@@ -65,9 +66,10 @@ def save_snapshot(engine, path: Path) -> dict:
         "retention_events": scheduler.eviction_manager.retention_events,
     }
     manifest = {
-        "schema": 1, "settings_fingerprint": engine.settings.fingerprint(),
+        "schema": 2, "settings_fingerprint": engine.settings.fingerprint(),
         "base_fingerprint": engine.settings.fingerprint(policy=False),
         "settings": asdict(engine.settings), "minisgl_revision": MINISGL_REVISION,
+        "patch_file_sha256": PATCH_FILE_HASHES,
         "logical_cached_tokens": req.logical_cached_len,
         "physical_cached_tokens": req.physical_cached_len,
         "raw_tokens": len(engine._raw), "recovery_count": engine._recoveries,
@@ -90,7 +92,8 @@ def restore_snapshot(engine, path: Path, *, branch: bool) -> dict:
     from minisgl.core import Req, SamplingParams
 
     manifest = json.loads(path.with_suffix(path.suffix + ".json").read_text())
-    if manifest.get("schema") != 1 or manifest.get("minisgl_revision") != MINISGL_REVISION:
+    if (manifest.get("schema") != 2 or manifest.get("minisgl_revision") != MINISGL_REVISION
+            or manifest.get("patch_file_sha256") != PATCH_FILE_HASHES):
         raise UnsupportedPath("unsupported engine checkpoint schema or dependency revision")
     expected = engine.settings.fingerprint(policy=not branch)
     if manifest["base_fingerprint" if branch else "settings_fingerprint"] != expected:

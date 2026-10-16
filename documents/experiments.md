@@ -20,7 +20,10 @@ comet analyze runs/pilot-smoke-001 --output runs/pilot-smoke-001/analysis.json
 Run the last three commands from the GPU environment. On an alternative GPU,
 add `--integration-smoke` to `run`; those results remain visibly separate and
 cannot qualify a final experiment for freezing. Model loading is excluded from
-the task budget. Attempts, resets, tools, checkpoint work and recovery are charged.
+the task budget. A deterministic synthetic warmup of all methods also runs as
+model initialization, with its shapes and elapsed time recorded in the manifest;
+later shape-dependent compilation remains charged. Attempts, resets, tools,
+checkpoint work and recovery are charged.
 Evaluation is a separate command and is never called by execution.
 
 The included configurations are:
@@ -85,7 +88,9 @@ Each attempt starts a fresh AppWorld environment and clears the model session.
 Run directories are locked against concurrent writers. Atomic manifests and
 per-turn trajectories preserve completed work. Resume with the same command and
 `--resume`; it rejects incompatible resolved settings or source changes and
-skips completed cells. If a process died inside an attempt, its remaining cell
+skips completed cells. Installed package versions and stable native runtime/GPU
+metadata must also match; each launch retains its own initialization record. If a
+process died inside an attempt, its remaining cell
 budget is conservatively consumed and the attempt becomes `interrupted`. This
 avoids granting free compute when an operation has no reliable end timestamp.
 Resume continues other unfinished cells; it does not replay completed attempts.
