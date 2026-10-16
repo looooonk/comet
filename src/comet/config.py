@@ -158,7 +158,11 @@ class Experiment:
                     raise ValueError("Full-cache controls disable eviction and recovery")
             elif c.retention not in {0.8, 0.5, 0.25}:
                 raise ValueError("Compressed retention must be 0.8, 0.5, or 0.25")
-            if isinstance(c.max_attempts, bool) or c.max_attempts not in {1, self.max_attempts}:
+            if (
+                isinstance(c.max_attempts, bool)
+                or not isinstance(c.max_attempts, int)
+                or c.max_attempts not in {1, self.max_attempts}
+            ):
                 raise ValueError("Condition attempt limit must be 1 or the shared N")
         if self.checkpoint_after_tool_calls is not None:
             _number(self.checkpoint_after_tool_calls, "checkpoint_after_tool_calls", 1)
@@ -166,6 +170,8 @@ class Experiment:
                 raise ValueError("Checkpoint tool count must be integer")
         if self.stage == "diagnostic" and self.checkpoint_after_tool_calls is None:
             raise ValueError("Diagnostics require an explicit checkpoint boundary")
+        if self.stage == "diagnostic" and self.max_attempts != 1:
+            raise ValueError("A diagnostic cell is one continuation of its shared checkpoint")
 
     def to_dict(self) -> dict:
         return asdict(self)

@@ -224,6 +224,7 @@ class Runner:
                 from comet.diagnostic import restore_checkpoint
 
                 state = restore_checkpoint(self, cell, environment, engine, budget)
+                attempt["metrics"].update(state.pop("preparation_metrics", {}))
             self._trajectory(
                 cell, attempt, directory, condition, engine, environment, budget, state
             )
@@ -250,11 +251,16 @@ class Runner:
                 attempt.update(
                     status="error", failure_reason=f"Environment cleanup failed: {error}"
                 )
+            if attempt["status"] == "completed" and not budget.remaining:
+                attempt.update(status="timeout", failure_reason="Budget expired during cleanup")
             attempt["elapsed_seconds"] = budget.elapsed - start
             attempt["timings"] = {k: v - old_timings.get(k, 0) for k, v in budget.timings.items()}
             attempt["tool_calls"] = state["tool_calls"]
             attempt["rebuilds"] = state["rebuilds"]
-            attempt["metrics"].update(_plain(engine.memory_stats()))
+            for key, value in _plain(engine.memory_stats()).items():
+                if key.startswith("peak_"):
+                    value = max(value, attempt["metrics"].get(key, 0))
+                attempt["metrics"][key] = value
             write_json(
                 directory / "trajectory.json",
                 {
@@ -319,6 +325,12 @@ class Runner:
             result = _plain(generation)
             for key in ("decode_seconds", "prefill_seconds", "estimated_flops"):
                 attempt["metrics"][key] = attempt["metrics"].get(key, 0) + result.get(key, 0)
+            attempt["metrics"]["decode_tokens"] = attempt["metrics"].get(
+                "decode_tokens", 0
+            ) + result.get("decode_tokens", 0)
+            attempt["metrics"]["flops_estimation_method"] = (
+                "dense_forward_2nt: 2 * model_parameters * actually_forwarded_tokens; excludes attention, eviction, tools"
+            )
             attempt["metrics"]["generated_tokens"] = attempt["metrics"].get(
                 "generated_tokens", 0
             ) + len(result["token_ids"])

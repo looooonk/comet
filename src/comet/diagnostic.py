@@ -63,6 +63,7 @@ def prepare_checkpoints(runner, manifest: dict, engine) -> None:
             record.update(status="failed", failure_reason=f"{type(error).__name__}: {error}")
         finally:
             environment.close()
+            attempt["metrics"].update(engine.memory_stats())
             record.update(
                 elapsed_seconds=budget.elapsed,
                 timings=budget.timings,
@@ -84,4 +85,5 @@ def restore_checkpoint(runner, cell: dict, environment, engine, budget: Budget) 
         environment.restore(directory / "environment")
         engine.restore(directory / "engine", branch=True)
         state = read_json(directory / "agent.json")
+        state["preparation_metrics"] = record["metrics"]
     return state
