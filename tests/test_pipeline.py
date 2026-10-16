@@ -348,6 +348,30 @@ def test_artifact_finalization_cannot_create_over_budget_success(config, tmp_pat
     assert cell["attempts"][0]["status"] == "timeout"
 
 
+@pytest.mark.parametrize("failure", [False, True])
+def test_gpu_cleanup_is_charged_and_cannot_skip_environment_close(config, tmp_path, failure):
+    clock, environments = Clock(), []
+    engine = FakeEngine(clock)
+
+    def synchronize():
+        clock.advance(150)
+        if failure:
+            raise MemoryCapExceeded("asynchronous GPU failure")
+
+    def environment():
+        result = FakeEnvironment(clock, environments)
+        result.close = lambda: setattr(result, "closed", True)
+        return result
+
+    engine.synchronize = synchronize
+    runner = Runner(config, tmp_path, lambda _: engine, environment, clock=clock)
+    manifest = runner.run()
+    cell = read_json(tmp_path / manifest["cells"][0]["path"])
+    assert cell["attempts"][0]["status"] == ("oom" if failure else "timeout")
+    assert cell["attempts"][0]["timings"]["cleanup"] == 150
+    assert environments[0].closed
+
+
 def test_diagnostic_branches_identical_state_and_charges_preparation(config, tmp_path):
     conditions = [
         Condition("full", "full", 1.0, "never", 1),

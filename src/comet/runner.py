@@ -307,12 +307,20 @@ class Runner:
                 attempt.update(status="error", failure_reason=f"{type(error).__name__}: {error}")
         finally:
             cleanup_start = budget.elapsed
-            try:
-                environment.close()
-            except Exception as error:
-                attempt.update(
-                    status="error", failure_reason=f"Environment cleanup failed: {error}"
-                )
+            cleanup = ([engine.synchronize] if hasattr(engine, "synchronize") else []) + [
+                environment.close
+            ]
+            for finish in cleanup:
+                try:
+                    finish()
+                except Exception as error:
+                    status = (
+                        "oom"
+                        if isinstance(error, MemoryError)
+                        or type(error).__name__ == "OutOfMemoryError"
+                        else "error"
+                    )
+                    attempt.update(status=status, failure_reason=f"Attempt cleanup failed: {error}")
             budget.timings["cleanup"] = (
                 budget.timings.get("cleanup", 0) + budget.elapsed - cleanup_start
             )

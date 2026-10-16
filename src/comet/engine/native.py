@@ -46,6 +46,8 @@ class MiniSGLangEngine:
         model_config, self.parameter_count = model_storage(settings.model_path, settings.model_revision)
         if settings.max_context_tokens > model_config["max_position_embeddings"]:
             raise UnsupportedPath("configured context exceeds the pinned model's supported positions")
+        self._num_layers = model_config["num_hidden_layers"]
+        self._num_kv_heads = model_config["num_key_value_heads"]
         self._attention_flop_factor = (4 * model_config["num_hidden_layers"]
                                       * model_config["num_attention_heads"] * model_config["head_dim"])
         self.kv_bytes_per_token = (
@@ -483,7 +485,11 @@ class MiniSGLangEngine:
 
     def _workspace_bound(self, tokens: int) -> int:
         if self.settings.method == "rkv":
-            return max(self.settings.workspace_reserve_bytes, tokens * tokens * 24 + self.kv_bytes_per_token * tokens // 16)
+            limit = self.scheduler.eviction_manager.base_plan.redundancy_max_similarity_bytes
+            heads = max(1, min(self._num_kv_heads, limit // max(1, 11 * tokens * tokens)))
+            matrix = 24 * heads * tokens * tokens
+            linear = 8 * self.kv_bytes_per_token * tokens // self._num_layers
+            return max(self.settings.workspace_reserve_bytes, matrix + linear)
         return self.settings.workspace_reserve_bytes
 
     def _prefill_history(self, deadline: float):
@@ -544,3 +550,6 @@ class MiniSGLangEngine:
         self._monitor.join(timeout=1)
         self._clear_session()
         self.scheduler.shutdown()
+
+    def synchronize(self):
+        self.torch.cuda.synchronize()

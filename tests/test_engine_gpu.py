@@ -38,6 +38,13 @@ def test_native_persistence_eviction_checkpoint_and_single_rebuild(tmp_path):
         engine.restore(checkpoint)
         repeated = engine.generate(suffix, 4, 0.0, 1.0, time.monotonic() + 600)
         assert repeated.token_ids == second.token_ids
+        engine.restore(checkpoint)
+        sampled = engine.generate(suffix, 8, 0.6, 0.9, time.monotonic() + 600)
+        sampled_rng = torch.cuda.get_rng_state().clone()
+        engine.restore(checkpoint)
+        sampled_again = engine.generate(suffix, 8, 0.6, 0.9, time.monotonic() + 600)
+        assert sampled.token_ids == sampled_again.token_ids
+        assert torch.equal(sampled_rng, torch.cuda.get_rng_state())
         for method in ("streamingllm", "rkv", "agentkv"):
             engine.set_policy(method, 0.5)
             engine.restore(checkpoint, branch=True)

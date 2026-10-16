@@ -121,3 +121,18 @@ def test_warmup_covers_all_conditions_once_and_restores_selected_policy():
     assert engine._session_id is None
     assert engine.warmup() is record
     assert len(calls) == 10
+
+
+def test_rkv_recovery_workspace_accounts_for_concurrent_redundancy_heads():
+    engine = MiniSGLangEngine.__new__(MiniSGLangEngine)
+    engine.settings = SimpleNamespace(method="rkv", workspace_reserve_bytes=1)
+    engine._num_kv_heads, engine._num_layers = 8, 32
+    engine.kv_bytes_per_token = 2 * 2 * 32 * 8 * 128
+    engine.scheduler = SimpleNamespace(eviction_manager=SimpleNamespace(
+        base_plan=SimpleNamespace(redundancy_max_similarity_bytes=1 << 30),
+    ))
+    count = 4096
+    expected_heads = 5
+    bound = engine._workspace_bound(count)
+    assert bound >= 24 * expected_heads * count * count
+    assert bound > 2_000_000_000

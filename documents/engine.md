@@ -114,10 +114,17 @@ Sampling is not a measurement of arbitrarily short non-PyTorch allocation peaks;
 record this limitation with the run and validate the workspace reserve in the pilot.
 
 Recovery admission reserves the configured transient workspace, increased to a
-conservative quadratic R-KV redundancy-workspace estimate where needed. The
+conservative quadratic R-KV redundancy-workspace estimate where needed. This
+uses the pinned R-KV head-chunk rule
+`h = max(1, min(kv_heads, similarity_limit // (11*tokens**2)))`, with the upstream
+1 GiB similarity limit, and reserves `24*h*tokens**2` plus eight per-layer K/V
+arrays of linear workspace. The bound covers simultaneously processed heads,
+BF16 similarities, boolean masks, and temporary int64 index tensors. The
 allocator ceiling remains active during recovery. CUDA kernels cannot be
 preempted by the adapter; deadlines are checked before and after each forward,
-and the runner charges actual elapsed time, including overshoot. Real monotonic
+and the runner calls `synchronize()` during attempt cleanup and charges actual
+elapsed time, including outstanding device work after a deadline signal and
+overshoot. Real monotonic
 clock calls remain valid under AppWorld's frozen simulated clock.
 
 `prefill_seconds` and `decode_seconds` are synchronized host elapsed times for
