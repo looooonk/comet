@@ -1,0 +1,8 @@
+-r appworld.in
+minisgl @ git+https://github.com/LiuTaowen-Tony/kv-management-minisgl.git@254c57bc84e4a7895159ba1062bd46c83626f511
+torch==2.9.1
+transformers==4.57.3
+flashinfer-python==0.5.3
+sgl-kernel==0.3.17.post1
+apache-tvm-ffi==0.1.4
+ninja==1.13.0

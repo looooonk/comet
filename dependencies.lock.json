@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "python": "3.12",
+  "uv": "0.13.0",
+  "repositories": {
+    "agentkv": {
+      "url": "https://github.com/LiuTaowen-Tony/agentkv.git",
+      "revision": "b5280b7c42bd90962712c19f8e0047c89ca40d6d",
+      "role": "reference implementation"
+    },
+    "minisgl": {
+      "url": "https://github.com/LiuTaowen-Tony/kv-management-minisgl.git",
+      "revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
+      "patch": "patches/minisgl-comet.patch",
+      "patch_sha256": "7bef28d60a8f9fd566b04fa135a08f19a73e0a7c09b6caa369ad338d75fc7913",
+      "role": "inference engine"
+    },
+    "appworld": {
+      "url": "https://github.com/StonyBrookNLP/appworld.git",
+      "revision": "42b5bcf3cd334fee33f0c37c02070a9f5807add5",
+      "data_version": "0.2.0",
+      "bundle_sha256": {
+        "apps.bundle": "88d21fc526c1655bb3eee4adfca78ccac793921e4506f28f734ecdb19af77a62",
+        "tests.bundle": "7b93343db5efd81b542e68e68150dd5ea5d59d8dcd64137d41bde4027b235dc9"
+      },
+      "role": "task environment and separate evaluator"
+    }
+  },
+  "model": {
+    "repository": "Qwen/Qwen3-8B",
+    "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "dtype": "bfloat16"
+  },
+  "profiles": {
+    "cpu": "uv.lock",
+    "appworld": "infra/requirements/appworld.lock",
+    "gpu": "infra/requirements/gpu.lock"
+  }
+}
