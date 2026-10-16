@@ -1,0 +1,96 @@
+from dataclasses import replace
+from types import SimpleNamespace
+
+import pytest
+
+from comet.engine import EngineSettings, MiniSGLangEngine, retention_target
+from comet.engine.contracts import MODEL_REVISION
+
+
+def settings(**changes):
+    config = EngineSettings(
+        model_path="/unused/snapshot", model_revision=MODEL_REVISION,
+        tokenizer_revision=MODEL_REVISION, method="full", retention=1.0,
+        max_context_tokens=1024, peak_vram_bytes=40 << 30,
+        workspace_reserve_bytes=4 << 30, prefill_chunk_tokens=128,
+    )
+    return replace(config, **changes)
+
+
+def test_retention_uses_full_logical_denominator_and_includes_mandatory_entries():
+    assert retention_target(101, 0.8, "streamingllm") == 81
+    assert retention_target(101, 0.5, "rkv") == 51
+    assert retention_target(101, 0.25, "agentkv") == 26
+    assert retention_target(20, 0.25, "agentkv") == 20
+    assert retention_target(20, 0.25, "streamingllm") == 16
+    assert retention_target(20, 0.25, "rkv") == 8
+    assert retention_target(101, 1, "full") == 101
+
+
+@pytest.mark.parametrize("method", ["streamingllm", "rkv", "agentkv"])
+@pytest.mark.parametrize("retention", [0.8, 0.5, 0.25])
+def test_retention_growth_never_requires_inventing_previously_evicted_entries(method, retention):
+    previous = 0
+    for tokens in range(1, 1001):
+        current = retention_target(tokens, retention, method)
+        assert previous <= current <= previous + 1
+        assert current <= tokens
+        previous = current
+
+
+def test_settings_reject_unpinned_model_or_invalid_control():
+    for changes in ({"retention": 0.5}, {"model_revision": "main"},
+                    {"prefill_chunk_tokens": 0}, {"workspace_reserve_bytes": 50 << 30}):
+        with pytest.raises(ValueError):
+            settings(**changes)
+
+
+def test_branch_fingerprint_only_excludes_policy_and_local_snapshot_location():
+    full = settings()
+    compressed = settings(method="rkv", retention=0.5, model_path="/another/snapshot")
+    assert full.fingerprint() != compressed.fingerprint()
+    assert full.fingerprint(policy=False) == compressed.fingerprint(policy=False)
+    assert full.fingerprint(policy=False) != settings(max_context_tokens=2048).fingerprint(policy=False)
+
+
+def test_empty_recovery_is_explicit_and_never_counts_as_a_rebuild():
+    engine = MiniSGLangEngine.__new__(MiniSGLangEngine)
+    engine._raw = []
+    engine._recoveries = 0
+    engine.memory_stats = lambda: {}
+    result = engine.recover([], deadline=1.0)
+    assert not result.admitted
+    assert result.reason == "empty_history"
+    assert engine.recovery_count == 0
+
+
+def test_recovery_refuses_a_different_history_or_second_rebuild():
+    engine = MiniSGLangEngine.__new__(MiniSGLangEngine)
+    engine._raw = [1, 2, 3]
+    engine._recoveries = 1
+    engine.memory_stats = lambda: {}
+    with pytest.raises(ValueError, match="exact"):
+        engine.recover([1, 3], deadline=1.0)
+    result = engine.recover([1, 2, 3], deadline=1.0)
+    assert not result.admitted
+    assert result.reason == "recovery_limit"
+
+
+@pytest.mark.parametrize("pool,available,reason", [(2, 100, "full_history_exceeds_kv_pool"),
+                                                (10, 5, "transient_workspace_exceeds_cap")])
+def test_recovery_admission_denial_preserves_transcript_and_allowance(pool, available, reason):
+    engine = MiniSGLangEngine.__new__(MiniSGLangEngine)
+    engine._raw = [1, 2, 3]
+    engine._recoveries = 0
+    engine.settings = SimpleNamespace(peak_vram_bytes=100, workspace_reserve_bytes=10, method="agentkv",
+                                      max_context_tokens=100)
+    engine.scheduler = SimpleNamespace(engine=SimpleNamespace(num_pages=pool))
+    engine.torch = SimpleNamespace(cuda=SimpleNamespace(
+        mem_get_info=lambda: (available, 100), memory_reserved=lambda: 0, memory_allocated=lambda: 0,
+    ))
+    engine._check_deadline = lambda deadline: None
+    engine.memory_stats = lambda: {}
+    result = engine.recover([1, 2, 3, 4], deadline=1.0)
+    assert not result.admitted and result.reason == reason
+    assert engine.raw_token_ids == [1, 2, 3]
+    assert engine.recovery_count == 0

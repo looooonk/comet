@@ -367,7 +367,10 @@ class Runner:
             if decision.triggered:
                 with budget.charge("rebuild"):
                     recovery = _plain(
-                        engine.recover(list(engine.raw_token_ids), deadline=budget.deadline)
+                        engine.recover(
+                            list(engine.raw_token_ids) + state["pending_tokens"],
+                            deadline=budget.deadline,
+                        )
                     )
                 event["result"] = recovery
                 attempt["metrics"]["estimated_flops"] = attempt["metrics"].get(
@@ -376,6 +379,9 @@ class Runner:
                 admitted = recovery.get("admitted", False)
                 if admitted:
                     state["rebuilds"] += 1
+                    state["pending_tokens"] = []
+                    attempt["metrics"]["rebuild_prefill_tokens"] = recovery.get("input_tokens", 0)
+                    attempt["metrics"]["rebuild_seconds"] = recovery.get("seconds", 0)
             attempt["recovery_events"].append(event)
             with budget.charge("inference"):
                 generation = engine.generate(

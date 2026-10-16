@@ -98,7 +98,8 @@ class FakeEngine:
         }
 
     def recover(self, tokens, **kwargs):
-        assert tokens == self.raw_token_ids
+        assert tokens[: len(self.raw_token_ids)] == self.raw_token_ids
+        self.raw_token_ids = list(tokens)
         self.recoveries.append(list(tokens))
         self.clock.advance(1)
         return {"admitted": True, "seconds": 1}
@@ -243,7 +244,7 @@ def test_attempt_isolation_recovery_and_offline_scoring(config, tmp_path):
     cell = cells[0]
     assert [a["status"] for a in cell["attempts"]] == ["completed", "completed"]
     assert len(environments) == 2 and all(e.count == 2 for e in environments)
-    assert engines[0].recoveries == [[10, 30], [10, 30]]
+    assert engines[0].recoveries == [[10, 30, 20], [10, 30, 20]]
     assert all(a["rebuilds"] == 1 for a in cell["attempts"])
     assert all("reset" in a["timings"] and "tool" in a["timings"] for a in cell["attempts"])
     assert not (tmp_path / "scores.json").exists()
@@ -362,7 +363,7 @@ def test_diagnostic_branches_identical_state_and_charges_preparation(config, tmp
     _, cells, engines, environments = run_fixture(config, tmp_path)
     assert [c["attempts"][0]["status"] for c in cells] == ["completed", "completed"]
     assert [e.count for e in environments] == [1, 2, 2]
-    assert engines[0].recoveries == [[10, 30]]
+    assert engines[0].recoveries == [[10, 30, 20]]
     assert all(c["attempts"][0]["timings"]["shared_checkpoint_preparation"] == 9 for c in cells)
     assert all(c["elapsed_seconds"] >= 19 for c in cells)
     trajectories = [

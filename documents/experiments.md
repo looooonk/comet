@@ -54,9 +54,10 @@ uses `tool_calls >= fixed_tool_calls`. `dynamic` combines the configured context
 and tool thresholds with the explicit `and` or `or` rule. `never` disables
 recovery. Every decision records its inputs and reason; admission failures retain
 the original cache. One admitted rebuild is allowed per attempt. Recovery
-re-prefills the engine's full accumulated raw transcript, then reapplies retention;
-the pending observation suffix is appended by ordinary generation. No past tool
-action is executed again. [engine.md](engine.md) defines KV rounding and memory
+re-prefills the full accumulated raw transcript including the pending tool
+observation, then reapplies retention. The next token is sampled from the saved
+prefill logits; the observation is not appended twice. No past tool action is
+executed again. [engine.md](engine.md) defines KV rounding and memory
 accounting.
 
 The raw token stream is append-only across tool turns. Qwen chat role delimiters

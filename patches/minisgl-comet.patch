@@ -1,0 +1,160 @@
+diff --git a/python/minisgl/engine/engine.py b/python/minisgl/engine/engine.py
+index b37e1b3..81e9f04 100644
+--- a/python/minisgl/engine/engine.py
++++ b/python/minisgl/engine/engine.py
+@@ -32,7 +32,6 @@ class ForwardOutput(NamedTuple):
+ 
+ class Engine:
+     def __init__(self, config: EngineConfig):
+-        assert not torch.cuda.is_initialized()
+         set_tp_info(rank=config.tp_info.rank, size=config.tp_info.size)
+         _adjust_config(config)
+ 
+@@ -78,7 +77,7 @@ class Engine:
+ 
+         # ======================= Page table initialization ========================
+         # NOTE: 1. aligned to 128 bytes; 2. store raw locations instead of pages
+-        self.max_seq_len = min(config.max_seq_len, num_tokens)
++        self.max_seq_len = config.max_seq_len
+         aligned_max_seq_len = _align_up_32(self.max_seq_len)
+         self.ctx.page_table = self.page_table = torch.zeros(  # + 1 for dummy request
+             (config.max_running_req + 1, aligned_max_seq_len),
+@@ -221,7 +220,12 @@ class Engine:
+             else:
+                 req.complete_one()
+ 
+-        next_tokens_gpu = self.sampler.sample(logits[: batch.size], args).to(torch.int32)
++        if all(req.prefill_only for req in batch.reqs):
++            self.comet_last_prefill_logits = logits[:batch.size].detach().clone()
++            next_tokens_gpu = torch.zeros(batch.size, dtype=torch.int32, device=self.device)
++        else:
++            self.comet_last_prefill_logits = None
++            next_tokens_gpu = self.sampler.sample(logits[: batch.size], args).to(torch.int32)
+         next_tokens_cpu = next_tokens_gpu.to("cpu", non_blocking=True)
+         copy_done_event.record(self.stream)
+         return ForwardOutput(
+diff --git a/python/minisgl/eviction/manager.py b/python/minisgl/eviction/manager.py
+index 6fefc3d..ec876e4 100644
+--- a/python/minisgl/eviction/manager.py
++++ b/python/minisgl/eviction/manager.py
+@@ -2,6 +2,7 @@ from __future__ import annotations
+ 
+ import time
+ from pathlib import Path
++from dataclasses import replace
+ from typing import TYPE_CHECKING
+ 
+ import torch
+@@ -51,6 +52,11 @@ class EvictionManager:
+         self.device = device
+         self.disabled = config.eviction_plan.strip().lower() in {"none", "off"}
+         self.plan = create_eviction_plan(config.eviction_plan)
++        self.base_plan = self.plan
++        self.retention_fraction = getattr(config, "comet_retention_fraction", None)
++        if self.retention_fraction is not None and not 0 < self.retention_fraction < 1:
++            raise ValueError("COMET compressed retention must be strictly between 0 and 1")
++        self.retention_events = []
+         if self.plan.requires_page_size_one and config.page_size != 1:
+             raise ValueError(f"Eviction plan {self.plan.name!r} requires page_size == 1")
+         self.compact_interval = getattr(config, "compact_interval", 128)
+@@ -195,6 +201,23 @@ class EvictionManager:
+         probe_q_by_layer: dict[int, tuple[torch.Tensor, torch.Tensor]] | None = None,
+         selection_profile: SelectionProfile | None = None,
+     ) -> list[torch.Tensor] | None:
++        target = None
++        if self.retention_fraction is not None:
++            from .relative import relative_budget
++
++            target = relative_budget(self.base_plan, req.logical_cached_len, self.retention_fraction)
++            if hasattr(self.base_plan, "window_tokens"):
++                sink = min(target, self.base_plan.sink_tokens)
++                self.plan = replace(self.base_plan, sink_tokens=sink, window_tokens=target - sink)
++            else:
++                self.plan = replace(self.base_plan, budget=target)
++            self.retention_events.append({
++                "logical_cached_tokens": req.logical_cached_len,
++                "physical_before": req.physical_cached_len,
++                "target_tokens": target,
++            })
++            if req.physical_cached_len <= target:
++                return None
+         keep_by_layer: list[torch.Tensor] = []
+         compact_len: int | None = None
+ 
+@@ -210,7 +233,13 @@ class EvictionManager:
+                 selection_profile=selection_profile,
+             )
+             select_layer_start = time.perf_counter() if selection_profile is not None else None
++            if target is not None and self.plan.requires_query_observation and (
++                view.q_observation is None or view.q_observation.numel() == 0
++            ):
++                raise RuntimeError("COMET eviction requires observed queries; full-KV fallback is forbidden")
+             keep = self.plan.select_layer(view)
++            if target is not None and keep.shape[1] != target:
++                raise RuntimeError("COMET eviction did not satisfy the relative retention budget")
+             if select_layer_start is not None:
+                 profile_add(
+                     selection_profile,
+@@ -421,7 +450,7 @@ class EvictionManager:
+         )
+         prepare_step_start = time.perf_counter() if profile_timing else None
+ 
+-        needs_position_state = self.compact_debug
++        needs_position_state = True
+         old_positions_by_layer_head = None
+         new_positions_by_layer_head = None
+         if needs_position_state:
+diff --git a/python/minisgl/eviction/relative.py b/python/minisgl/eviction/relative.py
+new file mode 100644
+index 0000000..1f2b06a
+--- /dev/null
++++ b/python/minisgl/eviction/relative.py
+@@ -0,0 +1,16 @@
++from fractions import Fraction
++
++
++COMET_PATCH_VERSION = 1
++
++
++def relative_budget(plan, logical_tokens: int, retention: float) -> int:
++    if logical_tokens < 0:
++        raise ValueError("logical token count must be nonnegative")
++    fraction = Fraction(str(retention))
++    if not 0 < fraction < 1:
++        raise ValueError("compressed retention must be strictly between 0 and 1")
++    requested = (logical_tokens * fraction.numerator + fraction.denominator - 1) // fraction.denominator
++    recent = 0 if hasattr(plan, "window_tokens") else plan._recent_keep_tokens()
++    mandatory = min(logical_tokens, plan.sink_tokens + recent)
++    return min(logical_tokens, max(requested, mandatory))
+diff --git a/python/minisgl/scheduler/cache.py b/python/minisgl/scheduler/cache.py
+index 272740a..1ace5fa 100644
+--- a/python/minisgl/scheduler/cache.py
++++ b/python/minisgl/scheduler/cache.py
+@@ -16,6 +16,7 @@ class CacheManager:
+         self.free_slots = torch.arange(num_pages, dtype=torch.int32, device=device) * page_size
+         self.device = device
+         self.num_pages = num_pages
++        self.peak_used_pages = 0
+         self.page_table = page_table
+         self.page_size = page_size
+ 
+@@ -91,6 +92,7 @@ class CacheManager:
+             )
+         allocated = self.free_slots[:needed_pages]
+         self.free_slots = self.free_slots[needed_pages:]
++        self.peak_used_pages = max(self.peak_used_pages, self.num_pages - len(self.free_slots))
+         return allocated
+ 
+     def _free(self, indices: torch.Tensor) -> None:
+diff --git a/python/minisgl/scheduler/config.py b/python/minisgl/scheduler/config.py
+index 700868c..15bbe62 100644
+--- a/python/minisgl/scheduler/config.py
++++ b/python/minisgl/scheduler/config.py
+@@ -17,6 +17,7 @@ class SchedulerConfig(EngineConfig):
+     prefill_chunk_size: int = 0
+     offline_mode: bool = False
+     eviction_plan: str = "identity"
++    comet_retention_fraction: float | None = None
+     compact_interval: int = 128
+     compact_after_prefill: bool = False
+     compact_before_park: bool = False
