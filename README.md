@@ -29,17 +29,6 @@ The repository currently contains the proposal and project documentation. Implem
 
 ## Working together
 
-The proposal assigns these starting responsibilities:
-
-| Contributor | Planned responsibility |
-| --- | --- |
-| Yihan Bai | Experiment and ablation analysis |
-| Henry He | Experiment setup and execution |
-| Yenna Hwang | Infrastructure and code framework setup |
-| Chad Cai | Infrastructure and experiment setup |
-
-All four contributors should use the same experiment pipeline and recorded settings. Coordinate changes to shared interfaces and the evaluation plan before building dependent work. Keep contributions focused, have teammates review them, and distinguish exploratory results from the final evaluation.
-
 [AGENTS.md](AGENTS.md) contains the implementation rules and experimental constraints for coding agents. Keep this README focused on the project overview; put technical procedures and reproducibility details in the implementation documentation as it is added.
 
 ## Planned milestones
