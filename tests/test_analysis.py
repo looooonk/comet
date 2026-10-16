@@ -2,7 +2,9 @@ import copy
 
 import pytest
 
-from comet.analysis import analyze_cells
+from comet.analysis import analyze_cells, analyze_runs
+from comet.artifacts import write_json
+from comet.evaluation import execution_digest
 
 
 def cell(task, condition, seed, successes, statuses=None):
@@ -65,3 +67,64 @@ def test_analysis_rejects_duplicates_and_failed_success():
     record["attempts"][0]["status"] = "completed"
     with pytest.raises(ValueError, match="Duplicate"):
         analyze_cells([record, record])
+
+
+def _metadata():
+    return {
+        "engine": {"backend": "fixture", "packages": {"torch": "same"}, "device_name": "A100",
+                   "model_path": "/one/model", "memory": {"peak": 1}, "warmup": {"seconds": 1}},
+        "provenance": {"source_hashes": {"runner.py": "same"},
+                       "installed_packages": {"appworld": "same"}, "hostname": "one"},
+        "evaluation_provenance": {"source_hashes": {"evaluation.py": "same"},
+                                  "installed_packages": {"appworld": "same"}},
+    }
+
+
+def _scored_run(path, condition, metadata):
+    record = cell("t1", condition, 1, [True])
+    record["attempts"][0]["artifact_dir"] = "attempts/0"
+    manifest = {
+        "schema_version": 1, "run_id": condition, "stage": "pilot", "status": "completed",
+        "config_digest": condition, "integration_smoke": False,
+        "config": {"task_ids": ["t1"], "seeds": [1], "conditions": [record["condition"]]},
+        "engine": metadata["engine"], "provenance": metadata["provenance"],
+        "cells": [{"path": "cell.json"}],
+    }
+    write_json(path / "cell.json", record)
+    write_json(path / "manifest.json", manifest)
+    write_json(path / "scores.json", {
+        "status": "completed", "run_id": condition, "stage": "pilot", "config_digest": condition,
+        "execution_digest": execution_digest(path, manifest), "cells": [record],
+        "evaluation_provenance": metadata["evaluation_provenance"],
+    })
+    return path
+
+
+@pytest.mark.parametrize("keys", [
+    ("engine", "packages", "torch"),
+    ("engine", "device_name"),
+    ("provenance", "source_hashes", "runner.py"),
+    ("provenance", "installed_packages", "appworld"),
+    ("evaluation_provenance", "source_hashes", "evaluation.py"),
+    ("evaluation_provenance", "installed_packages", "appworld"),
+])
+def test_analysis_refuses_mixed_execution_or_evaluator_provenance(tmp_path, keys):
+    first = _scored_run(tmp_path / "first", "a", _metadata())
+    changed = _metadata()
+    target = changed
+    for key in keys[:-1]:
+        target = target[key]
+    target[keys[-1]] = "different"
+    second = _scored_run(tmp_path / "second", "b", changed)
+    with pytest.raises(ValueError, match="different source, evaluator, runtime or hardware"):
+        analyze_runs([first, second], tmp_path / "analysis.json", bootstrap_samples=10)
+
+
+def test_analysis_ignores_locations_and_transient_engine_measurements(tmp_path):
+    first = _scored_run(tmp_path / "first", "a", _metadata())
+    changed = _metadata()
+    changed["engine"].update(model_path="/two/model", memory={"peak": 2}, warmup={"seconds": 3})
+    changed["provenance"]["hostname"] = "two"
+    second = _scored_run(tmp_path / "second", "b", changed)
+    result = analyze_runs([first, second], tmp_path / "analysis.json", bootstrap_samples=10)
+    assert set(result["conditions"]) == {"a", "b"}

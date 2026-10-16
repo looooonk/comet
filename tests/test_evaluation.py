@@ -103,3 +103,20 @@ def test_missing_manifest_cells_are_rejected_before_scoring(tmp_path):
     (tmp_path / "manifest.json").write_text(json.dumps(manifest))
     with pytest.raises(ValueError, match="every configured"):
         evaluate_run(tmp_path)
+
+
+@pytest.mark.parametrize("field", ["source_hashes", "installed_packages"])
+def test_scoring_resume_refuses_changed_evaluator(tmp_path, monkeypatch, field):
+    make_run(tmp_path)
+    original = {"source_hashes": {"evaluation.py": "first"},
+                "installed_packages": {"appworld": "pinned"}, "recorded_at_unix": 1}
+    monkeypatch.setattr("comet.evaluation.provenance", lambda: original.copy())
+    scores = evaluate_run(tmp_path, scorer=lambda _: {"success": False})
+    assert scores["evaluation_provenance"] == original
+    changed = {**original, field: {"changed": "revision"}}
+    monkeypatch.setattr("comet.evaluation.provenance", lambda: changed)
+    with pytest.raises(ValueError, match="original evaluator"):
+        evaluate_run(tmp_path, scorer=lambda _: pytest.fail("Must not rescore incompatible evidence"))
+    monkeypatch.setattr("comet.evaluation.provenance", lambda: {**original, "recorded_at_unix": 2})
+    resumed = evaluate_run(tmp_path, scorer=lambda _: pytest.fail("Completed scores should be reused"))
+    assert resumed["evaluation_provenance"] == original

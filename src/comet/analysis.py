@@ -151,6 +151,7 @@ def analyze_runs(run_dirs: list[str | Path], output: str | Path, *, bootstrap_sa
     sources: list[str] = []
     stage: str | None = None
     integration_smoke: bool | None = None
+    runtime_contract: dict[str, Any] | None = None
     for directory in run_dirs:
         directory = Path(directory).resolve()
         manifest = _read(directory / "manifest.json")
@@ -166,6 +167,18 @@ def analyze_runs(run_dirs: list[str | Path], output: str | Path, *, bootstrap_sa
         if integration_smoke is not None and smoke != integration_smoke:
             raise ValueError("Integration smoke outputs cannot be mixed with research results.")
         integration_smoke = smoke
+        runtime: dict[str, Any] = {
+            "engine": {key: value for key, value in manifest.get("engine", {}).items()
+                       if key not in {"model_path", "memory", "warmup"}},
+        }
+        for label, recorded in (("execution", manifest.get("provenance", {})),
+                                ("evaluation", scores.get("evaluation_provenance", {}))):
+            if not all(key in recorded for key in ("source_hashes", "installed_packages")):
+                raise ValueError(f"Run is missing {label} source or runtime provenance.")
+            runtime[label] = {key: recorded[key] for key in ("source_hashes", "installed_packages")}
+        if runtime_contract is not None and runtime != runtime_contract:
+            raise ValueError("Do not pool runs with different source, evaluator, runtime or hardware.")
+        runtime_contract = runtime
         comparable = {key: value for key, value in manifest["config"].items()
                       if key not in ("conditions", "run_id", "notes")}
         current = json.dumps(comparable, sort_keys=True)

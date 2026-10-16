@@ -103,6 +103,7 @@ class MiniSGLangEngine:
         self._peak_total = 0
         self._peak_kv = 0
         self._peak_external = self._external_bytes
+        self._memory_lock = threading.Lock()
         self._monitor_stop = threading.Event()
         self._monitor_error: Exception | None = None
         self._warmup_record: dict | None = None
@@ -216,13 +217,14 @@ class MiniSGLangEngine:
         return self.scheduler.session_manager.sessions.get(self._session_id)
 
     def _sample_memory(self):
-        torch = self.torch
-        free, total = torch.cuda.mem_get_info()
-        reserved = torch.cuda.memory_reserved()
-        self._peak_external = max(self._peak_external, total - free - reserved)
-        self._peak_total = max(self._peak_total, total - free)
-        occupied = self.scheduler.cache_manager.peak_used_pages
-        self._peak_kv = max(self._peak_kv, occupied * self.kv_bytes_per_token)
+        with self._memory_lock:
+            torch = self.torch
+            free, total = torch.cuda.mem_get_info()
+            reserved = torch.cuda.memory_reserved()
+            self._peak_external = max(self._peak_external, total - free - reserved)
+            self._peak_total = max(self._peak_total, total - free)
+            occupied = self.scheduler.cache_manager.peak_used_pages
+            self._peak_kv = max(self._peak_kv, occupied * self.kv_bytes_per_token)
 
     def _monitor_memory(self):
         while not self._monitor_stop.wait(0.01):
@@ -314,12 +316,12 @@ class MiniSGLangEngine:
         self._session_id = f"comet-{uuid.uuid4().hex}"
         self._raw, self._phase, self._semantic = [], [], []
         self._recoveries = 0
-        self._peak_kv = 0
-        self._peak_total = 0
-        self._peak_external = self._external_bytes
         self.scheduler.eviction_manager.retention_events.clear()
         self.torch.cuda.empty_cache()
-        self.torch.cuda.reset_peak_memory_stats()
+        with self._memory_lock:
+            self.torch.cuda.reset_peak_memory_stats()
+            self._peak_kv = self._peak_total = 0
+            self._peak_external = self._external_bytes
         random.seed(seed)
         self.torch.manual_seed(seed)
         self.torch.cuda.manual_seed_all(seed)

@@ -146,8 +146,9 @@ def restore_snapshot(engine, path: Path, *, branch: bool) -> dict:
     torch.cuda.set_rng_state_all(payload["cuda_rng"])
     saved_memory = payload["memory"]
     if not branch:
-        engine._peak_total = max(engine._peak_total, saved_memory["peak_total_vram_bytes"])
-        engine._peak_kv = max(engine._peak_kv, saved_memory["peak_kv_cache_bytes"])
+        with engine._memory_lock:
+            engine._peak_total = max(engine._peak_total, saved_memory["peak_total_vram_bytes"])
+            engine._peak_kv = max(engine._peak_kv, saved_memory["peak_kv_cache_bytes"])
     engine._check_memory()
     scheduler.cache_manager.check_integrity(owned_pages=scheduler.session_manager.owned_pages())
     return manifest

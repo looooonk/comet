@@ -10,8 +10,8 @@ from pathlib import Path
 from typing import Any, Callable
 
 from comet.appworld import APPWORLD_DATA_VERSION, APPWORLD_REVISION, verify_appworld_revision
+from comet.artifacts import provenance, run_lock
 from comet.artifacts import read_json as _read
-from comet.artifacts import run_lock
 from comet.artifacts import write_json as _write
 
 
@@ -122,15 +122,22 @@ def _evaluate_run(
     source_digest = execution_digest(run_dir, manifest)
     output_path = run_dir / "scores.json"
     prior: dict[str, dict[str, Any]] = {}
+    evaluation_provenance = provenance()
     if output_path.exists():
         existing = _read(output_path)
         if existing.get("execution_digest") != source_digest:
             raise ValueError("Execution artifacts changed since scoring; use a separate run.")
+        previous = existing.get("evaluation_provenance", {})
+        for key in ("source_hashes", "installed_packages"):
+            if key not in previous or previous[key] != evaluation_provenance[key]:
+                raise ValueError(f"Scoring requires the original evaluator ({key} differs or is missing).")
+        evaluation_provenance = previous
         prior = {cell["id"]: cell for cell in existing["cells"]}
     output: dict[str, Any] = {
         "schema_version": 1, "run_id": manifest["run_id"], "stage": manifest["stage"],
         "config_digest": manifest["config_digest"], "execution_digest": source_digest,
         "integration_smoke": manifest.get("integration_smoke", False),
+        "evaluation_provenance": evaluation_provenance,
         "status": "scoring", "metric": "oracle task success within budget (perfect-selection upper bound)",
         "cells": [],
     }

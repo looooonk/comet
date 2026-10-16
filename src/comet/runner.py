@@ -223,9 +223,26 @@ class Runner:
                 write_json(attempt_dir / "attempt.json", attempt)
             attempt["budget_elapsed_seconds"] = budget.elapsed
             cell.update(elapsed_seconds=budget.elapsed, inflight=False)
-            write_json(path, cell)
+            self._persist_cell(path, cell, budget)
         cell.update(completed=True, elapsed_seconds=budget.elapsed)
+        self._persist_cell(path, cell, budget)
+
+    def _persist_cell(self, path: Path, cell: dict, budget: Budget) -> None:
         write_json(path, cell)
+        if (
+            cell["attempts"]
+            and cell["attempts"][-1]["status"] == "completed"
+            and not budget.remaining
+        ):
+            attempt = cell["attempts"][-1]
+            attempt.update(
+                status="timeout",
+                failure_reason="Run journal finalization exceeded the shared budget",
+                budget_elapsed_seconds=budget.elapsed,
+            )
+            write_json(self.output / attempt["artifact_dir"] / "attempt.json", attempt)
+            cell["elapsed_seconds"] = budget.elapsed
+            write_json(path, cell)
 
     def _new_cell(self, manifest: dict, reference: dict, condition: Condition) -> dict:
         return {
