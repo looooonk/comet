@@ -21,6 +21,10 @@ def _plain(value):
     return dataclasses.asdict(value) if dataclasses.is_dataclass(value) else value
 
 
+def _runtime_contract(metadata: dict) -> dict:
+    return {k: v for k, v in metadata.items() if k not in {"model_path", "memory", "warmup"}}
+
+
 class Runner:
     def __init__(
         self,
@@ -81,12 +85,22 @@ class Runner:
                 manifest.update(status="completed", finished_at_unix=wall_time())
                 write_json(self.output / "manifest.json", manifest)
                 return manifest
-            if hasattr(engine, "warmup"):
-                engine.warmup()
-            self.engine_metadata = engine.provenance() if hasattr(engine, "provenance") else {}
-            manifest["engine"] = self.engine_metadata
-            write_json(self.output / "manifest.json", manifest)
             try:
+                if hasattr(engine, "warmup"):
+                    engine.warmup()
+                self.engine_metadata = engine.provenance() if hasattr(engine, "provenance") else {}
+                previous = manifest.get("engine")
+                if previous is not None and _runtime_contract(previous) != _runtime_contract(
+                    self.engine_metadata
+                ):
+                    raise ValueError(
+                        "Resume runtime dependencies or hardware differ from the original run"
+                    )
+                manifest.setdefault("engine", self.engine_metadata)
+                manifest.setdefault("launches", []).append(
+                    {"at_unix": wall_time(), "engine": self.engine_metadata}
+                )
+                write_json(self.output / "manifest.json", manifest)
                 if self.config.stage == "diagnostic":
                     from comet.diagnostic import prepare_checkpoints
 
@@ -126,7 +140,7 @@ class Runner:
                 raise ValueError("Resume configuration differs from the saved run")
             if manifest["integration_smoke"] != self.integration_smoke:
                 raise ValueError("Resume hardware mode differs from the saved run")
-            for key in ("code_commit", "local_changes", "source_hashes"):
+            for key in ("code_commit", "local_changes", "source_hashes", "installed_packages"):
                 if manifest["provenance"][key] != current[key]:
                     raise ValueError(f"Resume requires the original code ({key} differs)")
             return manifest
@@ -201,6 +215,13 @@ class Runner:
             cell["inflight"] = True
             write_json(path, cell)
             self._attempt(cell, attempt, attempt_dir, condition, engine, budget)
+            if attempt["status"] == "completed" and not budget.remaining:
+                attempt.update(
+                    status="timeout",
+                    failure_reason="Artifact finalization exceeded the shared budget",
+                )
+                write_json(attempt_dir / "attempt.json", attempt)
+            attempt["budget_elapsed_seconds"] = budget.elapsed
             cell.update(elapsed_seconds=budget.elapsed, inflight=False)
             write_json(path, cell)
         cell.update(completed=True, elapsed_seconds=budget.elapsed)
@@ -374,7 +395,7 @@ class Runner:
                 "decode_tokens", 0
             ) + result.get("decode_tokens", 0)
             attempt["metrics"]["flops_estimation_method"] = self.engine_metadata.get(
-                "flops_estimation_method", "unavailable"
+                "estimated_flops_method", "unavailable"
             )
             attempt["metrics"]["generated_tokens"] = attempt["metrics"].get(
                 "generated_tokens", 0

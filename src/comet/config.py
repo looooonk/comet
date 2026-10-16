@@ -95,6 +95,8 @@ class Experiment:
             raise ValueError("Use an explicit AppWorld split")
         if self.stage != "final" and self.split not in {"train", "dev"}:
             raise ValueError("Pilot and diagnostic tuning must use train/dev")
+        if self.stage == "final" and self.split not in {"test_normal", "test_challenge"}:
+            raise ValueError("Final evaluation requires an explicit test split")
         if self.stage == "final" and not allow_unfrozen:
             if not self.frozen or self.frozen.get("settings_digest") != self.settings_digest:
                 raise ValueError("Final evaluation requires a matching frozen settings record")

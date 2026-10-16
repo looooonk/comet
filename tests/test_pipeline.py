@@ -296,6 +296,57 @@ def test_model_memory_infeasibility_retains_task_denominator(config, tmp_path):
     assert cell["elapsed_seconds"] == 0
 
 
+def test_resume_refuses_changed_native_runtime(config, tmp_path):
+    runner, _, engines, _ = run_fixture(config, tmp_path)
+    manifest = read_json(tmp_path / "manifest.json")
+    manifest.update(status="running", engine={"backend": "old"})
+    write_json(tmp_path / "manifest.json", manifest)
+    with pytest.raises(ValueError, match="runtime"):
+        runner.run(resume=True)
+    assert not engines[-1].starts
+
+
+def test_warmup_failure_closes_initialized_engine(config, tmp_path):
+    engine = FakeEngine(Clock())
+    closed = []
+
+    def failed():
+        raise RuntimeError("kernel compile failed")
+
+    engine.warmup = failed
+    engine.close = lambda: closed.append(True)
+    runner = Runner(config, tmp_path, lambda _: engine, lambda: None)
+    with pytest.raises(RuntimeError, match="kernel"):
+        runner.run()
+    assert closed == [True]
+
+
+def test_artifact_finalization_cannot_create_over_budget_success(config, tmp_path, monkeypatch):
+    from comet import runner as module
+
+    clock, environments = Clock(), []
+    engine = FakeEngine(clock)
+    original = module.write_json
+
+    def slow_final_write(path, value):
+        original(path, value)
+        if path.name == "attempt.json":
+            clock.advance(100)
+
+    monkeypatch.setattr(module, "write_json", slow_final_write)
+    runner = Runner(
+        config,
+        tmp_path,
+        lambda _: engine,
+        lambda: FakeEnvironment(clock, environments),
+        clock=clock,
+    )
+    manifest = runner.run()
+    cell = read_json(tmp_path / manifest["cells"][0]["path"])
+    assert len(cell["attempts"]) == 1
+    assert cell["attempts"][0]["status"] == "timeout"
+
+
 def test_diagnostic_branches_identical_state_and_charges_preparation(config, tmp_path):
     conditions = [
         Condition("full", "full", 1.0, "never", 1),

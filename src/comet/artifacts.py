@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import fcntl
 import hashlib
+import importlib.metadata
 import json
 import os
 import platform
@@ -64,6 +65,9 @@ def provenance() -> dict:
         "local_changes": git("diff", "HEAD", "--binary"),
         "untracked_paths": git("ls-files", "--others", "--exclude-standard"),
         "source_hashes": source_hashes,
+        "installed_packages": {
+            d.metadata["Name"]: d.version for d in importlib.metadata.distributions()
+        },
         "python": platform.python_version(),
         "platform": platform.platform(),
         "hostname": platform.node(),
