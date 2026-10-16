@@ -1,0 +1,223 @@
+{
+  "extends": "pilot-smoke.json",
+  "experiment_id": "pilot-matrix-v1",
+  "task_ids": [
+    "50e1ac9_1",
+    "50e1ac9_2"
+  ],
+  "seeds": [
+    17,
+    29
+  ],
+  "budget_seconds": 600,
+  "max_attempts": 2,
+  "engine": {
+    "max_context_tokens": 8192
+  },
+  "conditions": [
+    {
+      "id": "full_once",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "full_best_of_n",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_80_never",
+      "method": "streamingllm",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_80_fixed",
+      "method": "streamingllm",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_80_dynamic",
+      "method": "streamingllm",
+      "retention": 0.8,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_never",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_fixed",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_dynamic",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_25_never",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_25_fixed",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_25_dynamic",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_80_never",
+      "method": "rkv",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_80_fixed",
+      "method": "rkv",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_80_dynamic",
+      "method": "rkv",
+      "retention": 0.8,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_never",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_fixed",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_dynamic",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_25_never",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_25_fixed",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_25_dynamic",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_80_never",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_80_fixed",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_80_dynamic",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_dynamic",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_never",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_fixed",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_dynamic",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Provisional 29-condition train/dev matrix. At the time limit this costs up to 19.3 GPU-hours plus model loading; measure smoke feasibility before submitting. Values are not frozen."
+}

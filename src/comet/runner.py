@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import dataclasses
-import time
 import uuid
 from pathlib import Path
 from typing import Callable
 
 from comet.artifacts import provenance, read_json, run_lock, write_json
 from comet.budget import Budget
+from comet.clocks import monotonic, wall_time
 from comet.config import Condition, Experiment, attempt_seed
 from comet.errors import BudgetExpired, MemoryCapExceeded, UnsupportedPath
 from comet.policies import decide
@@ -29,7 +29,7 @@ class Runner:
         engine_factory: Callable,
         environment_factory: Callable,
         *,
-        clock: Callable = time.monotonic,
+        clock: Callable = monotonic,
         integration_smoke: bool = False,
     ):
         self.config, self.output = config, output.resolve()
@@ -48,7 +48,44 @@ class Runner:
                 if self.config.stage == "diagnostic"
                 else self.config.conditions[0]
             )
-            engine = self.engine_factory(initial)
+            try:
+                engine = self.engine_factory(initial)
+            except Exception as error:
+                if (
+                    not isinstance(error, MemoryError)
+                    and type(error).__name__ != "OutOfMemoryError"
+                ):
+                    raise
+                for reference in manifest["cells"]:
+                    if self._done(reference):
+                        continue
+                    condition = next(
+                        c for c in self.config.conditions if c.id == reference["condition_id"]
+                    )
+                    path = self.output / reference["path"]
+                    cell = (
+                        read_json(path)
+                        if path.exists()
+                        else self._new_cell(manifest, reference, condition)
+                    )
+                    if cell.get("inflight"):
+                        cell["elapsed_seconds"] = self.config.budget_seconds
+                        for attempt in cell["attempts"]:
+                            if attempt["status"] == "running":
+                                attempt.update(
+                                    status="interrupted", failure_reason="process_interrupted"
+                                )
+                        cell["inflight"] = False
+                    cell.update(completed=True, infeasible=True, failure_reason=str(error))
+                    write_json(path, cell)
+                manifest.update(status="completed", finished_at_unix=wall_time())
+                write_json(self.output / "manifest.json", manifest)
+                return manifest
+            if hasattr(engine, "warmup"):
+                engine.warmup()
+            self.engine_metadata = engine.provenance() if hasattr(engine, "provenance") else {}
+            manifest["engine"] = self.engine_metadata
+            write_json(self.output / "manifest.json", manifest)
             try:
                 if self.config.stage == "diagnostic":
                     from comet.diagnostic import prepare_checkpoints
@@ -68,7 +105,7 @@ class Runner:
             finally:
                 engine.close()
             manifest["status"] = "completed"
-            manifest["finished_at_unix"] = time.time()
+            manifest["finished_at_unix"] = wall_time()
             write_json(self.output / "manifest.json", manifest)
             return manifest
 
@@ -89,7 +126,7 @@ class Runner:
                 raise ValueError("Resume configuration differs from the saved run")
             if manifest["integration_smoke"] != self.integration_smoke:
                 raise ValueError("Resume hardware mode differs from the saved run")
-            for key in ("code_commit", "local_changes"):
+            for key in ("code_commit", "local_changes", "source_hashes"):
                 if manifest["provenance"][key] != current[key]:
                     raise ValueError(f"Resume requires the original code ({key} differs)")
             return manifest
@@ -104,7 +141,7 @@ class Runner:
             "config": self.config.to_dict(),
             "provenance": current,
             "integration_smoke": self.integration_smoke,
-            "started_at_unix": time.time(),
+            "started_at_unix": wall_time(),
             "cells": [
                 {
                     "id": cell_id(task, condition, seed),
@@ -142,21 +179,7 @@ class Runner:
                 write_json(path, cell)
                 return
         else:
-            cell = {
-                "schema_version": 1,
-                "run_id": manifest["run_id"],
-                "stage": self.config.stage,
-                "config_digest": self.config.digest,
-                "task_id": reference["task_id"],
-                "split": self.config.split,
-                "condition": dataclasses.asdict(condition),
-                "seed": reference["seed"],
-                "budget_seconds": self.config.budget_seconds,
-                "elapsed_seconds": 0.0,
-                "completed": False,
-                "inflight": False,
-                "attempts": [],
-            }
+            cell = self._new_cell(manifest, reference, condition)
         budget = Budget(self.config.budget_seconds, cell["elapsed_seconds"], clock=self.clock)
         for index in range(len(cell["attempts"]), condition.max_attempts):
             if not budget.remaining:
@@ -182,6 +205,23 @@ class Runner:
             write_json(path, cell)
         cell.update(completed=True, elapsed_seconds=budget.elapsed)
         write_json(path, cell)
+
+    def _new_cell(self, manifest: dict, reference: dict, condition: Condition) -> dict:
+        return {
+            "schema_version": 1,
+            "run_id": manifest["run_id"],
+            "stage": self.config.stage,
+            "config_digest": self.config.digest,
+            "task_id": reference["task_id"],
+            "split": self.config.split,
+            "condition": dataclasses.asdict(condition),
+            "seed": reference["seed"],
+            "budget_seconds": self.config.budget_seconds,
+            "elapsed_seconds": 0.0,
+            "completed": False,
+            "inflight": False,
+            "attempts": [],
+        }
 
     def _initial_tokens(self, engine, environment) -> list[int]:
         return engine.tokenizer.apply_chat_template(
@@ -245,12 +285,16 @@ class Runner:
             else:
                 attempt.update(status="error", failure_reason=f"{type(error).__name__}: {error}")
         finally:
+            cleanup_start = budget.elapsed
             try:
                 environment.close()
             except Exception as error:
                 attempt.update(
                     status="error", failure_reason=f"Environment cleanup failed: {error}"
                 )
+            budget.timings["cleanup"] = (
+                budget.timings.get("cleanup", 0) + budget.elapsed - cleanup_start
+            )
             if attempt["status"] == "completed" and not budget.remaining:
                 attempt.update(status="timeout", failure_reason="Budget expired during cleanup")
             attempt["elapsed_seconds"] = budget.elapsed - start
@@ -266,6 +310,7 @@ class Runner:
                 {
                     **state,
                     "raw_token_ids": list(engine.raw_token_ids),
+                    "retention_events": getattr(engine, "retention_events", []),
                 },
             )
             write_json(directory / "attempt.json", attempt)
@@ -328,8 +373,8 @@ class Runner:
             attempt["metrics"]["decode_tokens"] = attempt["metrics"].get(
                 "decode_tokens", 0
             ) + result.get("decode_tokens", 0)
-            attempt["metrics"]["flops_estimation_method"] = (
-                "dense_forward_2nt: 2 * model_parameters * actually_forwarded_tokens; excludes attention, eviction, tools"
+            attempt["metrics"]["flops_estimation_method"] = self.engine_metadata.get(
+                "flops_estimation_method", "unavailable"
             )
             attempt["metrics"]["generated_tokens"] = attempt["metrics"].get(
                 "generated_tokens", 0

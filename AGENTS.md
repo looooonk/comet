@@ -4,7 +4,7 @@
 
 These instructions apply throughout this repository. Read [README.md](README.md) for the overview and [documents/proposal.pdf](documents/proposal.pdf), especially sections 5-8, before changing experimental behavior. The proposal defines the research scope; the implementation and collaboration conventions below keep the four contributors on one pipeline.
 
-The repository currently has documentation only. Do not assume that dependencies, modules, commands, or results already exist. Add verified setup and execution instructions alongside the implementation. Keep the README human-facing and free of dense technical details.
+The repository now has the shared pipeline described in [documents/experiments.md](documents/experiments.md). Inspect the implementation and [documents/validation.md](documents/validation.md) before assuming an integration or experiment has been validated. Add verified setup and execution instructions alongside changes. Keep the README human-facing and free of dense technical details.
 
 Implement the agreed experiments before expanding scope. Do not silently replace the model, benchmark, inference engine, methods, metrics, or budget semantics. Record any user- or team-authorized departure from the proposal in `documents/`, with its rationale and affected comparisons, and update the corresponding instructions and configs. Routine implementation choices do not need a new research decision.
 

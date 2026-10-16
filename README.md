@@ -25,7 +25,9 @@ Our main result will be the share of tasks solved by at least one attempt within
 4. **Evaluate complete tasks.** Run the agreed comparisons from fresh task states on the fixed test set.
 5. **Analyze and report.** Compare success and cost, explain uncertainty, and preserve the records needed to reproduce results.
 
-The repository currently contains the proposal and project documentation. Implementation, installation instructions, runnable experiments, and results are still to come.
+The repository includes a shared experiment runner, pinned AgentKV Mini-SGLang integration, AppWorld execution and offline scoring, and paired task-level analysis. Small pilot and checkpoint experiments are provided; final settings must be established on train/dev before evaluation.
+
+Start with the [setup guide](documents/setup.md), then the [experiment workflow](documents/experiments.md). The [validation record](documents/validation.md) distinguishes local checks, live integration tests, and remaining hardware requirements. Insomnia job scripts support short development runs; the same environment and commands run on a GCP A100 VM for longer experiments.
 
 ## Working together
 

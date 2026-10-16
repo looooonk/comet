@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import fcntl
+import hashlib
 import json
 import os
 import platform
 import subprocess
-import time
 from contextlib import contextmanager
 from pathlib import Path
+
+from comet.clocks import wall_time
 
 
 def write_json(path: Path, value: object) -> None:
@@ -51,11 +53,17 @@ def provenance() -> dict:
         result = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True)
         return result.stdout.strip() if result.returncode == 0 else "unavailable"
 
+    source_hashes = {
+        str(file.relative_to(root)): hashlib.sha256(file.read_bytes()).hexdigest()
+        for pattern in ("src/comet/**/*.py", "patches/*.patch", "infra/requirements/*.lock")
+        for file in sorted(root.glob(pattern))
+    }
     return {
-        "recorded_at_unix": time.time(),
+        "recorded_at_unix": wall_time(),
         "code_commit": git("rev-parse", "HEAD"),
         "local_changes": git("diff", "HEAD", "--binary"),
         "untracked_paths": git("ls-files", "--others", "--exclude-standard"),
+        "source_hashes": source_hashes,
         "python": platform.python_version(),
         "platform": platform.platform(),
         "hostname": platform.node(),

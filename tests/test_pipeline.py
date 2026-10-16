@@ -7,7 +7,7 @@ import pytest
 from comet.artifacts import read_json, write_json
 from comet.budget import Budget
 from comet.config import Condition, Experiment, attempt_seed, comparison_matrix
-from comet.errors import BudgetExpired
+from comet.errors import BudgetExpired, MemoryCapExceeded
 from comet.policies import decide
 from comet.runner import Runner
 
@@ -203,6 +203,19 @@ def test_frozen_final_rejects_changed_setting(config):
         Experiment.from_dict(raw)
 
 
+def test_config_inheritance_resolves_before_digest(config, tmp_path):
+    write_json(tmp_path / "base.json", config.to_dict())
+    write_json(tmp_path / "child.json", {"extends": "base.json", "sampling": {"temperature": 0}})
+    child = Experiment.load(tmp_path / "child.json")
+    assert child.sampling.temperature == 0
+    assert child.sampling.top_p == config.sampling.top_p
+    assert child.digest != config.digest
+    write_json(tmp_path / "a.json", {"extends": "b.json"})
+    write_json(tmp_path / "b.json", {"extends": "a.json"})
+    with pytest.raises(ValueError, match="cycle"):
+        Experiment.load(tmp_path / "a.json")
+
+
 def test_policy_observables_and_once_limit(config):
     t = config.triggers
     assert not decide("dynamic", t, 100, 0, 0).triggered
@@ -268,6 +281,19 @@ def test_resume_rejects_config_change(config, tmp_path):
     runner.config = replace(config, budget_seconds=200)
     with pytest.raises(ValueError, match="configuration"):
         runner.run(resume=True)
+
+
+def test_model_memory_infeasibility_retains_task_denominator(config, tmp_path):
+    def unavailable(condition):
+        raise MemoryCapExceeded("model does not fit")
+
+    runner = Runner(config, tmp_path, unavailable, lambda: None)
+    manifest = runner.run()
+    assert manifest["status"] == "completed"
+    cell = read_json(tmp_path / manifest["cells"][0]["path"])
+    assert cell["infeasible"] and cell["completed"]
+    assert cell["attempts"] == []
+    assert cell["elapsed_seconds"] == 0
 
 
 def test_diagnostic_branches_identical_state_and_charges_preparation(config, tmp_path):

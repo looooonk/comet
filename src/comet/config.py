@@ -76,7 +76,7 @@ class Experiment:
 
     @classmethod
     def load(cls, path: str | Path, *, allow_unfrozen: bool = False) -> Experiment:
-        return cls.from_dict(json.loads(Path(path).read_text()), allow_unfrozen=allow_unfrozen)
+        return cls.from_dict(_load(Path(path), set()), allow_unfrozen=allow_unfrozen)
 
     @classmethod
     def from_dict(cls, data: dict, *, allow_unfrozen: bool = False) -> Experiment:
@@ -205,3 +205,20 @@ def comparison_matrix(max_attempts: int) -> list[Condition]:
 
 def attempt_seed(seed: int, attempt_index: int) -> int:
     return int(digest([seed, attempt_index])[:8], 16)
+
+
+def _load(path: Path, seen: set[Path]) -> dict:
+    path = path.resolve()
+    if path in seen:
+        raise ValueError(f"Configuration inheritance cycle: {path}")
+    data = json.loads(path.read_text())
+    parent = data.pop("extends", None)
+    if parent is None:
+        return data
+    base = _load(path.parent / parent, seen | {path})
+    for key, value in data.items():
+        if isinstance(value, dict) and isinstance(base.get(key), dict):
+            base[key] = {**base[key], **value}
+        else:
+            base[key] = value
+    return base

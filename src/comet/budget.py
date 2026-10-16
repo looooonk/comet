@@ -2,15 +2,15 @@ from __future__ import annotations
 
 import signal
 import threading
-import time
 from contextlib import contextmanager
 from typing import Callable
 
+from comet.clocks import monotonic
 from comet.errors import BudgetExpired
 
 
 class Budget:
-    def __init__(self, seconds: float, consumed: float = 0, *, clock: Callable = time.monotonic):
+    def __init__(self, seconds: float, consumed: float = 0, *, clock: Callable = monotonic):
         if seconds <= 0 or consumed < 0:
             raise ValueError("Budget must be positive and consumed time nonnegative")
         self.seconds, self.consumed, self.clock = seconds, consumed, clock

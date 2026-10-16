@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import time
-
 from comet.artifacts import read_json, write_json
 from comet.budget import Budget
+from comet.clocks import wall_time
 from comet.config import Condition, attempt_seed
 from comet.errors import UnsupportedPath
 
@@ -68,7 +67,7 @@ def prepare_checkpoints(runner, manifest: dict, engine) -> None:
                 elapsed_seconds=budget.elapsed,
                 timings=budget.timings,
                 metrics=attempt["metrics"],
-                prepared_at_unix=time.time(),
+                prepared_at_unix=wall_time(),
             )
             write_json(record_path, record)
 

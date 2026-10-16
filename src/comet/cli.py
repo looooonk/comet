@@ -7,11 +7,11 @@ import os
 import platform
 import shutil
 import subprocess
-import time
 from dataclasses import asdict
 from pathlib import Path
 
 from comet.artifacts import read_json, write_json
+from comet.clocks import wall_time
 from comet.config import Experiment, comparison_matrix, digest
 
 
@@ -66,7 +66,7 @@ def freeze(config_path: Path, output: Path, pilot_runs: list[Path]) -> dict:
         raise ValueError("At least one measured train/dev pilot is required")
     proposed["frozen"] = {
         "settings_digest": config.settings_digest,
-        "frozen_at_unix": time.time(),
+        "frozen_at_unix": wall_time(),
         "pilot_evidence": evidence,
     }
     Experiment.from_dict(proposed)
