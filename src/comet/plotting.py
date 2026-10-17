@@ -26,9 +26,11 @@ def plot_retention(analysis_path: Path, output: Path, *, title: str = "AppWorld 
 
     aggression = [100 * (1 - condition["retention"]) for condition in conditions]
     success_label = "Task success (%)" if conditions[0]["max_attempts"] == 1 else "Oracle success upper bound (%)"
+    interrupted = any(row.get("attempt_status_counts", {}).get("interrupted", 0) for row in rows)
+    latency_label = "Mean budget-accounted time (s)" if interrupted else "Mean end-to-end latency (s)"
     panels = [
         ("oracle_success_rate", success_label, 100, "bounded_mean_ci95"),
-        ("latency_seconds", "Mean end-to-end latency (s)", 1, "ci95"),
+        ("latency_seconds", latency_label, 1, "ci95"),
         ("mean_peak_kv_bytes", "Mean peak occupied KV (GiB)", 1 / 2**30, "ci95"),
     ]
     with plt.rc_context({"font.size": 10, "axes.spines.top": False, "axes.spines.right": False,
@@ -64,10 +66,13 @@ def plot_retention(analysis_path: Path, output: Path, *, title: str = "AppWorld 
                  f"{mode} | {analysis['task_count']} paired tasks | "
                  f"{len(analysis['replicate_seeds'])} seed(s) per task | "
                  f"N={conditions[0]['max_attempts']} | no recovery", color="#555555")
-        fig.text(0.07, 0.06,
-                 "Pointwise 95% intervals: conservative bounded-mean for accuracy; task bootstrap for latency and KV.\n"
-                 "Lines connect measured means; no fitted trend. Occupied KV includes compaction transients, not pool capacity.",
-                 fontsize=8, color="#555555")
+        caption = (
+            "Pointwise 95% intervals: conservative bounded-mean for accuracy; task bootstrap for time and KV.\n"
+            "Lines connect recorded means; no fitted trend. Occupied KV includes compaction transients, not pool capacity."
+        )
+        if interrupted:
+            caption += "\nInterrupted-cell time includes an unobserved reserved budget, not a measured duration."
+        fig.text(0.07, 0.06, caption, fontsize=8, color="#555555")
         fig.subplots_adjust(left=0.07, right=0.98, bottom=0.24, top=0.79, wspace=0.33)
         output.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(output, metadata={"Creator": "COMET"})
