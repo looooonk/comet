@@ -157,7 +157,10 @@ checks, set `COMET_RUN_GPU_TESTS=1`, `COMET_MODEL_PATH` to the snapshot director
 and run `pytest tests/test_engine_gpu.py`. Each check runs in a fresh subprocess,
 isolating Mini-SGLang's global context and CUDA allocator. The persistence check
 also compares full-KV cached suffix generation against a fresh prefill of the
-identical raw transcript. Set `COMET_GPU_EVIDENCE` to preserve its JSON report.
+identical raw transcript. Two contrasting new user instructions share the same
+checkpoint, close the prior assistant turn, and use the Qwen non-thinking
+prefill. Each cached/fresh pair must match, and the two continuations must differ.
+Set `COMET_GPU_EVIDENCE` to preserve its JSON report.
 
 The `memory_cap` case fixes its cap before constructing the engine, using the
 pinned BF16 parameter bytes, initially observed external device use, a 4 GiB

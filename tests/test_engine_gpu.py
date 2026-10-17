@@ -45,19 +45,29 @@ def _persistence_check(tmp_path):
         assert first.memory["physical_cached_tokens"] == first.memory["logical_cached_tokens"]
         checkpoint = tmp_path / "full.pt"
         engine.checkpoint(checkpoint)
-        suffix = engine.tokenizer.encode("\n<|im_start|>user\nContinue.<|im_end|>\n<|im_start|>assistant\n", add_special_tokens=False)
-        full_prompt = engine.raw_token_ids + suffix
-        second = engine.generate(suffix, 4, 0.0, 1.0, time.monotonic() + 600)
-        assert second.prompt_tokens == len(suffix) + 1
-        engine.start(21)
-        fresh = engine.generate(full_prompt, 4, 0.0, 1.0, time.monotonic() + 600)
-        assert fresh.prompt_tokens == len(full_prompt)
-        assert fresh.token_ids == second.token_ids
-        records.append({
-            "method": "full", "cached_vs_fresh_tokens_equal": True,
-            "cached_prompt_tokens": second.prompt_tokens, "fresh_prompt_tokens": fresh.prompt_tokens,
-            "token_ids": second.token_ids,
-        })
+        for word in ("COBALT", "AMBER"):
+            engine.restore(checkpoint)
+            instruction = f"Reply with exactly the single word {word}."
+            turn = engine.tokenizer.apply_chat_template(
+                [{"role": "user", "content": instruction}],
+                tokenize=False, add_generation_prompt=True, enable_thinking=False,
+            )
+            closing = "" if engine.raw_token_ids[-1] == engine.tokenizer.eos_token_id else "<|im_end|>"
+            suffix = engine.tokenizer.encode(closing + "\n" + turn, add_special_tokens=False)
+            full_prompt = engine.raw_token_ids + suffix
+            second = engine.generate(suffix, 4, 0.0, 1.0, time.monotonic() + 600)
+            assert second.prompt_tokens == len(suffix) + 1
+            engine.start(21)
+            fresh = engine.generate(full_prompt, 4, 0.0, 1.0, time.monotonic() + 600)
+            assert fresh.prompt_tokens == len(full_prompt)
+            assert fresh.token_ids == second.token_ids
+            records.append({
+                "method": "full", "cached_vs_fresh_tokens_equal": True,
+                "new_user_instruction": instruction,
+                "cached_prompt_tokens": second.prompt_tokens, "fresh_prompt_tokens": fresh.prompt_tokens,
+                "token_ids": second.token_ids,
+            })
+        assert records[0]["token_ids"] != records[1]["token_ids"]
         engine.restore(checkpoint)
         repeated = engine.generate(suffix, 4, 0.0, 1.0, time.monotonic() + 600)
         assert repeated.token_ids == second.token_ids
