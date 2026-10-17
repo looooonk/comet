@@ -41,9 +41,11 @@ The full pilot matrix has 116 cells at a provisional ten-minute shared budget:
 before scheduling it. Nothing automatically launches this sweep. Task IDs are
 verified against the requested AppWorld split before loading the model.
 
-The completion variant addresses repeated forbidden imports and unprinted API
-return values observed during dev execution. Its prompt version is shared by both conditions;
-the earlier attempts remain recorded. These integration settings do not establish
+The completion variant addresses forbidden imports, unprinted API return values,
+and speculative calls that discard earlier documentation output when they fail.
+It asks the agent to read each documentation observation before selecting further
+API calls. Its prompt version is shared by both conditions; earlier attempts remain
+recorded. These integration settings do not establish
 task-solving quality or qualify non-A100 runs as research pilot evidence.
 
 Configurations are JSON. `extends` resolves relative to the child file; top-level
