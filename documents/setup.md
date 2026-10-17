@@ -29,8 +29,7 @@ compatibility checks and model loading must happen inside a GPU allocation.
 
 ```sh
 export COMET_STORAGE=/path/to/persistent/project/storage
-export UV_CACHE_DIR="$COMET_STORAGE/cache/uv"
-export HF_HOME="$COMET_STORAGE/cache/huggingface"
+source scripts/runtime_caches.sh
 export CUDA_HOME=/usr/local/cuda
 export PATH="$CUDA_HOME/bin:$PATH"
 bash scripts/setup_runtime.sh gpu "$COMET_STORAGE/venv"
@@ -93,6 +92,17 @@ The [storage guide](https://columbiauniversity.atlassian.net/wiki/spaces/rcs/pag
 documents a 50GB home quota and no automatic backups. Keep source checkouts small,
 and copy completed run records to durable storage.
 
+The launcher sources `scripts/runtime_caches.sh` before importing GPU libraries.
+It places Hugging Face, uv, Triton, PyTorch, CUDA, FlashInfer, and TVM-FFI caches
+under `COMET_STORAGE/cache`. Source the same file before standalone GPU preflight
+commands. Triton otherwise writes to its own home-directory cache even when the
+model and FlashInfer caches are redirected. Check project-storage quota, free
+blocks, and free inodes before long runs; filesystem-wide free space does not
+establish that an account has quota. The launcher checks create/write/fsync/rename
+in every cache directory before model loading; this catches current write
+failures, not quota exhaustion later in a run. Existing caches are not removed
+or migrated.
+
 The launch script takes explicit settings, with no settled research budget hidden
 in scheduler defaults:
 
@@ -121,7 +131,7 @@ resume into the same run directory. It must retain prior attempt and budget usag
 Slurm requeue or preemption must never start a fresh budget under the same run ID.
 
 The shared `scripts/run_experiment.sh` launcher preserves the submitted config, Git revision/diff, dependency
-list, GPU information, and scheduler allocation in a new directory under `launch/`
+list, GPU information, cache destinations, storage capacity/inodes, and scheduler allocation in a new directory under `launch/`
 for every invocation. Commit source
 changes before research runs; an untracked-file list is not a backup of those files.
 The shared runner records the experiment manifest and trajectories separately.

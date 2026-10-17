@@ -9,15 +9,36 @@ set -euo pipefail
 
 export PATH="$COMET_ENV/bin:/usr/local/cuda/bin:$PATH"
 export CUDA_HOME=${CUDA_HOME:-/usr/local/cuda}
-export HF_HOME="$COMET_STORAGE/cache/huggingface"
-export UV_CACHE_DIR="$COMET_STORAGE/cache/uv"
-export FLASHINFER_WORKSPACE_BASE="$COMET_STORAGE/cache/flashinfer"
-export TVM_FFI_CACHE_DIR="$COMET_STORAGE/cache/tvm-ffi"
+source "$COMET_REPO/scripts/runtime_caches.sh"
 export APPWORLD_ROOT="$COMET_STORAGE/appworld"
 export PYTHONUNBUFFERED=1
 cd "$COMET_REPO"
 launch_dir="$COMET_RUN/launch/$(date -u +%Y%m%dT%H%M%SZ)-${SLURM_JOB_ID:-$$}"
 mkdir -p "$launch_dir"
+for cache_name in XDG_CACHE_HOME HF_HOME UV_CACHE_DIR TRITON_CACHE_DIR TORCH_HOME \
+    TORCHINDUCTOR_CACHE_DIR TORCH_EXTENSIONS_DIR PYTORCH_KERNEL_CACHE_PATH \
+    CUDA_CACHE_PATH FLASHINFER_WORKSPACE_BASE TVM_FFI_CACHE_DIR; do
+    printf '%s=%s\n' "$cache_name" "${!cache_name}"
+done > "$launch_dir/cache-environment.txt"
+python - "$launch_dir/cache-environment.txt" <<'PY'
+import os
+import sys
+import tempfile
+from pathlib import Path
+
+for line in Path(sys.argv[1]).read_text().splitlines():
+    name, directory = line.split("=", 1)
+    with tempfile.TemporaryDirectory(prefix=".comet-probe-", dir=directory) as probe:
+        path = Path(probe) / "write"
+        with path.open("wb") as stream:
+            stream.write(b"comet" * 1024)
+            stream.flush()
+            os.fsync(stream.fileno())
+        path.rename(Path(probe) / "renamed")
+    print(f"Cache write probe passed: {name}")
+PY
+df -Pk "$COMET_STORAGE" > "$launch_dir/storage-blocks.txt"
+df -Pi "$COMET_STORAGE" > "$launch_dir/storage-inodes.txt"
 cp "$COMET_CONFIG" "$launch_dir/submitted-config.json"
 git rev-parse HEAD > "$launch_dir/commit.txt"
 git diff --binary HEAD > "$launch_dir/changes.patch"

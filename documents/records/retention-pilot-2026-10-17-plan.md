@@ -42,3 +42,15 @@ This small sample is for feasibility and variance estimation. Any expansion
 must declare its additional tasks, seeds, and precision criterion before scoring
 them. Do not repeatedly sample until a preferred trend becomes significant,
 discard difficult tasks, or treat repeated seeds as independent tasks.
+
+## Infrastructure repair
+
+The first run encountered compiler-cache disk-quota errors during the third 50%
+cell. All 32 outcomes, including 14 infrastructure errors and one timeout, remain
+in the [failed-run record](retention-pilot-2026-10-17-quota-failure.json). It is not
+a valid four-condition retention comparison. Its full-cache baseline scored 1/8.
+
+After correcting cache placement and checking storage writes, rerun the entire
+matrix under a new run ID with the same experimental settings. Keep the two runs
+separate, without replacing failed cells or pooling earlier successful cells into
+the repaired comparison. Record the new source revision and cache preflight.

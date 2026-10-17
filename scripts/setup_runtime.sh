@@ -6,6 +6,7 @@ case "$profile" in appworld|gpu) ;; *) exit 2 ;; esac
 repo=$(cd "$(dirname "$0")/.." && pwd)
 runtime_env=${2:-"$repo/.venv-$profile"}
 cd "$repo"
+if [[ -n "${COMET_STORAGE:-}" ]]; then source scripts/runtime_caches.sh; fi
 uv venv --allow-existing --python 3.12 "$runtime_env"
 uv pip sync --python "$runtime_env/bin/python" "infra/requirements/$profile.lock"
 uv pip install --python "$runtime_env/bin/python" --no-deps -e .
