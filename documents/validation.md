@@ -1,10 +1,11 @@
 # Validation record
 
-Integration checks completed on October 16, 2026, using an NVIDIA RTX A6000 on
-Insomnia. This is not the required A100 80GB research hardware. No experiment
+Integration checks completed on October 16, 2026, using NVIDIA RTX A6000 and L40S GPUs on
+Insomnia. Neither is the required A100 80GB research hardware. No experiment
 settings are frozen and no task-success or method-quality claim follows from these
 checks. Exact revisions, hashes, measurements, and artifact paths are in
-[the machine-readable record](validation-2026-10-16.json).
+[the original record](validation-2026-10-16.json) and the
+[follow-up record](validation-2026-10-16-followup.json).
 
 ## Environments and setup
 
@@ -38,7 +39,7 @@ Both recorded source revisions had clean tracked files. The final revision also
 passed 79 CPU checks with three infrastructure-dependent skips; [GitHub Actions run 38984291935](https://github.com/looooonk/comet/actions/runs/38984291935)
 passed. One temporary batch submission, 13511649, failed before tests
 or model loading because its checkout path was wrong; corrected submission
-13511652 completed in 89 seconds. No validation jobs remain active.
+13511652 completed in 89 seconds.
 
 The live AppWorld fixture checks fresh-state isolation, a state-changing tool call,
 DB and Python namespace/RNG checkpoint restore, independent branch continuation,
@@ -53,17 +54,17 @@ The final tests additionally verify stochastic token and CUDA RNG replay, recove
 with pending observation tokens, and continuation from saved logits without
 another prefill. A second rebuild is refused.
 
-Observed total-memory peaks stayed below the integration cap of 40 GiB; the highest
-recorded task peak was 18.70 GiB. KV memory is recorded separately, including a
+Original total-memory peaks stayed below the integration cap of 40 GiB; the highest
+original task peak was 18.70 GiB. KV memory is recorded separately, including a
 page-ownership high-water check for transient compaction. Controlled unit tests
 verify rejection when the KV pool or transient workspace cannot fit and verify
-allocator tightening. No deliberate live GPU OOM or forced cap-refusal test was
-run. Standalone matrix peaks are process high-water values across branches and
+allocator tightening. Follow-up live refusal and bounded OOM checks are recorded
+below. Standalone matrix peaks are process high-water values across branches and
 must not be treated as independent comparative measurements.
 
 ## Real task and checkpoint pipelines
 
-All runs used dev task `50e1ac9_1`, paired seed 17, a provisional 120-second budget,
+The original runs used dev task `50e1ac9_1`, paired seed 17, a provisional 120-second budget,
 a 4096-token context limit, and the same 40 GiB cap. Job 13511561 ran full KV and
 50%-retention fixed recovery for each compressed method. Each compressed attempt
 rebuilt exactly once. Job 13511652 repeated full KV at the final source revision.
@@ -76,12 +77,102 @@ the same initial tool turn. They continued to 10 and 11 tool calls respectively;
 AgentKV rebuilt once. Checkpoint hashes and prefix equality checks are preserved
 in the JSON record.
 
-**All seven task attempts ended with `context_limit` and count as failures.** The
+**All seven original task attempts ended with `context_limit` and count as failures.** The
 execution, scoring, and analysis commands completed, retaining those failures.
 For these attempts, scoring correctly skipped AppWorld outcome evaluation because
 execution had failed. The separate live fixture above proves the saved-outcome
 evaluator path. These runs establish integration behavior, not task-solving quality
 or evidence for the research hypothesis.
+
+## Follow-up memory and process-resume checks
+
+Job 13511973, clean source `96a2409` on RTX A6000 `ins093`, passed both GPU tests
+in 30.34 seconds with no skips. Two contrasting user instructions produced distinct
+outputs; each cached continuation exactly matched a fresh full prefill while
+processing only its new suffix. StreamingLLM, R-KV, and AgentKV checkpoint,
+persistent-cache, and recovery checks also passed.
+
+The final source `4baf57d` passed Ruff and 82 CPU tests in
+[CI run 38990302189](https://github.com/looooonk/comet/actions/runs/38990302189),
+with one optional numerical skip and four GPU/AppWorld checks deselected. The two
+GPU checks and one process-resume check reported here ran separately on Insomnia.
+
+The memory test fixed its 21,034,215,424-byte cap before engine creation. Live
+rebuilds were refused separately for insufficient transient workspace and an
+insufficient 512-token KV pool. Transcript, KV, session, and RNG state remained
+equal, and subsequent tokens and CUDA RNG matched the saved continuation. Memory
+telemetry is excluded from that equality check. A real bounded allocation injected
+during forward exceeded the process allocator ceiling and raised CUDA OOM, which
+the adapter translated to `MemoryCapExceeded`; it did not exhaust the device.
+The JSON record identifies before/after checkpoints, reports, and hashes.
+
+Job 13512106, clean source `8d22744` on the same A6000, passed the process-resume
+test in 211.69 seconds. Three full-cache cells shared a dev task and paired seed,
+with 90 seconds per cell and a 16,384-token context. The test killed the process
+group with SIGKILL after a real generated tool action in the middle cell. Resume
+preserved the preceding terminal cell's four file hashes and modification times,
+preserved the interrupted trajectory, marked that attempt interrupted, and
+launched no replacement attempt. A changed-budget resume was rejected without
+artifact changes. The final cell started at attempt zero in an independent
+environment; all three initial actions and 2,675-token prefixes matched.
+
+The interrupted cell conservatively reserved and charged its full 90-second
+remainder because its operation lacked a reliable end timestamp. This is a budget
+reservation, not a measured duration. The preceding and following attempts timed
+out after measured durations of 90.078 and 90.072 seconds. Separate scoring and
+analysis retained all three failures. This proves short process-kill recovery;
+scheduler preemption/requeue and sustained long-run resume remain unvalidated.
+
+## Larger-context task attempts
+
+The follow-ups kept the same dev task, paired seed, model, BF16 engine, 40 GiB
+cap, and two conditions: full KV and AgentKV 50% with one fixed rebuild after two
+tool calls. Each cell had one attempt and a shared 600-second budget. Prompt
+changes used ordinary execution observations only; scoring remained post hoc.
+These provisional prompt/context variants are separate integration runs, not a
+method-quality comparison.
+
+| Job / variant | Context | Full / AgentKV measured seconds | Terminal status |
+| --- | ---: | ---: | --- |
+| 13511817 / original prompt | 16,384 | 327.524 / 570.910 | Both `context_limit` |
+| 13511973 / preloaded API protocol | 16,384 | 216.084 / 364.769 | Both `context_limit` |
+| 13512106 / explicit stdout | 16,384 | 215.510 / 529.135 | Both `context_limit` |
+| 13512364 / separate discovery responses | 32,768 | 281.951 / 67.853 | Both `context_limit` |
+| 13512530 / reasoning enabled | 32,768 | 38.051 / 85.888 | Both `completed`; both scored unsuccessful |
+
+The first three variants ran on RTX A6000. Their ordinary trajectories exposed
+forbidden imports, omitted `print`, and discovery calls whose output was lost
+when a later guessed call raised in the same block. The fourth variant ran both
+conditions on one L40S on `ins058`. Its full-cache attempt received a 9,500-character
+documentation/task observation (2,386 tokens with message framing), then repeated
+an authentication error. AgentKV repeated the same printed documentation. All
+eight earlier attempts remain failures in separate scoring/analysis artifacts; none was
+eligible for the AppWorld outcome evaluator.
+
+The final variant, clean source `4baf57d` on the same L40S, enabled reasoning and
+raised the per-turn generation limit from 512 to 2,048 tokens; other numerical
+settings stayed fixed. Both attempts called the supervisor completion API with an
+inability-to-complete answer. After both attempts ended, the actual AppWorld
+evaluator scored each saved outcome: one check passed (unchanged database state), one
+failed (answer mismatch), and task success was false. Full KV used two tool calls
+and no rebuild; AgentKV used three calls and one rebuild. Their peak total VRAM
+was 22,710,910,976 and 22,719,299,584 bytes; peak KV was 897,859,584 and
+1,332,707,328 bytes. Reports and hashes are in the follow-up record. This verifies
+the model-completed outcome path through offline scoring and analysis, not task
+success. No further settings were selected using evaluator results.
+
+Job 13511973 exited 75 intentionally after task execution, scoring, and analysis
+finished, before the not-yet-started resume test. Its GPU checks passed. The
+separate 90-second resume fixture above replaced that planned longer fixture.
+No running cell's settings or source were changed.
+
+An unchanged v3 submission, 13512299 on A6000 `ins082`, failed during CUDA
+initialization before model loading or attempts. Its manifest and log remain
+saved. Pending jobs 13512329 and 13512345 were cancelled without allocations when
+the scheduler predicted a multi-day wait for `ins093` and a roughly 45-minute wait
+for another A6000. The available L40S supported the same BF16 engine and 40 GiB
+cap; it is recorded as separate validation hardware. The research A100 contract
+is unchanged, and hardware/prompt variants are not pooled.
 
 ## Artifacts and remaining work
 
@@ -91,13 +182,16 @@ remain under `insomnia:/insomnia001/depts/edu/users/th3213/comet-20261016/`:
 - `validation/latest-13511561/`: source/device evidence, test report, all-retention matrix, diagnostic config.
 - `validation/final-13511652/`: final source/device/compiler evidence, test report, live GPU evidence, full-cache config.
 - `runs/live-smoke-13511561/`, `runs/live-diagnostic-13511561/`, and `runs/final-code-smoke-13511652/`: manifests, trajectories, environments, scores, and analysis; diagnostic checkpoints remain with their run.
+- `validation/followup-13511973/` and `validation/completion-v2-13512106/resume/`: live cap/persistence reports and checkpoints, process-resume evidence, and its separately scored run.
+- `runs/long-context-13511817/`, `runs/completion-13511973/`, `runs/completion-v2-13512106/`, `runs/completion-v3-13512364/`, and `runs/completion-v4-13512530/`: separate task variants with complete trajectories and scoring/analysis artifacts; the last also contains actual AppWorld evaluation reports.
 - `logs/`: installation and scheduler output, including failed setup attempts.
 
 Large checkpoints, model files, and trajectories are outside tracked source.
 Cluster project storage is not automatically backed up. Reusing these completed
 runs requires their recorded source and dependency compatibility; a changed
 configuration or source version belongs in a new run.
+No validation jobs remained queued or running at the final scheduler check.
 
 The A100 80GB train/dev pilot, threshold/budget tuning and freeze, complete
-diagnostic matrix, final evaluation, sustained resume/preemption validation, and
+diagnostic matrix, final evaluation, scheduler preemption and sustained resume validation, and
 GCP runtime validation remain outstanding. No test-split evaluation was launched.

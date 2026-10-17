@@ -51,6 +51,11 @@ The analysis reports:
 
 Every resource aggregate reports the number of attempts with observations and the total number of attempts. Missing failure-path measurements are not silently replaced with zero. Throughput is unavailable when no positive decoding time was observed. Total estimated FLOPs and memory maxima describe the recorded observations; coverage makes partial instrumentation visible.
 
+For a process interrupted inside an attempt, cell latency includes the remaining
+budget consumed conservatively on resume. The attempt's `reserved_budget_seconds`
+identifies this unobserved charge; it is not a measured execution duration. Do not
+interpret interrupted-cell latency as a precise timing measurement.
+
 The engine FLOPs estimate counts `2 * parameter_count * processed_tokens` plus attention work `4 * layers * query_heads * head_dimension * attended_query_key_pairs`. It uses physical retained cache length plus causal within-prefill pairs and includes every recorded prefill/decode/rebuild forward. This is an architecture-level arithmetic estimate, not elapsed compute, GPU utilization, or a precise kernel operation count. Non-matmul operations and eviction-selection work are excluded; the full parameter count makes the dense term approximate. The method identifier is preserved in recorded metrics.
 
 ## Validation
