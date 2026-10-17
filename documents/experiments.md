@@ -32,7 +32,7 @@ The included configurations are:
 | --- | --- |
 | `pilot-smoke.json` | One real dev task, one seed, full KV and all three methods at 50%; at most eight minutes of task budgets |
 | `pilot-long-context.json` | Full KV and AgentKV 50% with 16,384 tokens and ten minutes per cell; original prompt |
-| `pilot-completion.json` | The same longer-context check with an explicit preloaded-API protocol and code-only responses |
+| `pilot-completion.json` | Full KV and AgentKV 50% with 32,768 tokens, ten minutes per cell, and an explicit API discovery protocol |
 | `pilot-matrix.json` | Q1/Q2 matrix: two full controls plus 27 compressed conditions, two dev tasks and two seeds |
 | `checkpoint-diagnostic.json` | One full control plus 27 compressed continuations from a common pre-compression checkpoint |
 
@@ -44,7 +44,8 @@ verified against the requested AppWorld split before loading the model.
 The completion variant addresses forbidden imports, unprinted API return values,
 and speculative calls that discard earlier documentation output when they fail.
 It asks the agent to read each documentation observation before selecting further
-API calls. Its prompt version is shared by both conditions; earlier attempts remain
+API calls. Its 32,768-token limit leaves room for printed documentation. Both
+conditions share the same prompt and numerical settings; earlier attempts remain
 recorded. These integration settings do not establish
 task-solving quality or qualify non-A100 runs as research pilot evidence.
 
