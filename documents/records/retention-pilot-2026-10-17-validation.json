@@ -567,5 +567,132 @@
     "passed/tests.xml": "3c798a8e4d3854a5f43783f6d3f93f787c41cb0e70c95ecf37f66f776cefa060"
   },
   "artifact_references": "Keys identify portable artifact filenames, not download locations. Local snapshot and checkpoint paths are omitted or reduced to filenames; measured values and original hashes are preserved. Large runtime artifacts remain outside tracked source.",
-  "untracked_files_used_by_jobs": false
+  "untracked_files_used_by_jobs": false,
+  "cache_repair_preflight": {
+    "source_commit": "60ccf510a809c0b1dceafda52e4ba51d090a8123",
+    "clean_tracked_source": true,
+    "job_history": [
+      {
+        "job_id": "13514389",
+        "result": "canceled_while_pending",
+        "allocated_seconds": 0,
+        "attempts": 0,
+        "reason": "48 GiB host-memory request expanded to 8 CPUs; resubmitted using measured host-memory needs."
+      },
+      {
+        "job_id": "13514403",
+        "result": "capacity_passed_then_external_launch_guard_aborted",
+        "attempts": 0,
+        "capacity_test_seconds": 48.87,
+        "max_rss_kib": 6492628,
+        "reason": "External guard compared raw inherited JSON to a resolved configuration digest; fixed before resubmission."
+      },
+      {
+        "job_id": "13514420",
+        "result": "cache_and_capacity_preflight_passed",
+        "preflight_seconds": 32.148173570632935,
+        "host_cpus": 2,
+        "host_memory_gib": 12,
+        "max_compiler_jobs": 2
+      }
+    ],
+    "cache_paths_relative_to_project_storage": {
+      "XDG_CACHE_HOME": "cache",
+      "HF_HOME": "cache/huggingface",
+      "UV_CACHE_DIR": "cache/uv",
+      "TRITON_CACHE_DIR": "cache/triton",
+      "TORCH_HOME": "cache/torch",
+      "TORCHINDUCTOR_CACHE_DIR": "cache/torchinductor",
+      "TORCH_EXTENSIONS_DIR": "cache/torch-extensions",
+      "PYTORCH_KERNEL_CACHE_PATH": "cache/torch-kernels",
+      "CUDA_CACHE_PATH": "cache/cuda",
+      "FLASHINFER_WORKSPACE_BASE": "cache/flashinfer",
+      "TVM_FFI_CACHE_DIR": "cache/tvm-ffi"
+    },
+    "cache_write_fsync_rename_probe_passed": true,
+    "triton_manager_class": "FileCacheManager",
+    "triton_put_get_passed": true,
+    "triton_probe_sha256": "b046df0be6948d01a467b482da24380e0a80819a436c91a63def79abd1e431bc",
+    "cache_after_preflight": {
+      "at_unix": 1792207156.9334922,
+      "scan_seconds": 0.0006361007690429688,
+      "scan_complete": true,
+      "file_count": 20,
+      "directory_count": 6,
+      "file_bytes": 255616,
+      "counts_are_lower_bounds": false,
+      "available_storage_bytes": 135996112896,
+      "available_storage_inodes": 7540961
+    },
+    "capacity_checks": [
+      {
+        "method": "full",
+        "retention": 1.0,
+        "memory": {
+          "peak_total_vram_bytes": 36564041728,
+          "peak_total_vram_sampled_bytes": 36564041728,
+          "peak_torch_allocated_bytes": 35275715584,
+          "peak_torch_reserved_bytes": 35777413120,
+          "peak_kv_cache_bytes": 5363957760,
+          "peak_kv_bytes": 5363957760,
+          "reserved_kv_pool_bytes": 5368872960,
+          "reserved_kv_bytes": 5368872960,
+          "kv_pool_tokens": 32768,
+          "physical_cached_tokens": 32739,
+          "logical_cached_tokens": 32739,
+          "retention_target_tokens": 32739,
+          "memory_sample_interval_seconds": 0.01,
+          "total_peak_kind": "max(sampled device use, allocator peak plus maximum external use)"
+        },
+        "prefill_seconds": 5.55845025414601,
+        "suffix_prompt_tokens": 33,
+        "raw_tokens": 32740,
+        "recovery_count": 0,
+        "in_place_compaction_lengths": []
+      },
+      {
+        "method": "agentkv",
+        "retention": 0.8,
+        "memory": {
+          "peak_total_vram_bytes": 36819894272,
+          "peak_total_vram_sampled_bytes": 36819894272,
+          "peak_torch_allocated_bytes": 35578561536,
+          "peak_torch_reserved_bytes": 36033265664,
+          "peak_kv_cache_bytes": 5357568000,
+          "peak_kv_bytes": 5357568000,
+          "reserved_kv_pool_bytes": 5368872960,
+          "reserved_kv_bytes": 5368872960,
+          "kv_pool_tokens": 32768,
+          "physical_cached_tokens": 26192,
+          "logical_cached_tokens": 32739,
+          "retention_target_tokens": 26192,
+          "memory_sample_interval_seconds": 0.01,
+          "total_peak_kind": "max(sampled device use, allocator peak plus maximum external use)"
+        },
+        "prefill_seconds": 7.426907601300627,
+        "suffix_prompt_tokens": 33,
+        "raw_tokens": 32740,
+        "recovery_count": 0,
+        "in_place_compaction_lengths": [
+          32700,
+          26196
+        ]
+      }
+    ],
+    "artifact_sha256": {
+      "cache-after-preflight.json": "449e2a3efc29491efb25f9dac30902bcc3ec00b8f8f479adbcc943a37f4020fc",
+      "cache-before.json": "19de4b5f29fd83313ec45b2132e3707b78abd081e6d51e85c98fc87f054f4ca4",
+      "cache-probe.json": "a5f13f8db7ffdf9d70c3b88f89ec5a2b059e69794f122983d9d37265538fd7a4",
+      "capacity.json": "3a02def4e1a2f172f79124aa89314bcec6dbadddb21397ee27548fd5ac9aa18e",
+      "cuda-visible-devices.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "doctor.json": "4239ec5f8c00b677116a17d76dc423553cadb99ed8e118a73c7b755aa8f7b156",
+      "gpu.txt": "0d75eb7a01f279ed8bd01443520cd0b289aa95ce57f5a3b5d0f11152a37acffb",
+      "job.sh": "a8b6fb7ffe5d123ec827d76dd689a1909dbe766d532478a00fff81f238579952",
+      "preflight-timing.json": "802b8202e422196937c9ae24b02957627f775477e4552a2fb70a9d999518f25c",
+      "slurm.txt": "52da6b40449fb00e9ebb6c33048bb1de307433ec6af626bb328a6ee3ccb7790c",
+      "source.json": "ce792316b4edde9224ae89118b3fe472d61d311d68002e5e9b61c0e1d336e611",
+      "tests.xml": "e23bcc625b353789bb05e2e80461612b4346794e55688386b9c9895daa7cf952"
+    },
+    "notes": "Both successful capacity checks are retained for accounting. No task attempt occurred in the earlier canceled or guard-aborted jobs. Existing cache data and checkouts were preserved. Runtime paths are omitted."
+  }
 }
