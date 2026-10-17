@@ -260,7 +260,11 @@ def test_timeout_consumes_budget_without_free_retry(config, tmp_path):
     assert cells[0]["elapsed_seconds"] >= 5
 
 
-def test_resume_inflight_conservatively_consumes_budget(config, tmp_path):
+@pytest.mark.parametrize("missing_artifact", [False, True])
+@pytest.mark.parametrize("load_failure", [False, True])
+def test_resume_inflight_conservatively_consumes_budget(
+    config, tmp_path, missing_artifact, load_failure
+):
     runner, cells, engines, _ = run_fixture(config, tmp_path)
     manifest = read_json(tmp_path / "manifest.json")
     manifest["status"] = "running"
@@ -270,11 +274,25 @@ def test_resume_inflight_conservatively_consumes_budget(config, tmp_path):
     cell["attempts"] = cell["attempts"][:1]
     cell["attempts"][0]["status"] = "running"
     write_json(tmp_path / manifest["cells"][0]["path"], cell)
+    attempt_path = tmp_path / cell["attempts"][0]["artifact_dir"] / "attempt.json"
+    if missing_artifact:
+        attempt_path.unlink()
+    if load_failure:
+        def unavailable(_condition):
+            raise MemoryCapExceeded("model does not fit")
+
+        runner.engine_factory = unavailable
     runner.run(resume=True)
     restored = read_json(tmp_path / manifest["cells"][0]["path"])
     assert restored["attempts"][0]["status"] == "interrupted"
     assert restored["elapsed_seconds"] == config.budget_seconds
-    assert engines[-1].starts == []
+    assert len(restored["attempts"]) == 1
+    assert restored["completed"] and not restored["inflight"]
+    assert read_json(attempt_path) == restored["attempts"][0]
+    assert restored["attempts"][0]["reserved_budget_seconds"] == config.budget_seconds - 1
+    assert restored["attempts"][0]["budget_elapsed_seconds"] == config.budget_seconds
+    if not load_failure:
+        assert engines[-1].starts == []
 
 
 def test_resume_rejects_config_change(config, tmp_path):

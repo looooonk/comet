@@ -152,9 +152,32 @@ and the pinned Qwen3 model implementation are shared by every method.
 Run `pytest tests/test_engine_contracts.py` for CPU accounting checks.
 `tests/test_engine_numerical.py` additionally exercises the actual pinned eviction
 selectors on CPU when torch and the patched dependency are installed.
-For the live persistence, numerical checkpoint, policy-branch, and one-rebuild
+For live persistence, numerical checkpoint, policy-branch, one-rebuild, and cap
 checks, set `COMET_RUN_GPU_TESTS=1`, `COMET_MODEL_PATH` to the snapshot directory,
-and run `pytest tests/test_engine_gpu.py`. Set `COMET_GPU_EVIDENCE` to preserve the
-small JSON report outside pytest's temporary directory. Those checks explicitly
-permit non-A100 hardware and label their evidence integration-only; they do not
-constitute a train/dev pilot or validate the main experiment matrix.
+and run `pytest tests/test_engine_gpu.py`. Each check runs in a fresh subprocess,
+isolating Mini-SGLang's global context and CUDA allocator. The persistence check
+also compares full-KV cached suffix generation against a fresh prefill of the
+identical raw transcript. Set `COMET_GPU_EVIDENCE` to preserve its JSON report.
+
+The `memory_cap` case fixes its cap before constructing the engine, using the
+pinned BF16 parameter bytes, initially observed external device use, a 4 GiB
+workspace reserve, and a 512-token KV pool. With AgentKV at 25% retention, it
+first rejects a rebuild for transient workspace, then grows the raw history past
+the pool and rejects a second rebuild for pool capacity. Both checks compare
+complete checkpoint payloads except memory high-water counters and verify the
+same stochastic continuation and CUDA RNG from the original checkpoint. Pending
+tokens and the one-rebuild allowance must remain unchanged after refusal.
+
+The same fixed-cap process injects one real CUDA allocation at an inference
+forward boundary. Its request exceeds the allocator ceiling, is bounded to
+6 GiB, and requires at least 1 GiB of spare physical device memory beyond the
+request. This distinguishes experimental-cap rejection from physical device
+exhaustion. It verifies the real CUDA exception is translated to
+`MemoryCapExceeded` and the measured peak remains below the unchanged cap.
+This injection is test instrumentation, not an experimental inference path.
+Set `COMET_GPU_MEMORY_EVIDENCE` to preserve its JSON report and neighboring
+before/after checkpoint files; otherwise they use pytest's temporary directory.
+Run just this check with `pytest tests/test_engine_gpu.py -k memory_cap`.
+These checks explicitly permit non-A100 hardware and label evidence
+integration-only; they do not constitute a train/dev pilot or validate the main
+experiment matrix.

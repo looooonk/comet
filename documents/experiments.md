@@ -94,6 +94,10 @@ process died inside an attempt, its remaining cell
 budget is conservatively consumed and the attempt becomes `interrupted`. This
 avoids granting free compute when an operation has no reliable end timestamp.
 Resume continues other unfinished cells; it does not replay completed attempts.
+The interrupted failure is finalized in both the cell and attempt records;
+`reserved_budget_seconds` distinguishes the unobserved reservation from measured
+component timings. See [resume-validation.md](resume-validation.md) for the
+opt-in real-process interruption check.
 
 ## Checkpoint diagnostic
 

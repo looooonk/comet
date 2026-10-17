@@ -73,13 +73,7 @@ class Runner:
                         else self._new_cell(manifest, reference, condition)
                     )
                     if cell.get("inflight"):
-                        cell["elapsed_seconds"] = self.config.budget_seconds
-                        for attempt in cell["attempts"]:
-                            if attempt["status"] == "running":
-                                attempt.update(
-                                    status="interrupted", failure_reason="process_interrupted"
-                                )
-                        cell["inflight"] = False
+                        self._interrupt_cell(cell)
                     cell.update(completed=True, infeasible=True, failure_reason=str(error))
                     write_json(path, cell)
                 manifest.update(status="completed", finished_at_unix=wall_time())
@@ -183,13 +177,7 @@ class Runner:
                 return
             # A crashed operation has no trustworthy end time; never refund its reserved budget.
             if cell.get("inflight"):
-                if cell["attempts"] and cell["attempts"][-1]["status"] == "running":
-                    cell["attempts"][-1].update(
-                        status="interrupted", failure_reason="process_interrupted"
-                    )
-                cell.update(
-                    elapsed_seconds=self.config.budget_seconds, completed=True, inflight=False
-                )
+                self._interrupt_cell(cell)
                 write_json(path, cell)
                 return
         else:
@@ -226,6 +214,19 @@ class Runner:
             self._persist_cell(path, cell, budget)
         cell.update(completed=True, elapsed_seconds=budget.elapsed)
         self._persist_cell(path, cell, budget)
+
+    def _interrupt_cell(self, cell: dict) -> None:
+        reserved = max(0.0, self.config.budget_seconds - cell["elapsed_seconds"])
+        for attempt in cell["attempts"]:
+            if attempt["status"] == "running":
+                attempt.update(
+                    status="interrupted",
+                    failure_reason="process_interrupted",
+                    budget_elapsed_seconds=self.config.budget_seconds,
+                    reserved_budget_seconds=reserved,
+                )
+                write_json(self.output / attempt["artifact_dir"] / "attempt.json", attempt)
+        cell.update(elapsed_seconds=self.config.budget_seconds, completed=True, inflight=False)
 
     def _persist_cell(self, path: Path, cell: dict, budget: Budget) -> None:
         write_json(path, cell)
