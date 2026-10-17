@@ -126,12 +126,6 @@
       "hostname": "ins093"
     }
   ],
-  "artifact_storage": {
-    "host": "insomnia",
-    "root": "/insomnia001/depts/edu/users/th3213/comet-20261016",
-    "source_workspace": "/insomnia001/home/th3213/comet-validation-20261016",
-    "backup": "Cluster project storage is not automatically backed up."
-  },
   "jobs": [
     {
       "job_id": "13511498",
@@ -139,7 +133,7 @@
       "status": "COMPLETED",
       "passed": 1,
       "test_seconds": 4.83,
-      "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/validation/appworld-13511498",
+      "artifact_root": "validation/appworld-13511498",
       "source_note": "Pre-commit integration checkout; repeated under the final fixed source below."
     },
     {
@@ -169,15 +163,15 @@
           "test_native_persistence_eviction_checkpoint_and_single_rebuild"
         ]
       },
-      "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/validation/latest-13511561",
-      "log": "/insomnia001/depts/edu/users/th3213/comet-20261016/logs/validation-13511561.log"
+      "artifact_root": "validation/latest-13511561",
+      "log": "logs/validation-13511561.log"
     },
     {
       "job_id": "13511649",
       "role": "Final validation submission setup failure",
       "status": "FAILED",
       "failure_reason": "Temporary batch script referenced the wrong source directory; failed before tests or model loading.",
-      "log": "/insomnia001/depts/edu/users/th3213/comet-20261016/logs/final-validation-13511649.log"
+      "log": "logs/final-validation-13511649.log"
     },
     {
       "job_id": "13511652",
@@ -225,8 +219,8 @@
           "test_live_fresh_state_checkpoint_and_offline_scoring"
         ]
       },
-      "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/validation/final-13511652",
-      "log": "/insomnia001/depts/edu/users/th3213/comet-20261016/logs/final-validation-13511652.log",
+      "artifact_root": "validation/final-13511652",
+      "log": "logs/final-validation-13511652.log",
       "elapsed_seconds": 89,
       "live_gpu_evidence": {
         "device": "NVIDIA RTX A6000",
@@ -450,7 +444,7 @@
   },
   "runs": [
     {
-      "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/runs/live-diagnostic-13511561",
+      "artifact_root": "runs/live-diagnostic-13511561",
       "run_id": "c18a5fcc-f067-4caf-9911-403a1dccb218",
       "stage": "diagnostic",
       "status": "completed",
@@ -589,7 +583,7 @@
         }
       ],
       "diagnostic_checkpoint": {
-        "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/runs/live-diagnostic-13511561/checkpoints/50e1ac9_1-17",
+        "artifact_root": "runs/live-diagnostic-13511561/checkpoints/50e1ac9_1-17",
         "preparation": {
           "elapsed_seconds": 13.732832815032452,
           "failure_reason": null,
@@ -655,7 +649,7 @@
       }
     },
     {
-      "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/runs/live-smoke-13511561",
+      "artifact_root": "runs/live-smoke-13511561",
       "run_id": "005d7c01-3895-4a9f-a905-1b87e630a031",
       "stage": "pilot",
       "status": "completed",
@@ -921,7 +915,7 @@
       ]
     },
     {
-      "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/runs/final-code-smoke-13511652",
+      "artifact_root": "runs/final-code-smoke-13511652",
       "run_id": "4b62d20d-7d94-4bff-b49d-f1fbc60d56c3",
       "stage": "pilot",
       "status": "completed",
@@ -1007,5 +1001,6 @@
     "lint": "passed",
     "github_actions_run": "https://github.com/looooonk/comet/actions/runs/38984291935",
     "github_actions_status": "success"
-  }
+  },
+  "artifact_references": "Artifact paths are portable identifiers from the original run layout, not download locations. Private account and storage locations are omitted; large runtime artifacts are not included in this repository."
 }

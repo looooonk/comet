@@ -4,7 +4,9 @@
 
 These instructions apply throughout this repository. Read [README.md](README.md) for the overview and [documents/proposal.pdf](documents/proposal.pdf), especially sections 5-8, before changing experimental behavior. The proposal defines the research scope; the implementation and collaboration conventions below keep the four contributors on one pipeline.
 
-The repository now has the shared pipeline described in [documents/experiments.md](documents/experiments.md). Inspect the implementation and [documents/validation.md](documents/validation.md) before assuming an integration or experiment has been validated. Add verified setup and execution instructions alongside changes. Keep the README human-facing and free of dense technical details.
+The repository now has the shared pipeline described in [documents/experiments.md](documents/experiments.md). Inspect the implementation, [validation guide](documents/validation.md), and applicable evidence in [documents/records/](documents/records/README.md) before assuming an integration or experiment has been validated. Add verified setup and execution instructions alongside changes. Keep the README human-facing and free of dense technical details.
+
+General documents must be independent of individual accounts, workspaces, and run history; put personal notes and run-specific observations in `documents/records/`. Omit account-specific access details and unshared storage locations from committed records; use portable artifact identifiers and hashes instead.
 
 Implement the agreed experiments before expanding scope. Do not silently replace the model, benchmark, inference engine, methods, metrics, or budget semantics. Record any user- or team-authorized departure from the proposal in `documents/`, with its rationale and affected comparisons, and update the corresponding instructions and configs. Routine implementation choices do not need a new research decision.
 
@@ -94,7 +96,8 @@ These are repository conventions for implementing the proposal, not claims that 
 | `configs/` | Versioned pilot and frozen experiment configurations |
 | `scripts/` | Thin entry points that call shared package code |
 | `tests/` | Focused tests of state, recovery, budgets, and evaluation behavior |
-| `documents/` | Proposal, setup/run instructions, and recorded experimental decisions |
+| `documents/` | General proposal, implementation, setup/run instructions, and shared experimental decisions |
+| `documents/records/` | Personal notes, dated execution/validation records, and artifact inventories |
 
 Keep execution, scoring, and analysis separately callable while sharing configuration and artifact definitions. A notebook may explore recorded outputs; it must not become the only implementation of a required experiment or metric. Avoid adding a general framework or unrelated dependencies when a small explicit interface suffices.
 

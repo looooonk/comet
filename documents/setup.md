@@ -82,10 +82,11 @@ sacctmgr -nP show assoc user="$USER" format=Account,Partition,QOS
 sinfo -o '%P %a %l %G %D'
 ```
 
-On October 16, 2026, this account had `edu` access. `edu1` supplied CPU nodes and
-`short` supplied GPUs. No A100 was listed. RTX A6000 validation is an integration
-smoke test and must not enter A100 research comparisons. Account, partition, and
-GPU availability are operational observations, not immutable configuration.
+Choose an account and partition from the associations and current scheduler
+inventory available to you. Verify the allocated GPU before running a job.
+Non-A100 validation requires integration mode and must not enter A100 research
+comparisons. Keep dated hardware and validation observations in
+[records/](records/README.md), omitting account-specific access details.
 
 Store datasets, weights, environments, and runs in the account's project storage.
 The [storage guide](https://columbiauniversity.atlassian.net/wiki/spaces/rcs/pages/62145132/Insomnia+-+Storage)
@@ -97,14 +98,17 @@ in scheduler defaults:
 
 ```sh
 export COMET_REPO="$HOME/comet"
-export COMET_STORAGE=/insomnia001/depts/edu/users/your-uni/comet
+export COMET_STORAGE=/path/to/project/storage/comet
 export COMET_ENV="$COMET_STORAGE/venv"
 export COMET_CONFIG="$COMET_REPO/configs/your-version.json"
 export COMET_RUN="$COMET_STORAGE/runs/your-unique-run-id"
 export COMET_MODEL="$COMET_STORAGE/cache/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218"
 export COMET_INTEGRATION_SMOKE=1
+export COMET_SLURM_ACCOUNT=your-slurm-account
+export COMET_SLURM_PARTITION=your-gpu-partition
 mkdir -p "$COMET_STORAGE/logs"
-sbatch --account=edu --partition=short --gres=gpu:1 --time=00:30:00 \
+sbatch --account="$COMET_SLURM_ACCOUNT" --partition="$COMET_SLURM_PARTITION" \
+  --gres=gpu:1 --time=00:30:00 \
   --output="$COMET_STORAGE/logs/%x-%j.log" infra/slurm/run.sh
 ```
 
@@ -126,8 +130,7 @@ The shared runner records the experiment manifest and trajectories separately.
 
 `infra/gcp/instance.sh` prints a repeatable launch command by default and provisions
 only with `--apply`. It requires explicit project, zone, immutable image resource,
-disk capacity, VM name, and maximum runtime. No cloud resources were created during
-implementation.
+disk capacity, VM name, and maximum runtime.
 
 The [A2 Ultra specification](https://docs.cloud.google.com/compute/docs/gpus/)
 identifies `a2-ultragpu-1g` as one A100 80GB GPU. Choose a driver/CUDA-ready Linux

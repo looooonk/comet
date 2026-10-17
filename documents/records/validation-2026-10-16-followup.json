@@ -3,8 +3,6 @@
   "validation_date_local": "2026-10-16",
   "timezone": "America/New_York",
   "scope": "Integration checks on one dev task; provisional settings, no research comparison or frozen evaluation.",
-  "artifact_host": "insomnia",
-  "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016",
   "task_id": "50e1ac9_1",
   "split": "dev",
   "replicate_seed": 17,
@@ -139,7 +137,7 @@
     "status": "planned_phase_stop",
     "exit_code": 75,
     "reason": "The completion run and its offline scoring/analysis finished. The not-yet-started process-resume fixture moves to a separate 90-second/16384-token configuration to avoid repeating long degenerate trajectories.",
-    "completion_run": "/insomnia001/depts/edu/users/th3213/comet-20261016/runs/completion-13511973",
+    "completion_run": "runs/completion-13511973",
     "manifest_sha256": "4ca9f553ac5389e2b9fb3cc5006bb6e366bbd84e78158e8741a5db72b98989b9",
     "scores_sha256": "648b2039ab7bd23a0a117c70d4ee7ac7c89f3ebcb4e08726284fce843e4137b3",
     "analysis_sha256": "513e11795613f3aec5b31cc5f491a7c3c3387222ea0d8f41d1c8404677466d72",
@@ -915,5 +913,6 @@
     "All configurations are provisional dev integration variants. Prompt and context variants are separate runs and are not pooled.",
     "Process-kill validation does not establish scheduler-driven preemption/requeue or sustained long-run resume behavior.",
     "The main A100 pilot, tuning/freeze, final matrix, and GCP runtime remain unvalidated; no cloud resources were created."
-  ]
+  ],
+  "artifact_references": "Artifact paths are portable identifiers from the original run layout, not download locations. Private account and storage locations are omitted; large runtime artifacts are not included in this repository."
 }

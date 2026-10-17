@@ -41,14 +41,13 @@ The full pilot matrix has 116 cells at a provisional ten-minute shared budget:
 before scheduling it. Nothing automatically launches this sweep. Task IDs are
 verified against the requested AppWorld split before loading the model.
 
-The completion variant addresses forbidden imports, unprinted API return values,
-and speculative calls that discard earlier documentation output when they fail.
-It asks the agent to read each documentation observation before selecting further
-API calls. Its 32,768-token limit leaves room for printed documentation. The
-current variant enables reasoning and allows 2048 generated tokens per turn after
-the non-thinking agent repeatedly mishandled authentication. Both conditions share
-the same prompt and numerical settings; earlier attempts remain recorded. These integration settings do not establish
-task-solving quality or qualify non-A100 runs as research pilot evidence.
+The completion variant uses the preloaded `apis` object, prints query results,
+and separates documentation queries from subsequent API calls. It enables
+reasoning, allows 2048 generated tokens per turn, and uses a 32,768-token context.
+Both conditions share the same prompt and numerical settings. These provisional
+settings do not establish task-solving quality or qualify non-A100 runs as
+research pilot evidence. Run history and observations belong in
+[records/](records/README.md).
 
 Configurations are JSON. `extends` resolves relative to the child file; top-level
 objects merge one level and lists replace in full. The run records the fully
@@ -162,6 +161,7 @@ Use the recorded checkout and environment when continuing an older run.
 
 Keep complete run directories outside tracked source. Copy them intact when
 moving between machines; AppWorld scoring also needs its pinned data root. Small
-committed validation summaries identify the original host, jobs and artifact
-paths. Do not treat fixture tests or non-A100 integration results as research
-measurements.
+validation summaries in [records/](records/README.md) identify hardware, jobs,
+and portable artifact filenames and hashes. Keep general documentation independent
+of personal locations and run histories. Do not treat fixture tests or non-A100
+integration results as research measurements.

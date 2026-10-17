@@ -27,7 +27,7 @@ Our main result will be the share of tasks solved by at least one attempt within
 
 The repository includes a shared experiment runner, pinned AgentKV Mini-SGLang integration, AppWorld execution and offline scoring, and paired task-level analysis. Small pilot and checkpoint experiments are provided; final settings must be established on train/dev before evaluation.
 
-Start with the [setup guide](documents/setup.md), then the [experiment workflow](documents/experiments.md). The [validation record](documents/validation.md) distinguishes local checks, live integration tests, and remaining hardware requirements. Insomnia job scripts support short development runs; the same environment and commands run on a GCP A100 VM for longer experiments.
+Start with the [setup guide](documents/setup.md), then the [experiment workflow](documents/experiments.md). The [validation guide](documents/validation.md) explains the checks; [personal and run records](documents/records/README.md) preserve dated evidence and limitations. Insomnia job scripts support short development runs; the same environment and commands run on a GCP A100 VM for longer experiments.
 
 ## Working together
 
