@@ -9,13 +9,16 @@ from pathlib import Path
 import pytest
 
 from comet.engine import EngineSettings, MiniSGLangEngine, retention_target
-from comet.engine.contracts import MODEL_REVISION, model_storage
+from comet.engine.contracts import MODEL_PROFILES, model_storage
 from comet.errors import MemoryCapExceeded
 
 
 @pytest.mark.gpu
 @pytest.mark.skipif(not os.environ.get("COMET_RUN_GPU_TESTS"), reason="explicit GPU integration opt-in required")
-@pytest.mark.parametrize("check", ["persistence", "memory_cap"])
+@pytest.mark.parametrize("check", ["persistence", "memory_cap", pytest.param(
+    "capacity", marks=pytest.mark.skipif(not os.environ.get("COMET_TEST_CAPACITY"),
+                                        reason="explicit long-context preflight opt-in required"),
+)])
 def test_native_gpu(check, tmp_path):
     result = subprocess.run(
         [sys.executable, str(Path(__file__).resolve()), check, str(tmp_path)],
@@ -27,9 +30,11 @@ def test_native_gpu(check, tmp_path):
 def _persistence_check(tmp_path):
     import torch
 
+    model = os.environ.get("COMET_TEST_MODEL", "Qwen/Qwen3-8B")
+    revision = MODEL_PROFILES[model]["revision"]
     engine = MiniSGLangEngine(EngineSettings(
-        model_path=os.environ["COMET_MODEL_PATH"], model_revision=MODEL_REVISION,
-        tokenizer_revision=MODEL_REVISION, method="full", retention=1.0,
+        model=model, model_path=os.environ["COMET_MODEL_PATH"], model_revision=revision,
+        tokenizer_revision=revision, method="full", retention=1.0,
         max_context_tokens=1024, peak_vram_bytes=40 << 30, workspace_reserve_bytes=4 << 30,
         prefill_chunk_tokens=128, require_a100=False,
     ))
@@ -173,7 +178,9 @@ def _memory_cap_check(tmp_path):
     import torch
 
     model_path = os.environ["COMET_MODEL_PATH"]
-    config, parameters = model_storage(model_path, MODEL_REVISION)
+    model = os.environ.get("COMET_TEST_MODEL", "Qwen/Qwen3-8B")
+    revision = MODEL_PROFILES[model]["revision"]
+    config, parameters = model_storage(model_path, revision, model)
     kv_bytes = 4 * config["num_hidden_layers"] * config["num_key_value_heads"] * config["head_dim"]
     free, total = torch.cuda.mem_get_info()
     initial_external = total - free - torch.cuda.memory_reserved()
@@ -181,7 +188,7 @@ def _memory_cap_check(tmp_path):
     # Fix the cap before engine creation; no live setting or admission bound is patched.
     cap = initial_external + parameters * 2 + workspace + 513 * kv_bytes
     engine = MiniSGLangEngine(EngineSettings(
-        model_path=model_path, model_revision=MODEL_REVISION, tokenizer_revision=MODEL_REVISION,
+        model=model, model_path=model_path, model_revision=revision, tokenizer_revision=revision,
         method="agentkv", retention=0.25, max_context_tokens=2048,
         peak_vram_bytes=cap, workspace_reserve_bytes=workspace,
         prefill_chunk_tokens=64, require_a100=False,
@@ -241,5 +248,63 @@ def _memory_cap_check(tmp_path):
         engine.close()
 
 
+def _capacity_check(tmp_path):
+    import minisgl.eviction.manager as manager
+
+    model = os.environ.get("COMET_TEST_MODEL", "Qwen/Qwen3-8B")
+    revision = MODEL_PROFILES[model]["revision"]
+    settings = EngineSettings(
+        model=model, model_path=os.environ["COMET_MODEL_PATH"], model_revision=revision,
+        tokenizer_revision=revision, method="full", retention=1.0,
+        max_context_tokens=32768, peak_vram_bytes=40 << 30, workspace_reserve_bytes=6 << 30,
+        prefill_chunk_tokens=256, require_a100=False,
+    )
+    engine = MiniSGLangEngine(settings)
+    compact = manager.compact_all_layers_kv_heads_inplace_sorted_triton
+    in_place_lengths = []
+
+    def record_compaction(**kwargs):
+        in_place_lengths.append(kwargs["physical_cached_len"])
+        return compact(**kwargs)
+
+    manager.compact_all_layers_kv_heads_inplace_sorted_triton = record_compaction
+    try:
+        assert engine.memory_stats()["kv_pool_tokens"] == settings.max_context_tokens
+        checks = []
+        token = engine.tokenizer.encode(" capacity", add_special_tokens=False)[0]
+        for method, retention in (("full", 1.0), ("agentkv", 0.8)):
+            engine.set_policy(method, retention)
+            engine.start(31)
+            in_place_lengths.clear()
+            initial = engine.generate([token] * 32700, 4, 0.0, 1.0,
+                                      time.monotonic() + 600, ignore_eos=True)
+            continued = engine.generate([token] * 32, 4, 0.0, 1.0,
+                                        time.monotonic() + 600, ignore_eos=True)
+            assert continued.prompt_tokens == 33
+            memory = continued.memory
+            assert memory["physical_cached_tokens"] == retention_target(
+                memory["logical_cached_tokens"], retention, method,
+            )
+            assert memory["peak_total_vram_bytes"] <= settings.peak_vram_bytes
+            assert bool(in_place_lengths) == (method == "agentkv")
+            checks.append({
+                "method": method, "retention": retention, "memory": memory,
+                "prefill_seconds": initial.prefill_seconds,
+                "suffix_prompt_tokens": continued.prompt_tokens,
+                "raw_tokens": len(engine.raw_token_ids), "recovery_count": engine.recovery_count,
+                "in_place_compaction_lengths": list(in_place_lengths),
+            })
+        evidence = Path(os.environ.get("COMET_GPU_CAPACITY_EVIDENCE", tmp_path / "capacity-evidence.json"))
+        evidence.parent.mkdir(parents=True, exist_ok=True)
+        evidence.write_text(json.dumps({
+            "integration_only": True, "settings": asdict(settings),
+            "provenance": engine.provenance(), "checks": checks,
+        }, indent=2) + "\n")
+    finally:
+        manager.compact_all_layers_kv_heads_inplace_sorted_triton = compact
+        engine.close()
+
+
 if __name__ == "__main__":
-    {"persistence": _persistence_check, "memory_cap": _memory_cap_check}[sys.argv[1]](Path(sys.argv[2]))
+    {"persistence": _persistence_check, "memory_cap": _memory_cap_check,
+     "capacity": _capacity_check}[sys.argv[1]](Path(sys.argv[2]))

@@ -8,7 +8,7 @@ import math
 import random
 from collections import Counter, defaultdict
 from pathlib import Path
-from statistics import mean
+from statistics import mean, stdev
 from typing import Any
 
 from comet.evaluation import _read, _write, execution_digest
@@ -22,9 +22,52 @@ def _quantile(values: list[float], fraction: float) -> float:
     return ordered[left] + (ordered[right] - ordered[left]) * (index - left)
 
 
-def _estimate(values: list[float], bootstrap: list[float]) -> dict[str, Any]:
-    return {"value": mean(values), "ci95": [_quantile(bootstrap, 0.025),
-                                             _quantile(bootstrap, 0.975)]}
+def _estimate(values: list[float], bootstrap: list[float], *,
+              bounds: tuple[float, float] | None = None) -> dict[str, Any]:
+    count = len(values)
+    degenerate = bool(bootstrap) and min(bootstrap) == max(bootstrap)
+    notes = []
+    if count < 2:
+        notes.append("Fewer than two observed tasks; task-level standard error is unavailable.")
+    if degenerate:
+        notes.append("A degenerate bootstrap interval does not establish zero population uncertainty.")
+    result = {
+        "value": mean(values) if values else None,
+        "ci95": [_quantile(bootstrap, 0.025), _quantile(bootstrap, 0.975)] if bootstrap else None,
+        "standard_error": stdev(values) / math.sqrt(count) if count > 1 else None,
+        "task_count": count,
+        "bootstrap_degenerate": degenerate,
+        "uncertainty_notes": notes,
+    }
+    if bounds is not None:
+        radius = (bounds[1] - bounds[0]) * math.sqrt(math.log(40) / (2 * count)) if count else 0
+        result["bounded_mean_ci95"] = [max(bounds[0], mean(values) - radius),
+                                       min(bounds[1], mean(values) + radius)] if count else None
+    return result
+
+
+def _bootstrap(values: list[float], rng: random.Random, samples: int) -> list[float]:
+    return [mean(rng.choices(values, k=len(values))) for _ in range(samples)] if values else []
+
+
+def _resource_tasks(group: dict, tasks: list[str], task_seeds: dict, key: str) -> tuple[dict, dict]:
+    values, cells = {}, {}
+    observed_attempts = total_attempts = 0
+    for identity, cell in group.items():
+        measured = [attempt["metrics"][key] for attempt in cell["attempts"]
+                    if isinstance(attempt.get("metrics", {}).get(key), (int, float))]
+        total_attempts += len(cell["attempts"])
+        observed_attempts += len(measured)
+        if measured and len(measured) == len(cell["attempts"]):
+            cells[identity] = max(measured)
+    for task in tasks:
+        if all((task, seed) in cells for seed in task_seeds[task]):
+            values[task] = mean(cells[(task, seed)] for seed in task_seeds[task])
+    return values, {
+        "observed_attempts": observed_attempts, "total_attempts": total_attempts,
+        "complete_cells": len(cells), "total_cells": len(group),
+        "complete_tasks": len(values), "total_tasks": len(tasks),
+    }
 
 
 def _metric(attempts: list[dict[str, Any]], key: str, unit: str, aggregation: str) -> dict[str, Any]:
@@ -73,12 +116,19 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
         "primary_metric": "oracle task success within budget (perfect-selection upper bound)",
         "uncertainty": {"method": "paired task bootstrap, percentile 95% CI",
                         "samples": bootstrap_samples, "seed": seed,
-                        "resampling_unit": "task, retaining all attempts and paired replicate seeds"},
+                        "resampling_unit": "task, retaining all attempts and paired replicate seeds",
+                        "standard_error_method": "sample standard deviation of task means / sqrt(tasks)",
+                        "bounded_mean_method": "Hoeffding, clipped to [0,1] for success and [-1,1] for differences",
+                        "interval_scope": "pointwise 95%; not simultaneous across conditions or metrics",
+                        "assumption": "independent sampled tasks; repeats do not increase task count"},
         "task_count": len(tasks), "tasks": tasks, "replicate_seeds": task_seeds[tasks[0]],
         "conditions": {}, "paired_comparisons": [],
     }
     task_values: dict[str, dict[str, list[float]]] = {}
     bootstraps: dict[str, dict[str, list[float]]] = {}
+    resource_values: dict[str, dict[str, dict[str, float]]] = {}
+    resource_fields = {"mean_peak_kv_bytes": "peak_kv_bytes",
+                       "mean_peak_total_vram_bytes": "peak_total_vram_bytes"}
     for condition_id, group in sorted(by_condition.items()):
         values: dict[str, list[float]] = {name: [] for name in (
             "oracle_success_rate", "single_attempt_success_rate", "actual_attempts", "latency_seconds"
@@ -123,7 +173,8 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
         metrics["estimated_flops"]["methods"] = sorted(method for method in methods if method)
         result["conditions"][condition_id] = {
             "condition": conditions[condition_id],
-            **{name: _estimate(value, bootstraps[condition_id][name])
+            **{name: _estimate(value, bootstraps[condition_id][name],
+                              bounds=(0, 1) if name.endswith("success_rate") else None)
                for name, value in values.items()},
             "attempt_status_counts": dict(Counter(attempt["status"] for attempt in attempts)),
             "infeasible_cells": sum(bool(cell.get("infeasible")) or
@@ -132,6 +183,16 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
             "zero_attempt_cells": sum(not cell["attempts"] for cell in group.values()),
             "metrics": metrics,
         }
+        resource_values[condition_id] = {}
+        for name, key in resource_fields.items():
+            observed, coverage = _resource_tasks(group, tasks, task_seeds, key)
+            resource_values[condition_id][name] = observed
+            values_ = list(observed.values())
+            result["conditions"][condition_id][name] = {
+                **_estimate(values_, _bootstrap(values_, rng, bootstrap_samples)),
+                "unit": "bytes", "coverage": coverage,
+                "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+            }
     for left, right in itertools.combinations(sorted(by_condition), 2):
         comparison: dict[str, Any] = {"left": left, "right": right, "direction": "right minus left"}
         for metric in ("oracle_success_rate", "single_attempt_success_rate", "latency_seconds"):
@@ -139,7 +200,17 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
                            zip(task_values[left][metric], task_values[right][metric], strict=True)]
             samples = [right_value - left_value for left_value, right_value in
                        zip(bootstraps[left][metric], bootstraps[right][metric], strict=True)]
-            comparison[metric] = _estimate(differences, samples)
+            comparison[metric] = _estimate(
+                differences, samples, bounds=(-1, 1) if metric.endswith("success_rate") else None,
+            )
+        for metric in resource_fields:
+            left_values, right_values = resource_values[left][metric], resource_values[right][metric]
+            paired_tasks = sorted(left_values.keys() & right_values.keys())
+            differences = [right_values[task] - left_values[task] for task in paired_tasks]
+            comparison[metric] = {
+                **_estimate(differences, _bootstrap(differences, rng, bootstrap_samples)),
+                "unit": "bytes", "paired_tasks": paired_tasks, "total_tasks": len(tasks),
+            }
         result["paired_comparisons"].append(comparison)
     return result
 

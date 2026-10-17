@@ -1,3 +1,4 @@
+import json
 from dataclasses import replace
 from threading import Lock
 from types import SimpleNamespace
@@ -5,7 +6,7 @@ from types import SimpleNamespace
 import pytest
 
 from comet.engine import EngineSettings, MiniSGLangEngine, retention_target
-from comet.engine.contracts import MODEL_REVISION
+from comet.engine.contracts import MODEL_PROFILES, MODEL_REVISION, model_storage
 
 
 def settings(**changes):
@@ -44,6 +45,54 @@ def test_settings_reject_unpinned_model_or_invalid_control():
                     {"prefill_chunk_tokens": 0}, {"workspace_reserve_bytes": 50 << 30}):
         with pytest.raises(ValueError):
             settings(**changes)
+
+
+def test_exploratory_model_requires_its_own_matching_model_and_tokenizer_pin():
+    revision = MODEL_PROFILES["Qwen/Qwen3-14B"]["revision"]
+    exploratory = settings(model="Qwen/Qwen3-14B", model_revision=revision,
+                           tokenizer_revision=revision)
+    assert exploratory.fingerprint(policy=False) != settings().fingerprint(policy=False)
+    for changes in ({"model": "Qwen/Qwen3-8B"}, {"model_revision": MODEL_REVISION},
+                    {"tokenizer_revision": MODEL_REVISION}, {"model": "Qwen/Qwen3.5-9B"}):
+        with pytest.raises(ValueError, match="model/revision"):
+            replace(exploratory, **changes)
+
+
+def test_model_storage_validates_architecture_precision_and_parameter_count(tmp_path):
+    revision = MODEL_PROFILES["Qwen/Qwen3-14B"]["revision"]
+    snapshot = tmp_path / revision
+    snapshot.mkdir()
+    config = {
+        "architectures": ["Qwen3ForCausalLM"], "model_type": "qwen3",
+        "hidden_size": 5120, "num_hidden_layers": 40, "num_attention_heads": 40,
+        "intermediate_size": 17408, "num_key_value_heads": 8, "head_dim": 128,
+        "vocab_size": 151936, "hidden_act": "silu", "attention_bias": False,
+        "tie_word_embeddings": False, "rope_scaling": None, "rope_theta": 1000000,
+        "max_position_embeddings": 40960, "sliding_window": None,
+        "use_sliding_window": False, "rms_norm_eps": 1e-6, "torch_dtype": "bfloat16",
+    }
+    config_path = snapshot / "config.json"
+    config_path.write_text(json.dumps(config))
+
+    def weights(dtype="BF16", count=14768307200):
+        header = json.dumps({"weight": {"dtype": dtype, "shape": [count]}}).encode()
+        (snapshot / "model.safetensors").write_bytes(len(header).to_bytes(8, "little") + header)
+
+    weights()
+    assert model_storage(str(snapshot), revision, "Qwen/Qwen3-14B") == (config, 14768307200)
+    for key, value in (("hidden_size", 4096), ("num_attention_heads", 32),
+                       ("architectures", ["Qwen3_5ForConditionalGeneration"]),
+                       ("rope_scaling", {"factor": 4.0})):
+        config_path.write_text(json.dumps({**config, key: value}))
+        with pytest.raises(ValueError, match="architecture"):
+            model_storage(str(snapshot), revision, "Qwen/Qwen3-14B")
+    config_path.write_text(json.dumps(config))
+    weights(dtype="F16")
+    with pytest.raises(ValueError, match="BF16"):
+        model_storage(str(snapshot), revision, "Qwen/Qwen3-14B")
+    weights(count=8190735360)
+    with pytest.raises(ValueError, match="parameter count"):
+        model_storage(str(snapshot), revision, "Qwen/Qwen3-14B")
 
 
 def test_branch_fingerprint_only_excludes_policy_and_local_snapshot_location():

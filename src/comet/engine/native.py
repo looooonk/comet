@@ -43,7 +43,8 @@ class MiniSGLangEngine:
             raise UnsupportedPath("main experiments require one A100 80GB; use integration mode for smoke checks")
         if settings.peak_vram_bytes > properties.total_memory:
             raise MemoryCapExceeded("configured VRAM cap exceeds device capacity")
-        model_config, self.parameter_count = model_storage(settings.model_path, settings.model_revision)
+        model_config, self.parameter_count = model_storage(settings.model_path, settings.model_revision,
+                                                           settings.model)
         if settings.max_context_tokens > model_config["max_position_embeddings"]:
             raise UnsupportedPath("configured context exceeds the pinned model's supported positions")
         self._num_layers = model_config["num_hidden_layers"]
@@ -164,6 +165,8 @@ class MiniSGLangEngine:
         return {
             "backend": "native_minisgl", "minisgl_revision": MINISGL_REVISION,
             "patch_file_sha256": PATCH_FILE_HASHES,
+            "model": self.settings.model,
+            "model_scope": "main" if self.settings.model == "Qwen/Qwen3-8B" else "exploratory_pilot",
             "model_revision": self.settings.model_revision,
             "tokenizer_revision": self.settings.tokenizer_revision,
             "model_path": str(Path(self.settings.model_path).resolve()),

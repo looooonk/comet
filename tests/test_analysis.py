@@ -1,4 +1,5 @@
 import copy
+import math
 
 import pytest
 
@@ -30,6 +31,8 @@ def test_oracle_is_per_task_and_replicate_seeds_are_averaged():
     assert condition["single_attempt_success_rate"]["value"] == 0
     assert condition["actual_attempts"]["value"] == 11
     assert condition["oracle_success_rate"]["ci95"] == [0, 0.5]
+    assert condition["oracle_success_rate"]["standard_error"] == pytest.approx(0.25)
+    assert condition["oracle_success_rate"]["task_count"] == 2
     assert condition["metrics"]["decode_throughput"]["value"] == 10
 
 
@@ -40,7 +43,11 @@ def test_task_bootstrap_retains_seed_pairing_and_conditions():
          for item in a]
     result = analyze_cells(a + b, bootstrap_samples=300, seed=5)
     comparison = result["paired_comparisons"][0]
-    assert comparison["oracle_success_rate"] == {"value": 0, "ci95": [0, 0]}
+    estimate = comparison["oracle_success_rate"]
+    assert estimate["value"] == 0 and estimate["ci95"] == [0, 0]
+    assert estimate["standard_error"] == 0 and estimate["bootstrap_degenerate"]
+    assert estimate["bounded_mean_ci95"] == [-1, 1]
+    assert estimate["uncertainty_notes"]
     assert result == analyze_cells(a + b, bootstrap_samples=300, seed=5)
     with pytest.raises(ValueError, match="same paired"):
         analyze_cells(a + b[:-1])
@@ -58,6 +65,74 @@ def test_failures_zero_attempts_and_missing_metrics_are_retained():
     assert result["attempt_status_counts"] == {"timeout": 1, "oom": 1, "infeasible": 1}
     assert result["metrics"]["peak_kv_bytes"]["observed_attempts"] == 2
     assert result["metrics"]["peak_kv_bytes"]["total_attempts"] == 3
+    assert result["mean_peak_kv_bytes"]["value"] == 100
+    assert result["mean_peak_kv_bytes"]["task_count"] == 1
+    assert result["mean_peak_kv_bytes"]["coverage"]["complete_cells"] == 1
+
+
+def test_resource_means_preserve_task_and_seed_clusters_and_pairing():
+    first = []
+    for task, peaks in (("t1", (100, 300)), ("t2", (500, 700))):
+        for seed, peak in enumerate(peaks):
+            record = cell(task, "a", seed, [False, False])
+            for index, attempt in enumerate(record["attempts"]):
+                attempt["metrics"]["peak_kv_bytes"] = peak - 50 * index
+                attempt["metrics"]["peak_total_vram_bytes"] = 1000 + peak - 50 * index
+            first.append(record)
+    second = copy.deepcopy(first)
+    for record in second:
+        record["condition"].update(id="b", method="b")
+        for attempt in record["attempts"]:
+            attempt["metrics"]["peak_kv_bytes"] += 25
+    result = analyze_cells(first + second, bootstrap_samples=300)
+    estimate = result["conditions"]["a"]["mean_peak_kv_bytes"]
+    assert estimate["value"] == 400
+    assert estimate["standard_error"] == pytest.approx(200)
+    assert estimate["ci95"] == [200, 600]
+    assert estimate["task_count"] == 2
+    assert estimate["coverage"] == {
+        "observed_attempts": 8, "total_attempts": 8,
+        "complete_cells": 4, "total_cells": 4, "complete_tasks": 2, "total_tasks": 2,
+    }
+    assert result["conditions"]["a"]["metrics"]["peak_kv_bytes"]["value"] == 700
+    assert result["conditions"]["a"]["mean_peak_total_vram_bytes"]["value"] == 1400
+    difference = result["paired_comparisons"][0]["mean_peak_kv_bytes"]
+    assert difference["value"] == 25 and difference["standard_error"] == 0
+    assert difference["ci95"] == [25, 25] and difference["paired_tasks"] == ["t1", "t2"]
+
+
+def test_resource_missing_attempt_or_seed_is_not_zero_or_partial_maximum():
+    records = [cell(task, condition, seed, [False, False])
+               for condition in ("a", "b") for task in ("t1", "t2") for seed in (1, 2)]
+    for record in records:
+        if record["condition"]["id"] == "a" and record["seed"] == 2:
+            record["attempts"][1]["metrics"].pop("peak_kv_bytes")
+    result = analyze_cells(records, bootstrap_samples=50)
+    estimate = result["conditions"]["a"]["mean_peak_kv_bytes"]
+    assert estimate["value"] is None and estimate["standard_error"] is None
+    assert estimate["ci95"] is None and estimate["task_count"] == 0
+    assert estimate["coverage"]["observed_attempts"] == 6
+    assert estimate["coverage"]["complete_cells"] == 2
+    assert estimate["coverage"]["complete_tasks"] == 0
+    difference = result["paired_comparisons"][0]["mean_peak_kv_bytes"]
+    assert difference["value"] is None and difference["paired_tasks"] == []
+    assert result["conditions"]["a"]["metrics"]["peak_kv_bytes"]["value"] == 100
+
+
+def test_one_task_and_all_failure_uncertainty_are_explicit():
+    single = analyze_cells([cell("t1", "a", 1, [False])], bootstrap_samples=50)
+    estimate = single["conditions"]["a"]["oracle_success_rate"]
+    assert estimate["value"] == 0 and estimate["ci95"] == [0, 0]
+    assert estimate["standard_error"] is None and estimate["bootstrap_degenerate"]
+    assert estimate["bounded_mean_ci95"] == [0, 1]
+    assert len(estimate["uncertainty_notes"]) == 2
+    repeated = [cell(f"t{task}", "a", seed, [False])
+                for task in range(8) for seed in (17, 29)]
+    multiple = analyze_cells(repeated, bootstrap_samples=50)
+    estimate = multiple["conditions"]["a"]["oracle_success_rate"]
+    assert estimate["task_count"] == 8 and estimate["standard_error"] == 0
+    assert estimate["bounded_mean_ci95"] == [0, pytest.approx(math.sqrt(math.log(40) / 16))]
+    assert estimate["bootstrap_degenerate"] and estimate["uncertainty_notes"]
 
 
 def test_analysis_rejects_duplicates_and_failed_success():

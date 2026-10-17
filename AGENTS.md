@@ -10,6 +10,8 @@ General documents must be independent of individual accounts, workspaces, and ru
 
 Implement the agreed experiments before expanding scope. Do not silently replace the model, benchmark, inference engine, methods, metrics, or budget semantics. Record any user- or team-authorized departure from the proposal in `documents/`, with its rationale and affected comparisons, and update the corresponding instructions and configs. Routine implementation choices do not need a new research decision.
 
+The user authorized a pinned Qwen3-14B exploratory train/dev pilot if Qwen3-8B is inadequate for the requested retention comparison. Follow [documents/experimental-models.md](documents/experimental-models.md): keep these results separate, use the same engine and BF16 methods, and retain Qwen3-8B for the main research contract and final evaluation. Qwen3.5-9B is unsupported by the pinned engine.
+
 ## Research contract
 
 COMET tests whether recovering cached history improves agent task success beyond further compressed attempts under a fixed runtime budget and memory cap.

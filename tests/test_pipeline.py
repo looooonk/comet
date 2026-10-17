@@ -7,6 +7,7 @@ import pytest
 from comet.artifacts import read_json, write_json
 from comet.budget import Budget
 from comet.config import Condition, Experiment, attempt_seed, comparison_matrix
+from comet.engine.contracts import MODEL_REVISION
 from comet.errors import BudgetExpired, MemoryCapExceeded
 from comet.policies import decide
 from comet.runner import Runner
@@ -27,8 +28,8 @@ def config():
             "max_attempts": 2,
             "engine": {
                 "model": "Qwen/Qwen3-8B",
-                "model_revision": "a" * 40,
-                "tokenizer_revision": "a" * 40,
+                "model_revision": MODEL_REVISION,
+                "tokenizer_revision": MODEL_REVISION,
                 "dtype": "bfloat16",
                 "max_context_tokens": 100,
                 "workspace_reserve_bytes": 1_000_000,

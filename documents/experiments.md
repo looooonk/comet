@@ -33,6 +33,7 @@ The included configurations are:
 | `pilot-smoke.json` | One real dev task, one seed, full KV and all three methods at 50%; at most eight minutes of task budgets |
 | `pilot-long-context.json` | Full KV and AgentKV 50% with 16,384 tokens and ten minutes per cell; original prompt |
 | `pilot-completion.json` | Full KV and AgentKV 50% with 32,768 tokens, ten minutes per cell, Qwen reasoning, and an explicit API protocol |
+| `pilot-retention-qwen14b.json` | Exploratory 14B pilot: eight dev task families, one paired seed, full KV and AgentKV 80/50/25%, no recovery; 32 cells |
 | `pilot-matrix.json` | Q1/Q2 matrix: two full controls plus 27 compressed conditions, two dev tasks and two seeds |
 | `checkpoint-diagnostic.json` | One full control plus 27 compressed continuations from a common pre-compression checkpoint |
 
@@ -48,6 +49,30 @@ Both conditions share the same prompt and numerical settings. These provisional
 settings do not establish task-solving quality or qualify non-A100 runs as
 research pilot evidence. Run history and observations belong in
 [records/](records/README.md).
+
+The 14B variant is a separate, authorized model exploration described in
+[experimental-models.md](experimental-models.md). It does not change the main
+8B research matrix. Its one-attempt conditions isolate retention without recovery.
+The small task sample estimates feasibility and variance; it cannot establish
+small accuracy differences.
+
+After analysis, generate an exportable figure with the optional plotting tools:
+
+```sh
+uv run --extra plots comet plot runs/pilot/analysis.json \
+  --output documents/records/retention-pilot.svg \
+  --title "AppWorld retention pilot"
+```
+
+This plots a full control and one eviction method at distinct retention levels,
+with equal attempt limits and no recovery. The horizontal axis is
+`100 * (1 - retention)`. Accuracy uses a conservative bounded-mean interval;
+latency and mean per-cell peak KV use task-bootstrap intervals. The shared
+analysis also records task-level standard errors and paired differences.
+Intervals are pointwise, not simultaneous guarantees. Lines connect measured
+points without imposing a monotone or smooth fit. See [evaluation.md](evaluation.md)
+for definitions and coverage rules. Keep figures with their analysis, source
+configuration, hardware description, and limitations in `records/`.
 
 Configurations are JSON. `extends` resolves relative to the child file; top-level
 objects merge one level and lists replace in full. The run records the fully

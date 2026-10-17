@@ -1,0 +1,30 @@
+{
+  "extends": "pilot-completion.json",
+  "experiment_id": "pilot-retention-qwen14b-v1",
+  "task_ids": [
+    "50e1ac9_1",
+    "0d8a4ee_1",
+    "6c2c621_1",
+    "3ab5b8b_1",
+    "57c3486_1",
+    "23cf851_1",
+    "4fab96f_1",
+    "fac291d_1"
+  ],
+  "seeds": [17],
+  "engine": {
+    "model": "Qwen/Qwen3-14B",
+    "model_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+    "tokenizer_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18"
+  },
+  "sampling": {
+    "max_new_tokens": 4096
+  },
+  "conditions": [
+    {"id": "full_once", "method": "full", "retention": 1.0, "recovery": "never", "max_attempts": 1},
+    {"id": "agentkv_80", "method": "agentkv", "retention": 0.8, "recovery": "never", "max_attempts": 1},
+    {"id": "agentkv_50", "method": "agentkv", "retention": 0.5, "recovery": "never", "max_attempts": 1},
+    {"id": "agentkv_25", "method": "agentkv", "retention": 0.25, "recovery": "never", "max_attempts": 1}
+  ],
+  "notes": "User-authorized exploratory Qwen3-14B retention pilot, separate from the Qwen3-8B main research matrix. Eight of the 19 dev task families are sampled with random.Random(20261017).sample(sorted(families), 8), choosing variant _1 in each family without inspecting scores. One paired replicate seed, one fresh attempt per cell, no recovery, unchanged completion-v4 API prompt. All conditions share BF16, 32768 context tokens, 600 seconds per cell, 40 GiB peak VRAM cap and 6 GiB workspace reserve. Generation allows 4096 tokens per turn for reasoning. The 32 cells have at most 5h20m of task budgets, plus initialization and offline evaluation. This is a feasibility and variance pilot; eight tasks cannot establish a smooth or precise accuracy trend. Report all failures and uncertainty; do not pool with earlier configurations or use it to freeze the main experiment."
+}

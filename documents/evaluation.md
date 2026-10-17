@@ -36,6 +36,26 @@ The evaluator runs after every attempt for the run has finished. It cannot guide
 
 For each condition, success is averaged over replicate seeds within each task and then over tasks. Replicate seeds are repeated budgeted experiments; analysis does not combine their attempts into a larger unbudgeted best-of-N. The 95% confidence intervals use percentile task bootstrap resampling, retaining every attempt, seed, and paired condition for each sampled task. Paired differences use the same task draws and are reported as the right-hand condition minus the left-hand condition. A single-task smoke interval is not evidence of generalization; the output reports the task count.
 
+Every mean estimate also reports `standard_error`, the sample standard deviation
+of the task means divided by the square root of the number of observed tasks.
+It is `null` with fewer than two tasks. Paired differences use the standard
+deviation of within-task differences, not independent condition errors. Repeat
+seeds do not multiply the independent task count. A constant sample can produce
+zero estimated SE and a collapsed bootstrap interval; `bootstrap_degenerate` and
+`uncertainty_notes` explicitly flag that this does not establish zero population
+uncertainty.
+
+Success estimates additionally report `bounded_mean_ci95`: a conservative,
+distribution-free Hoeffding interval for independent task means in `[0, 1]`,
+clipped to that range. Its radius is `sqrt(log(40) / (2*T))` for `T` tasks. Paired
+success differences lie in `[-1, 1]` and use twice that radius. This remains
+applicable when seeds are averaged within tasks, including all-failure samples;
+it is not a binomial interval treating repeated attempts as independent tasks.
+All intervals are pointwise 95%, not simultaneous guarantees across the plotted
+conditions or metrics. They assume independent sampled tasks. Correlated
+variants of one task family, hand-picked subsets, or a small development pilot
+do not establish precision for the full benchmark or a frozen test population.
+
 The analysis reports:
 
 | Metric | Definition and unit |
@@ -47,9 +67,28 @@ The analysis reports:
 | Decoding throughput | Sum of decode-produced tokens divided by summed decode seconds for attempts with both measurements; the first token produced by prefill is excluded |
 | Peak KV memory | Maximum recorded live KV tensor bytes over attempts; distinct from allocated cache capacity and total VRAM |
 | Peak total VRAM | Maximum recorded total VRAM bytes, including model/workspace/cache and rebuild transients |
+| Mean peak KV / total VRAM | Maximum within each cell's attempts, averaged over seeds within each task, then over tasks; bytes with task SE and bootstrap CI |
 | Estimated inference FLOPs | Sum of the engine's analytic forward-pass estimates, including rebuild prefill; an estimate, not a hardware-counter measurement |
 
 Every resource aggregate reports the number of attempts with observations and the total number of attempts. Missing failure-path measurements are not silently replaced with zero. Throughput is unavailable when no positive decoding time was observed. Total estimated FLOPs and memory maxima describe the recorded observations; coverage makes partial instrumentation visible.
+
+`mean_peak_kv_bytes` and `mean_peak_total_vram_bytes` retain a cell only when every
+started attempt has its measurement; a zero-attempt cell has no observed peak.
+A task mean requires complete cells for every configured seed. The output lists
+observed attempts and complete cell/task counts, while preserving all failures
+in success and latency summaries. Paired memory differences use only the shared
+complete tasks and report their IDs. Missing resource measurements can bias these
+observed-subset estimates; they are not grounds to drop failures from accuracy.
+Global maxima remain in `metrics` as separate worst-observed summaries.
+
+The engine's occupied KV peak includes transient page ownership during compaction
+and full-history rebuild, and may exceed the post-compaction retained size.
+The common `reserved_kv_pool_bytes` capacity is not resized with retention and
+must not be substituted for occupied KV. Plot measured means at the actual
+retention levels with their bounds; connect points only as a visual guide, without
+smoothing or enforcing monotonicity. Independently evolving task trajectories can
+have different lengths, and more aggressive retention need not reduce latency,
+peak occupancy, or accuracy monotonically.
 
 For a process interrupted inside an attempt, cell latency includes the remaining
 budget consumed conservatively on resume. The attempt's `reserved_budget_seconds`

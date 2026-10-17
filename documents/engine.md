@@ -6,6 +6,9 @@ COMET uses the proposal's Mini-SGLang revision
 `b5280b7c42bd90962712c19f8e0047c89ca40d6d`. Model and tokenizer both use
 `Qwen/Qwen3-8B` revision `b968826d9c46dd6066d109eabc6255188de91218` in BF16.
 Pass the local Hugging Face snapshot directory, whose basename is that revision.
+The authorized [Qwen3-14B exploratory pilot](experimental-models.md) uses its own
+pinned model/tokenizer revision with this same engine; final evaluation remains
+restricted to Qwen3-8B.
 The adapter verifies the checkout revision and exact patched-file hashes and rejects
 unrecorded tracked upstream changes. It does not use the HTTP serving API.
 
@@ -161,6 +164,11 @@ identical raw transcript. Two contrasting new user instructions share the same
 checkpoint, close the prior assistant turn, and use the Qwen non-thinking
 prefill. Each cached/fresh pair must match, and the two continuations must differ.
 Set `COMET_GPU_EVIDENCE` to preserve its JSON report.
+`COMET_TEST_MODEL` defaults to `Qwen/Qwen3-8B`; select `Qwen/Qwen3-14B` explicitly
+with its corresponding snapshot for exploratory integration checks. The long
+32K capacity case additionally requires `COMET_TEST_CAPACITY=1`; see the
+[exploratory model instructions](experimental-models.md) for its fixed settings
+and evidence output.
 
 The `memory_cap` case fixes its cap before constructing the engine, using the
 pinned BF16 parameter bytes, initially observed external device use, a 4 GiB

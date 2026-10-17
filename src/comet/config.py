@@ -6,6 +6,8 @@ import math
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+from comet.engine.contracts import validate_model
+
 
 def digest(value: object) -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, allow_nan=False).encode()).hexdigest()
@@ -137,11 +139,11 @@ class Experiment:
             raise ValueError("enable_thinking must be boolean")
         if self.triggers.dynamic_rule not in {"and", "or"}:
             raise ValueError("dynamic_rule must be and or or")
-        if self.engine.model != "Qwen/Qwen3-8B" or self.engine.dtype != "bfloat16":
-            raise ValueError("The research contract fixes Qwen3-8B in BF16")
-        for revision in (self.engine.model_revision, self.engine.tokenizer_revision):
-            if len(revision) != 40 or any(c not in "0123456789abcdef" for c in revision):
-                raise ValueError("Model and tokenizer revisions must be immutable commit SHAs")
+        if self.engine.dtype != "bfloat16":
+            raise ValueError("All supported models require BF16")
+        validate_model(self.engine.model, self.engine.model_revision, self.engine.tokenizer_revision)
+        if self.engine.model != "Qwen/Qwen3-8B" and self.stage != "pilot":
+            raise ValueError("Qwen3-14B is an exploratory pilot model; the research contract uses Qwen3-8B")
         if self.engine.workspace_reserve_bytes >= self.peak_vram_bytes:
             raise ValueError("Workspace reserve must fit inside the total VRAM cap")
         if self.sampling.max_new_tokens > self.engine.max_context_tokens:

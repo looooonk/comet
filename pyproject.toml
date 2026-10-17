@@ -13,6 +13,11 @@ dependencies = []
 [project.scripts]
 comet = "comet.cli:main"
 
+[project.optional-dependencies]
+plots = [
+    "matplotlib==3.10.8",
+]
+
 [dependency-groups]
 dev = ["pytest==9.1.1", "ruff==0.17.1"]
 

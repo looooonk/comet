@@ -129,6 +129,10 @@ def main(argv: list[str] | None = None) -> None:
     analyze.add_argument("--output", type=Path, required=True)
     analyze.add_argument("--bootstrap-samples", type=int, default=2000)
     analyze.add_argument("--seed", type=int, default=0)
+    plot = commands.add_parser("plot", help="Plot paired retention means and uncertainty")
+    plot.add_argument("analysis", type=Path)
+    plot.add_argument("--output", type=Path, required=True)
+    plot.add_argument("--title", default="AppWorld retention pilot")
     frozen = commands.add_parser(
         "freeze", help="Freeze final settings with measured train/dev evidence"
     )
@@ -165,6 +169,11 @@ def main(argv: list[str] | None = None) -> None:
             args.runs, args.output, bootstrap_samples=args.bootstrap_samples, seed=args.seed
         )
         _print({"analysis": str(args.output)})
+    elif args.command == "plot":
+        from comet.plotting import plot_retention
+
+        plot_retention(args.analysis, args.output, title=args.title)
+        _print({"figure": str(args.output)})
     else:
         from comet.appworld import AppWorldAdapter, validate_tasks
         from comet.engine import EngineSettings, MiniSGLangEngine
@@ -177,6 +186,7 @@ def main(argv: list[str] | None = None) -> None:
         def make_engine(condition):
             return MiniSGLangEngine(
                 EngineSettings(
+                    model=config.engine.model,
                     model_path=str(args.model_path.resolve()),
                     model_revision=config.engine.model_revision,
                     tokenizer_revision=config.engine.tokenizer_revision,

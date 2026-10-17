@@ -16,5 +16,6 @@ runtime artifacts are not included in this directory.
 | [2026-10-16 validation report](validation-2026-10-16.md) | Insomnia setup observations, integration checks, task attempts, and remaining limitations |
 | [Initial validation evidence](validation-2026-10-16.json) | Revisions, retention matrix, checks, measurements, and artifact hashes |
 | [Follow-up validation evidence](validation-2026-10-16-followup.json) | Larger-context attempts, live memory refusal, process interruption/resume, and offline scoring |
+| [Paired retention pilot plan](retention-pilot-2026-10-17-plan.md) | Declared task sample, model departure, common budgets, and uncertainty analysis |
 
 See the [validation guide](../validation.md) for reusable check instructions.
