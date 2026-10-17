@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "comparison_status": "infrastructure_compromised",
-  "reason": "Triton compiler-cache writes failed with Errno 122 (disk quota exceeded), starting during the third AgentKV50 cell and affecting all 14 remaining cells. This run cannot establish a retention curve.",
+  "reason": "Triton compiler-cache writes failed with Errno 122 (home file-count quota exhausted), starting during the third AgentKV50 cell and affecting all 14 remaining cells. Byte capacity was available. This run cannot establish a retention curve.",
   "artifact_policy": "Portable relative artifact names and original SHA256 only. Personal paths are omitted. All 32 terminal outcomes remain recorded; no cells are replaced or pooled with the repaired run.",
   "slurm_job_id": "13513114",
   "slurm_elapsed_seconds": 3286,

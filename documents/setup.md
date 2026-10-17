@@ -96,12 +96,13 @@ The launcher sources `scripts/runtime_caches.sh` before importing GPU libraries.
 It places Hugging Face, uv, Triton, PyTorch, CUDA, FlashInfer, and TVM-FFI caches
 under `COMET_STORAGE/cache`. Source the same file before standalone GPU preflight
 commands. Triton otherwise writes to its own home-directory cache even when the
-model and FlashInfer caches are redirected. Check project-storage quota, free
-blocks, and free inodes before long runs; filesystem-wide free space does not
-establish that an account has quota. The launcher checks create/write/fsync/rename
-in every cache directory before model loading; this catches current write
-failures, not quota exhaustion later in a run. Existing caches are not removed
-or migrated.
+model and FlashInfer caches are redirected. Check project-storage quotas for both
+bytes and file count, plus free blocks and inodes, before long runs. Many small
+compiler files can exhaust a file quota while byte capacity remains available.
+Filesystem-wide free space does not establish that an account has quota.
+The launcher checks create/write/fsync/rename in every cache directory before
+model loading; this catches current write failures, not quota exhaustion later
+in a run. Existing caches are not removed or migrated.
 
 The launch script takes explicit settings, with no settled research budget hidden
 in scheduler defaults:
