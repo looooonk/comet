@@ -105,7 +105,8 @@ old-plus-new page ownership during compaction; this KV measurement does not rely
 on polling and is distinct from the sampled total-device measurement.
 
 PyTorch's allocator ceiling is set to the experimental cap minus observed
-non-PyTorch device use. Total-device use is sampled every 10 ms and checked at
+non-PyTorch device use and tightened whenever its observed external high-water
+mark grows during initialization or execution. Total-device use is sampled every 10 ms and checked at
 forward boundaries. The reported conservative total peak is the larger of sampled
 device use and peak allocator reservation plus maximum observed external use.
 Allocator rejection or a detected cap excess fails the attempt. Device-wide

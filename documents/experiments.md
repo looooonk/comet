@@ -140,6 +140,11 @@ actions/observations, recovery decisions, timing/memory metrics and saved
 evaluator-compatible environments. Diagnostic sources live under `checkpoints/`.
 `scores.json` and `analysis.json` are separate post-hoc artifacts.
 
+Scoring records its own source and installed-package provenance. Resuming scoring
+requires that same implementation. Analysis refuses to pool different source,
+runtime, hardware or scoring versions even when their experiment settings match.
+Use the recorded checkout and environment when continuing an older run.
+
 Keep complete run directories outside tracked source. Copy them intact when
 moving between machines; AppWorld scoring also needs its pinned data root. Small
 committed validation summaries identify the original host, jobs and artifact

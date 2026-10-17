@@ -1,4 +1,5 @@
 from dataclasses import replace
+from threading import Lock
 from types import SimpleNamespace
 
 import pytest
@@ -136,3 +137,24 @@ def test_rkv_recovery_workspace_accounts_for_concurrent_redundancy_heads():
     bound = engine._workspace_bound(count)
     assert bound >= 24 * expected_heads * count * count
     assert bound > 2_000_000_000
+
+
+def test_allocator_ceiling_only_tightens_when_external_device_use_grows():
+    engine = MiniSGLangEngine.__new__(MiniSGLangEngine)
+    fractions = []
+    engine.settings = SimpleNamespace(peak_vram_bytes=1000)
+    engine.device_total_bytes = 2000
+    engine._peak_total, engine._peak_external, engine._allocator_external_bytes = 600, 200, 100
+    engine._monitor_error = None
+    engine._memory_lock = Lock()
+    engine._sample_memory = lambda: None
+    engine.torch = SimpleNamespace(cuda=SimpleNamespace(
+        max_memory_reserved=lambda: 100,
+        set_per_process_memory_fraction=lambda fraction, **kwargs: fractions.append(fraction),
+    ))
+    engine._check_memory()
+    engine._peak_external = 150
+    engine._check_memory()
+    engine._peak_external = 300
+    engine._check_memory()
+    assert fractions == [0.4, 0.35]

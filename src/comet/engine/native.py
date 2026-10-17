@@ -56,6 +56,7 @@ class MiniSGLangEngine:
         )
         free, total = torch.cuda.mem_get_info()
         self._external_bytes = total - free - torch.cuda.memory_reserved()
+        self._allocator_external_bytes = self._external_bytes
         allocator_cap = settings.peak_vram_bytes - self._external_bytes
         if allocator_cap <= 0:
             raise MemoryCapExceeded("GPU memory already exceeds configured cap")
@@ -241,6 +242,11 @@ class MiniSGLangEngine:
         peak = max(self._peak_total, self.torch.cuda.max_memory_reserved() + self._peak_external)
         if peak > self.settings.peak_vram_bytes:
             raise MemoryCapExceeded(f"peak total VRAM {peak} exceeds cap {self.settings.peak_vram_bytes}")
+        with self._memory_lock:
+            if self._peak_external > self._allocator_external_bytes:
+                self._allocator_external_bytes = self._peak_external
+                ceiling = self.settings.peak_vram_bytes - self._allocator_external_bytes
+                self.torch.cuda.set_per_process_memory_fraction(ceiling / self.device_total_bytes, device=0)
 
     def _check_deadline(self, deadline: float):
         if monotonic() >= deadline:
