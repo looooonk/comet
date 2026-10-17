@@ -31,6 +31,8 @@ The included configurations are:
 | Configuration | Purpose |
 | --- | --- |
 | `pilot-smoke.json` | One real dev task, one seed, full KV and all three methods at 50%; at most eight minutes of task budgets |
+| `pilot-long-context.json` | Full KV and AgentKV 50% with 16,384 tokens and ten minutes per cell; original prompt |
+| `pilot-completion.json` | The same longer-context check with an explicit preloaded-API protocol and code-only responses |
 | `pilot-matrix.json` | Q1/Q2 matrix: two full controls plus 27 compressed conditions, two dev tasks and two seeds |
 | `checkpoint-diagnostic.json` | One full control plus 27 compressed continuations from a common pre-compression checkpoint |
 
@@ -38,6 +40,11 @@ The full pilot matrix has 116 cells at a provisional ten-minute shared budget:
 19.3 GPU-hours at the time limit, excluding model loading. Inspect smoke costs
 before scheduling it. Nothing automatically launches this sweep. Task IDs are
 verified against the requested AppWorld split before loading the model.
+
+The completion variant addresses repeated forbidden imports observed during dev
+execution. Its prompt change is versioned separately and shared by both conditions;
+the earlier attempts remain recorded. These integration settings do not establish
+task-solving quality or qualify non-A100 runs as research pilot evidence.
 
 Configurations are JSON. `extends` resolves relative to the child file; top-level
 objects merge one level and lists replace in full. The run records the fully
