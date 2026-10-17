@@ -1,0 +1,1011 @@
+{
+  "schema_version": 1,
+  "validation_date_local": "2026-10-16",
+  "timezone": "America/New_York",
+  "scope": "Integration validation only; no frozen settings or research comparison.",
+  "hardware": {
+    "cluster": "Insomnia",
+    "node": "ins093",
+    "device": "NVIDIA RTX A6000",
+    "device_total_bytes": 50897289216,
+    "nvidia_smi_memory_mib": 49140,
+    "driver": "575.57.08",
+    "torch_cuda_runtime": "12.8",
+    "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Tue_May_27_02:21:03_PDT_2025\nCuda compilation tools, release 12.9, V12.9.86\nBuild cuda_12.9.r12.9/compiler.36037853_0",
+    "research_hardware_requirement_met": false
+  },
+  "dependencies": {
+    "schema_version": 1,
+    "python": "3.12",
+    "uv": "0.13.0",
+    "repositories": {
+      "agentkv": {
+        "url": "https://github.com/LiuTaowen-Tony/agentkv.git",
+        "revision": "b5280b7c42bd90962712c19f8e0047c89ca40d6d",
+        "role": "reference implementation"
+      },
+      "minisgl": {
+        "url": "https://github.com/LiuTaowen-Tony/kv-management-minisgl.git",
+        "revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
+        "patch": "patches/minisgl-comet.patch",
+        "patch_sha256": "2c8fe1390178cb83b6b0a252599c69b6ad8d7040822619d5ddd5a3e88bc00e46",
+        "role": "inference engine"
+      },
+      "appworld": {
+        "url": "https://github.com/StonyBrookNLP/appworld.git",
+        "revision": "42b5bcf3cd334fee33f0c37c02070a9f5807add5",
+        "data_version": "0.2.0",
+        "bundle_sha256": {
+          "apps.bundle": "88d21fc526c1655bb3eee4adfca78ccac793921e4506f28f734ecdb19af77a62",
+          "tests.bundle": "7b93343db5efd81b542e68e68150dd5ea5d59d8dcd64137d41bde4027b235dc9"
+        },
+        "role": "task environment and separate evaluator"
+      }
+    },
+    "model": {
+      "repository": "Qwen/Qwen3-8B",
+      "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "dtype": "bfloat16"
+    },
+    "profiles": {
+      "cpu": "uv.lock",
+      "appworld": "infra/requirements/appworld.lock",
+      "gpu": "infra/requirements/gpu.lock"
+    }
+  },
+  "sources": [
+    {
+      "job_id": "13511561",
+      "code_commit": "9dff86639e9f2d3d36be637be22861d169ce70fb",
+      "local_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked_tree_clean": true,
+      "untracked_paths": [
+        "documents/validation.md",
+        "tmp-validate-run.sh"
+      ],
+      "source_hashes": {
+        "src/comet/__init__.py": "204d8296d7327fa7c8f69c37f74e36ddecf8ff1a8429c54d9fca29d2959f51b5",
+        "src/comet/analysis.py": "0cc5492c5c72c428b9bf15b1d4d3126be4d827224059f008a9c6d33967ae6477",
+        "src/comet/appworld.py": "4c790681bcb647e40cc59debbf56747a803e297aad5bdbf0ebdf7600864076c2",
+        "src/comet/artifacts.py": "e0728577db3d1990e99e6e63f33591512c1c2d2a63c1c0b52b034e6d40a72ee9",
+        "src/comet/budget.py": "1a8f1b57db3f55bef29e713e39ebc589be1a1d7488466e79100946b90c4daeac",
+        "src/comet/cli.py": "d7bf27aa7847f6bc4b9a0ec113bc807cc2fa0e68c0734f7cbd151b7094a9da50",
+        "src/comet/clocks.py": "90a18e8c64f570134c303a4b358ca19ee813d06baf3a605866d0ef9eb2d80a50",
+        "src/comet/config.py": "44d3305f7598bd588a18daa77da1edcc012e76680da77ffc436433a0aefbeda3",
+        "src/comet/diagnostic.py": "050c0f4b099f45d2ca6485620cc5edf04e8afbf3bf02ffc577c9fa1559220c84",
+        "src/comet/engine/__init__.py": "357f9f4063a71d3a42aaab9f6a4f7070f94db204b62141307f1be518293bf330",
+        "src/comet/engine/_pins.py": "2bc609398d1469d9b12ceedfd516c794c9eb560e64c5e423969eb16a0c768f7e",
+        "src/comet/engine/contracts.py": "895a1227f6c7ac4427a67c279278990eb0ecd935a5f0f1e83e128ab734561f90",
+        "src/comet/engine/native.py": "aaf4031d0e2427c2826b62e631cd6b12aa9a550f40a70370e747c2c931777d6c",
+        "src/comet/engine/snapshot.py": "566b04920be458a416ec74fdd09fab4a566d893e5c0f3ae7fe5be2a335084644",
+        "src/comet/errors.py": "55573dd16947f02d9663c3dd76ee8d040bf327f8fd3a759ce5fd4a3abb94ce66",
+        "src/comet/evaluation.py": "e07c159d9a8194812f908ea0a6037adcb8121bb52d2e29cb18c8da66adc3ad3d",
+        "src/comet/policies.py": "52e1a06feb770fc7b2279a0b756086876dbb590530813adc58816ff33f59d5d8",
+        "src/comet/runner.py": "b58358538aee4d695f8afb55e5fd5e65a84383cf88119bb5553f212cf055441e",
+        "patches/minisgl-comet.patch": "2c8fe1390178cb83b6b0a252599c69b6ad8d7040822619d5ddd5a3e88bc00e46",
+        "infra/requirements/appworld.lock": "853b267c7dbc25858a9106a8c24e3bae248148de6bb2469625a3d09c549be647",
+        "infra/requirements/gpu.lock": "eed44fd078937aecc9ff728a712e89c52563fd13a3e56ab63053611b2be47db3"
+      },
+      "python": "3.12.15",
+      "hostname": "ins093"
+    },
+    {
+      "job_id": "13511652",
+      "code_commit": "6b50787b6644002829ca24138b9d1d48077f2eee",
+      "local_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked_tree_clean": true,
+      "untracked_paths": [
+        "documents/validation.md",
+        "tmp-validate-run.sh"
+      ],
+      "source_hashes": {
+        "src/comet/__init__.py": "204d8296d7327fa7c8f69c37f74e36ddecf8ff1a8429c54d9fca29d2959f51b5",
+        "src/comet/analysis.py": "a82fca0900417b2ac38d3939ae33a42c01d7a4fcc60b631ade88192890ef13d1",
+        "src/comet/appworld.py": "4c790681bcb647e40cc59debbf56747a803e297aad5bdbf0ebdf7600864076c2",
+        "src/comet/artifacts.py": "e0728577db3d1990e99e6e63f33591512c1c2d2a63c1c0b52b034e6d40a72ee9",
+        "src/comet/budget.py": "1a8f1b57db3f55bef29e713e39ebc589be1a1d7488466e79100946b90c4daeac",
+        "src/comet/cli.py": "d7bf27aa7847f6bc4b9a0ec113bc807cc2fa0e68c0734f7cbd151b7094a9da50",
+        "src/comet/clocks.py": "90a18e8c64f570134c303a4b358ca19ee813d06baf3a605866d0ef9eb2d80a50",
+        "src/comet/config.py": "44d3305f7598bd588a18daa77da1edcc012e76680da77ffc436433a0aefbeda3",
+        "src/comet/diagnostic.py": "050c0f4b099f45d2ca6485620cc5edf04e8afbf3bf02ffc577c9fa1559220c84",
+        "src/comet/engine/__init__.py": "357f9f4063a71d3a42aaab9f6a4f7070f94db204b62141307f1be518293bf330",
+        "src/comet/engine/_pins.py": "2bc609398d1469d9b12ceedfd516c794c9eb560e64c5e423969eb16a0c768f7e",
+        "src/comet/engine/contracts.py": "895a1227f6c7ac4427a67c279278990eb0ecd935a5f0f1e83e128ab734561f90",
+        "src/comet/engine/native.py": "19bf4ea6f668c525d8183272b4c74dcd1e359e35950ba5d79f019e3ce0464661",
+        "src/comet/engine/snapshot.py": "c2cb2c7c6e2ba927a69f98cbfbf00f919a63105605d1d295f30833a4b392c182",
+        "src/comet/errors.py": "55573dd16947f02d9663c3dd76ee8d040bf327f8fd3a759ce5fd4a3abb94ce66",
+        "src/comet/evaluation.py": "66951986255f80c3817d98dec4728e04c8c174d58c2bbb490837a2d489be2278",
+        "src/comet/policies.py": "52e1a06feb770fc7b2279a0b756086876dbb590530813adc58816ff33f59d5d8",
+        "src/comet/runner.py": "df5312fe3bc5500deef47d2acae81dd3b87b361c15e5655eb5c156ba62a847fa",
+        "patches/minisgl-comet.patch": "2c8fe1390178cb83b6b0a252599c69b6ad8d7040822619d5ddd5a3e88bc00e46",
+        "infra/requirements/appworld.lock": "853b267c7dbc25858a9106a8c24e3bae248148de6bb2469625a3d09c549be647",
+        "infra/requirements/gpu.lock": "eed44fd078937aecc9ff728a712e89c52563fd13a3e56ab63053611b2be47db3"
+      },
+      "python": "3.12.15",
+      "hostname": "ins093"
+    }
+  ],
+  "artifact_storage": {
+    "host": "insomnia",
+    "root": "/insomnia001/depts/edu/users/th3213/comet-20261016",
+    "source_workspace": "/insomnia001/home/th3213/comet-validation-20261016",
+    "backup": "Cluster project storage is not automatically backed up."
+  },
+  "jobs": [
+    {
+      "job_id": "13511498",
+      "role": "Initial AppWorld live execution/reset/checkpoint/evaluation test",
+      "status": "COMPLETED",
+      "passed": 1,
+      "test_seconds": 4.83,
+      "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/validation/appworld-13511498",
+      "source_note": "Pre-commit integration checkout; repeated under the final fixed source below."
+    },
+    {
+      "job_id": "13511561",
+      "role": "GPU integration, all retentions, four-condition task pipeline, two-branch diagnostic",
+      "status": "COMPLETED",
+      "elapsed_seconds": 434,
+      "exit_code": "0:0",
+      "tests": {
+        "passed": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 13.144,
+        "test_names": [
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.8-streamingllm]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.8-rkv]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.8-agentkv]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.5-streamingllm]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.5-rkv]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.5-agentkv]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.25-streamingllm]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.25-rkv]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.25-agentkv]",
+          "test_patch_rejects_missing_attention_observations_instead_of_full_cache_fallback",
+          "test_page_high_water_mark_captures_transient_compaction_ownership",
+          "test_native_persistence_eviction_checkpoint_and_single_rebuild"
+        ]
+      },
+      "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/validation/latest-13511561",
+      "log": "/insomnia001/depts/edu/users/th3213/comet-20261016/logs/validation-13511561.log"
+    },
+    {
+      "job_id": "13511649",
+      "role": "Final validation submission setup failure",
+      "status": "FAILED",
+      "failure_reason": "Temporary batch script referenced the wrong source directory; failed before tests or model loading.",
+      "log": "/insomnia001/depts/edu/users/th3213/comet-20261016/logs/final-validation-13511649.log"
+    },
+    {
+      "job_id": "13511652",
+      "role": "Final fixed-source stochastic GPU replay, numerical and cap contracts, AppWorld live test, full-cache task pipeline",
+      "status": "COMPLETED",
+      "exit_code": "0:0",
+      "tests": {
+        "passed": 32,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "seconds": 24.46,
+        "test_names": [
+          "test_retention_uses_full_logical_denominator_and_includes_mandatory_entries",
+          "test_retention_growth_never_requires_inventing_previously_evicted_entries[0.8-streamingllm]",
+          "test_retention_growth_never_requires_inventing_previously_evicted_entries[0.8-rkv]",
+          "test_retention_growth_never_requires_inventing_previously_evicted_entries[0.8-agentkv]",
+          "test_retention_growth_never_requires_inventing_previously_evicted_entries[0.5-streamingllm]",
+          "test_retention_growth_never_requires_inventing_previously_evicted_entries[0.5-rkv]",
+          "test_retention_growth_never_requires_inventing_previously_evicted_entries[0.5-agentkv]",
+          "test_retention_growth_never_requires_inventing_previously_evicted_entries[0.25-streamingllm]",
+          "test_retention_growth_never_requires_inventing_previously_evicted_entries[0.25-rkv]",
+          "test_retention_growth_never_requires_inventing_previously_evicted_entries[0.25-agentkv]",
+          "test_settings_reject_unpinned_model_or_invalid_control",
+          "test_branch_fingerprint_only_excludes_policy_and_local_snapshot_location",
+          "test_empty_recovery_is_explicit_and_never_counts_as_a_rebuild",
+          "test_recovery_refuses_a_different_history_or_second_rebuild",
+          "test_recovery_admission_denial_preserves_transcript_and_allowance[2-100-full_history_exceeds_kv_pool]",
+          "test_recovery_admission_denial_preserves_transcript_and_allowance[10-5-transient_workspace_exceeds_cap]",
+          "test_warmup_covers_all_conditions_once_and_restores_selected_policy",
+          "test_rkv_recovery_workspace_accounts_for_concurrent_redundancy_heads",
+          "test_allocator_ceiling_only_tightens_when_external_device_use_grows",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.8-streamingllm]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.8-rkv]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.8-agentkv]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.5-streamingllm]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.5-rkv]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.5-agentkv]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.25-streamingllm]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.25-rkv]",
+          "test_existing_algorithms_select_exact_relative_budgets_per_head[0.25-agentkv]",
+          "test_patch_rejects_missing_attention_observations_instead_of_full_cache_fallback",
+          "test_page_high_water_mark_captures_transient_compaction_ownership",
+          "test_native_persistence_eviction_checkpoint_and_single_rebuild",
+          "test_live_fresh_state_checkpoint_and_offline_scoring"
+        ]
+      },
+      "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/validation/final-13511652",
+      "log": "/insomnia001/depts/edu/users/th3213/comet-20261016/logs/final-validation-13511652.log",
+      "elapsed_seconds": 89,
+      "live_gpu_evidence": {
+        "device": "NVIDIA RTX A6000",
+        "integration_only": true,
+        "checks": [
+          {
+            "method": "streamingllm",
+            "memory": {
+              "peak_total_vram_bytes": 17835294720,
+              "peak_total_vram_sampled_bytes": 17835294720,
+              "peak_torch_allocated_bytes": 16875070976,
+              "peak_torch_reserved_bytes": 17465081856,
+              "peak_kv_cache_bytes": 63995904,
+              "peak_kv_bytes": 63995904,
+              "reserved_kv_pool_bytes": 151142400,
+              "reserved_kv_bytes": 151142400,
+              "kv_pool_tokens": 1024,
+              "physical_cached_tokens": 145,
+              "logical_cached_tokens": 289,
+              "retention_target_tokens": 145,
+              "memory_sample_interval_seconds": 0.01,
+              "total_peak_kind": "max(sampled device use, allocator peak plus maximum external use)"
+            },
+            "recovered": true
+          },
+          {
+            "method": "rkv",
+            "memory": {
+              "peak_total_vram_bytes": 17837391872,
+              "peak_total_vram_sampled_bytes": 17837391872,
+              "peak_torch_allocated_bytes": 16878661632,
+              "peak_torch_reserved_bytes": 17465081856,
+              "peak_kv_cache_bytes": 63995904,
+              "peak_kv_bytes": 63995904,
+              "reserved_kv_pool_bytes": 151142400,
+              "reserved_kv_bytes": 151142400,
+              "kv_pool_tokens": 1024,
+              "physical_cached_tokens": 145,
+              "logical_cached_tokens": 289,
+              "retention_target_tokens": 145,
+              "memory_sample_interval_seconds": 0.01,
+              "total_peak_kind": "max(sampled device use, allocator peak plus maximum external use)"
+            },
+            "recovered": true
+          },
+          {
+            "method": "agentkv",
+            "memory": {
+              "peak_total_vram_bytes": 17837391872,
+              "peak_total_vram_sampled_bytes": 17837391872,
+              "peak_torch_allocated_bytes": 16878661632,
+              "peak_torch_reserved_bytes": 17465081856,
+              "peak_kv_cache_bytes": 63995904,
+              "peak_kv_bytes": 63995904,
+              "reserved_kv_pool_bytes": 151142400,
+              "reserved_kv_bytes": 151142400,
+              "kv_pool_tokens": 1024,
+              "physical_cached_tokens": 145,
+              "logical_cached_tokens": 289,
+              "retention_target_tokens": 145,
+              "memory_sample_interval_seconds": 0.01,
+              "total_peak_kind": "max(sampled device use, allocator peak plus maximum external use)"
+            },
+            "recovered": true
+          }
+        ]
+      }
+    }
+  ],
+  "retention_matrix": {
+    "job_id": "13511561",
+    "passed": true,
+    "max_context_tokens": 1024,
+    "vram_cap_bytes": 42949672960,
+    "memory_note": "Standalone smoke peaks are process high-water values across branches, not independent comparative measurements.",
+    "checks": [
+      {
+        "method": "full",
+        "retention": 1.0,
+        "checkpoint_replay_passed": true,
+        "physical_tokens": 237,
+        "logical_tokens": 237,
+        "peak_total_vram_bytes": 17829003264,
+        "peak_kv_cache_bytes": 34947072
+      },
+      {
+        "method": "streamingllm",
+        "retention": 0.8,
+        "checkpoint_replay_passed": true,
+        "recovery_admitted": true,
+        "second_recovery_admitted": false,
+        "second_recovery_reason": "recovery_limit",
+        "physical_tokens_after_recovery": 196,
+        "logical_tokens_after_recovery": 245,
+        "retention_target_tokens": 196,
+        "peak_total_vram_bytes": 17829003264,
+        "peak_kv_cache_bytes": 65028096
+      },
+      {
+        "method": "streamingllm",
+        "retention": 0.5,
+        "checkpoint_replay_passed": true,
+        "recovery_admitted": true,
+        "second_recovery_admitted": false,
+        "second_recovery_reason": "recovery_limit",
+        "physical_tokens_after_recovery": 123,
+        "logical_tokens_after_recovery": 245,
+        "retention_target_tokens": 123,
+        "peak_total_vram_bytes": 17829003264,
+        "peak_kv_cache_bytes": 65028096
+      },
+      {
+        "method": "streamingllm",
+        "retention": 0.25,
+        "checkpoint_replay_passed": true,
+        "recovery_admitted": true,
+        "second_recovery_admitted": false,
+        "second_recovery_reason": "recovery_limit",
+        "physical_tokens_after_recovery": 62,
+        "logical_tokens_after_recovery": 245,
+        "retention_target_tokens": 62,
+        "peak_total_vram_bytes": 17829003264,
+        "peak_kv_cache_bytes": 65028096
+      },
+      {
+        "method": "rkv",
+        "retention": 0.8,
+        "checkpoint_replay_passed": true,
+        "recovery_admitted": true,
+        "second_recovery_admitted": false,
+        "second_recovery_reason": "recovery_limit",
+        "physical_tokens_after_recovery": 196,
+        "logical_tokens_after_recovery": 245,
+        "retention_target_tokens": 196,
+        "peak_total_vram_bytes": 17835294720,
+        "peak_kv_cache_bytes": 65028096
+      },
+      {
+        "method": "rkv",
+        "retention": 0.5,
+        "checkpoint_replay_passed": true,
+        "recovery_admitted": true,
+        "second_recovery_admitted": false,
+        "second_recovery_reason": "recovery_limit",
+        "physical_tokens_after_recovery": 123,
+        "logical_tokens_after_recovery": 245,
+        "retention_target_tokens": 123,
+        "peak_total_vram_bytes": 17835294720,
+        "peak_kv_cache_bytes": 65028096
+      },
+      {
+        "method": "rkv",
+        "retention": 0.25,
+        "checkpoint_replay_passed": true,
+        "recovery_admitted": true,
+        "second_recovery_admitted": false,
+        "second_recovery_reason": "recovery_limit",
+        "physical_tokens_after_recovery": 62,
+        "logical_tokens_after_recovery": 245,
+        "retention_target_tokens": 62,
+        "peak_total_vram_bytes": 17835294720,
+        "peak_kv_cache_bytes": 65028096
+      },
+      {
+        "method": "agentkv",
+        "retention": 0.8,
+        "checkpoint_replay_passed": true,
+        "recovery_admitted": true,
+        "second_recovery_admitted": false,
+        "second_recovery_reason": "recovery_limit",
+        "physical_tokens_after_recovery": 196,
+        "logical_tokens_after_recovery": 245,
+        "retention_target_tokens": 196,
+        "peak_total_vram_bytes": 17835294720,
+        "peak_kv_cache_bytes": 65028096
+      },
+      {
+        "method": "agentkv",
+        "retention": 0.5,
+        "checkpoint_replay_passed": true,
+        "recovery_admitted": true,
+        "second_recovery_admitted": false,
+        "second_recovery_reason": "recovery_limit",
+        "physical_tokens_after_recovery": 123,
+        "logical_tokens_after_recovery": 245,
+        "retention_target_tokens": 123,
+        "peak_total_vram_bytes": 17835294720,
+        "peak_kv_cache_bytes": 65028096
+      },
+      {
+        "method": "agentkv",
+        "retention": 0.25,
+        "checkpoint_replay_passed": true,
+        "recovery_admitted": true,
+        "second_recovery_admitted": false,
+        "second_recovery_reason": "recovery_limit",
+        "physical_tokens_after_recovery": 62,
+        "logical_tokens_after_recovery": 245,
+        "retention_target_tokens": 62,
+        "peak_total_vram_bytes": 17835294720,
+        "peak_kv_cache_bytes": 65028096
+      }
+    ]
+  },
+  "live_checks": [
+    "Full cache with eviction disabled",
+    "Actual upstream selection for all three methods at 80%, 50%, and 25%",
+    "Compressed KV persistence across turns and checkpoint restore",
+    "Greedy and stochastic token replay with CUDA RNG preservation",
+    "Recovery includes pending observation tokens and resumes from saved logits without duplicate prefill",
+    "Recovery leaves transcript prefix intact, reapplies retention, and refuses a second rebuild",
+    "AppWorld fresh state, database and namespace/RNG checkpoint restore, independent continuation",
+    "Runaway AppWorld tool interrupted by shared budget watchdog",
+    "Actual AppWorld evaluator on saved outcome after environment close",
+    "Shared diagnostic checkpoint prefix and source turns verified in both branches"
+  ],
+  "cap_validation": {
+    "live": "All sampled/conservative total-memory peaks remained below the 40GiB integration cap; transient KV occupancy high-water test passed.",
+    "controlled_unit_tests": "KV pool and transient workspace admission refusal preserve transcript and recovery allowance; allocator limit tightens when external-memory high-water increases.",
+    "not_claimed": "No deliberate live GPU out-of-memory or forced cap-refusal experiment."
+  },
+  "runs": [
+    {
+      "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/runs/live-diagnostic-13511561",
+      "run_id": "c18a5fcc-f067-4caf-9911-403a1dccb218",
+      "stage": "diagnostic",
+      "status": "completed",
+      "integration_smoke": true,
+      "config_digest": "e00106d87811fd282618f629a3f6ada635e01a7a535800d88148309577f30ea5",
+      "code_commit": "9dff86639e9f2d3d36be637be22861d169ce70fb",
+      "local_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "artifact_sha256": {
+        "manifest.json": "d08dfebb6d0c9642ee80e93f15f7ffc058cc3c63146911babbe50207ddd0f8a0",
+        "scores.json": "3e0e4035c425181a2ba65bc34d511113340707cee570b0fede8f9400d1ab9230",
+        "analysis": "7b5d6b7732c3ebf4887a6ac7c3d752b2c520209a5f3ce633b7eebecfb81a0c40"
+      },
+      "cells": [
+        {
+          "id": "50e1ac9_1-full_once-17",
+          "condition": {
+            "id": "full_once",
+            "max_attempts": 1,
+            "method": "full",
+            "recovery": "never",
+            "retention": 1.0
+          },
+          "task_id": "50e1ac9_1",
+          "seed": 17,
+          "completed": true,
+          "actual_attempts": 1,
+          "elapsed_seconds": 47.35931641905336,
+          "budget_seconds": 120,
+          "oracle_success": false,
+          "single_attempt_success": false,
+          "attempts": [
+            {
+              "attempt_index": 0,
+              "status": "context_limit",
+              "failure_reason": "Full raw token context reached configured limit; no truncation",
+              "elapsed_seconds": 47.34366473398404,
+              "budget_elapsed_seconds": 47.3548654440674,
+              "seed": 403056972,
+              "rebuilds": 0,
+              "tool_calls": 10,
+              "timings": {
+                "checkpoint_restore": 0.7544013599981554,
+                "cleanup": 0.005772853968665004,
+                "completion_observation": 0.021388991037383676,
+                "inference": 32.04213447403163,
+                "reset": 0.7357471019495279,
+                "shared_checkpoint_preparation": 13.732832815032452,
+                "tool": 0.013981955067720264,
+                "trajectory_save": 0.034048893954604864
+              },
+              "metrics": {
+                "estimated_flops": 72028716963840,
+                "generated_tokens": 1341,
+                "logical_cached_tokens": 4095,
+                "peak_kv_cache_bytes": 603832320,
+                "peak_total_vram_bytes": 18309251072,
+                "peak_total_vram_sampled_bytes": 18309251072,
+                "physical_cached_tokens": 4095,
+                "reserved_kv_pool_bytes": 604127232,
+                "retention_target_tokens": 4095
+              },
+              "evaluation": {
+                "skipped": "execution failure",
+                "status": "context_limit"
+              },
+              "triggered_recovery_events": []
+            }
+          ]
+        },
+        {
+          "id": "50e1ac9_1-agentkv_50_fixed-17",
+          "condition": {
+            "id": "agentkv_50_fixed",
+            "max_attempts": 1,
+            "method": "agentkv",
+            "recovery": "fixed",
+            "retention": 0.5
+          },
+          "task_id": "50e1ac9_1",
+          "seed": 17,
+          "completed": true,
+          "actual_attempts": 1,
+          "elapsed_seconds": 60.98018586297985,
+          "budget_seconds": 120,
+          "oracle_success": false,
+          "single_attempt_success": false,
+          "attempts": [
+            {
+              "attempt_index": 0,
+              "status": "context_limit",
+              "failure_reason": "Full raw token context reached configured limit; no truncation",
+              "elapsed_seconds": 60.96567482204409,
+              "budget_elapsed_seconds": 60.97809325403068,
+              "seed": 403056972,
+              "rebuilds": 1,
+              "tool_calls": 11,
+              "timings": {
+                "checkpoint_restore": 0.7837290730094537,
+                "cleanup": 0.005602319026365876,
+                "completion_observation": 0.02821498195407912,
+                "inference": 45.26130363001721,
+                "rebuild": 0.6846320379991084,
+                "reset": 0.4027021650108509,
+                "shared_checkpoint_preparation": 13.732832815032452,
+                "tool": 0.0187487990478985,
+                "trajectory_save": 0.04311505606165156
+              },
+              "metrics": {
+                "estimated_flops": 117850192896000,
+                "generated_tokens": 1308,
+                "logical_cached_tokens": 4095,
+                "peak_kv_cache_bytes": 603832320,
+                "peak_total_vram_bytes": 18313445376,
+                "peak_total_vram_sampled_bytes": 18313445376,
+                "physical_cached_tokens": 2048,
+                "rebuild_prefill_tokens": 2783,
+                "reserved_kv_pool_bytes": 604127232,
+                "retention_target_tokens": 2048
+              },
+              "evaluation": {
+                "skipped": "execution failure",
+                "status": "context_limit"
+              },
+              "triggered_recovery_events": [
+                {
+                  "tool_calls": 2,
+                  "context_tokens": 2783,
+                  "reason": "threshold_met",
+                  "admitted": true,
+                  "rebuild_seconds": 0.6840504099964164,
+                  "input_tokens": 2783
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "diagnostic_checkpoint": {
+        "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/runs/live-diagnostic-13511561/checkpoints/50e1ac9_1-17",
+        "preparation": {
+          "elapsed_seconds": 13.732832815032452,
+          "failure_reason": null,
+          "metrics": {
+            "decode_seconds": 4.6720269758370705,
+            "decode_tokens": 182,
+            "estimated_flops": 44711617370112,
+            "flops_estimation_method": "dense_2P_per_forward_token_plus_causal_qk_av_4LHD_per_attention_pair",
+            "generated_tokens": 183,
+            "kv_pool_tokens": 4096,
+            "logical_cached_tokens": 2607,
+            "memory_sample_interval_seconds": 0.01,
+            "peak_kv_bytes": 384417792,
+            "peak_kv_cache_bytes": 384417792,
+            "peak_torch_allocated_bytes": 17338607616,
+            "peak_torch_reserved_bytes": 17936941056,
+            "peak_total_vram_bytes": 18309251072,
+            "peak_total_vram_sampled_bytes": 18309251072,
+            "physical_cached_tokens": 2607,
+            "prefill_seconds": 0.484355871041771,
+            "prefill_tokens": 2425,
+            "reserved_kv_bytes": 604127232,
+            "reserved_kv_pool_bytes": 604127232,
+            "retention_target_tokens": 2607,
+            "total_peak_kind": "max(sampled device use, allocator peak plus maximum external use)"
+          },
+          "prepared_at_unix": 1792194969.3645933,
+          "seed": 17,
+          "status": "completed",
+          "task_id": "50e1ac9_1",
+          "timings": {
+            "checkpoint": 0.5314308120287023,
+            "completion_observation": 0.028435962973162532,
+            "inference": 5.555484211014118,
+            "reset": 7.531119938008487,
+            "tool": 0.0035324139753356576,
+            "trajectory_save": 0.0035072260070592165
+          }
+        },
+        "source_raw_tokens": 2608,
+        "source_pending_tokens": 33,
+        "combined_prefix_sha256": "1410edaf2b191e1066083a5e0683b41b642a4758f246ee8fb87cbfa7ea3ed3ed",
+        "file_sha256": {
+          "agent.json": "fd66368afd809c0ab2df8230d5963e65950c1b43a99691a02eb8f4829f8747d7",
+          "engine.json": "8c5c57413ca1a830903147a401c4fe1b75eff05f8a3922be4197d82f27b6c949",
+          "trajectory.json": "8aa07ce8c2424ac40d0ed0b2da2eb32aa4b7ed250054d76d52f5e94711988a72",
+          "environment/checkpoint.json": "bdc049a3f3b76a102371234f632cc9b55c91ed70faecd340e8fde5d26d40c8d6"
+        },
+        "branches": [
+          {
+            "condition": "50e1ac9_1-agentkv_50_fixed-17",
+            "saved_prefix_matches": true,
+            "saved_turns_match": true,
+            "final_tool_calls": 11
+          },
+          {
+            "condition": "50e1ac9_1-full_once-17",
+            "saved_prefix_matches": true,
+            "saved_turns_match": true,
+            "final_tool_calls": 10
+          }
+        ]
+      }
+    },
+    {
+      "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/runs/live-smoke-13511561",
+      "run_id": "005d7c01-3895-4a9f-a905-1b87e630a031",
+      "stage": "pilot",
+      "status": "completed",
+      "integration_smoke": true,
+      "config_digest": "a04afd57a9db6c2e3e6e3eef6fd26020d981626a834c759c4b585e105e727929",
+      "code_commit": "9dff86639e9f2d3d36be637be22861d169ce70fb",
+      "local_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "artifact_sha256": {
+        "manifest.json": "4e1c6d8fd6eac8d2225e04f79bf87f0533f4a6aa00dcbb1539615d235f09b3d2",
+        "scores.json": "73e45908b849a31bdccfc74c5b0866eed5804547ac900d4fad5c56b0ad10d962",
+        "analysis": "4aac8e33e26bf3af8cf50aeed0b347b3c1d6259df672b5b0359ae13e4c429a47"
+      },
+      "cells": [
+        {
+          "id": "50e1ac9_1-full_once-17",
+          "condition": {
+            "id": "full_once",
+            "max_attempts": 1,
+            "method": "full",
+            "recovery": "never",
+            "retention": 1.0
+          },
+          "task_id": "50e1ac9_1",
+          "seed": 17,
+          "completed": true,
+          "actual_attempts": 1,
+          "elapsed_seconds": 100.940024378011,
+          "budget_seconds": 120,
+          "oracle_success": false,
+          "single_attempt_success": false,
+          "attempts": [
+            {
+              "attempt_index": 0,
+              "status": "context_limit",
+              "failure_reason": "Full raw token context reached configured limit; no truncation",
+              "elapsed_seconds": 100.92683853796916,
+              "budget_elapsed_seconds": 100.93629798700567,
+              "seed": 403056972,
+              "rebuilds": 0,
+              "tool_calls": 10,
+              "timings": {
+                "cleanup": 0.11773638997692615,
+                "completion_observation": 0.05023474391782656,
+                "inference": 77.35594429407502,
+                "reset": 23.300723393971566,
+                "tool": 0.0576252649188973,
+                "trajectory_save": 0.04041082801995799
+              },
+              "metrics": {
+                "estimated_flops": 72028716963840,
+                "generated_tokens": 1341,
+                "logical_cached_tokens": 4095,
+                "peak_kv_cache_bytes": 603832320,
+                "peak_total_vram_bytes": 18288279552,
+                "peak_total_vram_sampled_bytes": 18288279552,
+                "physical_cached_tokens": 4095,
+                "reserved_kv_pool_bytes": 604127232,
+                "retention_target_tokens": 4095
+              },
+              "evaluation": {
+                "skipped": "execution failure",
+                "status": "context_limit"
+              },
+              "triggered_recovery_events": []
+            }
+          ]
+        },
+        {
+          "id": "50e1ac9_1-streamingllm_50_fixed-17",
+          "condition": {
+            "id": "streamingllm_50_fixed",
+            "max_attempts": 1,
+            "method": "streamingllm",
+            "recovery": "fixed",
+            "retention": 0.5
+          },
+          "task_id": "50e1ac9_1",
+          "seed": 17,
+          "completed": true,
+          "actual_attempts": 1,
+          "elapsed_seconds": 80.61790001898771,
+          "budget_seconds": 120,
+          "oracle_success": false,
+          "single_attempt_success": false,
+          "attempts": [
+            {
+              "attempt_index": 0,
+              "status": "context_limit",
+              "failure_reason": "Full raw token context reached configured limit; no truncation",
+              "elapsed_seconds": 80.59909329505172,
+              "budget_elapsed_seconds": 80.61331243999302,
+              "seed": 403056972,
+              "rebuilds": 1,
+              "tool_calls": 11,
+              "timings": {
+                "cleanup": 0.006156163057312369,
+                "completion_observation": 0.029958263912703842,
+                "inference": 79.00295300700236,
+                "rebuild": 0.6304817980271764,
+                "reset": 0.7755044570076279,
+                "tool": 0.10241434804629534,
+                "trajectory_save": 0.0463323169387877
+              },
+              "metrics": {
+                "estimated_flops": 115830880948224,
+                "generated_tokens": 1248,
+                "logical_cached_tokens": 4095,
+                "peak_kv_cache_bytes": 603832320,
+                "peak_total_vram_bytes": 18292473856,
+                "peak_total_vram_sampled_bytes": 18292473856,
+                "physical_cached_tokens": 2048,
+                "rebuild_prefill_tokens": 2704,
+                "reserved_kv_pool_bytes": 604127232,
+                "retention_target_tokens": 2048
+              },
+              "evaluation": {
+                "skipped": "execution failure",
+                "status": "context_limit"
+              },
+              "triggered_recovery_events": [
+                {
+                  "tool_calls": 2,
+                  "context_tokens": 2704,
+                  "reason": "threshold_met",
+                  "admitted": true,
+                  "rebuild_seconds": 0.6299696830101311,
+                  "input_tokens": 2704
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "50e1ac9_1-rkv_50_fixed-17",
+          "condition": {
+            "id": "rkv_50_fixed",
+            "max_attempts": 1,
+            "method": "rkv",
+            "recovery": "fixed",
+            "retention": 0.5
+          },
+          "task_id": "50e1ac9_1",
+          "seed": 17,
+          "completed": true,
+          "actual_attempts": 1,
+          "elapsed_seconds": 46.16051511303522,
+          "budget_seconds": 120,
+          "oracle_success": false,
+          "single_attempt_success": false,
+          "attempts": [
+            {
+              "attempt_index": 0,
+              "status": "context_limit",
+              "failure_reason": "Full raw token context reached configured limit; no truncation",
+              "elapsed_seconds": 46.146311768039595,
+              "budget_elapsed_seconds": 46.15817900799448,
+              "seed": 403056972,
+              "rebuilds": 1,
+              "tool_calls": 16,
+              "timings": {
+                "cleanup": 0.00622916198335588,
+                "completion_observation": 0.038607349910307676,
+                "inference": 44.80207232106477,
+                "rebuild": 0.6987194559769705,
+                "reset": 0.44945506198564544,
+                "tool": 0.0948730589589104,
+                "trajectory_save": 0.04916974593652412
+              },
+              "metrics": {
+                "estimated_flops": 114430586757120,
+                "generated_tokens": 647,
+                "logical_cached_tokens": 4060,
+                "peak_kv_cache_bytes": 598966272,
+                "peak_total_vram_bytes": 20081344512,
+                "peak_total_vram_sampled_bytes": 20081344512,
+                "physical_cached_tokens": 2030,
+                "rebuild_prefill_tokens": 2634,
+                "reserved_kv_pool_bytes": 604127232,
+                "retention_target_tokens": 2030
+              },
+              "evaluation": {
+                "skipped": "execution failure",
+                "status": "context_limit"
+              },
+              "triggered_recovery_events": [
+                {
+                  "tool_calls": 2,
+                  "context_tokens": 2634,
+                  "reason": "threshold_met",
+                  "admitted": true,
+                  "rebuild_seconds": 0.6982538300217129,
+                  "input_tokens": 2634
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "50e1ac9_1-agentkv_50_fixed-17",
+          "condition": {
+            "id": "agentkv_50_fixed",
+            "max_attempts": 1,
+            "method": "agentkv",
+            "recovery": "fixed",
+            "retention": 0.5
+          },
+          "task_id": "50e1ac9_1",
+          "seed": 17,
+          "completed": true,
+          "actual_attempts": 1,
+          "elapsed_seconds": 41.25594782800181,
+          "budget_seconds": 120,
+          "oracle_success": false,
+          "single_attempt_success": false,
+          "attempts": [
+            {
+              "attempt_index": 0,
+              "status": "context_limit",
+              "failure_reason": "Full raw token context reached configured limit; no truncation",
+              "elapsed_seconds": 41.23936115100514,
+              "budget_elapsed_seconds": 41.25349907099735,
+              "seed": 403056972,
+              "rebuilds": 1,
+              "tool_calls": 10,
+              "timings": {
+                "cleanup": 0.006291110999882221,
+                "completion_observation": 0.025660232990048826,
+                "inference": 39.81372894602828,
+                "rebuild": 0.8441244260175154,
+                "reset": 0.4527028520242311,
+                "tool": 0.05552276299567893,
+                "trajectory_save": 0.03641708492068574
+              },
+              "metrics": {
+                "estimated_flops": 116423821971456,
+                "generated_tokens": 954,
+                "logical_cached_tokens": 4095,
+                "peak_kv_cache_bytes": 603832320,
+                "peak_total_vram_bytes": 18743361536,
+                "peak_total_vram_sampled_bytes": 18739167232,
+                "physical_cached_tokens": 2048,
+                "rebuild_prefill_tokens": 2752,
+                "reserved_kv_pool_bytes": 604127232,
+                "retention_target_tokens": 2048
+              },
+              "evaluation": {
+                "skipped": "execution failure",
+                "status": "context_limit"
+              },
+              "triggered_recovery_events": [
+                {
+                  "tool_calls": 2,
+                  "context_tokens": 2752,
+                  "reason": "threshold_met",
+                  "admitted": true,
+                  "rebuild_seconds": 0.8436308350064792,
+                  "input_tokens": 2752
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "artifact_root": "/insomnia001/depts/edu/users/th3213/comet-20261016/runs/final-code-smoke-13511652",
+      "run_id": "4b62d20d-7d94-4bff-b49d-f1fbc60d56c3",
+      "stage": "pilot",
+      "status": "completed",
+      "integration_smoke": true,
+      "config_digest": "e6b74c9408d8248a7b574e9e00245455514c214027444aa53dc7d7b79b0bd104",
+      "code_commit": "6b50787b6644002829ca24138b9d1d48077f2eee",
+      "local_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "artifact_sha256": {
+        "manifest.json": "8bae9f554ccaf70b70bc23d6ff2054719fb77b58ff7920715bc51fe9abf6e9c2",
+        "scores.json": "2329cbde80fac030dd1c4175352627a97ba81fc8295b4afadf3cbe80dedad913",
+        "analysis": "9e6cefd2943f0bbb89bb24bed9d7fd14fb185f6736a4884d06b3b8fa9a13aa38"
+      },
+      "cells": [
+        {
+          "id": "50e1ac9_1-full_once-17",
+          "condition": {
+            "id": "full_once",
+            "max_attempts": 1,
+            "method": "full",
+            "recovery": "never",
+            "retention": 1.0
+          },
+          "task_id": "50e1ac9_1",
+          "seed": 17,
+          "completed": true,
+          "actual_attempts": 1,
+          "elapsed_seconds": 45.4457905869931,
+          "budget_seconds": 120,
+          "oracle_success": false,
+          "single_attempt_success": false,
+          "attempts": [
+            {
+              "attempt_index": 0,
+              "status": "context_limit",
+              "failure_reason": "Full raw token context reached configured limit; no truncation",
+              "elapsed_seconds": 45.43502111098496,
+              "budget_elapsed_seconds": 45.443360054981895,
+              "seed": 403056972,
+              "rebuilds": 0,
+              "tool_calls": 10,
+              "timings": {
+                "cleanup": 0.07270476705161855,
+                "completion_observation": 0.04978670185664669,
+                "inference": 37.79286960506579,
+                "reset": 7.46220250002807,
+                "tool": 0.01689245004672557,
+                "trajectory_save": 0.03654354199534282
+              },
+              "metrics": {
+                "estimated_flops": 72028716963840,
+                "generated_tokens": 1341,
+                "logical_cached_tokens": 4095,
+                "peak_kv_cache_bytes": 603832320,
+                "peak_total_vram_bytes": 18288279552,
+                "peak_total_vram_sampled_bytes": 18288279552,
+                "physical_cached_tokens": 4095,
+                "reserved_kv_pool_bytes": 604127232,
+                "retention_target_tokens": 4095
+              },
+              "evaluation": {
+                "skipped": "execution failure",
+                "status": "context_limit"
+              },
+              "triggered_recovery_events": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "RTX A6000 integration evidence does not satisfy the required A100 80GB research hardware.",
+    "All recorded task attempts reached the configured 4096-token context limit and remain failures; no task success or method-quality claim.",
+    "The scoring CLI skips AppWorld evaluation for execution-failure attempts. The separate live AppWorld fixture exercises the actual saved-outcome evaluator.",
+    "The integration configs are provisional and not a tuned/frozen pilot.",
+    "A100 train/dev pilot, full diagnostic matrix, final evaluation, long-run resume/preemption tests, and GCP runtime validation remain outstanding.",
+    "No cloud resources were provisioned."
+  ],
+  "cpu_validation": {
+    "code_commit": "6b50787b6644002829ca24138b9d1d48077f2eee",
+    "passed": 79,
+    "skipped": 3,
+    "lint": "passed",
+    "github_actions_run": "https://github.com/looooonk/comet/actions/runs/38984291935",
+    "github_actions_status": "success"
+  }
+}
