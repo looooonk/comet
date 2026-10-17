@@ -41,8 +41,8 @@ The full pilot matrix has 116 cells at a provisional ten-minute shared budget:
 before scheduling it. Nothing automatically launches this sweep. Task IDs are
 verified against the requested AppWorld split before loading the model.
 
-The completion variant addresses repeated forbidden imports observed during dev
-execution. Its prompt change is versioned separately and shared by both conditions;
+The completion variant addresses repeated forbidden imports and unprinted API
+return values observed during dev execution. Its prompt version is shared by both conditions;
 the earlier attempts remain recorded. These integration settings do not establish
 task-solving quality or qualify non-A100 runs as research pilot evidence.
 
