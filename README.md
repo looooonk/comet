@@ -13,7 +13,7 @@ We focus on two questions:
 1. Can an agent use information available during a task to decide when rebuilding its memory is worthwhile, compared with never rebuilding or rebuilding on a fixed schedule?
 2. Under the same time and memory limits, how do additional attempts and memory recovery affect success as we retain less information?
 
-We will compare full memory with three ways of retaining less of the model's cached history: StreamingLLM, R-KV, and AgentKV. All comparisons use Qwen3-8B on AppWorld, a collection of multi-step tasks with verifiable outcomes. Rebuilding memory means reconstructing the model's cache from the current attempt's history; it does not undo actions already taken.
+We will compare full memory with three ways of retaining less of the model's cached history: StreamingLLM, R-KV, and AgentKV. The main experiment uses Qwen3-8B on AppWorld, a collection of multi-step tasks with verifiable outcomes. Rebuilding memory means reconstructing the model's cache from the current attempt's history; it does not undo actions already taken.
 
 Our main result will be the share of tasks solved by at least one attempt within the budget. Outcomes are checked afterward, so this measures what would be possible with perfect selection among attempts. It does not assume that the agent can recognize a successful attempt while running. We will also report the time and memory costs.
 
