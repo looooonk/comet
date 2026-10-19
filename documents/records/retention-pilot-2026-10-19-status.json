@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-10-19T17:57:21.506697+00:00",
+  "status": "waiting_for_compatible_cluster_capacity",
+  "run_id": "f15c5c5b-7e6b-4134-bf36-454bb434f1a4",
+  "source_commit": "60ccf510a809c0b1dceafda52e4ba51d090a8123",
+  "config_digest": "0008093e5b8d3828c49841e8ed7264febf5056150f6f2442b6f4bed6ed9e2d67",
+  "progress": {
+    "terminal_cells": 25,
+    "normal_completions": 20,
+    "timeouts": 5,
+    "interrupted_cells_awaiting_resume_finalization": 1,
+    "untouched_cells": 6,
+    "scores_exist": false,
+    "analysis_exists": false
+  },
+  "preservation": {
+    "terminal_artifacts_verified": 460,
+    "hash_mismatches": 0
+  },
+  "journal_note": "The canceled attempt still has its initial running journal entry. Resume will conservatively finalize it as interrupted without a replacement; no attempt is currently executing.",
+  "scheduler": {
+    "continuation_job": "13515479",
+    "postflight_job": "13515481",
+    "cpu_export_job": "13515534",
+    "all_jobs": "PENDING",
+    "current_start_estimate": null,
+    "previous_estimate": "The October 17 start forecast did not hold and is superseded by the current unavailable estimate.",
+    "observed_capacity": "The previously selected node has all eight GPUs allocated. The original node has returned to schedulable service but all its CPUs are allocated."
+  },
+  "scheduling_adjustment": {
+    "at_utc": "2026-10-19T17:58:02.881904+00:00",
+    "change": "Removed the single-node requirement from the two pending GPU jobs while retaining the R6000 feature constraint. Either compatible node is now eligible.",
+    "job_ids_dependencies_and_resources_unchanged": true,
+    "original_source_config_budgets_and_completed_cells_unchanged": true,
+    "guard_change": "Permit either known compatible node and record actual host change. Exact device/VRAM/driver/CUDA/source checks, BF16 CUDA health check, run lock and artifact preservation checks remain required before resume.",
+    "guard_before_sha256": "a037c8f8e104e67811e55e7354281621c16678904d9078f07fd5d173475a0d2f",
+    "guard_after_sha256": "07798a838ec289e34aa41b364c3375c47eaa564a766db92de272599c35dde12f",
+    "guard_syntax": "passed",
+    "gpu_health_guard_execution": "pending allocation",
+    "temporary_hold_released": true
+  },
+  "remaining_work": "Run six untouched cells, score and analyze offline, run six numerical compaction/position checks, export artifacts, then verify and publish the report/graph. The existing automatic dependency chain remains queued.",
+  "evidence_sha256": {
+    "status-20261019/guard-update.json": "55a6cc2ccf794d4eb6f4cf5c71b74af12c0983981d792a7fc774c9f9c56dad72",
+    "status-20261019/queue-after-release.txt": "4c4c325c59699d729ff26299daa0e4625d1832a98e20e3b79fbbcd21f639a631",
+    "status-20261019/resume-guard.py": "07798a838ec289e34aa41b364c3375c47eaa564a766db92de272599c35dde12f",
+    "status-20261019/run-status.json": "0b8c3897ccb5cb81b2d9d6ed9e496d513e049090533580650335d093d1cfeda8",
+    "status-20261019/scheduler-update.json": "96b4aafecd15a25401a328e2023def64b700f2aa750dcd98e53a1c79e5500c7c"
+  }
+}

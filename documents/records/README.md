@@ -20,5 +20,6 @@ runtime artifacts are not included in this directory.
 | [14B pilot preflight evidence](retention-pilot-2026-10-17-validation.json) | Model hashes, GPU persistence/capacity/cap checks, and hardware failure records |
 | [Infrastructure-compromised pilot](retention-pilot-2026-10-17-quota-failure.json) | All 32 outcomes and original hashes from the run affected by compiler-cache quota exhaustion; excluded as a whole from the repaired comparison |
 | [Repaired-pilot interruption](retention-pilot-2026-10-17-interruption.json) | GPU driver stall, preservation of 25 terminal cells, and conservative continuation policy; no accuracy result yet |
+| [October 19 queue follow-up](retention-pilot-2026-10-19-status.json) | Jobs still pending, preserved artifacts reverified, and eligibility broadened to both compatible nodes with hardware/runtime guards retained |
 
 See the [validation guide](../validation.md) for reusable check instructions.

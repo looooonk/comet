@@ -113,5 +113,6 @@
       "behavior": "Exports experiment artifacts after successful execution/scoring and preserves postflight success or failure evidence."
     },
     "bundle_files_verified": 557
-  }
+  },
+  "subsequent_status_record": "retention-pilot-2026-10-19-status.json"
 }
