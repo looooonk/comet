@@ -29,11 +29,20 @@ The repository includes a shared experiment runner, pinned AgentKV Mini-SGLang i
 
 Start with the [setup guide](documents/setup.md), then the [experiment workflow](documents/experiments.md). The [validation guide](documents/validation.md) explains the checks; [personal and run records](documents/records/README.md) preserve dated evidence and limitations. Insomnia job scripts support short development runs; the same environment and commands run on a GCP A100 VM for longer experiments.
 
-An authorized [Qwen3-14B exploratory pilot](documents/experimental-models.md) can assess a stronger model while keeping its results separate from the Qwen3-8B research plan.
+The authorized [Qwen3-14B exploratory pilot](documents/experimental-models.md) assesses a stronger model while keeping its results separate from the Qwen3-8B research plan. The [results and validation index](documents/records/README.md) identifies the latest completed comparison, its limitations, and the remaining research work.
 
 ## Working together
 
 [AGENTS.md](AGENTS.md) contains the implementation rules and experimental constraints for coding agents. Keep this README focused on the project overview; put technical procedures and reproducibility details in the implementation documentation as it is added.
+
+The proposal assigns these coordination roles; contributors share the pipeline and may work across files.
+
+| Contributor | Planned role |
+| --- | --- |
+| Yihan Bai | Experiment and ablation analysis |
+| Henry He | Experiment setup and execution |
+| Yenna Hwang | Infrastructure and code framework setup |
+| Chad Cai | Infrastructure and experiment setup |
 
 ## Planned milestones
 

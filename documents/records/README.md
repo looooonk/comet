@@ -1,4 +1,26 @@
-# Personal and run records
+# Results and validation records
+
+## Latest results
+
+The [Qwen3-14B retention pilot](retention-pilot-2026-10-20.md) completed on
+October 20, 2026; its results were collected and reproduced on October 31.
+Full cache solved 1/8 dev tasks, and AgentKV at 80%, 50%, and 25% retention
+solved 0/8 each. All 32 attempts are accounted for, including ten timeouts and
+one interruption. The report includes uncertainty, paired comparisons, resource
+coverage, a figure, and reproducible artifact identifiers.
+
+This exploratory run used alternative hardware, one attempt per condition, and
+no recovery. It does not qualify the main Qwen3-8B/A100 experiment or resolve
+the recovery and best-of-N questions. Main-pilot tuning and freeze, the full
+diagnostic matrix, and final evaluation remain outstanding. See the report's
+[remaining work](retention-pilot-2026-10-20.md#remaining-research-work).
+
+The October 17 interruption and October 19 pending-job records below are
+historical snapshots. The continuation, postflight, and export all completed;
+the [completion evidence](retention-pilot-2026-10-20.json) supersedes their
+pending status.
+
+## Record conventions
 
 Keep personal notes, dated execution logs, validation results, and artifact
 inventories here. General implementation, setup, and repository guidance belongs
@@ -11,15 +33,22 @@ and links other contributors cannot access. Use portable artifact filenames and
 hashes; link shared storage only when it is accessible to collaborators. Large
 runtime artifacts are not included in this directory.
 
+## Evidence index
+
 | Record | Contents |
 | --- | --- |
+| [October 20 pilot results](retention-pilot-2026-10-20.md) | Completed 32-attempt comparison, uncertainty, cost, trajectory observations, and remaining research work; reviewed October 31 |
+| [Completed analysis](retention-pilot-2026-10-20-analysis.json) | Shared condition and paired estimates with standard errors, intervals, and resource coverage |
+| [Per-attempt results](retention-pilot-2026-10-20-attempts.csv) | All 32 outcomes and selected measurements, with missing data left empty |
+| [Completion evidence](retention-pilot-2026-10-20.json) | Resolved config, revisions, validation, integrity checks, and artifact hashes |
+| [Retention figure](retention-pilot-2026-10-20.svg) | Success, budget-accounted time, and occupied KV with pointwise uncertainty |
 | [2026-10-16 validation report](validation-2026-10-16.md) | Insomnia setup observations, integration checks, task attempts, and remaining limitations |
 | [Initial validation evidence](validation-2026-10-16.json) | Revisions, retention matrix, checks, measurements, and artifact hashes |
 | [Follow-up validation evidence](validation-2026-10-16-followup.json) | Larger-context attempts, live memory refusal, process interruption/resume, and offline scoring |
 | [Paired retention pilot plan](retention-pilot-2026-10-17-plan.md) | Declared task sample, model departure, common budgets, and uncertainty analysis |
 | [14B pilot preflight evidence](retention-pilot-2026-10-17-validation.json) | Model hashes, GPU persistence/capacity/cap checks, and hardware failure records |
 | [Infrastructure-compromised pilot](retention-pilot-2026-10-17-quota-failure.json) | All 32 outcomes and original hashes from the run affected by compiler-cache quota exhaustion; excluded as a whole from the repaired comparison |
-| [Repaired-pilot interruption](retention-pilot-2026-10-17-interruption.json) | GPU driver stall, preservation of 25 terminal cells, and conservative continuation policy; no accuracy result yet |
-| [October 19 queue follow-up](retention-pilot-2026-10-19-status.json) | Jobs still pending, preserved artifacts reverified, and eligibility broadened to both compatible nodes with hardware/runtime guards retained |
+| [Repaired-pilot interruption](retention-pilot-2026-10-17-interruption.json) | Historical driver stall, preservation of 25 terminal cells, and conservative continuation policy |
+| [October 19 queue follow-up](retention-pilot-2026-10-19-status.json) | Historical pending-job snapshot and eligibility change; superseded by the October 20 completion evidence |
 
 See the [validation guide](../validation.md) for reusable check instructions.

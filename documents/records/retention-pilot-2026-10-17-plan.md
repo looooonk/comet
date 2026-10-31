@@ -1,5 +1,10 @@
 # Paired retention pilot plan
 
+The replacement run completed on October 20, 2026. See the
+[results and analysis](retention-pilot-2026-10-20.md) for the completed comparison,
+including the interruption and all failed attempts. The plan below records the
+settings declared before scoring.
+
 This exploratory pilot compares full KV against AgentKV at 80%, 50%, and 25%
 retention. Recovery is disabled and each task/condition receives one fresh
 attempt. Its purpose is to measure task success, latency, occupied KV memory,

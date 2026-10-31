@@ -1,0 +1,1241 @@
+{
+  "conditions": {
+    "agentkv_25": {
+      "actual_attempts": {
+        "bootstrap_degenerate": true,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 1
+      },
+      "attempt_status_counts": {
+        "completed": 1,
+        "interrupted": 1,
+        "timeout": 6
+      },
+      "condition": {
+        "id": "agentkv_25",
+        "max_attempts": 1,
+        "method": "agentkv",
+        "recovery": "never",
+        "retention": 0.25
+      },
+      "infeasible_cells": 0,
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          414.4344511866002,
+          601.4893110682024
+        ],
+        "standard_error": 62.03261486386788,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": 538.7743306544726
+      },
+      "mean_peak_kv_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          1231070354.2857144,
+          1763269485.7142856
+        ],
+        "coverage": {
+          "complete_cells": 7,
+          "complete_tasks": 7,
+          "observed_attempts": 7,
+          "total_attempts": 8,
+          "total_cells": 8,
+          "total_tasks": 8
+        },
+        "standard_error": 155842527.1657082,
+        "task_count": 7,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 1543957942.857143
+      },
+      "mean_peak_total_vram_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          36591604297.14286,
+          36608081920.0
+        ],
+        "coverage": {
+          "complete_cells": 7,
+          "complete_tasks": 7,
+          "observed_attempts": 7,
+          "total_attempts": 8,
+          "total_cells": 8,
+          "total_tasks": 8
+        },
+        "standard_error": 4686183.294726209,
+        "task_count": 7,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 36598494939.42857
+      },
+      "metrics": {
+        "decode_throughput": {
+          "aggregation": "ratio of sums",
+          "observed_attempts": 7,
+          "total_attempts": 8,
+          "unit": "decode tokens / decode second",
+          "value": 27.49405831928612
+        },
+        "estimated_flops": {
+          "aggregation": "sum",
+          "methods": [
+            "dense_2P_per_forward_token_plus_causal_qk_av_4LHD_per_attention_pair"
+          ],
+          "observed_attempts": 7,
+          "total_attempts": 8,
+          "unit": "estimated FLOPs",
+          "value": 4153351250073600
+        },
+        "generated_tokens": {
+          "aggregation": "sum",
+          "observed_attempts": 7,
+          "total_attempts": 8,
+          "unit": "tokens",
+          "value": 88329
+        },
+        "peak_kv_bytes": {
+          "aggregation": "max",
+          "observed_attempts": 7,
+          "total_attempts": 8,
+          "unit": "bytes",
+          "value": 1890222080
+        },
+        "peak_total_vram_bytes": {
+          "aggregation": "max",
+          "observed_attempts": 7,
+          "total_attempts": 8,
+          "unit": "bytes",
+          "value": 36624859136
+        },
+        "prefill_tokens": {
+          "aggregation": "sum",
+          "observed_attempts": 7,
+          "total_attempts": 8,
+          "unit": "tokens",
+          "value": 42919
+        }
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": true,
+        "bounded_mean_ci95": [
+          0,
+          0.48016139565996035
+        ],
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0.0
+      },
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": true,
+        "bounded_mean_ci95": [
+          0,
+          0.48016139565996035
+        ],
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0.0
+      },
+      "zero_attempt_cells": 0
+    },
+    "agentkv_50": {
+      "actual_attempts": {
+        "bootstrap_degenerate": true,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 1
+      },
+      "attempt_status_counts": {
+        "completed": 5,
+        "timeout": 3
+      },
+      "condition": {
+        "id": "agentkv_50",
+        "max_attempts": 1,
+        "method": "agentkv",
+        "recovery": "never",
+        "retention": 0.5
+      },
+      "infeasible_cells": 0,
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          189.09524175773842,
+          489.9965589037398
+        ],
+        "standard_error": 81.68988689319954,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": 333.985773181892
+      },
+      "mean_peak_kv_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          1583800320.0,
+          2819781632.0
+        ],
+        "coverage": {
+          "complete_cells": 8,
+          "complete_tasks": 8,
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "total_cells": 8,
+          "total_tasks": 8
+        },
+        "standard_error": 339530104.4464256,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 2184478720
+      },
+      "mean_peak_total_vram_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          36607819776.0,
+          36625645568.0
+        ],
+        "coverage": {
+          "complete_cells": 8,
+          "complete_tasks": 8,
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "total_cells": 8,
+          "total_tasks": 8
+        },
+        "standard_error": 4893243.209615012,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 36616732672
+      },
+      "metrics": {
+        "decode_throughput": {
+          "aggregation": "ratio of sums",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "decode tokens / decode second",
+          "value": 24.29695596734598
+        },
+        "estimated_flops": {
+          "aggregation": "sum",
+          "methods": [
+            "dense_2P_per_forward_token_plus_causal_qk_av_4LHD_per_attention_pair"
+          ],
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "estimated FLOPs",
+          "value": 3495966582784000
+        },
+        "generated_tokens": {
+          "aggregation": "sum",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "tokens",
+          "value": 61518
+        },
+        "peak_kv_bytes": {
+          "aggregation": "max",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "bytes",
+          "value": 3547299840
+        },
+        "peak_total_vram_bytes": {
+          "aggregation": "max",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "bytes",
+          "value": 36635344896
+        },
+        "prefill_tokens": {
+          "aggregation": "sum",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "tokens",
+          "value": 44999
+        }
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": true,
+        "bounded_mean_ci95": [
+          0,
+          0.48016139565996035
+        ],
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0.0
+      },
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": true,
+        "bounded_mean_ci95": [
+          0,
+          0.48016139565996035
+        ],
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0.0
+      },
+      "zero_attempt_cells": 0
+    },
+    "agentkv_80": {
+      "actual_attempts": {
+        "bootstrap_degenerate": true,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 1
+      },
+      "attempt_status_counts": {
+        "completed": 7,
+        "timeout": 1
+      },
+      "condition": {
+        "id": "agentkv_80",
+        "max_attempts": 1,
+        "method": "agentkv",
+        "recovery": "never",
+        "retention": 0.8
+      },
+      "infeasible_cells": 0,
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          101.31763830187265,
+          309.26882380631287
+        ],
+        "standard_error": 61.58895948244674,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": 182.03277657495346
+      },
+      "mean_peak_kv_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          2227564544.0,
+          3681660928.0
+        ],
+        "coverage": {
+          "complete_cells": 8,
+          "complete_tasks": 8,
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "total_cells": 8,
+          "total_tasks": 8
+        },
+        "standard_error": 408145514.29898906,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 2859499520
+      },
+      "mean_peak_total_vram_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          36594188288.0,
+          36673093632.0
+        ],
+        "coverage": {
+          "complete_cells": 8,
+          "complete_tasks": 8,
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "total_cells": 8,
+          "total_tasks": 8
+        },
+        "standard_error": 24426058.095608816,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 36623024128
+      },
+      "metrics": {
+        "decode_throughput": {
+          "aggregation": "ratio of sums",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "decode tokens / decode second",
+          "value": 30.324192243467934
+        },
+        "estimated_flops": {
+          "aggregation": "sum",
+          "methods": [
+            "dense_2P_per_forward_token_plus_causal_qk_av_4LHD_per_attention_pair"
+          ],
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "estimated FLOPs",
+          "value": 2942794697267200
+        },
+        "generated_tokens": {
+          "aggregation": "sum",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "tokens",
+          "value": 40501
+        },
+        "peak_kv_bytes": {
+          "aggregation": "max",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "bytes",
+          "value": 5367562240
+        },
+        "peak_total_vram_bytes": {
+          "aggregation": "max",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "bytes",
+          "value": 36792631296
+        },
+        "prefill_tokens": {
+          "aggregation": "sum",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "tokens",
+          "value": 46887
+        }
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": true,
+        "bounded_mean_ci95": [
+          0,
+          0.48016139565996035
+        ],
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0.0
+      },
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": true,
+        "bounded_mean_ci95": [
+          0,
+          0.48016139565996035
+        ],
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0.0
+      },
+      "zero_attempt_cells": 0
+    },
+    "full_once": {
+      "actual_attempts": {
+        "bootstrap_degenerate": true,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 1
+      },
+      "attempt_status_counts": {
+        "completed": 8
+      },
+      "condition": {
+        "id": "full_once",
+        "max_attempts": 1,
+        "method": "full",
+        "recovery": "never",
+        "retention": 1.0
+      },
+      "infeasible_cells": 0,
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          85.70542177992029,
+          167.9252860418841
+        ],
+        "standard_error": 22.605785776855626,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": 127.13966805546079
+      },
+      "mean_peak_kv_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          1512910848.0,
+          2237911040.0
+        ],
+        "coverage": {
+          "complete_cells": 8,
+          "complete_tasks": 8,
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "total_cells": 8,
+          "total_tasks": 8
+        },
+        "standard_error": 197886258.2271895,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 1868328960
+      },
+      "mean_peak_total_vram_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": true,
+        "ci95": [
+          36568236032.0,
+          36568236032.0
+        ],
+        "coverage": {
+          "complete_cells": 8,
+          "complete_tasks": 8,
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "total_cells": 8,
+          "total_tasks": 8
+        },
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "unit": "bytes",
+        "value": 36568236032
+      },
+      "metrics": {
+        "decode_throughput": {
+          "aggregation": "ratio of sums",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "decode tokens / decode second",
+          "value": 44.74544273938288
+        },
+        "estimated_flops": {
+          "aggregation": "sum",
+          "methods": [
+            "dense_2P_per_forward_token_plus_causal_qk_av_4LHD_per_attention_pair"
+          ],
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "estimated FLOPs",
+          "value": 3154140238489600
+        },
+        "generated_tokens": {
+          "aggregation": "sum",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "tokens",
+          "value": 41368
+        },
+        "peak_kv_bytes": {
+          "aggregation": "max",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "bytes",
+          "value": 2756935680
+        },
+        "peak_total_vram_bytes": {
+          "aggregation": "max",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "bytes",
+          "value": 36568236032
+        },
+        "prefill_tokens": {
+          "aggregation": "sum",
+          "observed_attempts": 8,
+          "total_attempts": 8,
+          "unit": "tokens",
+          "value": 49936
+        }
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          0,
+          0.6051613956599604
+        ],
+        "ci95": [
+          0.0,
+          0.375
+        ],
+        "standard_error": 0.125,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": 0.125
+      },
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          0,
+          0.6051613956599604
+        ],
+        "ci95": [
+          0.0,
+          0.375
+        ],
+        "standard_error": 0.125,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": 0.125
+      },
+      "zero_attempt_cells": 0
+    }
+  },
+  "integration_smoke": true,
+  "paired_comparisons": [
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -354.2154845345067,
+          -61.28638523211703
+        ],
+        "standard_error": 78.7918801880185,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": -204.78855747258058
+      },
+      "left": "agentkv_25",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          114688000.0,
+          1345734948.5714285
+        ],
+        "paired_tasks": [
+          "23cf851_1",
+          "3ab5b8b_1",
+          "4fab96f_1",
+          "50e1ac9_1",
+          "57c3486_1",
+          "6c2c621_1",
+          "fac291d_1"
+        ],
+        "standard_error": 341526172.6185491,
+        "task_count": 7,
+        "total_tasks": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 722253531.4285715
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          2696338.285714286,
+          32955245.714285713
+        ],
+        "paired_tasks": [
+          "23cf851_1",
+          "3ab5b8b_1",
+          "4fab96f_1",
+          "50e1ac9_1",
+          "57c3486_1",
+          "6c2c621_1",
+          "fac291d_1"
+        ],
+        "standard_error": 8693365.007290972,
+        "task_count": 7,
+        "total_tasks": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 20072740.57142857
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": true,
+        "bounded_mean_ci95": [
+          -0.9603227913199207,
+          0.9603227913199207
+        ],
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0.0
+      },
+      "right": "agentkv_50",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": true,
+        "bounded_mean_ci95": [
+          -0.9603227913199207,
+          0.9603227913199207
+        ],
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0.0
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -484.3853382526431,
+          -192.8978028576821
+        ],
+        "standard_error": 78.26964424534091,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": -356.7415540795191
+      },
+      "left": "agentkv_25",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          906082011.4285715,
+          2314169782.857143
+        ],
+        "paired_tasks": [
+          "23cf851_1",
+          "3ab5b8b_1",
+          "4fab96f_1",
+          "50e1ac9_1",
+          "57c3486_1",
+          "6c2c621_1",
+          "fac291d_1"
+        ],
+        "standard_error": 398060378.457935,
+        "task_count": 7,
+        "total_tasks": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 1499323245.7142856
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -8388608.0,
+          89578349.71428572
+        ],
+        "paired_tasks": [
+          "23cf851_1",
+          "3ab5b8b_1",
+          "4fab96f_1",
+          "50e1ac9_1",
+          "57c3486_1",
+          "6c2c621_1",
+          "fac291d_1"
+        ],
+        "standard_error": 28519630.719918143,
+        "task_count": 7,
+        "total_tasks": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 29959314.285714287
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": true,
+        "bounded_mean_ci95": [
+          -0.9603227913199207,
+          0.9603227913199207
+        ],
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0.0
+      },
+      "right": "agentkv_80",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": true,
+        "bounded_mean_ci95": [
+          -0.9603227913199207,
+          0.9603227913199207
+        ],
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0.0
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -496.5669437365141,
+          -292.3874179716033
+        ],
+        "standard_error": 57.37960375637511,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": -411.6346625990118
+      },
+      "left": "agentkv_25",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          43651657.14285714,
+          782242377.1428572
+        ],
+        "paired_tasks": [
+          "23cf851_1",
+          "3ab5b8b_1",
+          "4fab96f_1",
+          "50e1ac9_1",
+          "57c3486_1",
+          "6c2c621_1",
+          "fac291d_1"
+        ],
+        "standard_error": 206678114.99260893,
+        "task_count": 7,
+        "total_tasks": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 434807954.28571427
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -39845888.0,
+          -23368265.14285714
+        ],
+        "paired_tasks": [
+          "23cf851_1",
+          "3ab5b8b_1",
+          "4fab96f_1",
+          "50e1ac9_1",
+          "57c3486_1",
+          "6c2c621_1",
+          "fac291d_1"
+        ],
+        "standard_error": 4686183.294726209,
+        "task_count": 7,
+        "total_tasks": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -30258907.42857143
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.8353227913199207,
+          1
+        ],
+        "ci95": [
+          0.0,
+          0.375
+        ],
+        "standard_error": 0.125,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": 0.125
+      },
+      "right": "full_once",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.8353227913199207,
+          1
+        ],
+        "ci95": [
+          0.0,
+          0.375
+        ],
+        "standard_error": 0.125,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": 0.125
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -326.9525623438487,
+          40.804797573247924
+        ],
+        "standard_error": 101.66116445436332,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": -151.95299660693854
+      },
+      "left": "agentkv_50",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -132835327.99999996,
+          1652326400.0
+        ],
+        "paired_tasks": [
+          "0d8a4ee_1",
+          "23cf851_1",
+          "3ab5b8b_1",
+          "4fab96f_1",
+          "50e1ac9_1",
+          "57c3486_1",
+          "6c2c621_1",
+          "fac291d_1"
+        ],
+        "standard_error": 490368521.72919255,
+        "task_count": 8,
+        "total_tasks": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 675020800
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -23592960.0,
+          56885248.0
+        ],
+        "paired_tasks": [
+          "0d8a4ee_1",
+          "23cf851_1",
+          "3ab5b8b_1",
+          "4fab96f_1",
+          "50e1ac9_1",
+          "57c3486_1",
+          "6c2c621_1",
+          "fac291d_1"
+        ],
+        "standard_error": 24559329.477409944,
+        "task_count": 8,
+        "total_tasks": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 6291456
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": true,
+        "bounded_mean_ci95": [
+          -0.9603227913199207,
+          0.9603227913199207
+        ],
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0.0
+      },
+      "right": "agentkv_80",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": true,
+        "bounded_mean_ci95": [
+          -0.9603227913199207,
+          0.9603227913199207
+        ],
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 8,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0.0
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -331.136293291919,
+          -81.41767852229532
+        ],
+        "standard_error": 69.15130771958863,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": -206.8461051264312
+      },
+      "left": "agentkv_50",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -779243520.0,
+          144939007.99999967
+        ],
+        "paired_tasks": [
+          "0d8a4ee_1",
+          "23cf851_1",
+          "3ab5b8b_1",
+          "4fab96f_1",
+          "50e1ac9_1",
+          "57c3486_1",
+          "6c2c621_1",
+          "fac291d_1"
+        ],
+        "standard_error": 251001669.10562077,
+        "task_count": 8,
+        "total_tasks": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -316149760
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -57409536.0,
+          -39583744.0
+        ],
+        "paired_tasks": [
+          "0d8a4ee_1",
+          "23cf851_1",
+          "3ab5b8b_1",
+          "4fab96f_1",
+          "50e1ac9_1",
+          "57c3486_1",
+          "6c2c621_1",
+          "fac291d_1"
+        ],
+        "standard_error": 4893243.209615012,
+        "task_count": 8,
+        "total_tasks": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -48496640
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.8353227913199207,
+          1
+        ],
+        "ci95": [
+          0.0,
+          0.375
+        ],
+        "standard_error": 0.125,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": 0.125
+      },
+      "right": "full_once",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.8353227913199207,
+          1
+        ],
+        "ci95": [
+          0.0,
+          0.375
+        ],
+        "standard_error": 0.125,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": 0.125
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -188.85845174000133,
+          28.042937552148942
+        ],
+        "standard_error": 64.76612052937662,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": -54.89310851949267
+      },
+      "left": "agentkv_80",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -1843957760.0,
+          -427386368.0000002
+        ],
+        "paired_tasks": [
+          "0d8a4ee_1",
+          "23cf851_1",
+          "3ab5b8b_1",
+          "4fab96f_1",
+          "50e1ac9_1",
+          "57c3486_1",
+          "6c2c621_1",
+          "fac291d_1"
+        ],
+        "standard_error": 404811467.0845244,
+        "task_count": 8,
+        "total_tasks": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -991170560
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -104857600.0,
+          -25952256.0
+        ],
+        "paired_tasks": [
+          "0d8a4ee_1",
+          "23cf851_1",
+          "3ab5b8b_1",
+          "4fab96f_1",
+          "50e1ac9_1",
+          "57c3486_1",
+          "6c2c621_1",
+          "fac291d_1"
+        ],
+        "standard_error": 24426058.095608816,
+        "task_count": 8,
+        "total_tasks": 8,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -54788096
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.8353227913199207,
+          1
+        ],
+        "ci95": [
+          0.0,
+          0.375
+        ],
+        "standard_error": 0.125,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": 0.125
+      },
+      "right": "full_once",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.8353227913199207,
+          1
+        ],
+        "ci95": [
+          0.0,
+          0.375
+        ],
+        "standard_error": 0.125,
+        "task_count": 8,
+        "uncertainty_notes": [],
+        "value": 0.125
+      }
+    }
+  ],
+  "primary_metric": "oracle task success within budget (perfect-selection upper bound)",
+  "replicate_seeds": [
+    17
+  ],
+  "schema_version": 1,
+  "source_runs": [
+    "retention-14b-repaired-13514420"
+  ],
+  "stage": "pilot",
+  "task_count": 8,
+  "tasks": [
+    "0d8a4ee_1",
+    "23cf851_1",
+    "3ab5b8b_1",
+    "4fab96f_1",
+    "50e1ac9_1",
+    "57c3486_1",
+    "6c2c621_1",
+    "fac291d_1"
+  ],
+  "uncertainty": {
+    "assumption": "independent sampled tasks; repeats do not increase task count",
+    "bounded_mean_method": "Hoeffding, clipped to [0,1] for success and [-1,1] for differences",
+    "interval_scope": "pointwise 95%; not simultaneous across conditions or metrics",
+    "method": "paired task bootstrap, percentile 95% CI",
+    "resampling_unit": "task, retaining all attempts and paired replicate seeds",
+    "samples": 10000,
+    "seed": 20261017,
+    "standard_error_method": "sample standard deviation of task means / sqrt(tasks)"
+  }
+}

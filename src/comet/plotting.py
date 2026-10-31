@@ -48,22 +48,27 @@ def plot_retention(analysis_path: Path, output: Path, *, title: str = "AppWorld 
                     low, high = [bound * scale for bound in bounds]
                     ax.vlines(x, low, high, color="#246b9b", linewidth=1.3)
                     ax.hlines([low, high], x - 1.5, x + 1.5, color="#246b9b", linewidth=1.3)
-            ax.set(xlabel="Compaction aggressivity (%)", ylabel=label,
+            ax.set(xlabel="KV eviction target (%)", ylabel=label,
                    xticks=aggression, xlim=(-5, max(aggression) + 5))
             ax.grid(axis="y", alpha=0.18)
             ax.set_axisbelow(True)
             ax.set_ylim(bottom=-2 if metric == "oracle_success_rate" else 0)
             if metric == "oracle_success_rate":
                 ax.set_ylim(top=102)
-            if metric == "mean_peak_kv_bytes" and any(
-                row[metric]["task_count"] != analysis["task_count"] for row in rows
-            ):
-                ax.text(0.02, 0.98, "Incomplete memory coverage; see analysis", transform=ax.transAxes,
-                        va="top", fontsize=8, color="#a04a20")
+            if metric == "mean_peak_kv_bytes":
+                missing = [row for row in rows if row[metric]["task_count"] != analysis["task_count"]]
+                if missing:
+                    coverage = "; ".join(
+                        f"{row[metric]['task_count']}/{analysis['task_count']} at "
+                        f"{row['condition']['retention']:.0%} retained" for row in missing
+                    )
+                    ax.text(0.02, 1.02, f"Memory coverage: {coverage}", transform=ax.transAxes,
+                            va="bottom", fontsize=8, color="#a04a20")
         mode = "Integration pilot" if analysis.get("integration_smoke") else analysis.get("stage", "Run")
+        method = {"agentkv": "AgentKV", "rkv": "R-KV", "streamingllm": "StreamingLLM"}[next(iter(methods))]
         fig.suptitle(title, x=0.07, ha="left", fontsize=15, fontweight="bold")
         fig.text(0.07, 0.88,
-                 f"{mode} | {analysis['task_count']} paired tasks | "
+                 f"{mode} | Full KV / {method} | {analysis['task_count']} paired tasks | "
                  f"{len(analysis['replicate_seeds'])} seed(s) per task | "
                  f"N={conditions[0]['max_attempts']} | no recovery", color="#555555")
         caption = (

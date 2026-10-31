@@ -1,0 +1,580 @@
+{
+  "additional_evidence_sha256": {
+    "bundle-sha256.json": "45c84d94be47ad68953ff3928a685f45d6e93c9c6c5bd4144fa817f59f2fc01e",
+    "ordinary-trace-summary.json": "46c96778f83e32f2b070753c0d50047a57a98cb715f1a3496fbb194d16c309b2",
+    "scheduler-20261031.txt": "ef1640810bb4fac9c869f24a5b157f7a18d03bd5e94b82b5d3bdefad7f92f552"
+  },
+  "analysis_verification": {
+    "analysis_source_sha256": "de422c9a360f7526f63b19c4765907233c98dcb4b1c0b9364e39dc0f003ffeff",
+    "bootstrap_samples": 10000,
+    "bootstrap_seed": 20261017,
+    "condition_and_paired_means_and_standard_errors_independently_checked": true,
+    "export_files_hash_checked": 31,
+    "preserved_terminal_artifacts_rechecked": 460,
+    "shared_analysis_matches_original_except_source_location": true
+  },
+  "artifact_bundle": "retention-export-13514420-13515534",
+  "artifact_note": "Portable identifiers and original hashes, not download locations. Complete trajectories, evaluator-compatible environments, original provenance and archives remain outside tracked source. Only source_runs is normalized in the committed analysis; CSV is a selected-field projection and empty numeric cells mean unavailable. Committed CSV line endings and SVG trailing whitespace are normalized.",
+  "clean_tracked_source": true,
+  "completed_date": "2026-10-20",
+  "config_digest": "0008093e5b8d3828c49841e8ed7264febf5056150f6f2442b6f4bed6ed9e2d67",
+  "config_file": "configs/pilot-retention-qwen14b.json",
+  "dependency_pins": {
+    "agentkv": {
+      "revision": "b5280b7c42bd90962712c19f8e0047c89ca40d6d",
+      "role": "reference implementation",
+      "url": "https://github.com/LiuTaowen-Tony/agentkv.git"
+    },
+    "appworld": {
+      "bundle_sha256": {
+        "apps.bundle": "88d21fc526c1655bb3eee4adfca78ccac793921e4506f28f734ecdb19af77a62",
+        "tests.bundle": "7b93343db5efd81b542e68e68150dd5ea5d59d8dcd64137d41bde4027b235dc9"
+      },
+      "data_version": "0.2.0",
+      "revision": "42b5bcf3cd334fee33f0c37c02070a9f5807add5",
+      "role": "task environment and separate evaluator",
+      "url": "https://github.com/StonyBrookNLP/appworld.git"
+    },
+    "minisgl": {
+      "patch": "patches/minisgl-comet.patch",
+      "patch_sha256": "2c8fe1390178cb83b6b0a252599c69b6ad8d7040822619d5ddd5a3e88bc00e46",
+      "revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
+      "role": "inference engine",
+      "url": "https://github.com/LiuTaowen-Tony/kv-management-minisgl.git"
+    }
+  },
+  "derived_artifacts_sha256": {
+    "retention-pilot-2026-10-20-analysis.json": "27d6356a505537fc796ef9dd9e31a4369142761a96086a363541f006d63394b8",
+    "retention-pilot-2026-10-20-attempts.csv": "1689b255f055aed606d76c2b8726d739c420c19738927e4c69cff3016cd07bfc",
+    "retention-pilot-2026-10-20.svg": "e56cb97be7a9e41d78116b0cb999fc50e1bf1592630629eed3f338a61846da27"
+  },
+  "engine": {
+    "attention_backend": "flashinfer_fa2",
+    "backend": "native_minisgl",
+    "cuda_graphs": false,
+    "cuda_runtime": "12.8",
+    "device_name": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "device_total_bytes": 101974409216,
+    "driver_version": "575.57.08",
+    "dtype": "bfloat16",
+    "estimated_flops_exclusions": [
+      "eviction_scoring",
+      "elementwise_operations",
+      "sampling"
+    ],
+    "estimated_flops_method": "dense_2P_per_forward_token_plus_causal_qk_av_4LHD_per_attention_pair",
+    "minisgl_revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
+    "model": "Qwen/Qwen3-14B",
+    "model_parameter_count": 14768307200,
+    "model_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+    "model_scope": "exploratory_pilot",
+    "packages": {
+      "flashinfer-python": "0.5.3",
+      "safetensors": "0.8.0",
+      "sgl-kernel": "0.3.17.post1",
+      "torch": "2.9.1",
+      "transformers": "4.57.3",
+      "triton": "3.5.1"
+    },
+    "patch_file_sha256": {
+      "engine/engine.py": "1871c222c7b28d39ce73623358efa232f97b431fd76aa8bcfedec7c5793822e9",
+      "eviction/manager.py": "763c71a879e9e26e5043e071ab831195807a14226de407f0bd80b470c9d2cf53",
+      "eviction/relative.py": "079ab13bb5b23569c8518259f1924b49589d4f0c70d6167cb4b42ff090a55919",
+      "scheduler/cache.py": "c23a271091e2a6e86a2580eb6d796c47c396cf425ac462d13546ba2e5a796996",
+      "scheduler/config.py": "266e318bd330d5157555b4e80cfe7aa3936bd9381edf4359ec8cefdb7086cc4a"
+    },
+    "query_ring_capacity_per_stage": 8,
+    "query_ring_stages": 4,
+    "tokenizer_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18"
+  },
+  "execution_digest": "384e1e5d0ebd5348380a933e0e306591c34be7080eee055333f73138a44971d6",
+  "execution_provenance": {
+    "installed_packages": {
+      "Faker": "40.43.0",
+      "Jinja2": "3.1.6",
+      "MarkupSafe": "3.0.4",
+      "PyJWT": "2.15.1",
+      "PyYAML": "6.0.3",
+      "Pygments": "2.21.0",
+      "SQLAlchemy": "2.1.5",
+      "SQLAlchemy-Utils": "0.43.0",
+      "accelerate": "1.15.0",
+      "annotated-doc": "0.0.5",
+      "annotated-types": "0.8.0",
+      "anyio": "4.15.1",
+      "apache-tvm-ffi": "0.1.4",
+      "appworld": "0.2.0.dev0",
+      "asttokens": "3.0.2",
+      "certifi": "2026.7.22",
+      "cffi": "2.1.1",
+      "charset-normalizer": "3.5.2",
+      "click": "8.5.0",
+      "comet-research": "0.1.0",
+      "cryptography": "50.0.2",
+      "cuda-bindings": "13.4.4",
+      "cuda-core": "1.2.2",
+      "cuda-pathfinder": "1.8.3",
+      "cuda-python": "13.4.4",
+      "dnspython": "2.9.0",
+      "einops": "0.8.2",
+      "email-validator": "2.3.0",
+      "execnet": "2.1.2",
+      "executing": "2.3.0",
+      "fastapi": "0.143.3",
+      "fastapi-login": "1.10.3",
+      "filelock": "4.2.0",
+      "flashinfer-python": "0.5.3",
+      "freezegun": "1.5.1",
+      "fsspec": "2026.9.0",
+      "h11": "0.16.0",
+      "hf-xet": "1.7.0",
+      "httpcore": "1.0.9",
+      "httpcore2": "2.13.1",
+      "httpx": "0.28.1",
+      "httpx2": "2.13.1",
+      "huggingface_hub": "0.36.2",
+      "idna": "3.20",
+      "inflection": "0.5.1",
+      "iniconfig": "2.3.1",
+      "ipython": "9.17.1",
+      "ipython_pygments_lexers": "1.1.1",
+      "jedi": "0.20.1",
+      "jiter": "0.17.0",
+      "jsonref": "1.1.0",
+      "libcst": "1.9.0",
+      "markdown-it-py": "4.2.0",
+      "matplotlib-inline": "0.2.2",
+      "mdurl": "0.1.2",
+      "minisgl": "0.1.0",
+      "modelscope": "1.40.2",
+      "modelscope-hub": "0.4.6",
+      "mpmath": "1.3.0",
+      "msgpack": "1.2.3",
+      "munch": "4.0.0",
+      "networkx": "3.7",
+      "ninja": "1.13.0",
+      "numpy": "2.5.4",
+      "nvidia-cublas-cu12": "12.8.4.1",
+      "nvidia-cuda-cupti-cu12": "12.8.90",
+      "nvidia-cuda-nvrtc-cu12": "12.8.93",
+      "nvidia-cuda-runtime-cu12": "12.8.90",
+      "nvidia-cudnn-cu12": "9.10.2.21",
+      "nvidia-cudnn-frontend": "1.28.0",
+      "nvidia-cufft-cu12": "11.3.3.83",
+      "nvidia-cufile-cu12": "1.13.1.3",
+      "nvidia-curand-cu12": "10.3.9.90",
+      "nvidia-cusolver-cu12": "11.7.3.90",
+      "nvidia-cusparse-cu12": "12.5.8.93",
+      "nvidia-cusparselt-cu12": "0.7.1",
+      "nvidia-cutlass-dsl": "4.2.1",
+      "nvidia-ml-py": "13.615.71",
+      "nvidia-nccl-cu12": "2.27.5",
+      "nvidia-nvjitlink-cu12": "12.8.93",
+      "nvidia-nvshmem-cu12": "3.3.20",
+      "nvidia-nvtx-cu12": "12.8.90",
+      "openai": "3.32.0",
+      "opentelemetry-api": "1.45.1",
+      "orjson": "3.13.0",
+      "packaging": "26.3",
+      "parso": "0.8.7",
+      "pendulum": "3.3.0",
+      "pexpect": "4.9.0",
+      "pluggy": "1.7.0",
+      "polyfactory": "3.3.0",
+      "prompt_toolkit": "3.0.53",
+      "psutil": "7.2.2",
+      "ptyprocess": "0.7.0",
+      "pure_eval": "0.2.4",
+      "pycparser": "3.11",
+      "pydantic": "2.12.5",
+      "pydantic-extra-types": "2.11.1",
+      "pydantic_core": "2.41.5",
+      "pytest": "9.1.1",
+      "pytest-xdist": "3.8.0",
+      "python-dateutil": "2.9.0.post0",
+      "python-dotenv": "1.2.4",
+      "python-multipart": "0.0.32",
+      "pyzmq": "27.2.0",
+      "quack-kernels": "0.2.2",
+      "regex": "2026.9.29",
+      "requests": "2.34.2",
+      "rich": "15.0.0",
+      "safetensors": "0.8.0",
+      "setuptools": "84.0.0",
+      "sgl-kernel": "0.3.17.post1",
+      "shellingham": "1.5.4",
+      "six": "1.17.0",
+      "sniffio": "1.3.1",
+      "sqlmodel": "0.0.48",
+      "stack-data": "0.6.3",
+      "starlette": "1.8.0",
+      "sympy": "1.14.0",
+      "tabulate": "0.10.0",
+      "text2num": "3.1.0",
+      "tokenizers": "0.22.2",
+      "torch": "2.9.1",
+      "tqdm": "4.70.1",
+      "traitlets": "5.16.1",
+      "transformers": "4.57.3",
+      "triton": "3.5.1",
+      "truststore": "0.10.5",
+      "typer": "0.27.3",
+      "typing-inspection": "0.4.4",
+      "typing_extensions": "4.16.0",
+      "tzdata": "2026.5",
+      "urllib3": "2.8.0",
+      "uvicorn": "0.54.0",
+      "uvloop": "0.23.0",
+      "wcwidth": "0.9.2",
+      "xxhash": "4.0.1"
+    },
+    "python": "3.12.15",
+    "source_hashes": {
+      "infra/requirements/appworld.lock": "853b267c7dbc25858a9106a8c24e3bae248148de6bb2469625a3d09c549be647",
+      "infra/requirements/gpu.lock": "eed44fd078937aecc9ff728a712e89c52563fd13a3e56ab63053611b2be47db3",
+      "patches/minisgl-comet.patch": "2c8fe1390178cb83b6b0a252599c69b6ad8d7040822619d5ddd5a3e88bc00e46",
+      "src/comet/__init__.py": "204d8296d7327fa7c8f69c37f74e36ddecf8ff1a8429c54d9fca29d2959f51b5",
+      "src/comet/analysis.py": "de422c9a360f7526f63b19c4765907233c98dcb4b1c0b9364e39dc0f003ffeff",
+      "src/comet/appworld.py": "4c790681bcb647e40cc59debbf56747a803e297aad5bdbf0ebdf7600864076c2",
+      "src/comet/artifacts.py": "e0728577db3d1990e99e6e63f33591512c1c2d2a63c1c0b52b034e6d40a72ee9",
+      "src/comet/budget.py": "1a8f1b57db3f55bef29e713e39ebc589be1a1d7488466e79100946b90c4daeac",
+      "src/comet/cli.py": "31490b3d2ca4d63dba025cf1d195c401a9e3142adab8979e5b784e387f79bf0d",
+      "src/comet/clocks.py": "90a18e8c64f570134c303a4b358ca19ee813d06baf3a605866d0ef9eb2d80a50",
+      "src/comet/config.py": "3a23256891a05ed438d659500f636212ad1d37edae497164571fbb1df63addef",
+      "src/comet/diagnostic.py": "050c0f4b099f45d2ca6485620cc5edf04e8afbf3bf02ffc577c9fa1559220c84",
+      "src/comet/engine/__init__.py": "357f9f4063a71d3a42aaab9f6a4f7070f94db204b62141307f1be518293bf330",
+      "src/comet/engine/_pins.py": "2bc609398d1469d9b12ceedfd516c794c9eb560e64c5e423969eb16a0c768f7e",
+      "src/comet/engine/contracts.py": "7fe19b74285831312e837b1c07a81df6d8c81518a0313ce8eb69479ce582a89f",
+      "src/comet/engine/native.py": "6abe6c9ad5c5e93f6ddd0f357f2310313adf1e60b668e6768750d64c5d63af48",
+      "src/comet/engine/snapshot.py": "c2cb2c7c6e2ba927a69f98cbfbf00f919a63105605d1d295f30833a4b392c182",
+      "src/comet/errors.py": "55573dd16947f02d9663c3dd76ee8d040bf327f8fd3a759ce5fd4a3abb94ce66",
+      "src/comet/evaluation.py": "66951986255f80c3817d98dec4728e04c8c174d58c2bbb490837a2d489be2278",
+      "src/comet/plotting.py": "ddf83406fd30f36203778cb7de677399903873a85b2eafc77c65ebc7c1765989",
+      "src/comet/policies.py": "52e1a06feb770fc7b2279a0b756086876dbb590530813adc58816ff33f59d5d8",
+      "src/comet/runner.py": "17fd189e181c25652849894beb4809f729dfbf1fce6b92bd9750ca497453bea5"
+    }
+  },
+  "experiment_id": "pilot-retention-qwen14b-v1",
+  "integration_smoke": true,
+  "original_artifacts_sha256": {
+    "attempt-metrics.csv": "9c66cd788397178736c551cc23182445957477243150b77490f156a561174146",
+    "attempt-metrics.json": "6e3c5dd5884980fd1e9447fbb49581d3742c1b48361f9dde5f996ac35820ece5",
+    "audit.json": "690c689ea7ff456bf0ce54b8da42c758bd1090412ef48df9ddf96e1004a59084",
+    "complete-run.tar.gz": "a4afa392d6903fb5b0075efbe9e8f0a37e380bf0ae87a32fc3e084a8f2bdfe0a",
+    "export-status.json": "5638d6d0ed31269e3f88a6a32cdee9e6616bdc6567938f5f32d69eb94707cc9b",
+    "original/analysis.json": "8e408e764c34eea5318f28d94434e2bc4b233980ae80f959a1520e9236fd3d55",
+    "original/manifest.json": "fe6b394fb6dc62fe21156463afcea47e5bc19b8655a84aeb759823f1acfb65c7",
+    "original/scores.json": "393b8d23f803845f8ca6124830f871e23520846b0a9d2c5566c0462111edc8a6",
+    "provenance/comet-compaction-postflight-13515481.log": "404f99b99163ca027376099fd0d0b1e2848760561a841fe62506f08129a2243e",
+    "provenance/comet-retention-resume-13515479.log": "9776b2a14275fbd534c9ed99323dd0d89a86237e5e2895f617e26b0c7c503cef",
+    "provenance/compaction-postflight-13515481/cache-probe.json": "ef99522d9a712264f37485b8b839a8d12b579f21624f30620d1c82f1797aaf27",
+    "provenance/compaction-postflight-13515481/gpu.txt": "da8153ca0711abbc8d79120a433ee0661209c5306db98431f843ea7f675a03a6",
+    "provenance/compaction-postflight-13515481/job.sh": "5cf44a6afdc94dfb2a2e7f2c7f07751fe6070d6e2b41e2b811dbe8aa82e4554e",
+    "provenance/compaction-postflight-13515481/provenance.json": "b65149437e473a0b5ec5760c35552b69951aeb44af55589a3b75e59d336d1262",
+    "provenance/compaction-postflight-13515481/pytest.log": "238f1aee46a1840cd0e3eae3da5718e20a532b023876f61fb0017a1208b8817d",
+    "provenance/compaction-postflight-13515481/result.json": "0371aa1e3e65e1266956b82908ec6b6ba30ed127b3344561351ee0f1dd6f0191",
+    "provenance/compaction-postflight-13515481/slurm.txt": "2ea1d096b02485245a7b5f2ad61556090c381bac45ff2ceef142b8fcbd478139",
+    "provenance/compaction-postflight-13515481/tests.xml": "8227b44e7a9934d22b3cc8026243215ac7875ba85b53f669c1b3cd660e61029e",
+    "provenance/export-job.sh": "4dd7be82add6c7a7a96271fdeecf814939d653e9ab943eb96b3e860091e38e24",
+    "provenance/postflight-slurm.txt": "8012c2beb54aa14b694abe052838bc05c0d9d78718317645d11a98581cddf1bd",
+    "provenance/retention-resume-13515479/cache-after-run.json": "7e87cdf50568d7a5b38578976098375af9d3aa6c722a341728fa0e2104b464a7",
+    "provenance/retention-resume-13515479/cache-probe.json": "d2e917baa9fb1d102a60c769663dbf3c896ad017b814b6c92c2bac906cb52621",
+    "provenance/retention-resume-13515479/gpu.txt": "bc1fd3d06263d3fed804c0bf2ece2d4d498f2f855268152ba36f8611cd8cb11e",
+    "provenance/retention-resume-13515479/guard.json": "eaeccb00579e506626f5535433afbffe7983679618510d34adb332bddb5c6597",
+    "provenance/retention-resume-13515479/guard.py": "07798a838ec289e34aa41b364c3375c47eaa564a766db92de272599c35dde12f",
+    "provenance/retention-resume-13515479/job.sh": "86d8774b4654cb48515e32773fcdc0b8c89e9ae14594906a2fc87ef09bd7e32c",
+    "provenance/retention-resume-13515479/phase-timing.json": "a08073e3880df3afaf4a2ea21079383a03c5ee6ede317dcc9fcb7d348fc08243",
+    "provenance/retention-resume-13515479/preservation.json": "6f9889e2c3db1f1951eaf16d08d6e8c2e7321c05e8771a5da6a8ea21e3112813",
+    "provenance/retention-resume-13515479/slurm.txt": "620bfb397834e3fa0f0c959662525ba7a0ec7280fe6c7bd38eb917da8b088233",
+    "provenance/slurm-accounting.txt": "17569729a5084632a868664415e54d69b4fba5f9064a6dcc006f5e43c7d89785",
+    "raw-metadata.tar.gz": "121717ea0ab69b1d2f50b93ad584cf8535e9466f898806ab49c238cb3d5a6433"
+  },
+  "posthoc_trace_observations": {
+    "conditions": {
+      "agentkv_25": {
+        "attempts_with_error_observations": 7,
+        "available_trajectories": 7,
+        "completed_after_preceding_error_turns": 1,
+        "error_turn_counts": {
+          "authentication_401": 29,
+          "invalid_action": 48,
+          "name_error": 1,
+          "unexpected_parameter": 10,
+          "unknown_api": 70,
+          "validation_422": 3
+        },
+        "repeated_action_strings": 245,
+        "turns": 330
+      },
+      "agentkv_50": {
+        "attempts_with_error_observations": 8,
+        "available_trajectories": 8,
+        "completed_after_preceding_error_turns": 5,
+        "error_turn_counts": {
+          "attribute_error": 1,
+          "authentication_401": 40,
+          "invalid_action": 30,
+          "other_execution_error": 3,
+          "unexpected_parameter": 5,
+          "validation_422": 2
+        },
+        "repeated_action_strings": 133,
+        "turns": 189
+      },
+      "agentkv_80": {
+        "attempts_with_error_observations": 6,
+        "available_trajectories": 8,
+        "completed_after_preceding_error_turns": 5,
+        "error_turn_counts": {
+          "authentication_401": 11,
+          "invalid_action": 4,
+          "other_execution_error": 27,
+          "unexpected_parameter": 5,
+          "validation_422": 1
+        },
+        "repeated_action_strings": 30,
+        "turns": 87
+      },
+      "full_once": {
+        "attempts_with_error_observations": 7,
+        "available_trajectories": 8,
+        "completed_after_preceding_error_turns": 7,
+        "error_turn_counts": {
+          "authentication_401": 13,
+          "invalid_action": 3,
+          "other_execution_error": 1,
+          "type_error": 1,
+          "unexpected_parameter": 8,
+          "unknown_api": 1,
+          "validation_422": 3
+        },
+        "repeated_action_strings": 2,
+        "turns": 77
+      }
+    },
+    "helper_sha256": "dced5c463a4ab3f151cd6fe8e39ca15933502db846d383ff81e45013653b5562",
+    "method": "An error turn contains Execution failed or Invalid action. Classify by first matching category: HTTP 401, HTTP 422, Unexpected parameter, No API named, Invalid action, TypeError, AttributeError, NameError, otherwise other execution error. Repeated actions are total turns minus distinct action strings within an attempt. Completion after errors requires a final action mentioning apis.supervisor.complete_task and at least one prior error turn.",
+    "scope": "Ordinary actions and observations only; 31 available trajectories, with the interrupted trajectory unavailable. Counts describe symptoms and do not establish failure causes. No online policy used these summaries."
+  },
+  "progress": {
+    "attempt_status_counts": {
+      "completed": 21,
+      "interrupted": 1,
+      "timeout": 10
+    },
+    "evaluated_attempts": 21,
+    "resource_observations": 31,
+    "successful_attempts": 1,
+    "terminal_cells": 32,
+    "untouched_cells": 0
+  },
+  "resolved_configuration": {
+    "budget_seconds": 600,
+    "checkpoint_after_tool_calls": null,
+    "conditions": [
+      {
+        "id": "full_once",
+        "max_attempts": 1,
+        "method": "full",
+        "recovery": "never",
+        "retention": 1.0
+      },
+      {
+        "id": "agentkv_80",
+        "max_attempts": 1,
+        "method": "agentkv",
+        "recovery": "never",
+        "retention": 0.8
+      },
+      {
+        "id": "agentkv_50",
+        "max_attempts": 1,
+        "method": "agentkv",
+        "recovery": "never",
+        "retention": 0.5
+      },
+      {
+        "id": "agentkv_25",
+        "max_attempts": 1,
+        "method": "agentkv",
+        "recovery": "never",
+        "retention": 0.25
+      }
+    ],
+    "engine": {
+      "dtype": "bfloat16",
+      "max_context_tokens": 32768,
+      "model": "Qwen/Qwen3-14B",
+      "model_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+      "prefill_chunk_tokens": 256,
+      "tokenizer_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+      "workspace_reserve_bytes": 6442450944
+    },
+    "experiment_id": "pilot-retention-qwen14b-v1",
+    "frozen": null,
+    "max_attempts": 1,
+    "notes": "User-authorized exploratory Qwen3-14B retention pilot, separate from the Qwen3-8B main research matrix. Eight of the 19 dev task families are sampled with random.Random(20261017).sample(sorted(families), 8), choosing variant _1 in each family without inspecting scores. One paired replicate seed, one fresh attempt per cell, no recovery, unchanged completion-v4 API prompt. All conditions share BF16, 32768 context tokens, 600 seconds per cell, 40 GiB peak VRAM cap and 6 GiB workspace reserve. Generation allows 4096 tokens per turn for reasoning. The 32 cells have at most 5h20m of task budgets, plus initialization and offline evaluation. This is a feasibility and variance pilot; eight tasks cannot establish a smooth or precise accuracy trend. Report all failures and uncertainty; do not pool with earlier configurations or use it to freeze the main experiment.",
+    "peak_vram_bytes": 42949672960,
+    "prompt": "Solve the AppWorld task using Python in the persistent execution environment. The variable apis is already available: use it directly. Do not import apps or create another API client. You may reason inside a closed <think>...</think> block before returning exactly one fenced python code block. Do not include prose outside those blocks. Tool observations contain stdout only: a bare API call or assignment does NOT display its return value. Always print query results, including documentation, so you can read them next turn. For example: print(apis.api_docs.show_app_descriptions()). When storing a result, use result = apis.some_app.some_api(...), then print(result). Discover APIs with print(apis.api_docs.show_api_descriptions(app_name=...)) and inspect signatures with print(apis.api_docs.show_api_doc(app_name=..., api_name=...)) before calling them. A documentation query must be the only API call in that response. Print its result, immediately end the code block, and wait for the observation before choosing any further call. Only call task APIs whose exact names and arguments you have already read in observations. Never combine discovery with a guessed API call: an exception discards all earlier stdout from the block. Do not invent API names or arguments. Read each tool observation, and correct the cause when execution fails instead of repeating the same code. Variables persist between executions. Tool observations appear in <tool_response> tags. Use the supervisor completion API only after you have finished the requested task.",
+    "sampling": {
+      "enable_thinking": true,
+      "max_new_tokens": 4096,
+      "temperature": 0.6,
+      "top_p": 0.95
+    },
+    "schema_version": 1,
+    "seeds": [
+      17
+    ],
+    "split": "dev",
+    "stage": "pilot",
+    "task_ids": [
+      "50e1ac9_1",
+      "0d8a4ee_1",
+      "6c2c621_1",
+      "3ab5b8b_1",
+      "57c3486_1",
+      "23cf851_1",
+      "4fab96f_1",
+      "fac291d_1"
+    ],
+    "triggers": {
+      "dynamic_context_tokens": 2048,
+      "dynamic_rule": "and",
+      "dynamic_tool_calls": 2,
+      "fixed_tool_calls": 2
+    }
+  },
+  "resume": {
+    "changed_node": true,
+    "hardware_runtime_guard": "passed",
+    "interruption_accounting": [
+      {
+        "cell_accounted_seconds": 600,
+        "condition": "agentkv_25",
+        "measured_elapsed_seconds": null,
+        "raw_recorded_elapsed_seconds": 0.0,
+        "reserved_budget_seconds": 600.0,
+        "task_id": "0d8a4ee_1"
+      }
+    ],
+    "launches": [
+      {
+        "at_unix": 1792207176.8909402,
+        "device_name": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+        "synthetic_warmup_seconds": 1.844084229785949
+      },
+      {
+        "at_unix": 1792506394.726098,
+        "device_name": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+        "synthetic_warmup_seconds": 22.893230537883937
+      }
+    ],
+    "phase_timing": {
+      "runner_started_at_unix": 1792506098.510455,
+      "scoring_analysis_finished_at_unix": 1792509612.0309517
+    },
+    "preservation": {
+      "at_unix": 1792509569.6625075,
+      "interrupted_cell_attempt_count": 1,
+      "interrupted_measured_elapsed_available": false,
+      "interrupted_reserved_budget_seconds": 600,
+      "interrupted_status": "interrupted",
+      "status": "passed",
+      "terminal_artifact_mismatches": 0,
+      "terminal_artifacts_checked": 460,
+      "terminal_cells_preserved": 25
+    }
+  },
+  "review_validation": {
+    "cpu_tests": {
+      "deselected": 5,
+      "deselected_reason": "GPU and AppWorld checks require their live infrastructure.",
+      "passed": 88,
+      "skip_reason": "Optional numerical module requires torch; not installed in CPU environment.",
+      "skipped": 1
+    },
+    "experimental_behavior_changed": false,
+    "figure_source_sha256": "2b55f428528248486642b4d89ed5e7a4221e78a8024ea4d3ab2a017c80e860bf",
+    "figure_visually_reviewed": true,
+    "review_date": "2026-10-31",
+    "ruff": "passed"
+  },
+  "reviewed_date": "2026-10-31",
+  "run_id": "f15c5c5b-7e6b-4134-bf36-454bb434f1a4",
+  "scheduler": {
+    "checked_date": "2026-10-31",
+    "jobs": [
+      {
+        "Elapsed": "00:02:45",
+        "End": "2026-10-20T11:56:12",
+        "ExitCode": "0:0",
+        "JobID": "13515481",
+        "JobName": "comet-kv-postflight",
+        "Start": "2026-10-20T11:53:27",
+        "State": "COMPLETED"
+      },
+      {
+        "Elapsed": "00:00:36",
+        "End": "2026-10-20T11:56:58",
+        "ExitCode": "0:0",
+        "JobID": "13515534",
+        "JobName": "comet-export-retention",
+        "Start": "2026-10-20T11:56:22",
+        "State": "COMPLETED"
+      },
+      {
+        "Elapsed": "00:59:46",
+        "End": "2026-10-20T11:20:20",
+        "ExitCode": "0:0",
+        "JobID": "13515479",
+        "JobName": "comet-retention-resume",
+        "Start": "2026-10-20T10:20:34",
+        "State": "COMPLETED"
+      }
+    ],
+    "timezone": "America/New_York"
+  },
+  "schema_version": 1,
+  "scope": "Exploratory Qwen3-14B dev pilot on alternative hardware; not the main Qwen3-8B/A100 experiment.",
+  "source_commit": "60ccf510a809c0b1dceafda52e4ba51d090a8123",
+  "stage": "pilot",
+  "status": "completed_scored_analyzed_and_exported",
+  "untracked_source_files": [],
+  "validation": {
+    "audit_issues": [],
+    "audit_status": "passed",
+    "export": {
+      "dependency": "afterok:13515479,afterany:13515481",
+      "export_job_id": 13515534,
+      "exporter_exit_code": 0,
+      "missing_evidence_paths": [],
+      "postflight_evidence_preserved_regardless_of_exit_status": true,
+      "postflight_temporary_test_directory_excluded": true,
+      "recorded_at_unix": 1792511818.387959
+    },
+    "max_measured_deadline_overrun_seconds": 3.5568326907232404,
+    "max_peak_total_vram_bytes": 36792631296,
+    "paired_seed_verified": true,
+    "postflight": {
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "skips": 0,
+        "tests": 6
+      },
+      "finished_at_unix": 1792511772.9181983,
+      "status": "passed"
+    },
+    "postflight_tests": [
+      "test_compact_layer_kv_heads_copies_each_head_to_shared_new_slots",
+      "test_compact_layer_kv_heads_supports_overlapping_old_prefix_slots",
+      "test_compact_all_layers_kv_heads_triton_matches_layerwise_torch",
+      "test_compact_all_layers_kv_heads_inplace_sorted_triton_matches_torch",
+      "test_eviction_trace_records_all_layer_head_keep_drop_logical_positions",
+      "test_compacted_decode_uses_physical_input_slot_and_logical_rope_position"
+    ],
+    "recorded_rebuilds_zero": true,
+    "retention_events_checked": 191893
+  }
+}
