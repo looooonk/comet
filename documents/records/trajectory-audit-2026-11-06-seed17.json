@@ -1,0 +1,428 @@
+{
+  "schema_version": 1,
+  "scope": "Offline symptoms, not causal attribution or task scores. Missing trajectories are not imputed.",
+  "trajectory_count": 32,
+  "trajectories_with_errors": 29,
+  "trajectories": [
+    {
+      "trajectory": "cells/0d8a4ee_1-agentkv_25-17/attempt-000/trajectory.json",
+      "sha256": "6c41cd36b7489e20e042d227e7f10c36746ed506cef46c0c1c834a13fea3c51b",
+      "turns": 5,
+      "error_turns": 3,
+      "first_error_turn": 1,
+      "longest_error_streak": 2,
+      "repeated_action_strings": 0,
+      "categories": {
+        "Unexpected parameter": 1,
+        "No API named": 2
+      }
+    },
+    {
+      "trajectory": "cells/0d8a4ee_1-agentkv_50-17/attempt-000/trajectory.json",
+      "sha256": "2ef0b37c6166215011d6070d228ccd34004b0ac3221a01814c81c3a8aff19dac",
+      "turns": 9,
+      "error_turns": 4,
+      "first_error_turn": 1,
+      "longest_error_streak": 1,
+      "repeated_action_strings": 1,
+      "categories": {
+        "Invalid action": 1,
+        "other execution error": 2,
+        "No API named": 1
+      }
+    },
+    {
+      "trajectory": "cells/0d8a4ee_1-agentkv_80-17/attempt-000/trajectory.json",
+      "sha256": "f1cda6ee3f97f930f207f7ec2f91c704c8105632672ce4b4523dd3e8bb314f22",
+      "turns": 3,
+      "error_turns": 0,
+      "first_error_turn": null,
+      "longest_error_streak": 0,
+      "repeated_action_strings": 0,
+      "categories": {}
+    },
+    {
+      "trajectory": "cells/0d8a4ee_1-full_once-17/attempt-000/trajectory.json",
+      "sha256": "b145538890f1a9957f4e80b57d948eb65b1427f76d3e9bc32b2a574e9337b9db",
+      "turns": 6,
+      "error_turns": 1,
+      "first_error_turn": 4,
+      "longest_error_streak": 1,
+      "repeated_action_strings": 0,
+      "categories": {
+        "other execution error": 1
+      }
+    },
+    {
+      "trajectory": "cells/23cf851_1-agentkv_25-17/attempt-000/trajectory.json",
+      "sha256": "49795c703be9dc17ad48376af60832a67eef83f038d055a6ebd30a9a0dca3307",
+      "turns": 24,
+      "error_turns": 16,
+      "first_error_turn": 1,
+      "longest_error_streak": 9,
+      "repeated_action_strings": 4,
+      "categories": {
+        "Unexpected parameter": 2,
+        "other execution error": 3,
+        "No API named": 4,
+        "Invalid action": 7
+      }
+    },
+    {
+      "trajectory": "cells/23cf851_1-agentkv_50-17/attempt-000/trajectory.json",
+      "sha256": "ba7994f25bd811c18016160e1573c18a214e43c03bfd555c891df442887ab08f",
+      "turns": 21,
+      "error_turns": 5,
+      "first_error_turn": 3,
+      "longest_error_streak": 3,
+      "repeated_action_strings": 11,
+      "categories": {
+        "other execution error": 2,
+        "Invalid action": 2,
+        "Unexpected parameter": 1
+      }
+    },
+    {
+      "trajectory": "cells/23cf851_1-agentkv_80-17/attempt-000/trajectory.json",
+      "sha256": "8c24bd4fc4b809facb3c823f3cdda9323bf5e2dac58715bea0acf6de29066fa5",
+      "turns": 38,
+      "error_turns": 2,
+      "first_error_turn": 3,
+      "longest_error_streak": 2,
+      "repeated_action_strings": 32,
+      "categories": {
+        "other execution error": 1,
+        "Unexpected parameter": 1
+      }
+    },
+    {
+      "trajectory": "cells/23cf851_1-full_once-17/attempt-000/trajectory.json",
+      "sha256": "a7eba84b105fab74b05bfb3607f56b25dbb3a9af455352c4eb595aeb32bd98cf",
+      "turns": 8,
+      "error_turns": 2,
+      "first_error_turn": 3,
+      "longest_error_streak": 1,
+      "repeated_action_strings": 0,
+      "categories": {
+        "other execution error": 1,
+        "Unexpected parameter": 1
+      }
+    },
+    {
+      "trajectory": "cells/3ab5b8b_1-agentkv_25-17/attempt-000/trajectory.json",
+      "sha256": "25d2d0f504954b5320fe0c7eca21c25fe3df27a74e75227affafda372888fdc8",
+      "turns": 47,
+      "error_turns": 4,
+      "first_error_turn": 3,
+      "longest_error_streak": 2,
+      "repeated_action_strings": 29,
+      "categories": {
+        "other execution error": 3,
+        "Invalid action": 1
+      }
+    },
+    {
+      "trajectory": "cells/3ab5b8b_1-agentkv_50-17/attempt-000/trajectory.json",
+      "sha256": "5445c3578c4cad0746368e868a16093f4eb9abc0c75e84d6f8ca5d7ae216fab0",
+      "turns": 13,
+      "error_turns": 6,
+      "first_error_turn": 2,
+      "longest_error_streak": 2,
+      "repeated_action_strings": 1,
+      "categories": {
+        "other execution error": 3,
+        "Unexpected parameter": 1,
+        "NameError": 1,
+        "Invalid action": 1
+      }
+    },
+    {
+      "trajectory": "cells/3ab5b8b_1-agentkv_80-17/attempt-000/trajectory.json",
+      "sha256": "44bb3c23aa2b09b09692236b46a9e345206a7c6f2aabb3b0cdd86320fa66966e",
+      "turns": 19,
+      "error_turns": 8,
+      "first_error_turn": 2,
+      "longest_error_streak": 2,
+      "repeated_action_strings": 4,
+      "categories": {
+        "other execution error": 7,
+        "Unexpected parameter": 1
+      }
+    },
+    {
+      "trajectory": "cells/3ab5b8b_1-full_once-17/attempt-000/trajectory.json",
+      "sha256": "05c0a93d7d8edc60ef005aaab605c0bd93160b5540a90c1840f16a7ad686c881",
+      "turns": 10,
+      "error_turns": 5,
+      "first_error_turn": 3,
+      "longest_error_streak": 2,
+      "repeated_action_strings": 0,
+      "categories": {
+        "Unexpected parameter": 3,
+        "other execution error": 2
+      }
+    },
+    {
+      "trajectory": "cells/4fab96f_1-agentkv_25-17/attempt-000/trajectory.json",
+      "sha256": "f469ba5f545fb6552c96a885a2a77690db7f4c1a6810f464b2e569f388b47cde",
+      "turns": 63,
+      "error_turns": 6,
+      "first_error_turn": 1,
+      "longest_error_streak": 3,
+      "repeated_action_strings": 52,
+      "categories": {
+        "Unexpected parameter": 1,
+        "other execution error": 1,
+        "No API named": 3,
+        "Invalid action": 1
+      }
+    },
+    {
+      "trajectory": "cells/4fab96f_1-agentkv_50-17/attempt-000/trajectory.json",
+      "sha256": "bee297bb295355834542bf1b77e106c13f2c7e0e3ade4f6d5e182cca88825c7e",
+      "turns": 7,
+      "error_turns": 3,
+      "first_error_turn": 2,
+      "longest_error_streak": 2,
+      "repeated_action_strings": 0,
+      "categories": {
+        "other execution error": 2,
+        "Invalid action": 1
+      }
+    },
+    {
+      "trajectory": "cells/4fab96f_1-agentkv_80-17/attempt-000/trajectory.json",
+      "sha256": "e0548d665bc293b88dce8d17a2c6f2889d768332b8899a0a83082d24ae5d9da1",
+      "turns": 6,
+      "error_turns": 3,
+      "first_error_turn": 3,
+      "longest_error_streak": 3,
+      "repeated_action_strings": 0,
+      "categories": {
+        "other execution error": 1,
+        "Unexpected parameter": 1,
+        "NameError": 1
+      }
+    },
+    {
+      "trajectory": "cells/4fab96f_1-full_once-17/attempt-000/trajectory.json",
+      "sha256": "43f30b6c74b37b1c5a56ed78b7f3f7f7423692262ab0485640017bdeb6ce2eea",
+      "turns": 6,
+      "error_turns": 2,
+      "first_error_turn": 3,
+      "longest_error_streak": 1,
+      "repeated_action_strings": 0,
+      "categories": {
+        "other execution error": 2
+      }
+    },
+    {
+      "trajectory": "cells/50e1ac9_1-agentkv_25-17/attempt-000/trajectory.json",
+      "sha256": "691d6e8f1caac872cb8f0302728192fc79a6ae07b7c5dba3c94fd70ad5f4a4bc",
+      "turns": 23,
+      "error_turns": 22,
+      "first_error_turn": 1,
+      "longest_error_streak": 19,
+      "repeated_action_strings": 0,
+      "categories": {
+        "Invalid action": 1,
+        "No API named": 20,
+        "Unexpected parameter": 1
+      }
+    },
+    {
+      "trajectory": "cells/50e1ac9_1-agentkv_50-17/attempt-000/trajectory.json",
+      "sha256": "d43b71b101537eb94bb259bac59e773ccf2feb8f76c4f6b60296ca599cc34ba2",
+      "turns": 2,
+      "error_turns": 0,
+      "first_error_turn": null,
+      "longest_error_streak": 0,
+      "repeated_action_strings": 0,
+      "categories": {}
+    },
+    {
+      "trajectory": "cells/50e1ac9_1-agentkv_80-17/attempt-000/trajectory.json",
+      "sha256": "b6ca30bff2e2261288af09476e8aacd8cecadb4e03c017df002bdc4f8f8caf2d",
+      "turns": 3,
+      "error_turns": 1,
+      "first_error_turn": 2,
+      "longest_error_streak": 1,
+      "repeated_action_strings": 0,
+      "categories": {
+        "Invalid action": 1
+      }
+    },
+    {
+      "trajectory": "cells/50e1ac9_1-full_once-17/attempt-000/trajectory.json",
+      "sha256": "341164efc9ee607292b4b812058bc037fc08bf543b73b72efde3cdf6476f2a2d",
+      "turns": 2,
+      "error_turns": 0,
+      "first_error_turn": null,
+      "longest_error_streak": 0,
+      "repeated_action_strings": 0,
+      "categories": {}
+    },
+    {
+      "trajectory": "cells/57c3486_1-agentkv_25-17/attempt-000/trajectory.json",
+      "sha256": "6fd743816a1eca58d47363e54c3c73d9ab2e145e06524961e6f022242f439749",
+      "turns": 9,
+      "error_turns": 6,
+      "first_error_turn": 1,
+      "longest_error_streak": 5,
+      "repeated_action_strings": 0,
+      "categories": {
+        "Unexpected parameter": 1,
+        "other execution error": 1,
+        "No API named": 3,
+        "Invalid action": 1
+      }
+    },
+    {
+      "trajectory": "cells/57c3486_1-agentkv_50-17/attempt-000/trajectory.json",
+      "sha256": "3cfce44a067a5edd54896d41165370d49c5552ea339da517a50528aedc61aed8",
+      "turns": 6,
+      "error_turns": 3,
+      "first_error_turn": 2,
+      "longest_error_streak": 2,
+      "repeated_action_strings": 0,
+      "categories": {
+        "other execution error": 2,
+        "Invalid action": 1
+      }
+    },
+    {
+      "trajectory": "cells/57c3486_1-agentkv_80-17/attempt-000/trajectory.json",
+      "sha256": "e5af978c4bb382e2296ab15104097d55b402909c3b57ddb430fa72747ed4e795",
+      "turns": 7,
+      "error_turns": 5,
+      "first_error_turn": 2,
+      "longest_error_streak": 5,
+      "repeated_action_strings": 0,
+      "categories": {
+        "other execution error": 4,
+        "Unexpected parameter": 1
+      }
+    },
+    {
+      "trajectory": "cells/57c3486_1-full_once-17/attempt-000/trajectory.json",
+      "sha256": "2f28db038c2e4c313795eb576e8dd997071186169b7be31b35ea6fd4a9c78ac4",
+      "turns": 19,
+      "error_turns": 5,
+      "first_error_turn": 3,
+      "longest_error_streak": 3,
+      "repeated_action_strings": 1,
+      "categories": {
+        "other execution error": 4,
+        "TypeError": 1
+      }
+    },
+    {
+      "trajectory": "cells/6c2c621_1-agentkv_25-17/attempt-000/trajectory.json",
+      "sha256": "ea70e1e761a45599df9801f5d3a9102449d97267cadd9049e90fa4656d7a7bb3",
+      "turns": 23,
+      "error_turns": 14,
+      "first_error_turn": 3,
+      "longest_error_streak": 8,
+      "repeated_action_strings": 6,
+      "categories": {
+        "Unexpected parameter": 1,
+        "other execution error": 4,
+        "No API named": 2,
+        "Invalid action": 7
+      }
+    },
+    {
+      "trajectory": "cells/6c2c621_1-agentkv_50-17/attempt-000/trajectory.json",
+      "sha256": "30c79d4b3f4d381cb8ac59cab82412d9976cf718c84bfcc051912ed60ad5ff99",
+      "turns": 24,
+      "error_turns": 11,
+      "first_error_turn": 4,
+      "longest_error_streak": 2,
+      "repeated_action_strings": 12,
+      "categories": {
+        "other execution error": 11
+      }
+    },
+    {
+      "trajectory": "cells/6c2c621_1-agentkv_80-17/attempt-000/trajectory.json",
+      "sha256": "db0ea17801686eb712cfb19828db5b17f40ac18c1689be349eac455e253e678d",
+      "turns": 6,
+      "error_turns": 3,
+      "first_error_turn": 3,
+      "longest_error_streak": 3,
+      "repeated_action_strings": 0,
+      "categories": {
+        "other execution error": 2,
+        "Unexpected parameter": 1
+      }
+    },
+    {
+      "trajectory": "cells/6c2c621_1-full_once-17/attempt-000/trajectory.json",
+      "sha256": "0c7e0fc7c5a92d0d6b053b93ac5a24b0a6accf425ff2cdbac32a081f9b0e8a63",
+      "turns": 14,
+      "error_turns": 4,
+      "first_error_turn": 8,
+      "longest_error_streak": 3,
+      "repeated_action_strings": 0,
+      "categories": {
+        "No API named": 1,
+        "Unexpected parameter": 2,
+        "TypeError": 1
+      }
+    },
+    {
+      "trajectory": "cells/fac291d_1-agentkv_25-17/attempt-000/trajectory.json",
+      "sha256": "6f1a7b7deeb0d66a4710db62cf67d6a0eed916a97c3c7c73aac8296746ab8828",
+      "turns": 21,
+      "error_turns": 9,
+      "first_error_turn": 1,
+      "longest_error_streak": 7,
+      "repeated_action_strings": 8,
+      "categories": {
+        "Unexpected parameter": 1,
+        "other execution error": 2,
+        "No API named": 4,
+        "Invalid action": 2
+      }
+    },
+    {
+      "trajectory": "cells/fac291d_1-agentkv_50-17/attempt-000/trajectory.json",
+      "sha256": "f93cfd3be0d18b2cfd78e48b5fa23e1ae7c6991c34d4db05491f393e03edea5b",
+      "turns": 16,
+      "error_turns": 2,
+      "first_error_turn": 2,
+      "longest_error_streak": 2,
+      "repeated_action_strings": 11,
+      "categories": {
+        "Invalid action": 1,
+        "other execution error": 1
+      }
+    },
+    {
+      "trajectory": "cells/fac291d_1-agentkv_80-17/attempt-000/trajectory.json",
+      "sha256": "f4ecd6936ff9bebcddff4d77c83f4c40f17f51030f72a4c23777158ea8cc4992",
+      "turns": 12,
+      "error_turns": 7,
+      "first_error_turn": 2,
+      "longest_error_streak": 4,
+      "repeated_action_strings": 0,
+      "categories": {
+        "other execution error": 6,
+        "Unexpected parameter": 1
+      }
+    },
+    {
+      "trajectory": "cells/fac291d_1-full_once-17/attempt-000/trajectory.json",
+      "sha256": "fe8ea1959e7f2956e2315ce5db3f095787de56c654c442143555fe1bcd2efaaf",
+      "turns": 5,
+      "error_turns": 2,
+      "first_error_turn": 3,
+      "longest_error_streak": 2,
+      "repeated_action_strings": 0,
+      "categories": {
+        "Invalid action": 1,
+        "other execution error": 1
+      }
+    }
+  ]
+}
