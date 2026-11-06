@@ -8,7 +8,6 @@ import json
 from collections import Counter
 from pathlib import Path
 
-
 CATEGORIES = (
     "HTTP 401", "HTTP 422", "Unexpected parameter", "No API named",
     "Invalid action", "TypeError", "AttributeError", "NameError",

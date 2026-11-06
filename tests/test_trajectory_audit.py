@@ -3,7 +3,6 @@ from pathlib import Path
 
 import pytest
 
-
 spec = importlib.util.spec_from_file_location(
     "trajectory_audit", Path(__file__).parents[1] / "scripts/audit_trajectories.py"
 )
