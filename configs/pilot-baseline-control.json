@@ -1,0 +1,22 @@
+{
+  "extends": "pilot-completion.json",
+  "experiment_id": "pilot-baseline-control-v1",
+  "task_ids": [
+    "3ab5b8b_1",
+    "23cf851_1",
+    "fac291d_1"
+  ],
+  "sampling": {
+    "max_new_tokens": 4096
+  },
+  "conditions": [
+    {
+      "id": "full_once",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    }
+  ],
+  "notes": "Targeted train/dev full-cache diagnostic, not a frozen research comparison or representative task sample. The three tasks were selected from ordinary failure traces to exercise authentication, pagination, and response-shape handling. Compare only matched control and candidate runs on the same hardware and seed; score saved outcomes after both finish. One fresh attempt per task, 600 seconds, 40 GiB cap, 32768 context tokens, 4096 generation tokens, BF16, no recovery. Preserve all historical configurations and failures. Uses the unchanged completion-v4 prompt and required Qwen3-8B model."
+}

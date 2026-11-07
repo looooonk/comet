@@ -24,3 +24,17 @@ def test_qwen14b_is_explicit_pinned_pilot_only():
             replace(exploratory, engine=replace(exploratory.engine, **changes)).validate()
     with pytest.raises(ValueError, match="BF16"):
         replace(exploratory, engine=replace(exploratory.engine, dtype="float16")).validate()
+
+
+@pytest.mark.parametrize("suffix", ["", "-qwen14b"])
+def test_baseline_prompt_comparison_keeps_settings_paired(suffix):
+    root = Path(__file__).resolve().parents[1] / "configs"
+    control = Experiment.load(root / f"pilot-baseline-control{suffix}.json")
+    repair = Experiment.load(root / f"pilot-baseline-repair{suffix}.json")
+    assert replace(repair, experiment_id=control.experiment_id,
+                   prompt=control.prompt, notes=control.notes) == control
+    original = Experiment.load(root / "pilot-completion.json")
+    assert control.prompt == original.prompt
+    assert repair.prompt != control.prompt
+    assert repair.stage == "pilot" and repair.split == "dev" and repair.frozen is None
+    assert all(c.method == "full" and c.recovery == "never" for c in repair.conditions)

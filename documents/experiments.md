@@ -151,6 +151,14 @@ objects. Such a checkpoint is reported as infeasible, never silently replayed or
 substituted. See [evaluation.md](evaluation.md). Failed source preparation remains
 a failed condition in every comparison. Final evaluation always starts fresh.
 
+## Baseline behavior diagnostic
+
+Before expanding a weak full-cache baseline, use the versioned
+[paired prompt diagnostic](baseline-diagnostic.md). It tests authentication,
+pagination, and response inspection on a declared dev regression subset while
+keeping numerical settings fixed. Its targeted results must remain separate
+from the retention pilot and main research evaluation.
+
 ## Freeze and evaluate
 
 Tune only on train/dev and record pilot measurements. Prepare a new JSON config
