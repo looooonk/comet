@@ -10,16 +10,20 @@ frozen research choices.
 Follow [setup.md](setup.md) to install the pinned engine and AppWorld data, then:
 
 ```sh
-uv run comet validate configs/pilot-smoke.json
-comet run configs/pilot-smoke.json --output runs/pilot-smoke-001 \
-  --model-path "$COMET_MODEL_PATH" --appworld-root "$APPWORLD_ROOT"
-comet evaluate runs/pilot-smoke-001
-comet analyze runs/pilot-smoke-001 --output runs/pilot-smoke-001/analysis.json
+source "$COMET_REPO/scripts/activate_runtime.sh" gpu
+export COMET_CONFIG="$COMET_REPO/configs/pilot-smoke.json"
+export COMET_RUN="$COMET_STORAGE/runs/pilot-smoke-unique-id"
+export COMET_MODEL=/path/to/pinned/model/snapshot
+comet validate "$COMET_CONFIG"
+bash "$COMET_REPO/scripts/run_experiment.sh"
+comet evaluate "$COMET_RUN"
+comet analyze "$COMET_RUN" --output "$COMET_RUN/analysis.json"
 ```
 
-Run the last three commands from the GPU environment. On an alternative GPU,
-add `--integration-smoke` to `run`; those results remain visibly separate and
-cannot qualify a final experiment for freezing. Model loading is excluded from
+Run these commands inside an allocated GPU node. On an alternative GPU, export
+`COMET_INTEGRATION_SMOKE=1` before launching; those results remain visibly separate
+and cannot qualify a final experiment for freezing. Both Slurm and GCP wrappers
+call the same launcher and managed runtime checks. Model loading is excluded from
 the task budget. A deterministic synthetic warmup of all methods also runs as
 model initialization, with its shapes and elapsed time recorded in the manifest;
 later shape-dependent compilation remains charged. Attempts, resets, tools,
@@ -56,10 +60,12 @@ The 14B variant is a separate, authorized model exploration described in
 The small task sample estimates feasibility and variance; it cannot establish
 small accuracy differences.
 
-After analysis, generate an exportable figure with the optional plotting tools:
+After analysis, use a separate CPU checkout environment for optional plotting.
+This command synchronizes its CPU environment; do not point
+`UV_PROJECT_ENVIRONMENT` at the GPU runtime:
 
 ```sh
-uv run --extra plots comet plot runs/pilot/analysis.json \
+uv run --frozen --extra plots comet plot runs/pilot/analysis.json \
   --output documents/records/retention-pilot.svg \
   --title "AppWorld retention pilot"
 ```

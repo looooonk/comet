@@ -6,11 +6,11 @@ establish the others. Use the pinned environments in [setup.md](setup.md).
 
 ## CPU checks
 
-From the repository root:
+After creating the managed CPU environment in [setup.md](setup.md):
 
 ```sh
-uv run --frozen ruff check .
-uv run --frozen pytest -m 'not gpu and not appworld'
+export COMET_CHECK_OUTPUT="$COMET_REPO/artifacts/checks/cpu-unique-id"
+bash scripts/run_checks.sh cpu
 ```
 
 These check configuration, retention accounting, policies, budgets, state
@@ -26,8 +26,8 @@ AppWorld checks require installed data; GPU checks run the entire suite with the
 pinned model. Missing required inputs fail before testing. Existing evidence
 directories are never overwritten.
 
-Each check saves the source revision/diff, runtime lock identity, package list,
-Slurm allocation when present, pytest XML, and exit status. GPU checks also save
+Each check saves the source revision/diff and hashes (including scripts and tests),
+runtime lock identity, package list, Slurm allocation when present, pytest XML, and exit status. GPU checks also save
 the device report and engine evidence. Skips remain explicit: a minimal CPU
 runtime cannot run numerical engine checks, and process-interruption testing
 requires the separate configuration below. Set `COMET_TEST_CAPACITY=1` to include
@@ -35,22 +35,27 @@ the optional near-limit context check. Always inspect skips as well as exit code
 
 ## Live integration checks
 
-Inside an allocated GPU node, use the installed runtime directly:
+Inside an allocated GPU node, select the managed GPU environment and run:
 
 ```sh
 export COMET_MODEL_PATH=/path/to/pinned/model/snapshot
 export COMET_APPWORLD_ROOT=/path/to/appworld
-export COMET_RUN_GPU_TESTS=1
-export COMET_GPU_EVIDENCE=/path/to/records/gpu-evidence.json
-export COMET_GPU_MEMORY_EVIDENCE=/path/to/records/memory-evidence.json
-python -m pytest tests/test_appworld_integration.py tests/test_engine_gpu.py
+export COMET_CHECK_OUTPUT="$COMET_STORAGE/validation/gpu-unique-id"
+export COMET_TEST_CAPACITY=1
+bash "$COMET_REPO/scripts/run_checks.sh" gpu
 ```
+
+The runner preserves `gpu.json`, `memory.json`, and, when requested,
+`capacity.json` alongside pytest results. For a focused debugging command, first
+source `scripts/activate_runtime.sh gpu`; use the runtime's Python directly.
+Do not run `uv run` inside it, since automatic project synchronization can remove
+its CUDA/AppWorld dependencies.
 
 The AppWorld fixtures check execution, fresh resets, checkpoint restore, offline
 evaluation, explicit authentication, parsed response types, and pagination. The
 authentication and pagination probes use isolated dev environments, perform only
-read operations, and never consult evaluator feedback. The GPU checks cover persistent compressed KV, checkpoint
-replay, recovery, and live cap refusal. [engine.md](engine.md) defines their
+read operations, and never consult evaluator feedback. The GPU checks cover
+persistent compressed KV, checkpoint replay, recovery, and live cap refusal. [engine.md](engine.md) defines their
 accounting and evidence scope. Follow [resume-validation.md](resume-validation.md)
 for the separate process interruption check; it needs a dedicated configuration
 and artifact directory.

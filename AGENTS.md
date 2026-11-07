@@ -116,6 +116,14 @@ Save intermediate trajectories and completed results so interrupted work can res
 
 ## Validation and handoff
 
+Use the managed profiles from `scripts/setup_runtime.sh` and the shared
+`scripts/run_checks.sh` validation path. Direct runtime commands must first source
+`scripts/activate_runtime.sh` with the matching profile; do not synchronize a GPU
+environment with `uv run`. Keep a separate owned environment per checkout/profile,
+reuse persistent caches, and preserve the pinned engine and package locks. Slurm
+and GCP use the same experiment launcher. Record evidence in a fresh output
+directory and audit storage before retaining additional environments or models.
+
 When implementation exists, run the checks relevant to the change. For changes to the experimental pipeline, prioritize checks that demonstrate:
 
 - Full KV disables eviction and compressed retention follows the configured policy.

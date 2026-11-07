@@ -5,23 +5,14 @@ case "$profile" in cpu|appworld|gpu) ;; *) exit 2 ;; esac
 : "${COMET_REPO:?Set COMET_REPO to the checkout directory}"
 : "${COMET_ENV:?Set COMET_ENV to the matching managed environment}"
 : "${COMET_CHECK_OUTPUT:?Set COMET_CHECK_OUTPUT to a new evidence directory}"
-export PATH="$COMET_ENV/bin:$PATH"
-export PYTHONUNBUFFERED=1
-unset PYTHONPATH
+source "$COMET_REPO/scripts/activate_runtime.sh" "$profile"
 cd "$COMET_REPO"
-python src/comet/runtime.py verify "$COMET_REPO" "$COMET_ENV" "$profile"
-if [[ "$profile" != cpu ]]; then
-    : "${COMET_STORAGE:?Set COMET_STORAGE to persistent project storage}"
-    : "${COMET_APPWORLD_ROOT:?Set COMET_APPWORLD_ROOT to installed AppWorld data}"
-    source scripts/runtime_caches.sh
-fi
 if [[ "$profile" == gpu ]]; then
     : "${COMET_MODEL_PATH:?Set COMET_MODEL_PATH to the pinned model snapshot}"
-    export CUDA_HOME=${CUDA_HOME:-/usr/local/cuda}
-    export PATH="$CUDA_HOME/bin:$PATH"
     export COMET_RUN_GPU_TESTS=1
     export COMET_GPU_EVIDENCE="$COMET_CHECK_OUTPUT/gpu.json"
     export COMET_GPU_MEMORY_EVIDENCE="$COMET_CHECK_OUTPUT/memory.json"
+    export COMET_GPU_CAPACITY_EVIDENCE="$COMET_CHECK_OUTPUT/capacity.json"
 fi
 mkdir -p "$(dirname "$COMET_CHECK_OUTPUT")"
 mkdir "$COMET_CHECK_OUTPUT"
@@ -31,9 +22,22 @@ git diff --binary HEAD > "$COMET_CHECK_OUTPUT/changes.patch"
 git ls-files --others --exclude-standard > "$COMET_CHECK_OUTPUT/untracked-files.txt"
 cp "$COMET_ENV/.comet-runtime.json" "$COMET_CHECK_OUTPUT/runtime.json"
 python - <<'PYTHON' > "$COMET_CHECK_OUTPUT/packages.txt"
-import importlib.metadata
-for package in sorted(importlib.metadata.distributions(), key=lambda p: p.metadata["Name"]):
-    print(f"{package.metadata['Name']}=={package.version}")
+import hashlib
+import os
+from pathlib import Path
+
+from comet.artifacts import provenance, write_json
+
+root = Path(os.environ["COMET_REPO"])
+record = provenance()
+for pattern in ("scripts/*.sh", "tests/*.py", "infra/slurm/*.sh", "pyproject.toml", "uv.lock"):
+    record["source_hashes"].update({
+        str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in root.glob(pattern)
+    })
+write_json(Path(os.environ["COMET_CHECK_OUTPUT"]) / "source.json", record)
+for name, version in sorted(record["installed_packages"].items()):
+    print(f"{name}=={version}")
 PYTHON
 if [[ -n "${SLURM_JOB_ID:-}" ]]; then scontrol show job "$SLURM_JOB_ID" > "$COMET_CHECK_OUTPUT/slurm.txt"; fi
 case "$profile" in

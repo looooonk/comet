@@ -63,21 +63,18 @@ AgentKV 80% near the context limit and records the observed kernel calls.
 The existing setup helper can fetch the pinned exploratory model:
 
 ```sh
-scripts/download_assets.sh "$COMET_ENV" "$APPWORLD_ROOT" --model-14b
+bash scripts/download_assets.sh "$COMET_ENV" "$COMET_APPWORLD_ROOT" --model-14b
 ```
 
 On an exclusively allocated GPU with the installed runtime and the pinned
-snapshot available, run the isolated engine checks:
+snapshot available, use the same managed GPU checks as Qwen3-8B:
 
 ```sh
-export COMET_RUN_GPU_TESTS=1
 export COMET_TEST_MODEL=Qwen/Qwen3-14B
 export COMET_MODEL_PATH=/path/to/snapshots/40c069824f4251a91eefaf281ebe4c544efd3e18
-export COMET_GPU_EVIDENCE=/path/to/artifacts/gpu-evidence.json
-export COMET_GPU_MEMORY_EVIDENCE=/path/to/artifacts/memory-evidence.json
-python -m pytest tests/test_engine_gpu.py -k 'not capacity'
-COMET_TEST_CAPACITY=1 COMET_GPU_CAPACITY_EVIDENCE=/path/to/artifacts/capacity.json \
-  python -m pytest tests/test_engine_gpu.py -k capacity
+export COMET_CHECK_OUTPUT="$COMET_STORAGE/validation/qwen14b-unique-id"
+export COMET_TEST_CAPACITY=1
+bash "$COMET_REPO/scripts/run_checks.sh" gpu
 ```
 
 The separately opted-in capacity check uses a fixed 40 GiB cap, 6 GiB workspace

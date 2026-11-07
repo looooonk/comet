@@ -7,13 +7,7 @@ set -euo pipefail
 : "${COMET_RUN:?Set COMET_RUN to a unique output directory}"
 : "${COMET_MODEL:?Set COMET_MODEL to the pinned local model snapshot}"
 
-export CUDA_HOME=${CUDA_HOME:-/usr/local/cuda}
-export PATH="$COMET_ENV/bin:$CUDA_HOME/bin:$PATH"
-unset PYTHONPATH
-"$COMET_ENV/bin/python" "$COMET_REPO/src/comet/runtime.py" verify "$COMET_REPO" "$COMET_ENV" gpu
-source "$COMET_REPO/scripts/runtime_caches.sh"
-export APPWORLD_ROOT=${COMET_APPWORLD_ROOT:-"$COMET_STORAGE/appworld"}
-export PYTHONUNBUFFERED=1
+source "$COMET_REPO/scripts/activate_runtime.sh" gpu
 cd "$COMET_REPO"
 launch_dir="$COMET_RUN/launch/$(date -u +%Y%m%dT%H%M%SZ)-${SLURM_JOB_ID:-$$}"
 mkdir -p "$launch_dir"

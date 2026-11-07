@@ -3,6 +3,13 @@ set -euo pipefail
 
 runtime_env=${1:?Usage: download_assets.sh environment-path appworld-root [--model|--model-14b]}
 appworld_root=${2:?AppWorld data directory required}
+export COMET_REPO=$(cd "$(dirname "$0")/.." && pwd)
+export COMET_ENV="$runtime_env"
+export COMET_APPWORLD_ROOT="$appworld_root"
+profile=$("$COMET_ENV/bin/python" -c \
+    'import json, sys; from pathlib import Path; print(json.loads((Path(sys.prefix) / ".comet-runtime.json").read_text())["profile"])')
+case "$profile" in appworld|gpu) ;; *) echo "Use an AppWorld or GPU runtime" >&2; exit 2 ;; esac
+source "$COMET_REPO/scripts/activate_runtime.sh" "$profile"
 if [[ -d "$appworld_root/data" ]]; then
     [[ "$(cat "$appworld_root/data/version.txt")" == 0.2.0 ]] || {
         printf 'Existing AppWorld data has a different version; choose a new root.\n' >&2

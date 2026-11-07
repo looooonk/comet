@@ -10,15 +10,21 @@ establishes that the CUDA or AppWorld integration works.
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
 
 ```sh
-uv sync --frozen
-uv run --frozen ruff check .
-uv run --frozen pytest -m 'not gpu and not appworld'
-uv run --frozen comet --help
+export COMET_REPO="$PWD"
+export COMET_ENV="$COMET_REPO/.venv-cpu"
+bash scripts/setup_runtime.sh cpu "$COMET_ENV"
+export COMET_CHECK_OUTPUT="$COMET_REPO/artifacts/checks/cpu-unique-id"
+bash scripts/run_checks.sh cpu
+source scripts/activate_runtime.sh cpu
+comet --help
 ```
 
-`uv.lock` fixes the CPU dependencies. CI uses Python 3.11 and uv 0.13.0;
-`.python-version` selects Python 3.12 locally. Core COMET requires only the standard
-library. CUDA kernels are deliberately absent from this environment.
+`uv.lock` fixes the CPU dependencies. The shared setup and managed CI job use
+Python 3.12 and uv 0.13.0. A separate CI job checks the declared Python 3.11 minimum.
+Core COMET requires only the standard library. CUDA kernels are deliberately
+absent from this environment. The common activation helper verifies the selected
+checkout and profile; use it before direct commands. Slurm checks, experiments,
+asset downloads, and the GCP launcher use the same activation path.
 
 ## Runtime environment
 
@@ -32,8 +38,11 @@ export COMET_STORAGE=/path/to/persistent/project/storage
 source scripts/runtime_caches.sh
 export CUDA_HOME=/usr/local/cuda
 export PATH="$CUDA_HOME/bin:$PATH"
-bash scripts/setup_runtime.sh gpu "$COMET_STORAGE/venv"
-bash scripts/download_assets.sh "$COMET_STORAGE/venv" "$COMET_STORAGE/appworld" --model
+export COMET_REPO="$PWD"
+export COMET_ENV="$COMET_STORAGE/environments/my-checkout-gpu"
+bash scripts/setup_runtime.sh gpu "$COMET_ENV"
+bash scripts/download_assets.sh "$COMET_ENV" "$COMET_STORAGE/appworld" --model
+source scripts/activate_runtime.sh gpu
 ```
 
 For AppWorld-only testing, use `appworld` instead of `gpu`, and omit `--model`.
@@ -115,6 +124,16 @@ model and FlashInfer caches are redirected. Check project-storage quotas for bot
 bytes and file count, plus free blocks and inodes, before long runs. Many small
 compiler files can exhaust a file quota while byte capacity remains available.
 Filesystem-wide free space does not establish that an account has quota.
+Shared teaching storage also needs to remain small enough for other class users,
+even when the filesystem has capacity. Keep one pinned copy of each needed model,
+reuse the same uv cache across managed profiles, and measure the workspace as a
+whole with `du -xch --max-depth=1 /path/to/workspace`. Linux uv environments
+normally hard-link cached packages; summing separate per-directory `du` invocations
+can count the same blocks repeatedly. Check inode usage as well as bytes. Audit
+large directory trees in a CPU allocation. Remove only identified rebuildable
+caches or superseded environments after jobs finish; preserve source, locks,
+model revisions, and unique run/checkpoint evidence. Never prune an active runtime
+or another contributor's files.
 The launcher checks create/write/fsync/rename in every cache directory before
 model loading; this catches current write failures, not quota exhaustion later
 in a run. Existing caches are not removed or migrated.
@@ -159,7 +178,7 @@ in scheduler defaults:
 ```sh
 export COMET_REPO=/path/to/your/checkout
 export COMET_STORAGE=/path/to/project/storage/comet
-export COMET_ENV="$COMET_STORAGE/venv"
+export COMET_ENV="$COMET_STORAGE/environments/my-checkout-gpu"
 export COMET_CONFIG="$COMET_REPO/configs/your-version.json"
 export COMET_RUN="$COMET_STORAGE/runs/your-unique-run-id"
 export COMET_MODEL="$COMET_STORAGE/cache/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218"
@@ -214,5 +233,5 @@ bash infra/gcp/instance.sh
 After provisioning an approved plan, copy or clone the exact COMET revision and use
 the same runtime setup, asset download, and `COMET_*` variables as on Insomnia.
 Run `bash infra/gcp/run.sh` to use the shared experiment launcher without Slurm.
-Run `comet doctor --gpu` before the pilot. The pilot must set measured budgets and
+Run `source scripts/activate_runtime.sh gpu` and `comet doctor --gpu` before the pilot. The pilot must set measured budgets and
 freeze settings before any test evaluation; the VM lifetime is not that budget.

@@ -18,6 +18,7 @@ failure; this test does not require or claim task success.
 From the runtime environment inside the allocation:
 
 ```sh
+source "$COMET_REPO/scripts/activate_runtime.sh" gpu
 COMET_RESUME_CONFIG=/path/to/resume-config.json \
 COMET_RESUME_ARTIFACT_DIR=/path/to/new/resume-evidence \
 COMET_MODEL_PATH=/path/to/pinned/Qwen3-8B \
