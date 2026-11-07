@@ -21,3 +21,10 @@ Keep seeds and runs separate. Existing outputs are never overwritten.
 Next research steps remain: diagnose the low full-cache baseline on train/dev,
 version any resulting setting changes separately, validate the required 8B/A100
 pilot, freeze budgets and triggers, then run recovery and best-of-N comparisons.
+
+Schema 2 (the default) recognizes AppWorld's `Response status code is 401/422`
+messages as well as `HTTP 401/422`. Category precedence and the error-turn
+predicate are unchanged. Status codes require a word boundary. To reproduce a
+historical schema-1 report exactly, add `--schema-version 1`; write corrected
+reports to a new output and preserve the original hashes and summaries. The
+shared implementation is `comet.trajectory_audit`; the script is a thin entry point.
