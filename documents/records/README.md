@@ -21,6 +21,13 @@ API signatures, task coverage, and pagination. Isolated CPU AppWorld probes
 confirm the authentication and pagination mechanisms; no new model-success
 result or changed experiment setting is claimed.
 
+The [November 7 runtime and baseline validation](runtime-baseline-validation-2026-11-07.md)
+validated both pinned models through Mini-SGLang and the shared managed setup.
+Each model's GPU suite passed 117 checks. A separate three-task dev prompt trial
+improved from 0/3 to 1/3 successes and from four HTTP 401 turns to zero; task
+completion and pagination remain unresolved. This targeted diagnostic does not
+replace the broader retention pilot or qualify the main A100 experiment.
+
 The October 17 interruption and October 19 pending-job records below are
 historical snapshots. The continuation, postflight, and export all completed;
 the [completion evidence](retention-pilot-2026-10-20.json) supersedes their
@@ -43,6 +50,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Runtime and baseline validation (2026-11-07)](runtime-baseline-validation-2026-11-07.md) | Managed environments, 8B/14B live GPU tests, paired prompt diagnostic, corrected historical audits; [evidence](runtime-baseline-validation-2026-11-07.json) |
 | [November 7 baseline investigation](full-cache-investigation-2026-11-07.md) | Full-cache failure mechanisms, audit classification gap, live CPU confirmation, and fix priorities |
 | [Baseline investigation evidence](full-cache-investigation-2026-11-07.json) | Verified trajectory hashes, per-turn error categories, execution status, and live probe results |
 | [November 6 trajectory audit](trajectory-audit-2026-11-06.md) | Separate seed-17 and seed-18 offline symptom summaries; both reproduced by the November 7 investigation |
