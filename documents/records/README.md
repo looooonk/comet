@@ -15,6 +15,12 @@ the recovery and best-of-N questions. Main-pilot tuning and freeze, the full
 diagnostic matrix, and final evaluation remain outstanding. See the report's
 [remaining work](retention-pilot-2026-10-20.md#remaining-research-work).
 
+The [November 7 full-cache investigation](full-cache-investigation-2026-11-07.md)
+reproduces the two November 6 trajectory audits and prioritizes authentication,
+API signatures, task coverage, and pagination. Isolated CPU AppWorld probes
+confirm the authentication and pagination mechanisms; no new model-success
+result or changed experiment setting is claimed.
+
 The October 17 interruption and October 19 pending-job records below are
 historical snapshots. The continuation, postflight, and export all completed;
 the [completion evidence](retention-pilot-2026-10-20.json) supersedes their
@@ -37,6 +43,9 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [November 7 baseline investigation](full-cache-investigation-2026-11-07.md) | Full-cache failure mechanisms, audit classification gap, live CPU confirmation, and fix priorities |
+| [Baseline investigation evidence](full-cache-investigation-2026-11-07.json) | Verified trajectory hashes, per-turn error categories, execution status, and live probe results |
+| [November 6 trajectory audit](trajectory-audit-2026-11-06.md) | Separate seed-17 and seed-18 offline symptom summaries; both reproduced by the November 7 investigation |
 | [October 20 pilot results](retention-pilot-2026-10-20.md) | Completed 32-attempt comparison, uncertainty, cost, trajectory observations, and remaining research work; reviewed October 31 |
 | [Completed analysis](retention-pilot-2026-10-20-analysis.json) | Shared condition and paired estimates with standard errors, intervals, and resource coverage |
 | [Per-attempt results](retention-pilot-2026-10-20-attempts.csv) | All 32 outcomes and selected measurements, with missing data left empty |

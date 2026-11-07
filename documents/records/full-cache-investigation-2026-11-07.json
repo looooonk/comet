@@ -1,0 +1,1287 @@
+{
+  "schema_version": 1,
+  "scope": "Offline full-cache diagnosis from ordinary dev trajectories; no evaluator or ground truth read. Runs and hardware remain separate.",
+  "analysis_code_commit": "f81b717c0bc264795fe5b5db2696e0b329b5d520",
+  "supplemental_classifier": "Retain the v1 error-turn predicate and ordered categories; HTTP 401/422 also match Response status code is 401/422 followed by a word boundary. All other audit definitions are unchanged.",
+  "analysis_script_sha256": "fb0646f129fb8a09a610240d02c48ef4a5c14e316d65656a424be2336e2b03f3",
+  "task_instruction_sources": [
+    {
+      "task_id": "0d8a4ee_1",
+      "specs_sha256": "145cb0aebebf676bfbe89d3495258c52525bfb629476cc4ee1839c874679e8ea"
+    },
+    {
+      "task_id": "23cf851_1",
+      "specs_sha256": "9fa2ebc76c805dc85353da8b5ef47989ae7523c3252bbfbba3de7ab04260296c"
+    },
+    {
+      "task_id": "3ab5b8b_1",
+      "specs_sha256": "df6bae67e8be920fecd97cae1c76e48422e301505d5748b30734201a93ef6380"
+    },
+    {
+      "task_id": "4fab96f_1",
+      "specs_sha256": "de80d4cd8809b53c3a535f03da011865fea1aae946bae9eda64e79388bc07582"
+    },
+    {
+      "task_id": "50e1ac9_1",
+      "specs_sha256": "d1e04d2e674fdd635e29655f82e80e506e8f2faa095f7f959a123985df6a90b4"
+    },
+    {
+      "task_id": "57c3486_1",
+      "specs_sha256": "3e30b9dffbb3bc82cc131a83a07021143cd0f686ff39a9a77b9fcfcc655f3915"
+    },
+    {
+      "task_id": "6c2c621_1",
+      "specs_sha256": "f34064d70beada7ad93ba8144c500af8b2ca1194a134e5082d39f545f4fdf7b4"
+    },
+    {
+      "task_id": "fac291d_1",
+      "specs_sha256": "a768552ee9194958bec0f399e399efadf613a9e09ff126f115b4cc47999494bd"
+    }
+  ],
+  "runs": [
+    {
+      "label": "November 6 audit seed 17",
+      "run_id": "113994b3-61c4-454f-bd7e-0f5f9bf63c26",
+      "manifest_sha256": "c667da4ed0b6c4c38a45781de96e598245f6cccf59f5a74384149dd3c0567ecb",
+      "code_commit": "33fb9210d8114311dfccf5f28e864e150f0c1caf",
+      "model": "Qwen/Qwen3-14B",
+      "model_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+      "device": "NVIDIA RTX A6000",
+      "experiment_id": "pilot-retention-qwen14b-v1",
+      "seeds": [
+        17
+      ],
+      "sampling": {
+        "enable_thinking": true,
+        "max_new_tokens": 4096,
+        "temperature": 0.6,
+        "top_p": 0.95
+      },
+      "budget_seconds": 600,
+      "max_context_tokens": 32768,
+      "peak_vram_bytes": 42949672960,
+      "audited_trajectories": 32,
+      "published_audit_reproduced_exactly": true,
+      "baseline_trajectories": 8,
+      "baseline_with_errors": 7,
+      "baseline_statuses": {
+        "completed": 8
+      },
+      "baseline_turns": 70,
+      "baseline_error_turns": 21,
+      "error_turn_categories": {
+        "HTTP 401": 9,
+        "Unexpected parameter": 6,
+        "HTTP 422": 2,
+        "TypeError": 2,
+        "No API named": 1,
+        "Invalid action": 1
+      },
+      "trajectories_per_error_category": {
+        "HTTP 401": 6,
+        "Unexpected parameter": 3,
+        "HTTP 422": 1,
+        "TypeError": 2,
+        "No API named": 1,
+        "Invalid action": 1
+      },
+      "baseline_rows": [
+        {
+          "task_id": "0d8a4ee_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/0d8a4ee_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "b145538890f1a9957f4e80b57d948eb65b1427f76d3e9bc32b2a574e9337b9db",
+          "attempt_sha256": "1a097c9d332b0fc20ec08ee8c0da2e648f9af8c095c22c7766f9ec8d58883500",
+          "status": "completed",
+          "elapsed_seconds": 172.8784734699875,
+          "raw_token_count": 7960,
+          "legacy_audit": {
+            "turns": 6,
+            "error_turns": 1,
+            "first_error_turn": 4,
+            "longest_error_streak": 1,
+            "repeated_action_strings": 0,
+            "categories": {
+              "other execution error": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 4,
+              "category": "HTTP 401"
+            }
+          ],
+          "category_counts": {
+            "HTTP 401": 1
+          }
+        },
+        {
+          "task_id": "23cf851_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/23cf851_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "a7eba84b105fab74b05bfb3607f56b25dbb3a9af455352c4eb595aeb32bd98cf",
+          "attempt_sha256": "82c9cc8b73ac65eeb53b46e29c73b2f63d0d028810271b2d103d265f12073f88",
+          "status": "completed",
+          "elapsed_seconds": 146.46688112203265,
+          "raw_token_count": 8664,
+          "legacy_audit": {
+            "turns": 8,
+            "error_turns": 2,
+            "first_error_turn": 3,
+            "longest_error_streak": 1,
+            "repeated_action_strings": 0,
+            "categories": {
+              "other execution error": 1,
+              "Unexpected parameter": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 3,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 5,
+              "category": "Unexpected parameter"
+            }
+          ],
+          "category_counts": {
+            "HTTP 401": 1,
+            "Unexpected parameter": 1
+          }
+        },
+        {
+          "task_id": "3ab5b8b_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/3ab5b8b_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "05c0a93d7d8edc60ef005aaab605c0bd93160b5540a90c1840f16a7ad686c881",
+          "attempt_sha256": "a92394735a33c6ab5ddd721e1357c0650171b387b71ecc8d00a1a6f5c3c5d96b",
+          "status": "completed",
+          "elapsed_seconds": 244.54769252601545,
+          "raw_token_count": 11778,
+          "legacy_audit": {
+            "turns": 10,
+            "error_turns": 5,
+            "first_error_turn": 3,
+            "longest_error_streak": 2,
+            "repeated_action_strings": 0,
+            "categories": {
+              "Unexpected parameter": 3,
+              "other execution error": 2
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 3,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 5,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 6,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 8,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 9,
+              "category": "HTTP 401"
+            }
+          ],
+          "category_counts": {
+            "Unexpected parameter": 3,
+            "HTTP 401": 2
+          }
+        },
+        {
+          "task_id": "4fab96f_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/4fab96f_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "43f30b6c74b37b1c5a56ed78b7f3f7f7423692262ab0485640017bdeb6ce2eea",
+          "attempt_sha256": "b957342cc3d3c139882a061b56bda9b4b90bf1bcec66158eace87814aa0b87cb",
+          "status": "completed",
+          "elapsed_seconds": 188.17922382598044,
+          "raw_token_count": 9054,
+          "legacy_audit": {
+            "turns": 6,
+            "error_turns": 2,
+            "first_error_turn": 3,
+            "longest_error_streak": 1,
+            "repeated_action_strings": 0,
+            "categories": {
+              "other execution error": 2
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 3,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 5,
+              "category": "HTTP 401"
+            }
+          ],
+          "category_counts": {
+            "HTTP 401": 2
+          }
+        },
+        {
+          "task_id": "50e1ac9_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/50e1ac9_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "341164efc9ee607292b4b812058bc037fc08bf543b73b72efde3cdf6476f2a2d",
+          "attempt_sha256": "42d3bfc59c1c10c65f49f180f7affb26a1d9dd8de0f95be96e44d28d3c060291",
+          "status": "completed",
+          "elapsed_seconds": 46.41581654199399,
+          "raw_token_count": 5753,
+          "legacy_audit": {
+            "turns": 2,
+            "error_turns": 0,
+            "first_error_turn": null,
+            "longest_error_streak": 0,
+            "repeated_action_strings": 0,
+            "categories": {}
+          },
+          "classified_errors": [],
+          "category_counts": {}
+        },
+        {
+          "task_id": "57c3486_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/57c3486_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "2f28db038c2e4c313795eb576e8dd997071186169b7be31b35ea6fd4a9c78ac4",
+          "attempt_sha256": "c6ec3c058f567d99938fffbd9a130fb6efd3f22b41144be9523d1e3713a9b234",
+          "status": "completed",
+          "elapsed_seconds": 563.7873365689884,
+          "raw_token_count": 23483,
+          "legacy_audit": {
+            "turns": 19,
+            "error_turns": 5,
+            "first_error_turn": 3,
+            "longest_error_streak": 3,
+            "repeated_action_strings": 1,
+            "categories": {
+              "other execution error": 4,
+              "TypeError": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 3,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 10,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 11,
+              "category": "HTTP 422"
+            },
+            {
+              "turn": 12,
+              "category": "TypeError"
+            },
+            {
+              "turn": 17,
+              "category": "HTTP 422"
+            }
+          ],
+          "category_counts": {
+            "HTTP 401": 2,
+            "HTTP 422": 2,
+            "TypeError": 1
+          }
+        },
+        {
+          "task_id": "6c2c621_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/6c2c621_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "0c7e0fc7c5a92d0d6b053b93ac5a24b0a6accf425ff2cdbac32a081f9b0e8a63",
+          "attempt_sha256": "13e6ffab2958a7d6a80a00c9d655697b3536127c3dc5bc1c5173b37a323f044d",
+          "status": "completed",
+          "elapsed_seconds": 312.89001554698916,
+          "raw_token_count": 19417,
+          "legacy_audit": {
+            "turns": 14,
+            "error_turns": 4,
+            "first_error_turn": 8,
+            "longest_error_streak": 3,
+            "repeated_action_strings": 0,
+            "categories": {
+              "No API named": 1,
+              "Unexpected parameter": 2,
+              "TypeError": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 8,
+              "category": "No API named"
+            },
+            {
+              "turn": 10,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 11,
+              "category": "TypeError"
+            },
+            {
+              "turn": 12,
+              "category": "Unexpected parameter"
+            }
+          ],
+          "category_counts": {
+            "No API named": 1,
+            "Unexpected parameter": 2,
+            "TypeError": 1
+          }
+        },
+        {
+          "task_id": "fac291d_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/fac291d_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "fe8ea1959e7f2956e2315ce5db3f095787de56c654c442143555fe1bcd2efaaf",
+          "attempt_sha256": "b91bfea821da49205ca90f488c43c4b774b8b331f2dbb6e4bc0d2f1715f5f2f4",
+          "status": "completed",
+          "elapsed_seconds": 302.95036010298645,
+          "raw_token_count": 13418,
+          "legacy_audit": {
+            "turns": 5,
+            "error_turns": 2,
+            "first_error_turn": 3,
+            "longest_error_streak": 2,
+            "repeated_action_strings": 0,
+            "categories": {
+              "Invalid action": 1,
+              "other execution error": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 3,
+              "category": "Invalid action"
+            },
+            {
+              "turn": 4,
+              "category": "HTTP 401"
+            }
+          ],
+          "category_counts": {
+            "Invalid action": 1,
+            "HTTP 401": 1
+          }
+        }
+      ]
+    },
+    {
+      "label": "November 6 audit seed 18",
+      "run_id": "fc1712b6-991e-45f2-9c24-240078e7f9c6",
+      "manifest_sha256": "7fc69919bce5d7922c22f6c533fcb8ed84dcf43eccf25003fd02c9a5780e3fd8",
+      "code_commit": "33fb9210d8114311dfccf5f28e864e150f0c1caf",
+      "model": "Qwen/Qwen3-14B",
+      "model_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "experiment_id": "pilot-retention-qwen14b-seed18-robustness-v1",
+      "seeds": [
+        18
+      ],
+      "sampling": {
+        "enable_thinking": true,
+        "max_new_tokens": 4096,
+        "temperature": 0.6,
+        "top_p": 0.95
+      },
+      "budget_seconds": 600,
+      "max_context_tokens": 32768,
+      "peak_vram_bytes": 42949672960,
+      "audited_trajectories": 32,
+      "published_audit_reproduced_exactly": true,
+      "baseline_trajectories": 8,
+      "baseline_with_errors": 7,
+      "baseline_statuses": {
+        "completed": 7,
+        "timeout": 1
+      },
+      "baseline_turns": 95,
+      "baseline_error_turns": 48,
+      "error_turn_categories": {
+        "HTTP 401": 12,
+        "Unexpected parameter": 10,
+        "Invalid action": 2,
+        "No API named": 1,
+        "other execution error": 1,
+        "HTTP 422": 3,
+        "TypeError": 19
+      },
+      "trajectories_per_error_category": {
+        "HTTP 401": 7,
+        "Unexpected parameter": 6,
+        "Invalid action": 2,
+        "No API named": 1,
+        "other execution error": 1,
+        "HTTP 422": 2,
+        "TypeError": 1
+      },
+      "baseline_rows": [
+        {
+          "task_id": "0d8a4ee_1",
+          "seed": 18,
+          "attempt_seed": 2753358715,
+          "trajectory": "cells/0d8a4ee_1-full_once-18/attempt-000/trajectory.json",
+          "trajectory_sha256": "d9216e815c1ea0d656561b1edc8a5f49864e6c59b6ba74506e91e75ea6cc3369",
+          "attempt_sha256": "db564b9c5bebf3ba95da9c888662f50210334ff8b464451a5871539b56c8bc2b",
+          "status": "completed",
+          "elapsed_seconds": 71.65306310169399,
+          "raw_token_count": 7331,
+          "legacy_audit": {
+            "turns": 11,
+            "error_turns": 4,
+            "first_error_turn": 2,
+            "longest_error_streak": 1,
+            "repeated_action_strings": 1,
+            "categories": {
+              "other execution error": 3,
+              "Unexpected parameter": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 2,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 4,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 6,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 8,
+              "category": "HTTP 401"
+            }
+          ],
+          "category_counts": {
+            "HTTP 401": 3,
+            "Unexpected parameter": 1
+          }
+        },
+        {
+          "task_id": "23cf851_1",
+          "seed": 18,
+          "attempt_seed": 2753358715,
+          "trajectory": "cells/23cf851_1-full_once-18/attempt-000/trajectory.json",
+          "trajectory_sha256": "f98b6bfab9c482c80a40497a6a21949fa7267c6ac3181682c117e457c2301505",
+          "attempt_sha256": "1e762121055984bf94b5b960bd53d7502ce5edb53faf232a50344de8f620087c",
+          "status": "completed",
+          "elapsed_seconds": 173.88982222275808,
+          "raw_token_count": 12399,
+          "legacy_audit": {
+            "turns": 7,
+            "error_turns": 3,
+            "first_error_turn": 3,
+            "longest_error_streak": 3,
+            "repeated_action_strings": 0,
+            "categories": {
+              "Invalid action": 1,
+              "other execution error": 1,
+              "Unexpected parameter": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 3,
+              "category": "Invalid action"
+            },
+            {
+              "turn": 4,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 5,
+              "category": "Unexpected parameter"
+            }
+          ],
+          "category_counts": {
+            "Invalid action": 1,
+            "HTTP 401": 1,
+            "Unexpected parameter": 1
+          }
+        },
+        {
+          "task_id": "3ab5b8b_1",
+          "seed": 18,
+          "attempt_seed": 2753358715,
+          "trajectory": "cells/3ab5b8b_1-full_once-18/attempt-000/trajectory.json",
+          "trajectory_sha256": "d167318108e8c03d05a50eb9ce81b6fca8cbb193ca75f5fe850c678dbbf0f973",
+          "attempt_sha256": "02eb73b1a81d3a18945f60ffc2ce958571a17a7b55a73adceed977dc9c93a64e",
+          "status": "completed",
+          "elapsed_seconds": 97.97167097916827,
+          "raw_token_count": 9815,
+          "legacy_audit": {
+            "turns": 9,
+            "error_turns": 4,
+            "first_error_turn": 2,
+            "longest_error_streak": 2,
+            "repeated_action_strings": 2,
+            "categories": {
+              "other execution error": 2,
+              "Unexpected parameter": 1,
+              "No API named": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 2,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 4,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 6,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 7,
+              "category": "No API named"
+            }
+          ],
+          "category_counts": {
+            "HTTP 401": 2,
+            "Unexpected parameter": 1,
+            "No API named": 1
+          }
+        },
+        {
+          "task_id": "4fab96f_1",
+          "seed": 18,
+          "attempt_seed": 2753358715,
+          "trajectory": "cells/4fab96f_1-full_once-18/attempt-000/trajectory.json",
+          "trajectory_sha256": "7d0bcdf1eb4023e5a59600d9c1129ef5d4c05c57912fc43c5d8a85ae6bbbad9c",
+          "attempt_sha256": "24ddfd12f076a2ed3f028cc15943ff93e4e05d7501a52d368f6fd091c5f57606",
+          "status": "completed",
+          "elapsed_seconds": 71.24045132892206,
+          "raw_token_count": 9053,
+          "legacy_audit": {
+            "turns": 10,
+            "error_turns": 1,
+            "first_error_turn": 5,
+            "longest_error_streak": 1,
+            "repeated_action_strings": 0,
+            "categories": {
+              "other execution error": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 5,
+              "category": "HTTP 401"
+            }
+          ],
+          "category_counts": {
+            "HTTP 401": 1
+          }
+        },
+        {
+          "task_id": "50e1ac9_1",
+          "seed": 18,
+          "attempt_seed": 2753358715,
+          "trajectory": "cells/50e1ac9_1-full_once-18/attempt-000/trajectory.json",
+          "trajectory_sha256": "e38929d59bfa0bfca10e509be02b78d60c8173262796e71b1c9b72f10c496547",
+          "attempt_sha256": "c17fd3fb6cfc8df3ff5c531fcf9de3cd81b9f953a44d1fb7b48170b95b58efa7",
+          "status": "completed",
+          "elapsed_seconds": 112.70945609500632,
+          "raw_token_count": 8365,
+          "legacy_audit": {
+            "turns": 4,
+            "error_turns": 0,
+            "first_error_turn": null,
+            "longest_error_streak": 0,
+            "repeated_action_strings": 0,
+            "categories": {}
+          },
+          "classified_errors": [],
+          "category_counts": {}
+        },
+        {
+          "task_id": "57c3486_1",
+          "seed": 18,
+          "attempt_seed": 2753358715,
+          "trajectory": "cells/57c3486_1-full_once-18/attempt-000/trajectory.json",
+          "trajectory_sha256": "8aa50810821417ed03cb4011de99b6682eec8c4db1e7397d1881757738807852",
+          "attempt_sha256": "5899c38504a53bfbff28b0eae207cc69e6eaae62c0a8a8a46f18ff05837af162",
+          "status": "completed",
+          "elapsed_seconds": 183.9599746321328,
+          "raw_token_count": 13618,
+          "legacy_audit": {
+            "turns": 9,
+            "error_turns": 4,
+            "first_error_turn": 3,
+            "longest_error_streak": 3,
+            "repeated_action_strings": 0,
+            "categories": {
+              "Invalid action": 1,
+              "other execution error": 2,
+              "Unexpected parameter": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 3,
+              "category": "Invalid action"
+            },
+            {
+              "turn": 6,
+              "category": "other execution error"
+            },
+            {
+              "turn": 7,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 8,
+              "category": "HTTP 401"
+            }
+          ],
+          "category_counts": {
+            "Invalid action": 1,
+            "other execution error": 1,
+            "Unexpected parameter": 1,
+            "HTTP 401": 1
+          }
+        },
+        {
+          "task_id": "6c2c621_1",
+          "seed": 18,
+          "attempt_seed": 2753358715,
+          "trajectory": "cells/6c2c621_1-full_once-18/attempt-000/trajectory.json",
+          "trajectory_sha256": "8dace20f782eeec72aa8c341ae663173150612c79204bd59102ebade6c331258",
+          "attempt_sha256": "3c8bba587fcb37b3303a4bfa161e192657f508dedbb248069d3f4367a831ada7",
+          "status": "completed",
+          "elapsed_seconds": 184.87934070127085,
+          "raw_token_count": 14177,
+          "legacy_audit": {
+            "turns": 15,
+            "error_turns": 7,
+            "first_error_turn": 5,
+            "longest_error_streak": 3,
+            "repeated_action_strings": 0,
+            "categories": {
+              "Unexpected parameter": 2,
+              "other execution error": 5
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 5,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 6,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 8,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 9,
+              "category": "HTTP 422"
+            },
+            {
+              "turn": 11,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 12,
+              "category": "HTTP 422"
+            },
+            {
+              "turn": 13,
+              "category": "Unexpected parameter"
+            }
+          ],
+          "category_counts": {
+            "Unexpected parameter": 2,
+            "HTTP 401": 3,
+            "HTTP 422": 2
+          }
+        },
+        {
+          "task_id": "fac291d_1",
+          "seed": 18,
+          "attempt_seed": 2753358715,
+          "trajectory": "cells/fac291d_1-full_once-18/attempt-000/trajectory.json",
+          "trajectory_sha256": "ddea892b7df89a7c679140a01bc5884fd556646a1c16da206e03b3d7c544c6f1",
+          "attempt_sha256": "d8c2737ddfd51df87bfc00e42e1739b9154a60f37c4f7e4aace6c3e11b324209",
+          "status": "timeout",
+          "elapsed_seconds": 600.0329795940779,
+          "raw_token_count": 31558,
+          "legacy_audit": {
+            "turns": 30,
+            "error_turns": 25,
+            "first_error_turn": 3,
+            "longest_error_streak": 23,
+            "repeated_action_strings": 17,
+            "categories": {
+              "other execution error": 2,
+              "Unexpected parameter": 4,
+              "TypeError": 19
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 3,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 5,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 8,
+              "category": "HTTP 422"
+            },
+            {
+              "turn": 9,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 10,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 11,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 12,
+              "category": "TypeError"
+            },
+            {
+              "turn": 13,
+              "category": "TypeError"
+            },
+            {
+              "turn": 14,
+              "category": "TypeError"
+            },
+            {
+              "turn": 15,
+              "category": "TypeError"
+            },
+            {
+              "turn": 16,
+              "category": "TypeError"
+            },
+            {
+              "turn": 17,
+              "category": "TypeError"
+            },
+            {
+              "turn": 18,
+              "category": "TypeError"
+            },
+            {
+              "turn": 19,
+              "category": "TypeError"
+            },
+            {
+              "turn": 20,
+              "category": "TypeError"
+            },
+            {
+              "turn": 21,
+              "category": "TypeError"
+            },
+            {
+              "turn": 22,
+              "category": "TypeError"
+            },
+            {
+              "turn": 23,
+              "category": "TypeError"
+            },
+            {
+              "turn": 24,
+              "category": "TypeError"
+            },
+            {
+              "turn": 25,
+              "category": "TypeError"
+            },
+            {
+              "turn": 26,
+              "category": "TypeError"
+            },
+            {
+              "turn": 27,
+              "category": "TypeError"
+            },
+            {
+              "turn": 28,
+              "category": "TypeError"
+            },
+            {
+              "turn": 29,
+              "category": "TypeError"
+            },
+            {
+              "turn": 30,
+              "category": "TypeError"
+            }
+          ],
+          "category_counts": {
+            "HTTP 401": 1,
+            "Unexpected parameter": 4,
+            "HTTP 422": 1,
+            "TypeError": 19
+          }
+        }
+      ]
+    },
+    {
+      "label": "Published October 20 repaired pilot",
+      "run_id": "f15c5c5b-7e6b-4134-bf36-454bb434f1a4",
+      "manifest_sha256": "fe6b394fb6dc62fe21156463afcea47e5bc19b8655a84aeb759823f1acfb65c7",
+      "code_commit": "60ccf510a809c0b1dceafda52e4ba51d090a8123",
+      "model": "Qwen/Qwen3-14B",
+      "model_revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "experiment_id": "pilot-retention-qwen14b-v1",
+      "seeds": [
+        17
+      ],
+      "sampling": {
+        "enable_thinking": true,
+        "max_new_tokens": 4096,
+        "temperature": 0.6,
+        "top_p": 0.95
+      },
+      "budget_seconds": 600,
+      "max_context_tokens": 32768,
+      "peak_vram_bytes": 42949672960,
+      "audited_trajectories": 31,
+      "published_audit_reproduced_exactly": false,
+      "baseline_trajectories": 8,
+      "baseline_with_errors": 7,
+      "baseline_statuses": {
+        "completed": 8
+      },
+      "baseline_turns": 77,
+      "baseline_error_turns": 30,
+      "error_turn_categories": {
+        "HTTP 401": 13,
+        "Unexpected parameter": 8,
+        "Invalid action": 3,
+        "No API named": 1,
+        "other execution error": 1,
+        "HTTP 422": 3,
+        "TypeError": 1
+      },
+      "trajectories_per_error_category": {
+        "HTTP 401": 7,
+        "Unexpected parameter": 6,
+        "Invalid action": 3,
+        "No API named": 1,
+        "other execution error": 1,
+        "HTTP 422": 2,
+        "TypeError": 1
+      },
+      "baseline_rows": [
+        {
+          "task_id": "0d8a4ee_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/0d8a4ee_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "fa55f123a94a68b5a15a7a314568a22ff95366596b149bb66ae079da259ea530",
+          "attempt_sha256": "88a941e91c0bcb393de38466f9f9f52d3a727ec051ab7e1507f7caea8e830a17",
+          "status": "completed",
+          "elapsed_seconds": 60.482068188954145,
+          "raw_token_count": 6686,
+          "legacy_audit": {
+            "turns": 9,
+            "error_turns": 4,
+            "first_error_turn": 2,
+            "longest_error_streak": 1,
+            "repeated_action_strings": 1,
+            "categories": {
+              "other execution error": 3,
+              "Unexpected parameter": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 2,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 4,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 6,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 8,
+              "category": "HTTP 401"
+            }
+          ],
+          "category_counts": {
+            "HTTP 401": 3,
+            "Unexpected parameter": 1
+          }
+        },
+        {
+          "task_id": "23cf851_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/23cf851_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "f98b6bfab9c482c80a40497a6a21949fa7267c6ac3181682c117e457c2301505",
+          "attempt_sha256": "1a1fb580b01080d98953cbeb7a01c0b7680c7cabd639e6a4ffa3338623933cc3",
+          "status": "completed",
+          "elapsed_seconds": 170.52276847325265,
+          "raw_token_count": 12399,
+          "legacy_audit": {
+            "turns": 7,
+            "error_turns": 3,
+            "first_error_turn": 3,
+            "longest_error_streak": 3,
+            "repeated_action_strings": 0,
+            "categories": {
+              "Invalid action": 1,
+              "other execution error": 1,
+              "Unexpected parameter": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 3,
+              "category": "Invalid action"
+            },
+            {
+              "turn": 4,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 5,
+              "category": "Unexpected parameter"
+            }
+          ],
+          "category_counts": {
+            "Invalid action": 1,
+            "HTTP 401": 1,
+            "Unexpected parameter": 1
+          }
+        },
+        {
+          "task_id": "3ab5b8b_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/3ab5b8b_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "284f3b6e45bf713f36d5da85861a31a7f782cd34561c9c473b58251ef3b41975",
+          "attempt_sha256": "ca56eec4756bc20609e68841c83ca11e234fef0e21cb8a517f57ed9c15f8d0b3",
+          "status": "completed",
+          "elapsed_seconds": 100.87989373318851,
+          "raw_token_count": 10105,
+          "legacy_audit": {
+            "turns": 10,
+            "error_turns": 6,
+            "first_error_turn": 2,
+            "longest_error_streak": 4,
+            "repeated_action_strings": 1,
+            "categories": {
+              "other execution error": 3,
+              "Unexpected parameter": 1,
+              "No API named": 1,
+              "Invalid action": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 2,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 4,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 6,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 7,
+              "category": "No API named"
+            },
+            {
+              "turn": 8,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 9,
+              "category": "Invalid action"
+            }
+          ],
+          "category_counts": {
+            "HTTP 401": 3,
+            "Unexpected parameter": 1,
+            "No API named": 1,
+            "Invalid action": 1
+          }
+        },
+        {
+          "task_id": "4fab96f_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/4fab96f_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "734552126b1132b817cbaa3ddcc1048c9c5bbac0d778574db945853899969d63",
+          "attempt_sha256": "4e513776532c673371200d3cde38b664a07c57a8fe507d8f8de6b0efee1de456",
+          "status": "completed",
+          "elapsed_seconds": 67.40950201218948,
+          "raw_token_count": 9057,
+          "legacy_audit": {
+            "turns": 10,
+            "error_turns": 1,
+            "first_error_turn": 5,
+            "longest_error_streak": 1,
+            "repeated_action_strings": 0,
+            "categories": {
+              "other execution error": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 5,
+              "category": "HTTP 401"
+            }
+          ],
+          "category_counts": {
+            "HTTP 401": 1
+          }
+        },
+        {
+          "task_id": "50e1ac9_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/50e1ac9_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "e38929d59bfa0bfca10e509be02b78d60c8173262796e71b1c9b72f10c496547",
+          "attempt_sha256": "01a54c07ef1f956d059b954f3171e4b1b467749d5995e29aca28a7101f686fea",
+          "status": "completed",
+          "elapsed_seconds": 49.44179343432188,
+          "raw_token_count": 8365,
+          "legacy_audit": {
+            "turns": 4,
+            "error_turns": 0,
+            "first_error_turn": null,
+            "longest_error_streak": 0,
+            "repeated_action_strings": 0,
+            "categories": {}
+          },
+          "classified_errors": [],
+          "category_counts": {}
+        },
+        {
+          "task_id": "57c3486_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/57c3486_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "8aa50810821417ed03cb4011de99b6682eec8c4db1e7397d1881757738807852",
+          "attempt_sha256": "218ae2f66bf474cb81a0f73e2b857c224d4f6b8a44f0f31586ec75884ebae898",
+          "status": "completed",
+          "elapsed_seconds": 182.31469823326916,
+          "raw_token_count": 13618,
+          "legacy_audit": {
+            "turns": 9,
+            "error_turns": 4,
+            "first_error_turn": 3,
+            "longest_error_streak": 3,
+            "repeated_action_strings": 0,
+            "categories": {
+              "Invalid action": 1,
+              "other execution error": 2,
+              "Unexpected parameter": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 3,
+              "category": "Invalid action"
+            },
+            {
+              "turn": 6,
+              "category": "other execution error"
+            },
+            {
+              "turn": 7,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 8,
+              "category": "HTTP 401"
+            }
+          ],
+          "category_counts": {
+            "Invalid action": 1,
+            "other execution error": 1,
+            "Unexpected parameter": 1,
+            "HTTP 401": 1
+          }
+        },
+        {
+          "task_id": "6c2c621_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/6c2c621_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "8dace20f782eeec72aa8c341ae663173150612c79204bd59102ebade6c331258",
+          "attempt_sha256": "a7194fe665fc66bc6e54331b76467953f9c9bf8e2d08249dba5d08d945e6463c",
+          "status": "completed",
+          "elapsed_seconds": 180.85629455000162,
+          "raw_token_count": 14177,
+          "legacy_audit": {
+            "turns": 15,
+            "error_turns": 7,
+            "first_error_turn": 5,
+            "longest_error_streak": 3,
+            "repeated_action_strings": 0,
+            "categories": {
+              "Unexpected parameter": 2,
+              "other execution error": 5
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 5,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 6,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 8,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 9,
+              "category": "HTTP 422"
+            },
+            {
+              "turn": 11,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 12,
+              "category": "HTTP 422"
+            },
+            {
+              "turn": 13,
+              "category": "Unexpected parameter"
+            }
+          ],
+          "category_counts": {
+            "Unexpected parameter": 2,
+            "HTTP 401": 3,
+            "HTTP 422": 2
+          }
+        },
+        {
+          "task_id": "fac291d_1",
+          "seed": 17,
+          "attempt_seed": 403056972,
+          "trajectory": "cells/fac291d_1-full_once-17/attempt-000/trajectory.json",
+          "trajectory_sha256": "bcadbad1f4efcf0c7fbf1ddd0f733eb98f39ee7e46458e77c73cf7f33a7a6a43",
+          "attempt_sha256": "42a4c9921f55a5eda9d052a61a7f3f9ca9e19593cc71468b7692e83bc9b72622",
+          "status": "completed",
+          "elapsed_seconds": 205.06202981295064,
+          "raw_token_count": 16828,
+          "legacy_audit": {
+            "turns": 13,
+            "error_turns": 5,
+            "first_error_turn": 3,
+            "longest_error_streak": 3,
+            "repeated_action_strings": 0,
+            "categories": {
+              "other execution error": 2,
+              "Unexpected parameter": 2,
+              "TypeError": 1
+            }
+          },
+          "classified_errors": [
+            {
+              "turn": 3,
+              "category": "HTTP 401"
+            },
+            {
+              "turn": 5,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 8,
+              "category": "HTTP 422"
+            },
+            {
+              "turn": 9,
+              "category": "Unexpected parameter"
+            },
+            {
+              "turn": 10,
+              "category": "TypeError"
+            }
+          ],
+          "category_counts": {
+            "HTTP 401": 1,
+            "Unexpected parameter": 2,
+            "HTTP 422": 1,
+            "TypeError": 1
+          }
+        }
+      ]
+    }
+  ],
+  "appworld_probe": {
+    "scope": "Isolated dev API probes; no model or evaluator invoked.",
+    "authentication": {
+      "task_id": "3ab5b8b_1",
+      "missing_token_rejected": true,
+      "email_keyword_rejected": true,
+      "password_as_token_rejected": true,
+      "explicit_returned_token_succeeds": {
+        "response_type": "list",
+        "count": 5
+      },
+      "login_does_not_implicitly_authenticate_later_calls": true
+    },
+    "pagination": {
+      "task_id": "23cf851_1",
+      "default_page_count": 5,
+      "all_pages_count": 12,
+      "same_like_total": false
+    },
+    "probe_sha256": "03a444ebeed33700c5f667ebe3a371c61b08fce1f2dbe8fef2070078658d5c12",
+    "job_id": "13831760",
+    "results_sha256": "aac1e489b96711d0746892f2535d9aa58a0c2ffc01f8c553d102618bd2f524f9",
+    "appworld_revision": "42b5bcf3cd334fee33f0c37c02070a9f5807add5",
+    "elapsed_seconds": 15,
+    "exit_code": 0
+  }
+}
