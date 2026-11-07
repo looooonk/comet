@@ -50,6 +50,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Broader 8B baseline plan (2026-11-07)](baseline-qwen8b-2026-11-07-plan.md) | Declared 38-rollout dev pilot: all 19 families, two replicate seeds, unchanged candidate prompt and full-cache settings |
 | [Runtime and baseline validation (2026-11-07)](runtime-baseline-validation-2026-11-07.md) | Managed environments, 8B/14B live GPU tests, paired prompt diagnostic, corrected historical audits; [evidence](runtime-baseline-validation-2026-11-07.json) |
 | [November 7 baseline investigation](full-cache-investigation-2026-11-07.md) | Full-cache failure mechanisms, audit classification gap, live CPU confirmation, and fix priorities |
 | [Baseline investigation evidence](full-cache-investigation-2026-11-07.json) | Verified trajectory hashes, per-turn error categories, execution status, and live probe results |
