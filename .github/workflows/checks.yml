@@ -25,9 +25,9 @@ jobs:
     env:
       COMET_REPO: ${{ github.workspace }}
       COMET_ENV: ${{ github.workspace }}/.venv-ci
-      COMET_CHECK_OUTPUT: ${{ runner.temp }}/comet-check
-      COMET_STORAGE: ${{ runner.temp }}/comet-storage
-      UV_CACHE_DIR: ${{ runner.temp }}/comet-storage/cache/uv
+      COMET_CHECK_OUTPUT: ${{ github.workspace }}/artifacts/ci-check
+      COMET_STORAGE: ${{ github.workspace }}/artifacts/ci-storage
+      UV_CACHE_DIR: ${{ github.workspace }}/artifacts/ci-storage/cache/uv
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e
