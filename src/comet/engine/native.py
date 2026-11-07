@@ -5,6 +5,7 @@ import importlib.metadata
 import importlib.util
 import random
 import subprocess
+import tempfile
 import threading
 import uuid
 from dataclasses import replace
@@ -66,7 +67,15 @@ class MiniSGLangEngine:
         pool_tokens = min(settings.max_context_tokens, pool_bytes // self.kv_bytes_per_token - 1)
         if pool_tokens < 2:
             raise MemoryCapExceeded("model and transient workspace leave no feasible KV pool")
-        config = SchedulerConfig(
+        self._distributed_store = tempfile.TemporaryDirectory(prefix="comet-rendezvous-")
+        rendezvous_uri = (Path(self._distributed_store.name) / "store").as_uri()
+
+        class SingleGPUConfig(SchedulerConfig):
+            @property
+            def distributed_addr(self):
+                return rendezvous_uri
+
+        config = SingleGPUConfig(
             model_path=settings.model_path,
             tp_info=DistributedInfo(0, 1),
             dtype=torch.bfloat16,
@@ -88,7 +97,11 @@ class MiniSGLangEngine:
             query_ring_capacity=8,
             query_ring_num_stages=4,
         )
-        self.scheduler = Scheduler(config)
+        try:
+            self.scheduler = Scheduler(config)
+        except BaseException:
+            self._distributed_store.cleanup()
+            raise
         self.scheduler.send_result = self._receive
         self.tokenizer = self.scheduler.tokenizer
         self.device_name = properties.name
@@ -560,7 +573,10 @@ class MiniSGLangEngine:
         self._monitor_stop.set()
         self._monitor.join(timeout=1)
         self._clear_session()
-        self.scheduler.shutdown()
+        try:
+            self.scheduler.shutdown()
+        finally:
+            self._distributed_store.cleanup()
 
     def synchronize(self):
         self.torch.cuda.synchronize()

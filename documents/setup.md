@@ -37,6 +37,21 @@ bash scripts/download_assets.sh "$COMET_STORAGE/venv" "$COMET_STORAGE/appworld" 
 ```
 
 For AppWorld-only testing, use `appworld` instead of `gpu`, and omit `--model`.
+For an isolated CPU environment, use `cpu`; it installs `uv.lock` without CUDA or
+AppWorld. All three profiles require uv 0.13.0 and select Python 3.12. Use a
+separate environment for each checkout and profile. Setup records its owner and
+lock hashes in `.comet-runtime.json`, marks incomplete setup, and refuses to
+modify an unmanaged environment or one owned by another checkout. Existing
+legacy environments remain usable with their original source; choose a new path
+for this workflow. Rerunning setup for the same owner/profile synchronizes its
+locks and repairs an interrupted installation. Do not run setup while that
+environment is executing a job. Changed locks require setup again.
+
+Check and experiment launchers verify this marker, the selected Python, and the
+installed COMET source location before executing. They clear `PYTHONPATH` so a
+stale override cannot select a different checkout. Source edits in the same
+checkout remain editable and are captured in evidence; commit them before model
+comparisons. These checks supplement the engine's pinned-source/patch validation.
 The setup script retrieves AppWorld's Git LFS bundles at the pinned commit, checks
 their SHA256 and size against the repository pointers, and installs the bundled
 applications. Pydantic 2.12.5 is pinned because AppWorld's datetime schema patch is
@@ -93,7 +108,7 @@ documents a 50GB home quota and no automatic backups. Keep source checkouts smal
 and copy completed run records to durable storage.
 
 The launcher sources `scripts/runtime_caches.sh` before importing GPU libraries.
-It places Hugging Face, uv, Triton, PyTorch, CUDA, FlashInfer, and TVM-FFI caches
+It places AppWorld, Hugging Face, uv, Triton, PyTorch, CUDA, FlashInfer, and TVM-FFI caches
 under `COMET_STORAGE/cache`. Source the same file before standalone GPU preflight
 commands. Triton otherwise writes to its own home-directory cache even when the
 model and FlashInfer caches are redirected. Check project-storage quotas for both
@@ -104,11 +119,45 @@ The launcher checks create/write/fsync/rename in every cache directory before
 model loading; this catches current write failures, not quota exhaustion later
 in a run. Existing caches are not removed or migrated.
 
+Setup and checks also have Slurm entry points. Submit setup on an allocated CPU
+node; request a GPU only for GPU checks. Choose the scheduler account, partitions,
+and time limits explicitly. Use absolute paths, and ensure `uv` is on the
+submitted `PATH`. For example, after exporting `COMET_REPO`, `COMET_STORAGE`,
+and the scheduler variables below:
+
+```sh
+export COMET_ENV="$COMET_STORAGE/environments/my-checkout-cpu"
+export COMET_CHECK_OUTPUT="$COMET_STORAGE/validation/my-unique-cpu-check"
+mkdir -p "$COMET_STORAGE/logs"
+setup_job=$(sbatch --parsable --account="$COMET_SLURM_ACCOUNT" \
+  --partition="$COMET_CPU_PARTITION" --time=00:15:00 \
+  --output="$COMET_STORAGE/logs/%x-%j.log" infra/slurm/setup.sh cpu)
+sbatch --dependency="afterok:$setup_job" --account="$COMET_SLURM_ACCOUNT" \
+  --partition="$COMET_CPU_PARTITION" --time=00:10:00 \
+  --output="$COMET_STORAGE/logs/%x-%j.log" infra/slurm/check.sh cpu
+```
+
+Repeat with a new environment and `appworld` profile for live CPU API checks;
+set `COMET_APPWORLD_ROOT` to the installed data. For `gpu`, set that root and
+`COMET_MODEL_PATH` to the pinned Qwen3-8B snapshot, then request `--gres=gpu:1`
+from a suitable GPU partition for `check.sh gpu`. Setup itself needs no GPU.
+Use the same profile for setup and checks; GPU checks include the CPU, numerical,
+and AppWorld suites. See [validation.md](validation.md) for optional capacity and
+process-interruption checks. Model trials use `COMET_MODEL` instead of
+`COMET_MODEL_PATH`; both must point to the matching pinned snapshot.
+
+The wrappers pass Slurm's allocated CPU count to each job step. This accommodates
+sites that increase CPUs to satisfy memory-per-CPU limits. Check `sacct` for job
+exit codes and keep failed logs. A dependency that failed never validates the
+next job; cancel its pending dependents and submit a new check output directory
+when retrying. Single-GPU engine instances use separate file rendezvous stores,
+so independent jobs do not compete for a fixed distributed port.
+
 The launch script takes explicit settings, with no settled research budget hidden
 in scheduler defaults:
 
 ```sh
-export COMET_REPO="$HOME/comet"
+export COMET_REPO=/path/to/your/checkout
 export COMET_STORAGE=/path/to/project/storage/comet
 export COMET_ENV="$COMET_STORAGE/venv"
 export COMET_CONFIG="$COMET_REPO/configs/your-version.json"
@@ -130,6 +179,10 @@ The scheduler time limit is a job ceiling; the shared task budget is enforced by
 COMET's configuration and runner. Set `COMET_RESUME=1` to request a compatible
 resume into the same run directory. It must retain prior attempt and budget usage.
 Slurm requeue or preemption must never start a fresh budget under the same run ID.
+
+`COMET_APPWORLD_ROOT` can override the default `$COMET_STORAGE/appworld`.
+`CUDA_HOME` defaults to `/usr/local/cuda`; an explicit value also controls the
+toolkit added to `PATH`.
 
 The shared `scripts/run_experiment.sh` launcher preserves the submitted config, Git revision/diff, dependency
 list, GPU information, cache destinations, storage capacity/inodes, and scheduler allocation in a new directory under `launch/`

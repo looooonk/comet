@@ -7,15 +7,17 @@ set -euo pipefail
 : "${COMET_RUN:?Set COMET_RUN to a unique output directory}"
 : "${COMET_MODEL:?Set COMET_MODEL to the pinned local model snapshot}"
 
-export PATH="$COMET_ENV/bin:/usr/local/cuda/bin:$PATH"
 export CUDA_HOME=${CUDA_HOME:-/usr/local/cuda}
+export PATH="$COMET_ENV/bin:$CUDA_HOME/bin:$PATH"
+unset PYTHONPATH
+"$COMET_ENV/bin/python" "$COMET_REPO/src/comet/runtime.py" verify "$COMET_REPO" "$COMET_ENV" gpu
 source "$COMET_REPO/scripts/runtime_caches.sh"
-export APPWORLD_ROOT="$COMET_STORAGE/appworld"
+export APPWORLD_ROOT=${COMET_APPWORLD_ROOT:-"$COMET_STORAGE/appworld"}
 export PYTHONUNBUFFERED=1
 cd "$COMET_REPO"
 launch_dir="$COMET_RUN/launch/$(date -u +%Y%m%dT%H%M%SZ)-${SLURM_JOB_ID:-$$}"
 mkdir -p "$launch_dir"
-for cache_name in XDG_CACHE_HOME HF_HOME UV_CACHE_DIR TRITON_CACHE_DIR TORCH_HOME \
+for cache_name in XDG_CACHE_HOME APPWORLD_CACHE HF_HOME UV_CACHE_DIR TRITON_CACHE_DIR TORCH_HOME \
     TORCHINDUCTOR_CACHE_DIR TORCH_EXTENSIONS_DIR PYTORCH_KERNEL_CACHE_PATH \
     CUDA_CACHE_PATH FLASHINFER_WORKSPACE_BASE TVM_FFI_CACHE_DIR; do
     printf '%s=%s\n' "$cache_name" "${!cache_name}"

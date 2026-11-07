@@ -17,6 +17,22 @@ These check configuration, retention accounting, policies, budgets, state
 isolation, scoring gates, and aggregation. Report skips explicitly; mocks and
 accounting tests do not validate the installed CUDA or AppWorld integrations.
 
+For repeatable allocated checks, use `infra/slurm/setup.sh` followed by
+`infra/slurm/check.sh` as described in [setup.md](setup.md). The underlying
+`scripts/run_checks.sh cpu|appworld|gpu` also runs directly inside an allocation.
+It requires `COMET_REPO`, the matching managed `COMET_ENV`, and a new absolute
+`COMET_CHECK_OUTPUT` directory. CPU checks run lint, shell syntax, and unit tests;
+AppWorld checks require installed data; GPU checks run the entire suite with the
+pinned model. Missing required inputs fail before testing. Existing evidence
+directories are never overwritten.
+
+Each check saves the source revision/diff, runtime lock identity, package list,
+Slurm allocation when present, pytest XML, and exit status. GPU checks also save
+the device report and engine evidence. Skips remain explicit: a minimal CPU
+runtime cannot run numerical engine checks, and process-interruption testing
+requires the separate configuration below. Set `COMET_TEST_CAPACITY=1` to include
+the optional near-limit context check. Always inspect skips as well as exit codes.
+
 ## Live integration checks
 
 Inside an allocated GPU node, use the installed runtime directly:
@@ -30,8 +46,10 @@ export COMET_GPU_MEMORY_EVIDENCE=/path/to/records/memory-evidence.json
 python -m pytest tests/test_appworld_integration.py tests/test_engine_gpu.py
 ```
 
-The AppWorld fixture checks execution, fresh resets, checkpoint restore, and
-offline evaluation. The GPU checks cover persistent compressed KV, checkpoint
+The AppWorld fixtures check execution, fresh resets, checkpoint restore, offline
+evaluation, explicit authentication, parsed response types, and pagination. The
+authentication and pagination probes use isolated dev environments, perform only
+read operations, and never consult evaluator feedback. The GPU checks cover persistent compressed KV, checkpoint
 replay, recovery, and live cap refusal. [engine.md](engine.md) defines their
 accounting and evidence scope. Follow [resume-validation.md](resume-validation.md)
 for the separate process interruption check; it needs a dedicated configuration

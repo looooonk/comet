@@ -56,3 +56,65 @@ def test_live_fresh_state_checkpoint_and_offline_scoring(tmp_path):
         assert budget.elapsed >= 0.05
     finally:
         environment.close()
+
+
+@pytest.fixture
+def live_world():
+    root = os.environ.get("COMET_APPWORLD_ROOT")
+    if not root:
+        pytest.skip("Set COMET_APPWORLD_ROOT to use the pinned AppWorld data")
+    environment = AppWorldAdapter(root)
+    try:
+        yield environment
+    finally:
+        environment.close()
+
+
+@pytest.mark.appworld
+def test_live_explicit_authentication_and_parsed_responses(live_world, tmp_path):
+    live_world.reset("3ab5b8b_1", 17, tmp_path / "authentication")
+    assert live_world.world.task.ground_truth is None
+    missing = live_world.execute("print(apis.spotify.show_liked_playlists())")
+    assert "Response status code is 401" in missing
+    live_world.execute("""profile = apis.supervisor.show_profile()
+password = next(p['password'] for p in apis.supervisor.show_account_passwords()
+                if p['account_name'] == 'spotify')""")
+    wrong_argument = live_world.execute(
+        "print(apis.spotify.login(email=profile['email'], password=password))"
+    )
+    assert "Unexpected parameter 'email'" in wrong_argument
+    wrong_token = live_world.execute("print(apis.spotify.show_liked_playlists(access_token=password))")
+    assert "Response status code is 401" in wrong_token
+    result = live_world.execute("""login = apis.spotify.login(username=profile['email'], password=password)
+token = login['access_token']
+playlists = apis.spotify.show_liked_playlists(access_token=token)
+print({'login_type': type(login).__name__, 'playlists_type': type(playlists).__name__})""")
+    assert json.loads(result) == {"login_type": "dict", "playlists_type": "list"}
+    assert "Response status code is 401" in live_world.execute(
+        "print(apis.spotify.show_liked_playlists())"
+    )
+    assert not live_world.completed()
+
+
+@pytest.mark.appworld
+def test_live_pagination_requires_explicit_coverage(live_world, tmp_path):
+    live_world.reset("23cf851_1", 17, tmp_path / "pagination")
+    result = live_world.execute("""profile = apis.supervisor.show_profile()
+password = next(p['password'] for p in apis.supervisor.show_account_passwords()
+                if p['account_name'] == 'venmo')
+token = apis.venmo.login(username=profile['email'], password=password)['access_token']
+first = apis.venmo.show_transactions(access_token=token)
+transactions = []
+for page in range(100):
+    batch = apis.venmo.show_transactions(access_token=token, page_index=page, page_limit=5)
+    transactions.extend(batch)
+    if not batch:
+        break
+else:
+    raise RuntimeError('Pagination probe exceeded its bound')
+print({'default_count': len(first), 'all_count': len(transactions),
+       'first_page_matches': first == transactions[:len(first)]})""")
+    result = json.loads(result)
+    assert result["first_page_matches"]
+    assert result["all_count"] > result["default_count"] > 0
+    assert not live_world.completed()
