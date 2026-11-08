@@ -6,6 +6,11 @@ The original 38-rollout job `13832917`, its checkout/runtime, and its dependent
 scorer `13832918` are preserved. The new task run must pass live GPU checks before
 starting; submission does not establish task-solving improvement.
 
+The [November 8 follow-up](sampling-repair-2026-11-08-validation.md) supersedes
+the pending submission state: isolation timed out, its dependent jobs were
+cancelled, and a repaired chain subsequently passed GPU validation and started
+the diagnostic. The original submission snapshot below is retained.
+
 ## Implementation
 
 Commit `3d3d726` passes the attempt-seeded CUDA generator through all four
