@@ -91,7 +91,7 @@
     "experimental_settings_changed": false,
     "basis": "FP32 calibration shows the original relative screen rejects ordinary BF16 reference arithmetic; native pooled error is smaller than reference BF16 error. The 0.05 bound is an engineering screen, not a guaranteed error bound.",
     "heldout_corpus_sha256": "5df22c2a5e0a738fd77052aa4766f3c6250db8d6bbe8917a4e5939caa35b2308",
-    "heldout_validation": "pending; required before task pilot",
+    "heldout_validation": "failed in job 13837556; original outcome preserved; subsequent bounded-pilot decision is recorded separately",
     "original_failed_result_preserved": true
   },
   "artifacts": [
@@ -170,5 +170,6 @@
       "bytes": 37335,
       "sha256": "d4c4fe936cad5d02e7cc947652b831296af984267c16293c48fd1fe953fb0bfb"
     }
-  ]
+  ],
+  "followup_record": "pilot-numerical-qualification-2026-11-08.json"
 }

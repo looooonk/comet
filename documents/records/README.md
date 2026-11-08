@@ -13,9 +13,10 @@ preserving both failed screens; final-study qualification remains open.
 
 The [November 8 foundation repair](foundation-repair-2026-11-08.md) passed 149 CPU
 checks and reproduced the corrected-sampler baseline chart with explicit protocol
-compatibility and measurement coverage. Live GPU checks and the
-[new executable-action prompt diagnostic](execution-prompt-2026-11-08-plan.md)
-remain pending; the reanalysis does not add model-success evidence.
+compatibility and measurement coverage. Subsequent GPU state, capacity and failure checks passed under the numerical
+qualification above. The [new executable-action prompt diagnostic](execution-prompt-2026-11-08-plan.md)
+is running; its outcomes have not been scored. The historical reanalysis adds no
+new model-success evidence.
 
 The [Qwen3-14B retention pilot](retention-pilot-2026-10-20.md) completed on
 October 20, 2026; its results were collected and reproduced on October 31.
@@ -86,8 +87,9 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Checkpoint eligibility and cost repair (2026-11-08)](checkpoint-repair-2026-11-08.md) | Completed-source rejection, prefix cost preservation, cleanup accounting and 64 CPU checks; [evidence](checkpoint-repair-2026-11-08.json) |
 | [Bounded GCP L4 attempt (2026-11-08)](gcp-reference-2026-11-08.md) | Verified setup and weights, pre-load cap rejection, estimated $1.98 cost and completed cleanup; [evidence](gcp-reference-2026-11-08.json) |
-| [Numerical screen and FP32 calibration (2026-11-08)](reference-calibration-2026-11-08.md) | Original failed screen, independent higher-precision diagnosis, explicit revised gate and pending separate validation; [evidence](reference-calibration-2026-11-08.json) |
+| [Numerical screen and FP32 calibration (2026-11-08)](reference-calibration-2026-11-08.md) | Original failed screen, independent higher-precision diagnosis, revised gate, failed separate corpus and explicit bounded-pilot qualification; [evidence](reference-calibration-2026-11-08.json) |
 | [Corrected-sampler paired results (2026-11-08)](sampling-repair-2026-11-08-results.md) | Both arms scored 0/6, bounded errors, verified seed variation, and conservative preemption handling; [evidence](sampling-repair-2026-11-08-results.json) |
 | [Sampling repair validation and relaunch (2026-11-08)](sampling-repair-2026-11-08-validation.md) | Overnight setup failure, completed GPU validation, active paired run, and measured storage; [evidence](sampling-repair-2026-11-08-validation.json) |
 | [Broader 8B pilot completion (2026-11-08)](baseline-qwen8b-2026-11-08-completion.md) | All 38 outcomes, offline scores, resource summary and artifact hashes; [evidence](baseline-qwen8b-2026-11-08-completion.json) |
