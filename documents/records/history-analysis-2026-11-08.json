@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "kind": "matched_history_analysis_validation",
+  "implementation_parent_commit": "4cef3d51a23dbed405b6140f5e5bb415c0ac54bc",
+  "implementation_state": "New uncommitted analysis/plot implementation identified by the following exact hashes.",
+  "source_sha256": {
+    "src/comet/history_analysis.py": "012e78bacd4349579f6f296937f94efcc3205a7791af5c632e445fee9a5c509d",
+    "src/comet/history_plots.py": "ac98212b8025e6378940e8552b08c3c6c24f0ee48284e9871f4dcea48d8d32b1",
+    "src/comet/cli.py": "b5f96193a15266359ac387e3e900fc356b82e32056d99e52f3a61ac2b6bd12ee",
+    "tests/test_history_analysis.py": "b12b580921e043e6d0f72faf3f12bc4e008742556f013f77a2225e9f37784b01",
+    "documents/history-benchmark.md": "a3bb0f9d5536f6a8950ad48681527b7a3dd08889b1ab6daf093a904514b51670"
+  },
+  "commands": [
+    "comet analyze-histories",
+    "comet plot-histories"
+  ],
+  "validation": [
+    {
+      "artifact_id": "history-analysis-checks-final-20261108",
+      "profile": "cpu",
+      "shared_check_path": "scripts/run_checks.sh",
+      "counts": {
+        "passed": 229,
+        "skipped": 1,
+        "deselected": 9
+      },
+      "pytest_xml_sha256": "36fd61230092e48f75b41ffa070ba391b5edb5f04f676cfbbf039501d153976f",
+      "source_record_sha256": "fc2e02485c7d8f84f4e8eb04558fa06b4ddcbfaf943c8a61c82ca90a68289e99"
+    },
+    {
+      "artifact_id": "history-analysis-focused-final-20261108",
+      "profile": "cpu",
+      "shared_check_path": "scripts/run_checks.sh",
+      "counts": {
+        "passed": 16,
+        "skipped": 0,
+        "deselected": 0
+      },
+      "pytest_xml_sha256": "60ecd7895ea9695b1b14be041a75403086d8fff4900fe21cf860a1adc85e21c7",
+      "source_record_sha256": "58fae16d4a8b161bae286a89438068ad80d67ad093eb7232e052512408745f94"
+    }
+  ],
+  "validation_scope": "CPU artifact accounting and plotting only; no new inference, model-accuracy screen or task execution.",
+  "existing_smoke": {
+    "artifact_id": "qualified-pair-13837736/history-smoke",
+    "manifest_sha256": "7455b7a44c7abb2cb786903d10bdcd3bb1ab025766039b7edf162f6da0b676b3",
+    "benchmark_identity": "ee18689821d2808ec66cdcfa4fad1f27d1d471e4e6427e92c1c40258dac4d898",
+    "benchmark_id": "history-smoke-qwen8b-v1",
+    "engine_source_commit": "312691d00fe84ce52a504071ccd5ed0bdd40a0f9",
+    "source_manifest_sha256": "fa1e864e6b491aaa74bdcc6606885ed4b6a6b6fde3675b318cb980a93837d38e",
+    "source_trajectory_sha256": "ea8dbed01ba6628dcac268ff71820965de2f3ebc9785f25574004e02798d9f67",
+    "logical_lengths": [
+      1024
+    ],
+    "decode_tokens": 8,
+    "repetitions": 1,
+    "completed_cells": 10,
+    "verified_completed_passes": 30,
+    "device": "NVIDIA RTX A6000",
+    "covered_observations_by_metric": {
+      "compaction_seconds": 10,
+      "decode_inference_seconds": 10,
+      "decode_pass_seconds": 10,
+      "decode_tokens_per_second": 10,
+      "instrumented_pass_seconds": 10,
+      "occupied_kv_bytes": 10,
+      "peak_occupied_kv_bytes": 10,
+      "peak_total_vram_bytes": 10,
+      "prefill_inference_seconds": 10,
+      "prefill_pass_seconds": 10,
+      "prefill_tokens_per_second": 10,
+      "reserved_kv_pool_bytes": 10,
+      "selection_seconds": 10,
+      "total_vram_bytes": 10
+    }
+  },
+  "derived_artifacts": [
+    {
+      "file": "smoke-shared-analysis.json",
+      "sha256": "02195b4a24f0f650cf80e9f2069b69ecf784a3a5a0d5b1db898d066b0a852a31"
+    },
+    {
+      "file": "smoke-shared-occupied.png",
+      "sha256": "c98f751bacf1eae272806d7e3031472b4f58a27f06428bd574e399fc358f6b57"
+    },
+    {
+      "file": "smoke-shared-decode.png",
+      "sha256": "69525b5db61bebda44c3f52038a6fe9931a6ee490ca942e51c6723e0ff1c6589"
+    },
+    {
+      "file": "smoke-shared-selection.png",
+      "sha256": "2c70e2b7e6f6c18bf7f21b87a3e885f3e2e357eaee4186a097d3a762c8fda51c"
+    }
+  ],
+  "visual_validation": "Inspected actual-smoke occupied-KV, ordinary-decode and whole-replay selection figures. All three method facets retain every condition, share a complete visible y range, and label the single logical length without a trend.",
+  "semantics": {
+    "memory": "Plotted memory comes from the ordinary prefill pass at exactly 1024 logical cached tokens; raw decode/instrumented memory is retained separately.",
+    "throughput": "Ordinary synchronized native-loop tokens/s includes eviction/output processing but excludes surrounding scheduler/reset/verification work.",
+    "overhead": "Selection/compaction sum synchronized calls over the entire instrumented prefix-plus-continuation replay, not per-token rates; they are nested costs and must not be added again to loop or whole-pass time.",
+    "coverage": "Completed journaled passes with complete coverage enter metric summaries; failed, missing, unjournaled and reserved-time evidence remains explicit.",
+    "repetitions": "Open raw points, medians and observed min-max ranges; no fitted smoothing, confidence intervals or pooling of distinct source histories."
+  },
+  "limitations": [
+    "Only one actual logical length and one repetition exist in this reanalysis; no measured length curve or stable speed ranking is claimed.",
+    "This reuses an existing smoke and adds no GPU experiment or model/task-success result.",
+    "The separate numerical qualification and unresolved reference discrepancies are unchanged."
+  ]
+}

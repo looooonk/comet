@@ -135,6 +135,19 @@ def main(argv: list[str] | None = None) -> None:
     analyze.add_argument("--output", type=Path, required=True)
     analyze.add_argument("--bootstrap-samples", type=int, default=2000)
     analyze.add_argument("--seed", type=int, default=0)
+    histories = commands.add_parser("analyze-histories", help="Validate and summarize matched-history measurements")
+    histories.add_argument("runs", type=Path, nargs="+")
+    histories.add_argument("--output", type=Path, required=True)
+    history_plot = commands.add_parser("plot-histories", help="Plot one measured history-cost metric by method")
+    history_plot.add_argument("analysis", type=Path)
+    history_plot.add_argument("--output", type=Path, required=True)
+    history_plot.add_argument("--metric", required=True, choices=(
+        "occupied-kv", "peak-kv", "reserved-pool", "total-vram", "peak-vram",
+        "prefill-throughput", "decode-throughput", "prefill-time", "decode-time",
+        "selection", "compaction", "instrumented-time",
+    ))
+    history_plot.add_argument("--history", dest="history_id")
+    history_plot.add_argument("--title", default="Matched-history cost")
     compare = commands.add_parser("compare-protocol", help="Compare explicitly declared paired protocol arms")
     compare.add_argument("control", type=Path)
     compare.add_argument("candidate", type=Path)
@@ -209,6 +222,17 @@ def main(argv: list[str] | None = None) -> None:
         from comet.plotting import plot_retention
 
         plot_retention(args.analysis, args.output, title=args.title)
+        _print({"figure": str(args.output)})
+    elif args.command == "analyze-histories":
+        from comet.history_analysis import analyze_histories
+
+        analyze_histories(args.runs, args.output)
+        _print({"analysis": str(args.output)})
+    elif args.command == "plot-histories":
+        from comet.history_plots import plot_histories
+
+        plot_histories(args.analysis, args.output, metric=args.metric,
+                       history_id=args.history_id, title=args.title)
         _print({"figure": str(args.output)})
     elif args.command == "compare-protocol":
         from comet.comparison import compare_protocol_runs

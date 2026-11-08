@@ -137,3 +137,83 @@ sequence equality, hook restoration, retention accounting, failure preservation,
 and strict resume. Run them through the managed `scripts/run_checks.sh cpu` path.
 Those fixtures do not validate the pinned CUDA scheduler or long-context R-KV
 workspace feasibility; a small live run is required before a larger diagnostic.
+
+## Shared analysis and focused figures
+
+Analyze saved benchmark directories on the managed CPU profile. This command
+reads artifacts only; it never loads a model or executes recorded actions:
+
+```sh
+source "$COMET_REPO/scripts/activate_runtime.sh" cpu
+comet analyze-histories "$COMET_HISTORY_OUTPUT" "$COMET_HISTORY_OUTPUT_NEXT" \
+  --output "$COMET_HISTORY_ANALYSIS"
+comet plot-histories "$COMET_HISTORY_ANALYSIS" --metric decode-throughput \
+  --output "$COMET_HISTORY_FIGURE"
+```
+
+The analyzer requires the same historical source manifest, source trajectories,
+model/tokenizer, engine settings, code and dependency provenance, GPU model and
+capacity, driver, CUDA runtime, and measurement contract across supplied runs.
+It verifies overlapping raw input tokens, prefix digests, the complete declared
+ten-condition matrix, pass hashes and identities, forced outputs, retention,
+throughput arithmetic, and the declared total-memory cap. A duplicated benchmark
+identity is rejected to prevent counting a copied run twice. Give a separately
+executed rerun its own declared benchmark identifier.
+
+Only `benchmark_id`, `logical_lengths`, `repetitions`, `cell_timeout_seconds`, and
+`warmup_timeout_seconds` may differ between specifications. These remain in the
+output with every run identity; time bounds are feasibility allowances, not
+performance measurements. Choose repeated measurements and lengths before
+examining comparative outcomes. Different histories are never pooled into one
+curve: use `--history history-000` when an analysis includes several histories.
+
+An unfinished snapshot retains every expected cell as running, interrupted or
+not started. Saved unjournaled pass files remain visible but are excluded from
+summaries until the benchmark's normal reconciliation verifies them. Missing
+files from a completed run, wrong hashes and inconsistent completed records are
+errors, not missing observations. Setup failures without a verified runtime can
+be retained only when no pass was attempted. Pre-manifest allocation failures
+have no benchmark cells; preserve them in a separate execution record.
+
+Each cell retains its three pass records, partial counters, status, failure
+reason, coverage, and observed versus reserved timeout accounting. A completed
+prefill or decode pass can contribute even when a later instrumented pass fails.
+Only journaled, completed passes with complete coverage contribute metric values;
+missing and partial values do not become zeros. Reserved timeout is not measured
+pass duration. The JSON includes individual observations and medians/minimums/
+maximums with covered and expected counts. These ranges describe recorded timing
+repetitions, not task-bootstrap uncertainty or confidence intervals.
+
+Use one metric per figure to keep comparisons readable. Each figure has three
+method facets with the same full-cache control and 80%, 50%, and 25% retention:
+
+| `--metric` | Measurement |
+| --- | --- |
+| `occupied-kv` | Parked KV at the exact prefill prefix |
+| `peak-kv` | Transient peak occupied KV during that prefill pass |
+| `reserved-pool` | Allocated KV pool capacity, distinct from occupied entries |
+| `total-vram`, `peak-vram` | Device memory after prefill and the recorded prefill peak |
+| `prefill-throughput`, `decode-throughput` | Ordinary-pass synchronized native-loop tokens/second |
+| `prefill-time`, `decode-time` | Whole ordinary-pass elapsed time |
+| `selection`, `compaction` | Separate instrumented replay's synchronized component costs |
+| `instrumented-time` | Whole instrumented-pass elapsed time, kept separate from ordinary timing |
+
+The prefill/decode loop timings include eviction and output processing inside
+`_process_last_data`. They exclude surrounding scheduler work, reset, verification
+and final materialization outside those timers. Whole-pass elapsed and inference
+call elapsed remain separate in the analysis. Selection and compaction costs are
+nested inside the instrumented pass; never add them again to loop or whole-pass
+time. Reported selection and compaction seconds sum all timed calls over the
+entire instrumented replay, including prefix ingestion and the forced continuation;
+they are not per-token rates. Instrumented throughput is preserved in raw records
+and never substituted for ordinary throughput.
+
+Figures show raw repetition points, measured medians and observed ranges. Lines
+connect available medians without fitting or smoothing; missing measurements
+break the line. Crosses and coverage counts retain incomplete cells, including a
+later pass failure when the plotted earlier pass is valid. A single logical
+length produces points only and is labeled as insufficient for a length trend.
+Keep first-use measurements visible: later shape-dependent compilation can be
+charged to them. Smoke measurements alone do not support speed rankings. These
+cost figures cannot establish task success, model accuracy or a test-time scaling
+benefit; those require the separate task and recovery comparisons.
