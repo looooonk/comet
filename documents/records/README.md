@@ -2,6 +2,12 @@
 
 ## Latest results
 
+The [new executable-action prompt diagnostic](execution-prompt-2026-11-08-results.md)
+completed all twelve attempts and offline scoring. Both prompts scored 0/6; each
+had four unsuccessful normal completions, one context limit and one timeout.
+The stronger prompt did not establish a useful 8B baseline. A separate 14B
+pilot is declared, pending its numerical review.
+
 The [November 8 numerical calibration](reference-calibration-2026-11-08.md)
 records 165 passed L40S checks and a failed relative-error screening gate. A
 separate FP32 CPU comparison found the native BF16 output closer to FP32 than
@@ -15,8 +21,8 @@ The [November 8 foundation repair](foundation-repair-2026-11-08.md) passed 149 C
 checks and reproduced the corrected-sampler baseline chart with explicit protocol
 compatibility and measurement coverage. Subsequent GPU state, capacity and failure checks passed under the numerical
 qualification above. The [new executable-action prompt diagnostic](execution-prompt-2026-11-08-plan.md)
-is running; its outcomes have not been scored. The historical reanalysis adds no
-new model-success evidence.
+has now completed with the unsuccessful results above. The historical reanalysis
+adds no new model-success evidence.
 
 The [Qwen3-14B retention pilot](retention-pilot-2026-10-20.md) completed on
 October 20, 2026; its results were collected and reproduced on October 31.
@@ -87,6 +93,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Executable-action prompt results (2026-11-08)](execution-prompt-2026-11-08-results.md) | Both paired arms scored 0/6; verified 12 attempts, residual execution failures, resource coverage and diagnostic figure |
 | [Offline policy and attained-success figures (2026-11-08)](policy-curves-2026-11-08.md) | Paired curves, timestamp and reservation coverage, 55 focused checks; historical/synthetic render validation only |
 | [Separate 14B executable-action pilot plan (2026-11-08)](execution-qwen14b-2026-11-08-plan.md) | Predeclared six-cell fallback, unchanged task/sampling/budget settings, fresh validation required |
 | [Checkpoint eligibility and cost repair (2026-11-08)](checkpoint-repair-2026-11-08.md) | Completed-source rejection, prefix cost preservation, cleanup accounting and 64 CPU checks; [evidence](checkpoint-repair-2026-11-08.json) |
