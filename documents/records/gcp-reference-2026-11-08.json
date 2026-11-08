@@ -1,0 +1,105 @@
+{
+  "run_id": "gpu-20261108-203906-87839f",
+  "status": "failed_before_model_load",
+  "reason": "Configured 22 GiB cap exceeded CUDA-reported usable device capacity.",
+  "original_source_commit": "2309d44fb372ac7eec7d12dcf32ae4e92f7cb05a",
+  "requested_cap_bytes": 23622320128,
+  "native_model_loaded": false,
+  "reference_started": false,
+  "numerical_result": null,
+  "gpu": {
+    "name": "NVIDIA L4",
+    "driver": "550.54.15",
+    "cuda_runtime_reported": "12.8",
+    "nvidia_smi_total_mib": 23034,
+    "nvidia_smi_reserved_mib": 555,
+    "nvidia_smi_free_mib": 22478,
+    "exact_cuda_total_bytes": null,
+    "native_pool_tokens": null,
+    "limitation": "Device validation failed before provenance/pool construction. MiB-rounded nvidia-smi capacity is not exact torch capacity."
+  },
+  "host": {
+    "total_mib": 16002,
+    "initial_available_mib": 15115,
+    "final_available_mib": 15144,
+    "model_loading_ram_validated": false
+  },
+  "timing": {
+    "setup_seconds": 1544.58,
+    "model_download_and_full_hash_seconds": 194.414945082,
+    "checks_seconds": 20.55,
+    "batch_run_seconds": 1786.250036934,
+    "submission_through_verified_cleanup_seconds": 2226.524568080902
+  },
+  "artifacts": {
+    "verified_files": 25,
+    "state": "FAILED",
+    "exit_code": 1,
+    "missing_outputs": [
+      "checks/reference/native.json",
+      "checks/reference/native-logits.pt",
+      "checks/reference/reference-logits.pt",
+      "checks/reference/comparison.json"
+    ],
+    "success": false,
+    "manifest_sha256": "dc39e0febe8fb68c0191d66493f8b889f5dbc828b6ed0eaa82cbb96956dc15bb",
+    "portable_root": "gcp-reference-20261108/results"
+  },
+  "cleanup": {
+    "id": "gpu-20261108-203906-87839f",
+    "compute_resources": {
+      "instances": [],
+      "disks": []
+    },
+    "job_absent": true,
+    "cloud_artifacts_purged": true,
+    "checked_at": 1794172573.218988
+  },
+  "cost": {
+    "billing_charges_measured": false,
+    "observed_nat_bytes": {
+      "received": 29431196638,
+      "sent": 154197101
+    },
+    "observed_nat_gib": 27.55354506801814,
+    "nat_processing_estimate_usd": 1.2399095280608161,
+    "metrics_latest_interval_end": "2026-11-08T21:15:00Z",
+    "conservative_rates": {
+      "complete_machine_usd_per_hour": 1.0,
+      "nat_vm_and_ip_usd_per_hour": 0.0064,
+      "disk_usd_per_gib_hour": 0.000136986,
+      "temporary_disk_gib": 150,
+      "artifact_storage_network_misc_reserve_usd": 0.1
+    },
+    "conservative_total_estimate_usd": 1.9750552862522297,
+    "original_planning_allowance_usd": 5,
+    "note": "Uses $1/h complete-machine reserve for entire submission-to-cleanup interval, not an exact regional Spot price. Network counters include container, driver, OS, package, AppWorld and model traffic. Small GCS cross-region/output transfer, operations and soft deletion covered by $0.10 reserve."
+  },
+  "retry_submitted": false,
+  "artifact_identities": [
+    {
+      "artifact": "outcome.json",
+      "sha256": "11e7bd25cb432576e6f9025a059e311a39691dc38cd778d49aa68e371331148c"
+    },
+    {
+      "artifact": "cleanup-report.json",
+      "sha256": "ab4fe0376f48e1979b2dbd41b481dc28eb0398b617fd1bcc16534dc6c4d6d278"
+    },
+    {
+      "artifact": "nat-cleanup.json",
+      "sha256": "4206ef296bcb4b8a5fff918cc394e754c7f56cad59b62dc969e7538577b07b0d"
+    },
+    {
+      "artifact": "network-metrics.json",
+      "sha256": "586d92eadb3427b8a6b2cd14a6349d3f2e54152a6fb8f48db508767fdc5aabeb"
+    },
+    {
+      "artifact": "staging-manifest.json",
+      "sha256": "8f56ce3a9bb3df458686447877d349716cc0b3c35c7632dcc3132f9ca782d744"
+    },
+    {
+      "artifact": "job.json",
+      "sha256": "faf271d44798c7ec011866817df0190e4d693da030e938c86b97784df2f0339b"
+    }
+  ]
+}

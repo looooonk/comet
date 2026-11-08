@@ -84,6 +84,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Bounded GCP L4 attempt (2026-11-08)](gcp-reference-2026-11-08.md) | Verified setup and weights, pre-load cap rejection, estimated $1.98 cost and completed cleanup; [evidence](gcp-reference-2026-11-08.json) |
 | [Numerical screen and FP32 calibration (2026-11-08)](reference-calibration-2026-11-08.md) | Original failed screen, independent higher-precision diagnosis, explicit revised gate and pending separate validation; [evidence](reference-calibration-2026-11-08.json) |
 | [Corrected-sampler paired results (2026-11-08)](sampling-repair-2026-11-08-results.md) | Both arms scored 0/6, bounded errors, verified seed variation, and conservative preemption handling; [evidence](sampling-repair-2026-11-08-results.json) |
 | [Sampling repair validation and relaunch (2026-11-08)](sampling-repair-2026-11-08-validation.md) | Overnight setup failure, completed GPU validation, active paired run, and measured storage; [evidence](sampling-repair-2026-11-08-validation.json) |
