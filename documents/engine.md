@@ -172,6 +172,9 @@ history length; `input_tokens` records the latter in the event. Rebuild elapsed
 time includes admission checks and failed work. Interrupted-run finalization
 merges the latest matching attempt journal and reserves the remaining cell budget;
 it preserves a durable terminal attempt if the cell journal had not caught up.
+If the attempt was still running, saved work counters and peaks become lower
+bounds and saved operation timings become partial: the interrupted operation may
+have done additional work after the last durable journal update.
 
 ## Patch and checks
 

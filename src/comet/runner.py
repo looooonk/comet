@@ -248,6 +248,13 @@ class Runner:
                     budget_elapsed_seconds=self.config.budget_seconds,
                     reserved_budget_seconds=reserved,
                 )
+                metrics = attempt.setdefault("metrics", {})
+                coverage = metrics.setdefault("metric_coverage", {})
+                for key in ("estimated_flops", "generated_tokens", "prefill_tokens", "decode_tokens",
+                            "rebuild_prefill_tokens", "peak_kv_bytes", "peak_total_vram_bytes",
+                            "prefill_seconds", "decode_seconds", "rebuild_seconds"):
+                    if isinstance(metrics.get(key), (int, float)):
+                        coverage[key] = "partial" if key.endswith("seconds") else "lower_bound"
                 write_json(path, attempt)
         cell.update(elapsed_seconds=max(self.config.budget_seconds, cell.get("observed_elapsed_seconds", 0)),
                     completed=True, inflight=False)

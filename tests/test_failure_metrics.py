@@ -211,17 +211,19 @@ def test_interruption_preserves_newer_attempt_journal(config, tmp_path, terminal
     runner, cell, attempt = run_engine(config, tmp_path, FakeEngine(Clock()))
     path = tmp_path / attempt["artifact_dir"] / "attempt.json"
     latest = dict(attempt, status="completed" if terminal else "running")
-    latest["metrics"] = {"estimated_flops": 12}
+    latest["metrics"] = {"estimated_flops": 12, "decode_seconds": 2,
+                         "metric_coverage": {"estimated_flops": "complete", "decode_seconds": "complete"}}
     latest["recovery_events"] = [{"triggered": True, "result": {"status": "pending"}}]
     write_json(path, latest)
     original = path.read_bytes()
     cell.update(inflight=True, completed=False, elapsed_seconds=2)
     cell["attempts"][0] = {**attempt, "status": "running", "metrics": {}, "recovery_events": []}
     runner._interrupt_cell(cell)
-    assert cell["attempts"][0]["metrics"] == latest["metrics"]
+    assert cell["attempts"][0]["metrics"]["estimated_flops"] == 12
     assert cell["attempts"][0]["recovery_events"] == latest["recovery_events"]
     assert cell["elapsed_seconds"] == config.budget_seconds
     if terminal:
+        assert cell["attempts"][0]["metrics"] == latest["metrics"]
         assert cell["attempts"][0]["status"] == "completed"
         assert path.read_bytes() == original
         observed = max(attempt.get("budget_elapsed_seconds", 0), 2 + attempt["elapsed_seconds"])
@@ -229,6 +231,9 @@ def test_interruption_preserves_newer_attempt_journal(config, tmp_path, terminal
         assert cell["reserved_budget_seconds"] == config.budget_seconds - observed
     else:
         assert cell["attempts"][0]["status"] == "interrupted"
+        assert cell["attempts"][0]["metrics"]["metric_coverage"] == {
+            "estimated_flops": "lower_bound", "decode_seconds": "partial",
+        }
         assert read_json(path) == cell["attempts"][0]
 
 
