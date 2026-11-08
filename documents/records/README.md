@@ -95,6 +95,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [History allocation failures and split (2026-11-08)](history-feasibility-allocation-2026-11-08.md) | Two preserved CUDA preflight failures, zero-runtime cancellation, unchanged 2k replacement and unstable queue estimates; no longer-history measurements yet |
 | [Shared matched-history analysis (2026-11-08)](history-analysis-2026-11-08.md) | Strict artifact/metric accounting, 229 CPU checks and inspected real single-point smoke figures; longer curves remain pending |
 | [Executable-action prompt results (2026-11-08)](execution-prompt-2026-11-08-results.md) | Both paired arms scored 0/6; verified 12 attempts, residual execution failures, resource coverage and diagnostic figure |
 | [Offline policy and attained-success figures (2026-11-08)](policy-curves-2026-11-08.md) | Paired curves, timestamp and reservation coverage, 55 focused checks; historical/synthetic render validation only |

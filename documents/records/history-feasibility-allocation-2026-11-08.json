@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "stage": "matched_history_cost_feasibility",
+  "status": "two_preflight_failures_and_zero_runtime_cancellation_with_2k_replacement_pending",
+  "engine_source_commit": "312691d00fe84ce52a504071ccd5ed0bdd40a0f9",
+  "configuration_commit": "bf936982474f6dae313cd71b5e0369466dd9c655",
+  "configuration_files": [
+    {
+      "name": "history-feasibility-qwen8b-a6000-l2048-v1.json",
+      "sha256": "f5ae8448500c84165aca17122576a7b469445fab693205f95c37cc5dfb48a95b",
+      "bytes": 644
+    },
+    {
+      "name": "history-feasibility-qwen8b-a6000-l8192-v1.json",
+      "sha256": "4bbbdff258a1281c58d291b3478e345a31b63912917a159199b566e05df9d02b",
+      "bytes": 645
+    }
+  ],
+  "qualification_file": "pilot-numerical-qualification-2026-11-08.json",
+  "qualification_sha256": "ea51f38c4d6c59e4bcf0505cf70b02ac3ae8dbef03580c2565fc26c2be629409",
+  "allocation": {
+    "gpu": "NVIDIA RTX A6000",
+    "gpus": 1,
+    "cpus": 6,
+    "host_ram_gib": 32,
+    "walltime_seconds": 3000,
+    "requeue": false
+  },
+  "benchmark": {
+    "logical_lengths": [
+      2048,
+      8192
+    ],
+    "decode_tokens": 8,
+    "repetitions": 1,
+    "seed": 17,
+    "peak_vram_bytes": 42949672960,
+    "workspace_reserve_bytes": 6442450944,
+    "max_context_tokens": 32768,
+    "prefill_chunk_tokens": 256
+  },
+  "failed_jobs": [
+    {
+      "job_id": "13838134",
+      "artifact_id": "history-feasibility-qwen8b-a6000-20261108-13838134",
+      "status": "failed_preflight",
+      "node": "ins091",
+      "elapsed_seconds": 14,
+      "preflight_context": "batch shell",
+      "wrapper_sha256": "6cb5917cb80fada914be76684a58bbbbc2c03c0e62bef4a04b93a096bf90dc4c",
+      "exit_code": "1:0",
+      "validation_started": false,
+      "benchmark_started": false,
+      "failure": "torch.cuda.mem_get_info raised CUDA-capable device(s) is/are busy or unavailable",
+      "verified_remote_files": 7,
+      "verified_bytes": 2836,
+      "artifacts": [
+        {
+          "file": "slurm.txt",
+          "sha256": "ce356d395badc7276efd12ebb7d5419dfd3146e09bd013207a3710787de8a35b",
+          "bytes": 1673
+        },
+        {
+          "file": "submitted-wrapper.sha256",
+          "sha256": "d1b407005e728f3b2dc5d4dd2a71c206f5cb1b84fef129253d4d3668302514af",
+          "bytes": 115
+        },
+        {
+          "file": "runtime-marker-before.sha256",
+          "sha256": "ecaadb823508832273f2abf871b480d9ac8f5aac4a510c648c50f72985b46f1b",
+          "bytes": 178
+        },
+        {
+          "file": "source-commit.txt",
+          "sha256": "e2109f11a8f2e3d3c48c4cda091a363c7dcaeec5ee3548879413557197e58652",
+          "bytes": 41
+        },
+        {
+          "file": "job-exit-status.txt",
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+          "bytes": 2
+        },
+        {
+          "file": "history-feasibility-13838134.out",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "file": "history-feasibility-13838134.err",
+          "sha256": "e6d8793a5f71aa1909be29bbbe3f7c74cf30e673e0bb0f39bfd3d9676b8ff368",
+          "bytes": 827
+        }
+      ]
+    },
+    {
+      "job_id": "13838167",
+      "artifact_id": "history-feasibility-qwen8b-a6000-20261108-13838167",
+      "status": "failed_preflight",
+      "node": "ins091",
+      "elapsed_seconds": 6,
+      "preflight_context": "srun step 0",
+      "wrapper_sha256": "7d27d1d0c9aa81a02442f17b4fa9aaa8b1664e2404b684aaf73ef7561e9acf27",
+      "exit_code": "1:0",
+      "validation_started": false,
+      "benchmark_started": false,
+      "failure": "torch.cuda.mem_get_info raised CUDA-capable device(s) is/are busy or unavailable",
+      "verified_remote_files": 17,
+      "verified_bytes": 7320,
+      "artifacts": [
+        {
+          "file": "step-nvml-gpus.json",
+          "sha256": "75f4f06b592d52891cb4e3790ffa1a3a5935b32822173d49057e6f44da6feac2",
+          "bytes": 217
+        },
+        {
+          "file": "batch-nvml-gpus.csv",
+          "sha256": "975de2534b8dfbcdbf25f05c97e4034c4c068f3a7fe4effe4aec0caa43119f5b",
+          "bytes": 160
+        },
+        {
+          "file": "batch-nvml-gpus-exit-status.txt",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+          "bytes": 2
+        },
+        {
+          "file": "step-nvml-processes.json",
+          "sha256": "ac6e8d6b510da1de562e8af8c17ff1880ccf145998b3249f670d8f280fe4a098",
+          "bytes": 107
+        },
+        {
+          "file": "cuda-preflight.json",
+          "sha256": "18f1acc3bee79ce97475b455ef88bc35d62e94cc667aeb70f73d64681a67f72e",
+          "bytes": 699
+        },
+        {
+          "file": "batch-nvml-processes-exit-status.txt",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+          "bytes": 2
+        },
+        {
+          "file": "batch-nvml-processes.csv",
+          "sha256": "185facacd43b2b47152f1040bb6d81a57e8f284965fbf5ff6e6fbf0276871185",
+          "bytes": 51
+        },
+        {
+          "file": "step-allocation-environment.json",
+          "sha256": "bdfe692e899d1574bc73608af861e103af902c7c9fd3e0cb09108aa789ae2a1a",
+          "bytes": 1904
+        },
+        {
+          "file": "slurm.txt",
+          "sha256": "37249ce52d126fb5c2aeaa680aa75a51e5b09b8394fc542dbdf70cda6778d97e",
+          "bytes": 1794
+        },
+        {
+          "file": "submitted-wrapper.sha256",
+          "sha256": "63548ecac03756aeb7cd7bdd205dfca594c9d8fb865310f5b27f5f02ec00ecef",
+          "bytes": 115
+        },
+        {
+          "file": "preflight-process-exit-status.txt",
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+          "bytes": 2
+        },
+        {
+          "file": "runtime-marker-before.sha256",
+          "sha256": "ecaadb823508832273f2abf871b480d9ac8f5aac4a510c648c50f72985b46f1b",
+          "bytes": 178
+        },
+        {
+          "file": "source-commit.txt",
+          "sha256": "e2109f11a8f2e3d3c48c4cda091a363c7dcaeec5ee3548879413557197e58652",
+          "bytes": 41
+        },
+        {
+          "file": "job-exit-status.txt",
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+          "bytes": 2
+        },
+        {
+          "file": "batch-allocation-environment.txt",
+          "sha256": "2f54c92d95dbe24419823064cf511f96a2bbded153c1663084109426ed750c8c",
+          "bytes": 1130
+        },
+        {
+          "file": "history-feasibility-13838167.out",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "file": "history-feasibility-13838167.err",
+          "sha256": "911ab7006446115ce86ee6dccbaee6640a091496eb9c34708d84df2010b72123",
+          "bytes": 916
+        }
+      ]
+    }
+  ],
+  "retry_observed_device": {
+    "status": "failed",
+    "required_capacity_bytes": 42949672960,
+    "device_count": 1,
+    "device_name": "NVIDIA RTX A6000",
+    "device_total_bytes": 50897289216,
+    "device_uuid": "3e8517f2-b616-f4bf-c4c5-42f8ef24890e",
+    "error": "AcceleratorError: CUDA error: CUDA-capable device(s) is/are busy or unavailable\nSearch for `cudaErrorDevicesUnavailable' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.\nCUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.\nFor debugging consider passing CUDA_LAUNCH_BLOCKING=1\nCompile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.\n"
+  },
+  "retry_allocation_evidence": {
+    "scheduler_gpu_index": 4,
+    "slurm_job_gpus": "4",
+    "slurm_step_gpus": "4",
+    "cuda_visible_devices": "0",
+    "nvml_gpu_index": 0,
+    "nvml_uuid": "GPU-3e8517f2-b616-f4bf-c4c5-42f8ef24890e",
+    "nvml_compute_mode": "Default",
+    "nvml_memory_total_mib": 49140,
+    "nvml_memory_used_mib": 1,
+    "nvml_compute_processes": []
+  },
+  "interpretation": [
+    "Both failures happened before model loading, validation or benchmark measurement and do not establish any history-length feasibility limit.",
+    "The srun failure rules out a batch-shell-only explanation for the repeated CUDA context error on this allocation.",
+    "Matching UUIDs establish that NVML and PyTorch observed the same visible device. Physical index 4 and visible index 0 are consistent with scheduler remapping; this difference alone is not evidence of bad mapping.",
+    "Default compute mode, one MiB used and no visible compute processes do not support exclusive-process contention.",
+    "The evidence does not establish hardware, driver, cgroup or another root cause. The operational node exclusion below avoids a repeated failure without asserting causation."
+  ],
+  "source_after_failures": {
+    "commit": "312691d00fe84ce52a504071ccd5ed0bdd40a0f9",
+    "clean": true,
+    "runtime_marker_before_after_sha256": "48633e2943a09abe6431eaea9d7f546ac29c1ee117508398de9434751d34b6cb"
+  },
+  "pending_retry": {
+    "job_id": "13839171",
+    "status": "pending",
+    "wrapper_sha256": "5a37cb801860144629529521b79d6b54f878cbb00abb57bb9c33afce5d8f12e5",
+    "excluded_node": "ins091",
+    "logical_lengths": [
+      2048
+    ],
+    "allocation_seconds": 1500,
+    "phase_hard_limits_seconds": {
+      "preflight": 120,
+      "validation": 300,
+      "l2048": 840
+    },
+    "reason": "A read-only scheduler estimate suggested an earlier short-allocation opening, motivating an allocation split with no experiment-setting or stage-timeout changes.",
+    "total_phase_grace_nvml_bound_seconds": 1335,
+    "remaining_bookkeeping_margin_seconds": 165,
+    "source_clean_before_submission": true,
+    "runtime_marker_sha256": "48633e2943a09abe6431eaea9d7f546ac29c1ee117508398de9434751d34b6cb",
+    "config_sha256": "f5ae8448500c84165aca17122576a7b469445fab693205f95c37cc5dfb48a95b",
+    "next_stage": "8192 is not submitted; review 2048 outcome before any follow-up.",
+    "scheduling_limit": "Forecasts are estimates, not reservations. After submission the actual queued replacement forecast moved later to 22:03:44 cluster-local time; immediate capacity was not obtained."
+  },
+  "scope_limit": "No task-success or numerical-accuracy conclusion. The explicit bounded-pilot numerical qualification remains unchanged; no reference tolerance or experimental capacity check was relaxed.",
+  "cancelled_pending_allocation": {
+    "job_id": "13838488",
+    "observed_state_before": "PENDING",
+    "observed_runtime_seconds": 0,
+    "cancel_filter": "--state=PENDING",
+    "observed_state_after": "CANCELLED",
+    "elapsed_seconds": 0,
+    "cancelled_at_utc": "2026-11-08T22:59:13.694771+00:00",
+    "reason": "Replace queued 50-minute combined allocation with a reviewed 25-minute 2048-only allocation; no experimental settings changed.",
+    "wrapper_sha256": "7d27d1d0c9aa81a02442f17b4fa9aaa8b1664e2404b684aaf73ef7561e9acf27",
+    "allocation_seconds": 3000,
+    "logical_lengths": [
+      2048,
+      8192
+    ],
+    "artifacts": [
+      {
+        "file": "combined-pre-cancel.txt",
+        "sha256": "7a310a28ac6d2bc63e5d7970de2636dd02537b2c4cf7c3875e8419d82fcab3fa"
+      },
+      {
+        "file": "combined-post-cancel.txt",
+        "sha256": "ec07902eba978675ae4c148412a770169e903a6ec21055a3760ab7c7dc08f623"
+      },
+      {
+        "file": "combined-cancellation.json",
+        "sha256": "42cc1fe4ffd0489f356aef9453b5654596c57152786bf846ff7e75eb9c3aadd2"
+      },
+      {
+        "file": "retry-v3-sacct-terminal.txt",
+        "sha256": "4a8a09312215876449427a93e246c6a0b19e48e36d2447f2e7371b0a92a6eed8"
+      }
+    ]
+  },
+  "scheduler_estimate_evidence": {
+    "artifact": "compute-setup/history-short-backfill-estimates.json",
+    "bytes": 4419,
+    "sha256": "fddd08c40ad083ee25a25037524abdfaf8e06a730de4f73aff3c653a08acc13f",
+    "scope": "Exact read-only estimate arguments and captured outputs; resource fields matched actual submission. Forecasts were not reservations and the discrepancy has no established cause."
+  }
+}
