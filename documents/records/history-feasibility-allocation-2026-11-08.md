@@ -117,4 +117,16 @@ retains the 120-second preflight and 1,500-second benchmark bounds. It completed
 on ins093 in 108 seconds, with all ten cells and thirty passes verified. All
 78 files (377,420 bytes) were copied and independently SHA-256 checked.
 The [8k result](history-feasibility-8k-2026-11-08.md) reports measured memory,
-costs, two-length plots and timing limitations. No later length has been submitted.
+costs, two-length plots and timing limitations.
+
+## Subsequent 16k allocation
+
+After reviewing the verified 8k result, job 13839231 ran the exact predeclared
+16,384-token configuration with the same source, runtime, qualification, hardware
+and thread policy. Its 50-minute allocation retained 120-second preflight and
+2,700-second benchmark bounds, with no automatic retry. It completed on ins093
+in 225 seconds, verifying all ten cells and thirty passes. All 78 files
+(457,852 bytes) were copied and independently SHA-256 checked. The
+[16k result](history-feasibility-16k-2026-11-08.md) reports measured costs,
+memory and the three-length feasibility figures. No 32,600-token or repeated
+timing job has been submitted.

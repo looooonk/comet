@@ -730,5 +730,72 @@
     "verified_remote_files": 78,
     "verified_remote_bytes": 377420,
     "result_record": "history-feasibility-8k-2026-11-08.json"
+  },
+  "subsequent_16k_attempt": {
+    "job_id": "13839231",
+    "status": "completed_verified",
+    "source_commit": "312691d00fe84ce52a504071ccd5ed0bdd40a0f9",
+    "configuration_commit": "bf936982474f6dae313cd71b5e0369466dd9c655",
+    "qualification_sha256": "ea51f38c4d6c59e4bcf0505cf70b02ac3ae8dbef03580c2565fc26c2be629409",
+    "files": [
+      {
+        "name": "history-feasibility-qwen8b-a6000-l16384-v1.json",
+        "sha256": "54834a687ec6a18dca033c951890df1c86acf7fa88ca2565282300c99c644daf",
+        "bytes": 647
+      },
+      {
+        "name": "run-history-feasibility.sh",
+        "sha256": "f5cd078242c33cb397f3a399bda28ae506fdf1d363466072f0456b8b63396e31",
+        "bytes": 11890
+      },
+      {
+        "name": "verify_reused_validation.py",
+        "sha256": "017b5213459db667703f9056341cc6f78c1c3a3cb998ebefcb4729bf95ff33ac",
+        "bytes": 8705
+      }
+    ],
+    "allocation": {
+      "gpu": "A6000",
+      "gpus": 1,
+      "cpus": 6,
+      "host_ram": "32G",
+      "walltime_seconds": 3000,
+      "excluded_nodes": [
+        "ins091"
+      ],
+      "requeue": false
+    },
+    "phase_hard_limits_seconds": {
+      "preflight": 120,
+      "l16384": 2700
+    },
+    "reused_validation_job": "13837736",
+    "reused_validation_hashes": {
+      "pytest.xml": "3b73a2e803af724da23728913a6cc6885c75a4ce4bcc28a2d887aae7ab1398b9",
+      "source.json": "de75b1076f58ca5c395afeea879b7ea82fd7057c46a26b9b816f66d3c7c1806d",
+      "runtime.json": "48633e2943a09abe6431eaea9d7f546ac29c1ee117508398de9434751d34b6cb",
+      "exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gpu.json": "6f4681aeb03108a7ac6cfb0e34624fdf7d5242d638ec4da2cf5779558ddea6a3",
+      "sampling.json": "d2d748f935668a63f66b13b82652209a7db752769d58139535119d25f6d0817f",
+      "memory.json": "8c7ff6b456de3de10c0a1531d147d47fb2ce8bb6e013be1ccbd2b12b2673166d",
+      "capacity.json": "5e41bdf947e6db79866126d6878c7d25fa9756287bae93639fdb3985346ff6b8"
+    },
+    "host_thread_policy": {
+      "omp_num_threads": 6,
+      "mkl_num_threads": 6,
+      "torch_intraop_required": 6,
+      "torch_interop": "record actual",
+      "cpu_affinity": "record actual",
+      "prior_8b_settings": "unrecorded",
+      "interpretation": "Operational pin, not an established fix for prior slowness; old1k smoke remains diagnostic and eventual repeated curves use consistently pinned threads."
+    },
+    "completion_gate": "All 10 original conditions and 30 passes complete and hash-verify; no later length, repetitions or automatic retry.",
+    "node": "ins093",
+    "allocation_elapsed_seconds": 225,
+    "completed_cells": 10,
+    "verified_passes": 30,
+    "verified_remote_files": 78,
+    "verified_remote_bytes": 457852,
+    "result_record": "history-feasibility-16k-2026-11-08.json"
   }
 }

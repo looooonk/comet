@@ -10,7 +10,8 @@ checks; corrected offline scoring of immutable outcomes is pending. Do not infer
 model capability or prompt effects from the original scores.
 
 The [2k](history-feasibility-2k-2026-11-08.md) and
-[8k matched-history measurements](history-feasibility-8k-2026-11-08.md) each
+[8k](history-feasibility-8k-2026-11-08.md) and
+[16k matched-history measurements](history-feasibility-16k-2026-11-08.md) each
 completed all ten conditions and thirty passes, with verified retention and
 resource accounting. Longer histories and repeated timings remain in progress;
 these cost diagnostics do not depend on task scoring.
@@ -101,6 +102,7 @@ runtime artifacts are not included in this directory.
 | Record | Contents |
 | --- | --- |
 | [AppWorld scoring repair (2026-11-08)](appworld-scoring-repair-2026-11-08.md) | Reproduced counter-path defect, validated state-preservation fix, and separate rescoring; original recent task scores provisional |
+| [16k matched-history result (2026-11-08)](history-feasibility-16k-2026-11-08.md) | Thirty verified passes, 27.786 GiB peak total VRAM, and actual three-length cost figures |
 | [8k matched-history result (2026-11-08)](history-feasibility-8k-2026-11-08.md) | Thirty verified passes and actual two-length cost figures; first-use timing caveats |
 | [2k matched-history result (2026-11-08)](history-feasibility-2k-2026-11-08.md) | Ten conditions and thirty verified passes; single-repetition timing caveats |
 | [History allocation failures and split (2026-11-08)](history-feasibility-allocation-2026-11-08.md) | Preserved CUDA and full-suite timeout failures, exact validation reuse, completed 2k/8k measurements and progressive allocation evidence |
