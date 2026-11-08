@@ -509,6 +509,160 @@ def test_diagnostic_branches_identical_state_and_charges_preparation(config, tmp
     assert trajectories[0]["turns"][0] == trajectories[1]["turns"][0]
 
 
+@pytest.mark.parametrize("completion_after", [1, 2])
+def test_diagnostic_rejects_completed_source_before_or_at_boundary(config, tmp_path, completion_after):
+    config = replace(config, stage="diagnostic", max_attempts=1, checkpoint_after_tool_calls=2,
+                     conditions=[Condition("full", "full", 1.0, "never", 1),
+                                 Condition("compressed", "streamingllm", 0.5, "fixed", 1)])
+    clock, environments = Clock(), []
+    engine = FakeEngine(clock)
+
+    class CompletedEnvironment(FakeEnvironment):
+        def completed(self):
+            self.clock.advance(1)
+            return self.count >= completion_after
+
+    runner = Runner(config, tmp_path, lambda _: engine,
+                    lambda: CompletedEnvironment(clock, environments), clock=clock)
+    manifest = runner.run()
+    source = tmp_path / "checkpoints/fixture_1-7"
+    preparation = read_json(source / "preparation.json")
+    assert preparation["status"] == "failed"
+    assert preparation["source_completed"] is True and not preparation["checkpoint_eligible"]
+    assert preparation["timings"]["checkpoint_eligibility"] == 1
+    assert preparation["tool_calls"] == completion_after
+    assert (source / "trajectory.json").is_file()
+    assert not any((source / name).exists() for name in ("engine", "environment", "agent.json"))
+    assert [environment.count for environment in environments] == [completion_after, 0, 0]
+    for reference in manifest["cells"]:
+        attempt = read_json(tmp_path / reference["path"])["attempts"][0]
+        assert attempt["status"] == "infeasible" and attempt["tool_calls"] == 0
+        assert "at or before" in attempt["failure_reason"]
+        assert attempt["timings"]["shared_checkpoint_preparation"] == preparation["elapsed_seconds"]
+        assert attempt["metrics"]["estimated_flops"] == 100 * completion_after
+        assert attempt["checkpoint_preparation"]["tool_calls"] == completion_after
+        assert "reset" not in attempt["timings"]
+        trajectory = read_json(tmp_path / attempt["artifact_dir"] / "trajectory.json")
+        assert trajectory["raw_token_ids"] == [] and trajectory["turns"] == []
+    assert len(engine.starts) == 1
+
+
+@pytest.mark.parametrize("exhausted_budget", [False, True])
+def test_diagnostic_failed_checkpoint_preserves_prefix_costs_once(config, tmp_path, exhausted_budget):
+    from comet.errors import UnsupportedPath
+
+    config = replace(config, stage="diagnostic", max_attempts=1, checkpoint_after_tool_calls=1,
+                     budget_seconds=10 if exhausted_budget else config.budget_seconds,
+                     conditions=[Condition("full", "full", 1.0, "never", 1)])
+    clock, environments = Clock(), []
+    engine = FakeEngine(clock)
+
+    class UnsupportedEnvironment(FakeEnvironment):
+        def checkpoint(self, path):
+            if exhausted_budget:
+                return super().checkpoint(path)
+            self.clock.advance(1)
+            raise UnsupportedPath("unsupported fixture execution value")
+
+    runner = Runner(config, tmp_path, lambda _: engine,
+                    lambda: UnsupportedEnvironment(clock, environments), clock=clock)
+    manifest = runner.run()
+    preparation = read_json(tmp_path / "checkpoints/fixture_1-7/preparation.json")
+    attempt = read_json(tmp_path / manifest["cells"][0]["path"])["attempts"][0]
+    source_status = "completed" if exhausted_budget else "failed"
+    assert preparation["status"] == source_status and preparation["checkpoint_eligible"]
+    assert attempt["status"] == ("timeout" if exhausted_budget else "infeasible")
+    assert attempt["tool_calls"] == 0
+    assert attempt["metrics"]["estimated_flops"] == preparation["metrics"]["estimated_flops"] == 100
+    assert attempt["metrics"]["metric_coverage"] == preparation["metrics"]["metric_coverage"]
+    assert attempt["checkpoint_preparation"] == {
+        "artifact_dir": "checkpoints/fixture_1-7", "status": source_status, "tool_calls": 1, "rebuilds": 0,
+    }
+    assert attempt["timings"]["shared_checkpoint_preparation"] == preparation["elapsed_seconds"]
+    assert preparation["elapsed_seconds"] == (9 if exhausted_budget else 8)
+    assert attempt["elapsed_seconds"] == (11 if exhausted_budget else 8)
+    assert attempt["timings"].get("reset", 0) == (2 if exhausted_budget else 0)
+    assert "checkpoint_restore" not in attempt["timings"]
+    assert len(engine.starts) == (2 if exhausted_budget else 1)
+    assert [environment.count for environment in environments] == [1, 0]
+    runner.run(resume=True)
+    assert len(environments) == 2
+    assert read_json(tmp_path / manifest["cells"][0]["path"])["attempts"][0] == attempt
+
+
+@pytest.mark.parametrize("failure", ["close", "memory"])
+@pytest.mark.parametrize("primary_error", [False, True])
+def test_diagnostic_cleanup_preserves_prefix_and_primary_error(config, tmp_path, failure, primary_error):
+    config = replace(config, stage="diagnostic", max_attempts=1, checkpoint_after_tool_calls=1,
+                     conditions=[Condition("full", "full", 1.0, "never", 1)])
+    clock, environments = Clock(), []
+
+    class Engine(FakeEngine):
+        def memory_stats(self):
+            self.clock.advance(3)
+            if failure == "memory":
+                raise RuntimeError("fixture memory probe failed")
+            return super().memory_stats()
+
+    class Environment(FakeEnvironment):
+        def checkpoint(self, path):
+            if primary_error:
+                self.clock.advance(1)
+                raise RuntimeError("fixture checkpoint failed")
+            return super().checkpoint(path)
+
+        def close(self):
+            if self.count:
+                self.clock.advance(2)
+                if failure == "close":
+                    raise RuntimeError("fixture close failed")
+
+    engine = Engine(clock)
+    runner = Runner(config, tmp_path, lambda _: engine, lambda: Environment(clock, environments), clock=clock)
+    manifest = runner.run()
+    source = read_json(tmp_path / "checkpoints/fixture_1-7/preparation.json")
+    attempt = read_json(tmp_path / manifest["cells"][0]["path"])["attempts"][0]
+    assert source["status"] == "failed" and source["tool_calls"] == 1 and source["rebuilds"] == 0
+    assert source["metrics"]["estimated_flops"] == attempt["metrics"]["estimated_flops"] == 100
+    assert source["timings"]["cleanup"] == 5
+    assert source["elapsed_seconds"] == (13 if primary_error else 14)
+    if primary_error:
+        assert source["failure_reason"] == "RuntimeError: fixture checkpoint failed"
+    else:
+        assert "cleanup failed" in source["failure_reason"] if failure == "close" else \
+            "memory measurement failed" in source["failure_reason"]
+    if failure == "close":
+        assert source["cleanup_errors"] == ["RuntimeError: fixture close failed"]
+    else:
+        assert source["metrics"]["memory_error"] == "RuntimeError: fixture memory probe failed"
+    assert attempt["status"] == "infeasible" and len(engine.starts) == 1
+    assert attempt["timings"]["shared_checkpoint_preparation"] == source["elapsed_seconds"]
+
+
+def test_diagnostic_cleanup_overrun_invalidates_source_but_retains_costs(config, tmp_path):
+    config = replace(config, stage="diagnostic", max_attempts=1, checkpoint_after_tool_calls=1,
+                     budget_seconds=10, conditions=[Condition("full", "full", 1.0, "never", 1)])
+    clock, environments = Clock(), []
+    engine = FakeEngine(clock)
+
+    class SlowCloseEnvironment(FakeEnvironment):
+        def close(self):
+            if self.count:
+                self.clock.advance(2)
+
+    runner = Runner(config, tmp_path, lambda _: engine,
+                    lambda: SlowCloseEnvironment(clock, environments), clock=clock)
+    manifest = runner.run()
+    source = read_json(tmp_path / "checkpoints/fixture_1-7/preparation.json")
+    attempt = read_json(tmp_path / manifest["cells"][0]["path"])["attempts"][0]
+    assert source["status"] == "failed"
+    assert source["failure_reason"] == "Budget expired during preparation cleanup"
+    assert source["timings"]["cleanup"] == 2 and source["elapsed_seconds"] == 11
+    assert source["metrics"]["estimated_flops"] == attempt["metrics"]["estimated_flops"] == 100
+    assert attempt["status"] == "infeasible" and len(engine.starts) == 1
+    assert attempt["timings"]["shared_checkpoint_preparation"] == 11
+
+
 def test_evaluator_not_reachable_from_runner():
     import ast
 

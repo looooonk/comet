@@ -160,6 +160,11 @@ Each condition restores that same source, applies its own retention policy, and
 continues independently. Prefix preparation time is charged identically to every
 branch, as are its own reset and restore costs. Prefix inference and memory costs
 are retained in each branch's metrics. Diagnostic cells contain one continuation.
+The source must remain incomplete at the declared tool-count boundary. A source
+that completes before or exactly at that boundary is ineligible: its trajectory
+and preparation costs remain recorded, and every dependent branch is infeasible
+without executing another action. The eligibility check consumes preparation
+time. It uses the ordinary task-completion observation, not evaluator feedback.
 
 AppWorld's database checkpoint alone is insufficient: Python variables and RNG
 also matter. The adapter preserves supported data-valued execution namespaces and
@@ -167,6 +172,15 @@ rejects functions, generators, API handle aliases and other unsupported live
 objects. Such a checkpoint is reported as infeasible, never silently replayed or
 substituted. See [evaluation.md](evaluation.md). Failed source preparation remains
 a failed condition in every comparison. Final evaluation always starts fresh.
+Known preparation costs remain in branch metrics even when preparation or restore
+fails. The attempt's `checkpoint_preparation` identifies the source and its tool
+and rebuild counts separately; an unavailable source does not imply that a branch
+executed those actions. Preparation time is charged once per branch.
+This charge precedes branch reset, so a reset timeout retains the source costs
+and an unavailable source does not incur a new reset or continuation.
+Preparation cleanup includes synchronization, environment close, and the final
+memory probe. Its time is charged; errors or a budget overrun invalidate an
+otherwise completed source while preserving known costs and any primary failure.
 
 ## Baseline behavior diagnostic
 

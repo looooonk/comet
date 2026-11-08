@@ -325,16 +325,19 @@ class Runner:
         environment = self.environment_factory()
         start, old_timings = budget.elapsed, dict(budget.timings)
         state = {"tool_calls": 0, "rebuilds": 0, "turns": [], "pending_tokens": []}
+        engine_started = False
         try:
+            if self.config.stage == "diagnostic":
+                from comet.diagnostic import charge_checkpoint_preparation, restore_checkpoint
+
+                charge_checkpoint_preparation(self, cell, attempt, budget)
             with budget.charge("reset"):
+                engine_started = True
                 engine.start(attempt["seed"])
                 environment.reset(cell["task_id"], attempt["seed"], directory / "environment")
                 state["pending_tokens"] = self._initial_tokens(engine, environment)
             if self.config.stage == "diagnostic":
-                from comet.diagnostic import restore_checkpoint
-
                 state = restore_checkpoint(self, cell, environment, engine, budget)
-                attempt["metrics"].update(state.pop("preparation_metrics", {}))
             self._trajectory(
                 cell, attempt, directory, condition, engine, environment, budget, state
             )
@@ -356,7 +359,7 @@ class Runner:
                 attempt.update(status="error", failure_reason=f"{type(error).__name__}: {error}")
         finally:
             cleanup_start = budget.elapsed
-            cleanup = ([engine.synchronize] if hasattr(engine, "synchronize") else []) + [
+            cleanup = ([engine.synchronize] if engine_started and hasattr(engine, "synchronize") else []) + [
                 environment.close
             ]
             for finish in cleanup:
@@ -382,7 +385,7 @@ class Runner:
             attempt["tool_calls"] = state["tool_calls"]
             attempt["rebuilds"] = state["rebuilds"]
             try:
-                memory = _plain(engine.memory_stats())
+                memory = _plain(engine.memory_stats()) if engine_started else {}
             except Exception as error:
                 attempt["metrics"]["memory_error"] = f"{type(error).__name__}: {error}"
                 if attempt["status"] == "completed":
@@ -396,8 +399,8 @@ class Runner:
                 directory / "trajectory.json",
                 {
                     **state,
-                    "raw_token_ids": list(engine.raw_token_ids),
-                    "retention_events": getattr(engine, "retention_events", []),
+                    "raw_token_ids": list(engine.raw_token_ids) if engine_started else [],
+                    "retention_events": getattr(engine, "retention_events", []) if engine_started else [],
                 },
             )
             write_json(directory / "attempt.json", attempt)
