@@ -2,6 +2,13 @@
 
 ## Latest results
 
+The [November 8 numerical calibration](reference-calibration-2026-11-08.md)
+records 165 passed L40S checks and a failed relative-error screening gate. A
+separate FP32 CPU comparison found the native BF16 output closer to FP32 than
+the BF16 reference on 23/24 positions. The original failure remains preserved;
+the revised screen and separate prompt corpus still need live validation before
+the next task pilot.
+
 The [November 8 foundation repair](foundation-repair-2026-11-08.md) passed 149 CPU
 checks and reproduced the corrected-sampler baseline chart with explicit protocol
 compatibility and measurement coverage. Live GPU checks and the
@@ -77,6 +84,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Numerical screen and FP32 calibration (2026-11-08)](reference-calibration-2026-11-08.md) | Original failed screen, independent higher-precision diagnosis, explicit revised gate and pending separate validation; [evidence](reference-calibration-2026-11-08.json) |
 | [Corrected-sampler paired results (2026-11-08)](sampling-repair-2026-11-08-results.md) | Both arms scored 0/6, bounded errors, verified seed variation, and conservative preemption handling; [evidence](sampling-repair-2026-11-08-results.json) |
 | [Sampling repair validation and relaunch (2026-11-08)](sampling-repair-2026-11-08-validation.md) | Overnight setup failure, completed GPU validation, active paired run, and measured storage; [evidence](sampling-repair-2026-11-08-validation.json) |
 | [Broader 8B pilot completion (2026-11-08)](baseline-qwen8b-2026-11-08-completion.md) | All 38 outcomes, offline scores, resource summary and artifact hashes; [evidence](baseline-qwen8b-2026-11-08-completion.json) |

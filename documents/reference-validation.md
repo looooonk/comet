@@ -64,12 +64,16 @@ the 24 greedy tokens must agree exactly.
 | Quantity | Maximum | Interpretation |
 | --- | ---: | --- |
 | Centered logit RMSE | 0.20 | Absolute logit error across the vocabulary |
-| Centered relative RMSE | 0.02 | RMSE divided by the centered reference's root-mean-square magnitude |
+| Centered relative RMSE | 0.05 | RMSE divided by the centered reference's root-mean-square magnitude |
 | Jensen-Shannon divergence | 0.002 nats | Difference between next-token distributions at temperature 1, using natural logarithms |
 | Reference greedy regret | 0.125 | Reference maximum logit minus its logit for the native-selected token |
 
-These are conservative engineering screening thresholds chosen before running
-the comparison, not empirically established error bounds for this engine. BF16
+The initial screen used 0.02 for relative RMSE. Independent
+[FP32 calibration](records/reference-calibration-2026-11-08.md) found that this
+also rejected ordinary Transformers BF16 arithmetic, while native error was
+smaller. Version `bf16-fp32-calibrated-v2` changes only that limit to 0.05 and
+requires separate prompt validation; the original failed result stays intact.
+These are engineering screening thresholds, not guaranteed error bounds. BF16
 has limited mantissa precision, and fused reductions need not match eager
 operations bit for bit; [PyTorch's numerical accuracy guidance](https://docs.pytorch.org/docs/2.9/notes/numerical_accuracy.html)
 also explains why different mathematically equivalent evaluation orders can
@@ -85,6 +89,12 @@ AppWorld behavior is caused by inference. Do not silently relax tolerances to
 obtain a pass. Any revised tolerance needs a separate rationale and a new saved
 validation record. Passing these short histories does not establish long-context,
 eviction, recovery, sampling, or agent capability correctness.
+
+Set `COMET_REFERENCE_CASES` to a declared JSON corpus to run separate cases,
+such as `configs/diagnostics/reference-heldout-v1.json`. Its hash becomes part
+of the recorded identity. Each case specifies an ID, thinking mode, messages
+and a continuation. Omit this variable for the original three synthetic cases.
+Use a fresh evidence directory for every corpus and screen version.
 
 ## Run and preserve evidence
 

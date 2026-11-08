@@ -1,0 +1,43 @@
+[
+  {
+    "id": "heldout_open_story",
+    "thinking": false,
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write one original opening sentence for a story set at a quiet harbor. Avoid stock openings."
+      }
+    ],
+    "continuation": "Offer a different opening with a more playful tone."
+  },
+  {
+    "id": "heldout_action_choice",
+    "thinking": false,
+    "messages": [
+      {
+        "role": "user",
+        "content": "You are organizing a reading group. Two people prefer mornings, three prefer evenings, and one has not replied. Propose the next step in one short sentence, without inventing availability."
+      }
+    ],
+    "continuation": "Now suggest a reasonable alternative if the undecided person cannot attend either time."
+  },
+  {
+    "id": "heldout_tool_state",
+    "thinking": false,
+    "messages": [
+      {
+        "role": "user",
+        "content": "A fictional inventory tool has two endpoints: list_items(page) returns item records and a next_page field; reserve_item(item_id, quantity) reserves existing stock. The user requests two blue notebooks. Explain your next action in one sentence."
+      },
+      {
+        "role": "assistant",
+        "content": "I will inspect the listed inventory before reserving anything."
+      },
+      {
+        "role": "user",
+        "content": "<tool_response>\n{\"items\":[{\"id\":\"n17\",\"name\":\"blue notebook\",\"stock\":1},{\"id\":\"n18\",\"name\":\"green notebook\",\"stock\":6}],\"next_page\":2}\n</tool_response>"
+      }
+    ],
+    "continuation": "The next page is empty. Explain what you should communicate to the user."
+  }
+]

@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "scope": "numerical and integration validation; no task-success result",
+  "gpu_validation": {
+    "source_commit": "f838a9b6c000c4ec737ead0d116f80ce48f480c4",
+    "job_id": "13837400",
+    "device": "NVIDIA L40S",
+    "tests": {
+      "total": 169,
+      "passed": 165,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 3,
+      "seconds": 202.382
+    },
+    "result": "reference screening failure; other checks passed",
+    "model": "Qwen/Qwen3-8B",
+    "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "precision": "bfloat16",
+    "original_tolerances": {
+      "centered_relative_rmse": 0.02,
+      "centered_rmse": 0.2,
+      "greedy_regret": 0.125,
+      "jensen_shannon_nats": 0.002,
+      "minimum_exact_greedy_agreement": 0.9
+    },
+    "positions": 24,
+    "failed_positions": 19,
+    "exact_greedy_agreement": 1.0,
+    "metric_maxima": {
+      "centered_rmse": 0.14512761110411543,
+      "centered_relative_rmse": 0.039881304087285456,
+      "jensen_shannon_nats": 4.684181957051461e-05,
+      "greedy_regret": 0.0
+    }
+  },
+  "fp32_calibration": {
+    "source_commit": "5060c8ff39cd64e78759679cbd611d9444358b72",
+    "job_id": "13837535",
+    "processor": "Intel Xeon Platinum 8460Y+",
+    "threads": 12,
+    "requested_host_memory_gib": 64,
+    "precision": "float32",
+    "device": "cpu",
+    "status": "completed",
+    "summary": {
+      "bf16_reference": {
+        "exact_greedy_agreement_fraction": 1,
+        "exact_greedy_agreements": 24,
+        "max_centered_relative_rmse": 0.03640371135292938,
+        "max_centered_rmse": 0.12419802641427741,
+        "max_greedy_regret": 0.0,
+        "max_jensen_shannon_nats": 0.00010165400686034682,
+        "mean_centered_relative_rmse": 0.021836483651307553,
+        "mean_jensen_shannon_nats": 5.35366493555609e-06,
+        "pooled_centered_rmse": 0.08511654454830815
+      },
+      "cases": 6,
+      "native": {
+        "exact_greedy_agreement_fraction": 1,
+        "exact_greedy_agreements": 24,
+        "max_centered_relative_rmse": 0.024419522016730172,
+        "max_centered_rmse": 0.0888358264923339,
+        "max_greedy_regret": 0.0,
+        "max_jensen_shannon_nats": 2.247690165314896e-05,
+        "mean_centered_relative_rmse": 0.014314549846417618,
+        "mean_jensen_shannon_nats": 1.4801613538322248e-06,
+        "pooled_centered_rmse": 0.05548122645122995
+      },
+      "native_to_bf16_pooled_centered_rmse_ratio": 0.6518265837229966,
+      "vectors": 24
+    },
+    "elapsed_seconds": 67.44016828993335,
+    "peak_rss_bytes": 34631864320,
+    "native_lower_rmse_positions": 23,
+    "original_relative_gate_exceedances": {
+      "native": 3,
+      "bf16_reference": 13
+    }
+  },
+  "screening_v2": {
+    "version": "bf16-fp32-calibrated-v2",
+    "change": {
+      "centered_relative_rmse": {
+        "from": 0.02,
+        "to": 0.05
+      }
+    },
+    "other_gates_changed": false,
+    "experimental_settings_changed": false,
+    "basis": "FP32 calibration shows the original relative screen rejects ordinary BF16 reference arithmetic; native pooled error is smaller than reference BF16 error. The 0.05 bound is an engineering screen, not a guaranteed error bound.",
+    "heldout_corpus_sha256": "5df22c2a5e0a738fd77052aa4766f3c6250db8d6bbe8917a4e5939caa35b2308",
+    "heldout_validation": "pending; required before task pilot",
+    "original_failed_result_preserved": true
+  },
+  "artifacts": [
+    {
+      "artifact": "gpu-foundation-f838a9b/source.json",
+      "bytes": 9852,
+      "sha256": "f65ce2e2c6fe45f24b21dd32b3740a2c56623d7bdae235731d0bd1ab8517079d"
+    },
+    {
+      "artifact": "gpu-foundation-f838a9b/runtime.json",
+      "bytes": 576,
+      "sha256": "48633e2943a09abe6431eaea9d7f546ac29c1ee117508398de9434751d34b6cb"
+    },
+    {
+      "artifact": "gpu-foundation-f838a9b/pytest.xml",
+      "bytes": 28104,
+      "sha256": "cb6c0837fa7c268afe0fbecdb5e876871d0375bc50a7ccc2c36301965d0c27f1"
+    },
+    {
+      "artifact": "gpu-foundation-f838a9b/gpu.json",
+      "bytes": 5525,
+      "sha256": "b39ff3283acc36de7aacfbcffaf553c0aefec71346565b5de2df443a8ff13a45"
+    },
+    {
+      "artifact": "gpu-foundation-f838a9b/memory.json",
+      "bytes": 9193,
+      "sha256": "3f46fc999c816a4782ce77e7656ebef5e3cefe1f47cfd4f4060ee28328f3df5e"
+    },
+    {
+      "artifact": "gpu-foundation-f838a9b/capacity.json",
+      "bytes": 5133,
+      "sha256": "f0856d7c80fef4e490a3ee5ca8ab05c9b1e05e6d509c7d08ad075d77edc33d56"
+    },
+    {
+      "artifact": "gpu-foundation-f838a9b/sampling.json",
+      "bytes": 4009,
+      "sha256": "62f35e5d0e5ba662f9a293583999427cfc7e68adaaeca6a558190036bc53e47a"
+    },
+    {
+      "artifact": "gpu-foundation-f838a9b/reference/native.json",
+      "bytes": 18805,
+      "sha256": "95a4baada9de5b4639ef87e28e0a6c20fd50c294950b8ebfddf391f95985fc85"
+    },
+    {
+      "artifact": "gpu-foundation-f838a9b/reference/comparison.json",
+      "bytes": 15240,
+      "sha256": "55575296e94339d244251c16c5e73a0fa57f6e39830bb59cb174d8fc6cb5b4b7"
+    },
+    {
+      "artifact": "gpu-foundation-f838a9b/reference/native-logits.pt",
+      "bytes": 14588957,
+      "sha256": "31e10b61b60d694d022d2d5fc8ae6e422a6fe29cd9af4b48064230c19af78fd9"
+    },
+    {
+      "artifact": "gpu-foundation-f838a9b/reference/reference-logits.pt",
+      "bytes": 14588993,
+      "sha256": "f455cf0483c35a36a66ab38455dce3a4d5f510051a0459228a04acf940b4428f"
+    },
+    {
+      "artifact": "reference-fp32-13837535/provenance.json",
+      "bytes": 14137,
+      "sha256": "3b44cc81e9c2e12e12277de3697e32f902393aaa719d838080753b47746d4117"
+    },
+    {
+      "artifact": "reference-fp32-13837535/calibration.json",
+      "bytes": 38638,
+      "sha256": "53ee5446ea17e01c621539f499e5ed376cad0e66df704848bc1328f4f1464597"
+    },
+    {
+      "artifact": "reference-fp32-13837535/fp32-logits.pt",
+      "bytes": 14588933,
+      "sha256": "7ef554e43490713585ab9f817d3c05a788a0bad05730ba834c21dbd6873cbe25"
+    },
+    {
+      "artifact": "reference-fp32-13837535/progress.json",
+      "bytes": 37335,
+      "sha256": "d4c4fe936cad5d02e7cc947652b831296af984267c16293c48fd1fe953fb0bfb"
+    }
+  ]
+}

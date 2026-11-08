@@ -11,6 +11,30 @@ from comet.artifacts import read_json, write_json
 from comet.engine.contracts import MODEL_REVISION
 
 
+def test_reference_case_corpus_schema_hash_and_continuations(tmp_path, monkeypatch):
+    monkeypatch.delenv("COMET_REFERENCE_CASES", raising=False)
+    defaults, _ = reference._cases()
+    assert defaults == reference.CASES
+    assert reference._continuation(defaults[0]) == [
+        {"role": "user", "content": "Now return exactly the word AMBER."}]
+    corpus = Path(__file__).resolve().parents[1] / "configs/diagnostics/reference-heldout-v1.json"
+    monkeypatch.setenv("COMET_REFERENCE_CASES", str(corpus))
+    cases, digest = reference._cases()
+    assert digest == "5df22c2a5e0a738fd77052aa4766f3c6250db8d6bbe8917a4e5939caa35b2308"
+    assert len(cases) == 3 and all(reference._continuation(case)[0]["content"] ==
+                                   case["continuation"] for case in cases)
+    invalid = tmp_path / "invalid.json"
+    monkeypatch.setenv("COMET_REFERENCE_CASES", str(invalid))
+    for value in ([{**cases[0], "thinking": 1}], [cases[0], cases[0]],
+                  [{**cases[0], "continuation": ""}], [{**cases[0], "extra": True}]):
+        invalid.write_text(json.dumps(value))
+        with pytest.raises(ValueError):
+            reference._cases()
+    invalid.write_text('[{"id":"a", "id":"b"}]')
+    with pytest.raises(ValueError, match="Duplicate"):
+        reference._cases()
+
+
 @pytest.mark.parametrize("phase", ["native", "reference"])
 def test_reference_failure_retains_completed_cases_and_current_case(tmp_path, monkeypatch, phase):
     def save(tensors, path):
@@ -73,6 +97,7 @@ def test_success_keeps_complete_output_schema_and_supersedes_partial_journal(tmp
 
 @pytest.mark.parametrize("generation_raises", [False, True])
 def test_first_native_case_saves_actual_capture_before_assertion(tmp_path, monkeypatch, generation_raises):
+    monkeypatch.delenv("COMET_REFERENCE_CASES", raising=False)
     class Tensor(list):
         @property
         def shape(self):
@@ -110,6 +135,7 @@ def test_first_native_case_saves_actual_capture_before_assertion(tmp_path, monke
     monkeypatch.setattr(reference, "_identity", lambda: (Path("/fixture"), {
         "model": "Qwen/Qwen3-8B", "model_revision": MODEL_REVISION,
         "tokenizer_revision": MODEL_REVISION,
+        "case_corpus_sha256": reference._cases()[1],
     }))
     monkeypatch.setitem(sys.modules, "torch", SimpleNamespace(
         stack=lambda tensors: Tensor(tensors),

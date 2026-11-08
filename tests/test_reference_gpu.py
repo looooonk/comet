@@ -3,6 +3,7 @@
 import hashlib
 import importlib.metadata
 import inspect
+import json
 import os
 import subprocess
 import sys
@@ -16,9 +17,10 @@ from comet.artifacts import read_json, write_json
 from comet.engine import EngineSettings, MiniSGLangEngine
 from comet.engine.contracts import MODEL_PROFILES, model_storage
 
+GATE_VERSION = "bf16-fp32-calibrated-v2"
 TOLERANCES = {
     "centered_rmse": 0.20,
-    "centered_relative_rmse": 0.02,
+    "centered_relative_rmse": 0.05,
     "jensen_shannon_nats": 0.002,
     "greedy_regret": 0.125,
     "minimum_exact_greedy_agreement": 0.90,
@@ -38,6 +40,7 @@ CASES = [
          '\n</tool_response>\nReturn the color.'},
     ]},
 ]
+DEFAULT_CONTINUATION = "Now return exactly the word AMBER."
 
 
 @pytest.mark.gpu
@@ -69,6 +72,51 @@ def test_full_cache_against_transformers(tmp_path):
 
 def _sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def _unique_fields(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"Duplicate case corpus field: {key}")
+        result[key] = value
+    return result
+
+
+def _cases():
+    path = os.environ.get("COMET_REFERENCE_CASES")
+    raw = Path(path).read_bytes() if path else json.dumps(CASES, sort_keys=True).encode()
+    cases = json.loads(raw, object_pairs_hook=_unique_fields)
+    if not isinstance(cases, list) or not cases:
+        raise ValueError("Reference cases must be a nonempty JSON list")
+    identifiers = set()
+    for case in cases:
+        if (not isinstance(case, dict) or not {"id", "thinking", "messages"} <= case.keys()
+                or case.keys() - {"id", "thinking", "messages", "continuation"}):
+            raise ValueError("Each case requires id, thinking, messages and optional continuation")
+        identifier = case["id"]
+        if (not isinstance(identifier, str) or not identifier.strip() or "/" in identifier
+                or identifier in identifiers):
+            raise ValueError("Case IDs must be unique nonempty strings without slashes")
+        identifiers.add(identifier)
+        if type(case["thinking"]) is not bool:
+            raise ValueError("Case thinking must be a JSON boolean")
+        if "continuation" in case and (not isinstance(case["continuation"], str)
+                                       or not case["continuation"].strip()):
+            raise ValueError("Case continuation must be a nonempty string")
+        messages = case["messages"]
+        if not isinstance(messages, list) or not messages:
+            raise ValueError("Case messages must be a nonempty list")
+        for message in messages:
+            if (not isinstance(message, dict) or set(message) != {"role", "content"}
+                    or message["role"] not in ("system", "user", "assistant")
+                    or not isinstance(message["content"], str) or not message["content"].strip()):
+                raise ValueError("Messages require a supported role and nonempty text content")
+    return cases, hashlib.sha256(raw).hexdigest()
+
+
+def _continuation(case):
+    return [{"role": "user", "content": case.get("continuation", DEFAULT_CONTINUATION)}]
 
 
 def _record_progress(root, phase, *, current=None, records=None, tensors=None, identity=None,
@@ -107,6 +155,7 @@ def _record_current(root, phase, records, tensors, record, logits):
 
 
 def _identity():
+    _, cases_sha256 = _cases()
     model = os.environ.get("COMET_TEST_MODEL", "Qwen/Qwen3-8B")
     revision = MODEL_PROFILES[model]["revision"]
     path = Path(os.environ["COMET_MODEL_PATH"]).resolve()
@@ -134,6 +183,8 @@ def _identity():
         "weight_files": weights,
         "weight_identity_scope": "snapshot, size, blob names and headers; not a new full-weight checksum",
         "test_sha256": _sha256(__file__),
+        "gate_version": GATE_VERSION, "case_corpus_sha256": cases_sha256,
+        "case_corpus_source": "json_file" if os.environ.get("COMET_REFERENCE_CASES") else "builtin",
     }
 
 
@@ -141,6 +192,8 @@ def _native(root):
     import torch
 
     path, identity = _identity()
+    cases, cases_sha256 = _cases()
+    assert cases_sha256 == identity["case_corpus_sha256"]
     cap = int(os.environ.get("COMET_REFERENCE_CAP_BYTES", 40 << 30))
     settings = EngineSettings(
         model=identity["model"], model_path=str(path), model_revision=identity["model_revision"],
@@ -163,7 +216,7 @@ def _native(root):
     sampler.sample = capture
     records, tensors = [], {}
     try:
-        for case in CASES:
+        for case in cases:
             _record_progress(root, "native", current={"stage": "reset_and_prompt", "id": f"{case['id']}/fresh"})
             engine.start(17)
             prompt = engine.tokenizer.apply_chat_template(
@@ -179,7 +232,7 @@ def _native(root):
                     closing = ("" if engine.raw_token_ids[-1] == engine.tokenizer.eos_token_id
                                else "<|im_end|>")
                     suffix_text = closing + "\n" + engine.tokenizer.apply_chat_template(
-                        [{"role": "user", "content": "Now return exactly the word AMBER."}],
+                        _continuation(case),
                         tokenize=False, add_generation_prompt=True, enable_thinking=False,
                     )
                     prompt = engine.tokenizer.encode(suffix_text, add_special_tokens=False)
@@ -215,6 +268,7 @@ def _native(root):
         _record_progress(root, "native", current={"stage": "write_complete_artifacts"})
         torch.save(tensors, root / "native-logits.pt")
         write_json(root / "native.json", {
+            "gate_version": GATE_VERSION,
             "identity": identity, "settings": asdict(settings), "engine": engine.provenance(),
             "records": records, "logits_sha256": _sha256(root / "native-logits.pt"),
         })
@@ -319,6 +373,7 @@ def _reference(root):
               and agreement >= TOLERANCES["minimum_exact_greedy_agreement"])
     write_json(root / "comparison.json", {
         "schema_version": 1,
+        "gate_version": GATE_VERSION,
         "purpose": "full-cache numerical validation only; no task-success or serving substitution claim",
         "passed": passed, "identity": identity, "device_name": torch.cuda.get_device_name(),
         "reference": {"class": type(model).__name__, "attention": "eager", "use_cache": False,
