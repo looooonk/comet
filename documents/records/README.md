@@ -9,7 +9,8 @@ caused saved mutations to be overlooked. The path repair passed live persistence
 checks; corrected offline scoring of immutable outcomes is pending. Do not infer
 model capability or prompt effects from the original scores.
 
-The [2k matched-history measurement](history-feasibility-2k-2026-11-08.md)
+The [2k](history-feasibility-2k-2026-11-08.md) and
+[8k matched-history measurements](history-feasibility-8k-2026-11-08.md) each
 completed all ten conditions and thirty passes, with verified retention and
 resource accounting. Longer histories and repeated timings remain in progress;
 these cost diagnostics do not depend on task scoring.
@@ -100,8 +101,9 @@ runtime artifacts are not included in this directory.
 | Record | Contents |
 | --- | --- |
 | [AppWorld scoring repair (2026-11-08)](appworld-scoring-repair-2026-11-08.md) | Reproduced counter-path defect, validated state-preservation fix, and separate rescoring; original recent task scores provisional |
+| [8k matched-history result (2026-11-08)](history-feasibility-8k-2026-11-08.md) | Thirty verified passes and actual two-length cost figures; first-use timing caveats |
 | [2k matched-history result (2026-11-08)](history-feasibility-2k-2026-11-08.md) | Ten conditions and thirty verified passes; single-repetition timing caveats |
-| [History allocation failures and split (2026-11-08)](history-feasibility-allocation-2026-11-08.md) | Two preserved CUDA preflight failures, zero-runtime cancellation, unchanged 2k replacement and unstable queue estimates; no longer-history measurements yet |
+| [History allocation failures and split (2026-11-08)](history-feasibility-allocation-2026-11-08.md) | Preserved CUDA and full-suite timeout failures, exact validation reuse, completed 2k/8k measurements and progressive allocation evidence |
 | [Shared matched-history analysis (2026-11-08)](history-analysis-2026-11-08.md) | Strict artifact/metric accounting, 229 CPU checks and inspected real single-point smoke figures; longer curves remain pending |
 | [Executable-action prompt results (2026-11-08)](execution-prompt-2026-11-08-results.md) | Original 0/6 scores provisional after the AppWorld defect; verified 12 attempts and preserved execution/resource evidence |
 | [Offline policy and attained-success figures (2026-11-08)](policy-curves-2026-11-08.md) | Paired curves, timestamp and reservation coverage, 55 focused checks; historical/synthetic render validation only |
