@@ -13,8 +13,12 @@ The new explicit configs are `pilot-execution-control-qwen8b-v1.json` and
 (`0d8a4ee_1`, `3ab5b8b_1`, `57c3486_1`) and seeds 17 and 18. These identities were
 declared before new outcomes. Both use pinned Qwen3-8B BF16, corrected sampling,
 full KV, one attempt, no recovery, 600 seconds per cell, a 40 GiB cap, 32,768-token
-context, up to 4,096 generated tokens per turn, and reasoning enabled. Both explicitly select `NVIDIA L40S` under the authorized
-hardware policy. Temperature
+context, up to 4,096 generated tokens per turn, and reasoning enabled. The saved
+templates select `NVIDIA L40S` under the authorized hardware policy. For a queued
+allocation of another approved GPU, write resolved copies with its exact device
+name before execution and retain both template hashes and resolved files. This
+is the only allocation-dependent substitution; both arms must use that same GPU
+and pass its managed reference, capacity and integration checks. Temperature
 and top-p retain the previous corrected-control values. All settings are resolved
 in the new files rather than inherited from obsolete smoke configurations.
 
