@@ -38,3 +38,24 @@ def test_baseline_prompt_comparison_keeps_settings_paired(suffix):
     assert repair.prompt != control.prompt
     assert repair.stage == "pilot" and repair.split == "dev" and repair.frozen is None
     assert all(c.method == "full" and c.recovery == "never" for c in repair.conditions)
+
+
+@pytest.mark.parametrize("limit", [-1, True, 1.5, float("inf")])
+def test_agent_failure_limit_is_explicit_nonnegative_integer(limit):
+    base = Experiment.load(Path(__file__).resolve().parents[1] / "configs/pilot-smoke.json")
+    assert base.agent.max_consecutive_errors == 0
+    raw = base.to_dict()
+    raw["agent"] = {"max_consecutive_errors": limit}
+    with pytest.raises(ValueError, match="max_consecutive_errors"):
+        Experiment.from_dict(raw)
+
+
+def test_corrected_sampler_protocol_comparison_changes_only_agent_policy():
+    root = Path(__file__).resolve().parents[1] / "configs"
+    control = Experiment.load(root / "pilot-sampling-control-qwen8b.json")
+    candidate = Experiment.load(root / "pilot-agent-guard-qwen8b.json")
+    assert replace(candidate, experiment_id=control.experiment_id, notes=control.notes,
+                   agent=control.agent) == control
+    assert control.agent.max_consecutive_errors == 0
+    assert candidate.agent.max_consecutive_errors == 5
+    assert candidate.seeds == [17, 18] and len(candidate.task_ids) == 3

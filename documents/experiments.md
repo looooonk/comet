@@ -165,6 +165,11 @@ pagination, and response inspection on a declared dev regression subset while
 keeping numerical settings fixed. Its targeted results must remain separate
 from the retention pilot and main research evaluation.
 
+The [bounded-agent diagnostic](agent-protocol.md) compares the corrected sampler
+with and without execution-error feedback and a consecutive-error limit. Its
+three-task dev subset uses two paired N=1 seeds. This optional protocol changes
+agent behavior and must be recorded and frozen with the other settings.
+
 ## Freeze and evaluate
 
 Tune only on train/dev and record pilot measurements. Prepare a new JSON config

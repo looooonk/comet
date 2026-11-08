@@ -6,7 +6,7 @@ import pytest
 
 from comet.artifacts import read_json, write_json
 from comet.budget import Budget
-from comet.config import Condition, Experiment, attempt_seed, comparison_matrix
+from comet.config import AgentProtocol, Condition, Experiment, attempt_seed, comparison_matrix
 from comet.engine.contracts import MODEL_REVISION
 from comet.errors import BudgetExpired, MemoryCapExceeded
 from comet.policies import decide
@@ -216,6 +216,73 @@ def test_config_inheritance_resolves_before_digest(config, tmp_path):
     write_json(tmp_path / "b.json", {"extends": "a.json"})
     with pytest.raises(ValueError, match="cycle"):
         Experiment.load(tmp_path / "a.json")
+
+
+@pytest.mark.parametrize("diagnostic,comments", [(False, False), (False, True), (True, False)])
+def test_agent_failure_limit_preserves_budget_history_and_checkpoint_state(
+    config, tmp_path, diagnostic, comments,
+):
+    bounded = replace(
+        config, agent=AgentProtocol(3), max_attempts=1,
+        conditions=[Condition("full_once", "full", 1.0, "never", 1)],
+        stage="diagnostic" if diagnostic else "pilot",
+        checkpoint_after_tool_calls=2 if diagnostic else None,
+    )
+    clock, environments = Clock(), []
+    engine = FakeEngine(clock)
+    if comments:
+        engine.tokenizer.decode = lambda *a, **kw: "```python\n# hypothetical login\n```"
+
+    class FailingEnvironment(FakeEnvironment):
+        def execute(self, action, **kwargs):
+            super().execute(action, **kwargs)
+            return 'Execution failed. Response status code is 401: missing token'
+
+        def completed(self):
+            return False
+
+    runner = Runner(bounded, tmp_path, lambda _: engine,
+                    lambda: FailingEnvironment(clock, environments), clock=clock)
+    manifest = runner.run()
+    cell = read_json(tmp_path / manifest["cells"][0]["path"])
+    assert len(cell["attempts"]) == 1
+    attempt = cell["attempts"][0]
+    assert attempt["status"] == "error"
+    assert attempt["failure_reason"] == "AgentProtocolError: 3 consecutive execution/action failures"
+    assert 0 < cell["elapsed_seconds"] < bounded.budget_seconds
+    trajectory = read_json(tmp_path / attempt["artifact_dir"] / "trajectory.json")
+    assert trajectory["consecutive_errors"] == 3
+    assert len(trajectory["turns"]) == 3
+    assert attempt["tool_calls"] == (0 if comments else 3)
+    assert all(turn["agent_feedback"] for turn in trajectory["turns"])
+    assert "execution_feedback" not in trajectory["turns"][-1]["observation"]
+    if diagnostic:
+        saved = read_json(tmp_path / "checkpoints/fixture_1-7/agent.json")
+        assert saved["consecutive_errors"] == 2
+        assert attempt["timings"]["shared_checkpoint_preparation"] > 0
+
+
+def test_agent_successful_execution_resets_error_streak(config, tmp_path):
+    bounded = replace(config, agent=AgentProtocol(3), max_attempts=1,
+                      conditions=[Condition("full_once", "full", 1.0, "never", 1)])
+    clock, environments = Clock(), []
+    engine = FakeEngine(clock)
+
+    class CorrectingEnvironment(FakeEnvironment):
+        def execute(self, action, **kwargs):
+            super().execute(action, **kwargs)
+            return "Execution failed. TypeError: wrong shape" if self.count % 3 else "inspected"
+
+        def completed(self):
+            return self.count == 6
+
+    manifest = Runner(bounded, tmp_path, lambda _: engine,
+                      lambda: CorrectingEnvironment(clock, environments), clock=clock).run()
+    cell = read_json(tmp_path / manifest["cells"][0]["path"])
+    attempt = cell["attempts"][0]
+    assert attempt["status"] == "completed"
+    trajectory = read_json(tmp_path / attempt["artifact_dir"] / "trajectory.json")
+    assert [t["consecutive_errors"] for t in trajectory["turns"]] == [1, 2, 0, 1, 2, 0]
 
 
 def test_policy_observables_and_once_limit(config):

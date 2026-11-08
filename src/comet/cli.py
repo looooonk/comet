@@ -34,6 +34,7 @@ def freeze(config_path: Path, output: Path, pilot_runs: list[Path]) -> dict:
         "sampling",
         "triggers",
         "prompt",
+        "agent",
     )
     proposed = config.to_dict()
     for run in pilot_runs:
@@ -44,9 +45,9 @@ def freeze(config_path: Path, output: Path, pilot_runs: list[Path]) -> dict:
             or manifest.get("integration_smoke", True)
         ):
             raise ValueError("Freeze requires completed A100 train/dev pilot runs")
-        pilot = manifest["config"]
-        if pilot["split"] not in {"train", "dev"}:
+        if manifest["config"]["split"] not in {"train", "dev"}:
             raise ValueError("Test outcomes cannot be freeze evidence")
+        pilot = Experiment.from_dict(manifest["config"], allow_unfrozen=True).to_dict()
         if any(proposed[key] != pilot[key] for key in fields):
             raise ValueError("Frozen numerical settings must match the supplied measured pilot")
         cells = [read_json(run / c["path"]) for c in manifest["cells"]]

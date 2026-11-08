@@ -45,7 +45,7 @@ export COMET_TEST_CAPACITY=1
 bash "$COMET_REPO/scripts/run_checks.sh" gpu
 ```
 
-The runner preserves `gpu.json`, `memory.json`, and, when requested,
+The runner preserves `sampling.json`, `gpu.json`, `memory.json`, and, when requested,
 `capacity.json` alongside pytest results. For a focused debugging command, first
 source `scripts/activate_runtime.sh gpu`; use the runtime's Python directly.
 Do not run `uv run` inside it, since automatic project synchronization can remove
@@ -55,7 +55,8 @@ The AppWorld fixtures check execution, fresh resets, checkpoint restore, offline
 evaluation, explicit authentication, parsed response types, and pagination. The
 authentication and pagination probes use isolated dev environments, perform only
 read operations, and never consult evaluator feedback. The GPU checks cover
-persistent compressed KV, checkpoint replay, recovery, and live cap refusal. [engine.md](engine.md) defines their
+seeded sampling and RNG advancement/replay across all four sampler paths, greedy
+RNG preservation, persistent compressed KV, checkpoint replay, recovery, and live cap refusal. [engine.md](engine.md) defines their
 accounting and evidence scope. Follow [resume-validation.md](resume-validation.md)
 for the separate process interruption check; it needs a dedicated configuration
 and artifact directory.

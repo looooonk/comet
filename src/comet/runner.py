@@ -5,6 +5,7 @@ import uuid
 from pathlib import Path
 from typing import Callable
 
+from comet.agent import execution_feedback
 from comet.artifacts import provenance, read_json, run_lock, write_json
 from comet.budget import Budget
 from comet.clocks import monotonic, wall_time
@@ -437,7 +438,9 @@ class Runner:
             ) + result.get("prompt_tokens", 0)
             response = engine.tokenizer.decode(result["token_ids"], skip_special_tokens=True)
             try:
-                action = parse_action(response)
+                action = parse_action(
+                    response, require_executable=bool(self.config.agent.max_consecutive_errors)
+                )
             except ValueError as error:
                 action, observation = (
                     None,
@@ -447,11 +450,22 @@ class Runner:
                 with budget.charge("tool"):
                     observation = environment.execute(action, timeout_seconds=budget.remaining)
                     state["tool_calls"] += 1
-            state["turns"].append(
-                {"response": response, "action": action, "observation": observation}
-            )
+            turn = {"response": response, "action": action, "observation": observation}
+            feedback = ""
+            limit = self.config.agent.max_consecutive_errors
+            if limit:
+                with budget.charge("agent_protocol"):
+                    streak, feedback = execution_feedback(
+                        observation, state.get("consecutive_errors", 0), limit
+                    )
+                    state["consecutive_errors"] = streak
+                    turn.update(consecutive_errors=streak, agent_feedback=feedback)
+            state["turns"].append(turn)
+            visible_observation = observation
+            if feedback:
+                visible_observation += f"\n\n<execution_feedback>\n{feedback}\n</execution_feedback>"
             state["pending_tokens"] = self._observation_tokens(
-                engine, observation, finished=result["finished"]
+                engine, visible_observation, finished=result["finished"]
             )
             with budget.charge("trajectory_save"):
                 write_json(
@@ -460,11 +474,17 @@ class Runner:
                 )
             with budget.charge("completion_observation"):
                 completed = environment.completed()
-            if completed or (
-                stop_after_tools is not None and state["tool_calls"] >= stop_after_tools
-            ):
+            if completed:
+                return
+            if limit and state["consecutive_errors"] >= limit:
+                raise AgentProtocolError(f"{limit} consecutive execution/action failures")
+            if stop_after_tools is not None and state["tool_calls"] >= stop_after_tools:
                 return
 
 
 class ContextLimit(RuntimeError):
+    pass
+
+
+class AgentProtocolError(RuntimeError):
     pass

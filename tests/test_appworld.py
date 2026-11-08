@@ -81,6 +81,14 @@ def test_action_requires_one_nonempty_python_block():
             parse_action(response)
 
 
+def test_bounded_protocol_rejects_comment_only_actions_without_changing_legacy():
+    response = "```python\n# login would happen here\n```"
+    assert parse_action(response) == "# login would happen here"
+    with pytest.raises(ValueError, match="comment-only"):
+        parse_action(response, require_executable=True)
+    assert parse_action("```python\nprint(1)\n```", require_executable=True) == "print(1)"
+
+
 def test_fresh_attempt_and_saved_outcome_are_isolated(adapter, tmp_path):
     adapter.reset("task1", 17, tmp_path / "first")
     first = adapter.world

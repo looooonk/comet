@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 import copy
 import datetime
 import hashlib
@@ -51,7 +52,7 @@ def validate_tasks(split: str, task_ids: list[str]) -> None:
         raise ValueError(f"Tasks do not belong to {split}: {sorted(unknown)}")
 
 
-def parse_action(response: str) -> str:
+def parse_action(response: str, *, require_executable: bool = False) -> str:
     """One model turn is one Python execution, even if it calls several APIs."""
     if "</think>" in response:
         response = response.rsplit("</think>", 1)[1]
@@ -61,7 +62,15 @@ def parse_action(response: str) -> str:
                         flags=re.MULTILINE | re.DOTALL)
     if len(blocks) != 1 or not blocks[0].strip():
         raise ValueError("Return exactly one nonempty fenced Python block.")
-    return blocks[0].strip()
+    action = blocks[0].strip()
+    if require_executable:
+        try:
+            tree = ast.parse(action)
+        except SyntaxError:
+            return action
+        if not tree.body:
+            raise ValueError("A comment-only block cannot advance the task; return executable Python")
+    return action
 
 
 def _checkpoint_value(value: Any, seen: set[int]) -> None:

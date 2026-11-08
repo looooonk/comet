@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from comet.engine.contracts import validate_model
@@ -57,6 +57,11 @@ class Condition:
 
 
 @dataclass(frozen=True)
+class AgentProtocol:
+    max_consecutive_errors: int = 0
+
+
+@dataclass(frozen=True)
 class Experiment:
     schema_version: int
     experiment_id: str
@@ -75,6 +80,7 @@ class Experiment:
     checkpoint_after_tool_calls: int | None
     frozen: dict | None
     notes: str
+    agent: AgentProtocol = field(default_factory=AgentProtocol)
 
     @classmethod
     def load(cls, path: str | Path, *, allow_unfrozen: bool = False) -> Experiment:
@@ -85,6 +91,7 @@ class Experiment:
         data = dict(data)
         for name, kind in (("engine", Engine), ("sampling", Sampling), ("triggers", Triggers)):
             data[name] = kind(**data[name])
+        data["agent"] = AgentProtocol(**data.get("agent", {}))
         data["conditions"] = [Condition(**c) for c in data["conditions"]]
         result = cls(**data)
         result.validate(allow_unfrozen=allow_unfrozen)
@@ -137,6 +144,9 @@ class Experiment:
         _number(self.sampling.top_p, "top_p", 1e-9, 1)
         if not isinstance(self.sampling.enable_thinking, bool):
             raise ValueError("enable_thinking must be boolean")
+        _number(self.agent.max_consecutive_errors, "max_consecutive_errors", 0)
+        if not isinstance(self.agent.max_consecutive_errors, int):
+            raise ValueError("max_consecutive_errors must be an integer")
         if self.triggers.dynamic_rule not in {"and", "or"}:
             raise ValueError("dynamic_rule must be and or or")
         if self.engine.dtype != "bfloat16":

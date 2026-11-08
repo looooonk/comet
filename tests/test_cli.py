@@ -63,6 +63,7 @@ def test_freeze_accepts_matching_pilot_and_preserves_evidence(freeze_files):
     (("config", "engine", "max_context_tokens"), 8192, "numerical settings"),
     (("config", "sampling", "temperature"), 0.9, "numerical settings"),
     (("config", "triggers", "fixed_tool_calls"), 7, "numerical settings"),
+    (("config", "agent", "max_consecutive_errors"), 5, "numerical settings"),
     (("cells",), [], "incomplete"),
 ])
 def test_freeze_rejects_ineligible_or_mismatched_evidence(freeze_files, keys, value, message):
@@ -114,3 +115,12 @@ def test_final_configuration_rejects_training_splits(freeze_files, split):
     with pytest.raises(ValueError, match="explicit test split"):
         freeze(candidate, output, [run])
     assert not output.exists()
+
+
+def test_freeze_accepts_legacy_disabled_agent_protocol(freeze_files):
+    candidate, run, output = freeze_files
+    manifest = read_json(run / "manifest.json")
+    del manifest["config"]["agent"]
+    write_json(run / "manifest.json", manifest)
+    freeze(candidate, output, [run])
+    assert Experiment.load(output).agent.max_consecutive_errors == 0

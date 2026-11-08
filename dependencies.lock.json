@@ -12,7 +12,7 @@
       "url": "https://github.com/LiuTaowen-Tony/kv-management-minisgl.git",
       "revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
       "patch": "patches/minisgl-comet.patch",
-      "patch_sha256": "6519669fc0b0d50cd87a16899144ba9e6e0aff4e81cc241e59973b1a7735a379",
+      "patch_sha256": "7997786346ee813e00f21e6b23fa0b1a7a289ac512f1f5142c5baf64423676b4",
       "role": "inference engine"
     },
     "appworld": {
