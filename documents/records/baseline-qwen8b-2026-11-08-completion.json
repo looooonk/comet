@@ -1,0 +1,760 @@
+{
+  "recorded_at_utc": "2026-11-08T16:59:34.370837+00:00",
+  "artifact_id": "baseline-broad-qwen8b-20261107",
+  "status": "completed",
+  "run_id": "8e38480e-61a3-4147-9378-845839dca87e",
+  "successes": 0,
+  "total_attempts": 38,
+  "statuses": {
+    "timeout": 19,
+    "completed": 14,
+    "context_limit": 5
+  },
+  "per_seed": {
+    "17": {
+      "attempts": 19,
+      "successes": 0
+    },
+    "18": {
+      "attempts": 19,
+      "successes": 0
+    }
+  },
+  "analysis": {
+    "actual_attempts": {
+      "bootstrap_degenerate": true,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "standard_error": 0.0,
+      "task_count": 19,
+      "uncertainty_notes": [
+        "A degenerate bootstrap interval does not establish zero population uncertainty."
+      ],
+      "value": 1
+    },
+    "attempt_status_counts": {
+      "completed": 14,
+      "context_limit": 5,
+      "timeout": 19
+    },
+    "condition": {
+      "id": "full_once",
+      "max_attempts": 1,
+      "method": "full",
+      "recovery": "never",
+      "retention": 1.0
+    },
+    "infeasible_cells": 0,
+    "latency_seconds": {
+      "bootstrap_degenerate": false,
+      "ci95": [
+        315.7335138773031,
+        512.8088811088883
+      ],
+      "standard_error": 51.69342989878725,
+      "task_count": 19,
+      "uncertainty_notes": [],
+      "value": 415.5358859883303
+    },
+    "mean_peak_kv_bytes": {
+      "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+      "bootstrap_degenerate": false,
+      "ci95": [
+        2649409374.3157897,
+        3832391917.1368423
+      ],
+      "coverage": {
+        "complete_cells": 38,
+        "complete_tasks": 19,
+        "observed_attempts": 38,
+        "total_attempts": 38,
+        "total_cells": 38,
+        "total_tasks": 19
+      },
+      "standard_error": 318474219.75583893,
+      "task_count": 19,
+      "uncertainty_notes": [],
+      "unit": "bytes",
+      "value": 3258948338.5263157
+    },
+    "mean_peak_total_vram_bytes": {
+      "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+      "bootstrap_degenerate": false,
+      "ci95": [
+        22518069571.36842,
+        22518235136.0
+      ],
+      "coverage": {
+        "complete_cells": 38,
+        "complete_tasks": 19,
+        "observed_attempts": 38,
+        "total_attempts": 38,
+        "total_cells": 38,
+        "total_tasks": 19
+      },
+      "standard_error": 55188.21052631579,
+      "task_count": 19,
+      "uncertainty_notes": [],
+      "unit": "bytes",
+      "value": 22518179947.789474
+    },
+    "metrics": {
+      "decode_throughput": {
+        "aggregation": "ratio of sums",
+        "observed_attempts": 38,
+        "total_attempts": 38,
+        "unit": "decode tokens / decode second",
+        "value": 35.62899956843913
+      },
+      "estimated_flops": {
+        "aggregation": "sum",
+        "methods": [
+          "dense_2P_per_forward_token_plus_causal_qk_av_4LHD_per_attention_pair"
+        ],
+        "observed_attempts": 38,
+        "total_attempts": 38,
+        "unit": "estimated FLOPs",
+        "value": 20028289322532864
+      },
+      "generated_tokens": {
+        "aggregation": "sum",
+        "observed_attempts": 38,
+        "total_attempts": 38,
+        "unit": "tokens",
+        "value": 511791
+      },
+      "peak_kv_bytes": {
+        "aggregation": "max",
+        "observed_attempts": 38,
+        "total_attempts": 38,
+        "unit": "bytes",
+        "value": 4831690752
+      },
+      "peak_total_vram_bytes": {
+        "aggregation": "max",
+        "observed_attempts": 38,
+        "total_attempts": 38,
+        "unit": "bytes",
+        "value": 22518235136
+      },
+      "prefill_tokens": {
+        "aggregation": "sum",
+        "observed_attempts": 38,
+        "total_attempts": 38,
+        "unit": "tokens",
+        "value": 325875
+      }
+    },
+    "oracle_success_rate": {
+      "bootstrap_degenerate": true,
+      "bounded_mean_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "standard_error": 0.0,
+      "task_count": 19,
+      "uncertainty_notes": [
+        "A degenerate bootstrap interval does not establish zero population uncertainty."
+      ],
+      "value": 0.0
+    },
+    "single_attempt_success_rate": {
+      "bootstrap_degenerate": true,
+      "bounded_mean_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "standard_error": 0.0,
+      "task_count": 19,
+      "uncertainty_notes": [
+        "A degenerate bootstrap interval does not establish zero population uncertainty."
+      ],
+      "value": 0.0
+    },
+    "zero_attempt_cells": 0
+  },
+  "artifacts": {
+    "manifest.json": "3cdd9af6661f9afb010a892def2a3181644b294748c55a233c0de198dcdad13a",
+    "scores.json": "3fc26e3fee38a1d8b048ac2ac33705a46e265eb6a79683aece107f2336acc6f3",
+    "analysis.json": "15fd30fb19fe9eecaa610f4d206659e979a4b1390483cbd3bd2214d21af84e84",
+    "audit-v2.json": "144a5589af73b3c50bd3356ffdbba86a9018bfcff3e56eb3c2db06ef6854703d"
+  },
+  "attempts": [
+    {
+      "task_id": "0d8a4ee_1",
+      "replicate_seed": 17,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0973134622909,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 18720,
+      "peak_total_vram_bytes": 22516137984,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "0d8a4ee_1",
+      "replicate_seed": 18,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.002739737276,
+      "failure_reason": "Budget expired during completion_observation",
+      "generated_tokens": 19819,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "23cf851_1",
+      "replicate_seed": 17,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 177.0258954479359,
+      "failure_reason": null,
+      "generated_tokens": 6166,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 2,
+        "success": false,
+        "passed_checks": 1,
+        "failed_checks": 1
+      }
+    },
+    {
+      "task_id": "23cf851_1",
+      "replicate_seed": 18,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 175.78475857758895,
+      "failure_reason": null,
+      "generated_tokens": 6166,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 2,
+        "success": false,
+        "passed_checks": 1,
+        "failed_checks": 1
+      }
+    },
+    {
+      "task_id": "37a8675_1",
+      "replicate_seed": 17,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 155.43607223918661,
+      "failure_reason": null,
+      "generated_tokens": 5393,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 6,
+        "success": false,
+        "passed_checks": 0,
+        "failed_checks": 6
+      }
+    },
+    {
+      "task_id": "37a8675_1",
+      "replicate_seed": 18,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 118.24705989984795,
+      "failure_reason": null,
+      "generated_tokens": 4131,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 6,
+        "success": false,
+        "passed_checks": 0,
+        "failed_checks": 6
+      }
+    },
+    {
+      "task_id": "383cbac_1",
+      "replicate_seed": 17,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0217932788655,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 19880,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "383cbac_1",
+      "replicate_seed": 18,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0045176460408,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 19880,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "396c5a2_1",
+      "replicate_seed": 17,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 76.41620694892481,
+      "failure_reason": null,
+      "generated_tokens": 2636,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 6,
+        "success": false,
+        "passed_checks": 1,
+        "failed_checks": 5
+      }
+    },
+    {
+      "task_id": "396c5a2_1",
+      "replicate_seed": 18,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 76.11755716614425,
+      "failure_reason": null,
+      "generated_tokens": 2636,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 6,
+        "success": false,
+        "passed_checks": 1,
+        "failed_checks": 5
+      }
+    },
+    {
+      "task_id": "3ab5b8b_1",
+      "replicate_seed": 17,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0013805073686,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 19464,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "3ab5b8b_1",
+      "replicate_seed": 18,
+      "status": "context_limit",
+      "success": false,
+      "elapsed_seconds": 557.1622315030545,
+      "failure_reason": "Full raw token context reached configured limit; no truncation",
+      "generated_tokens": 17855,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "context_limit"
+      }
+    },
+    {
+      "task_id": "4ec8de5_1",
+      "replicate_seed": 17,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0177826327272,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 19505,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "4ec8de5_1",
+      "replicate_seed": 18,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0011601820588,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 19505,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "4fab96f_1",
+      "replicate_seed": 17,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 292.0329472022131,
+      "failure_reason": null,
+      "generated_tokens": 10074,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 8,
+        "success": false,
+        "passed_checks": 1,
+        "failed_checks": 7
+      }
+    },
+    {
+      "task_id": "4fab96f_1",
+      "replicate_seed": 18,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 292.1080599813722,
+      "failure_reason": null,
+      "generated_tokens": 10075,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 8,
+        "success": false,
+        "passed_checks": 1,
+        "failed_checks": 7
+      }
+    },
+    {
+      "task_id": "50e1ac9_1",
+      "replicate_seed": 17,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 189.9855124647729,
+      "failure_reason": null,
+      "generated_tokens": 6567,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 2,
+        "success": false,
+        "passed_checks": 1,
+        "failed_checks": 1
+      }
+    },
+    {
+      "task_id": "50e1ac9_1",
+      "replicate_seed": 18,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 190.54345888923854,
+      "failure_reason": null,
+      "generated_tokens": 6567,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 2,
+        "success": false,
+        "passed_checks": 1,
+        "failed_checks": 1
+      }
+    },
+    {
+      "task_id": "530b157_1",
+      "replicate_seed": 17,
+      "status": "context_limit",
+      "success": false,
+      "elapsed_seconds": 561.8640687377192,
+      "failure_reason": "Full raw token context reached configured limit; no truncation",
+      "generated_tokens": 17910,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "context_limit"
+      }
+    },
+    {
+      "task_id": "530b157_1",
+      "replicate_seed": 18,
+      "status": "context_limit",
+      "success": false,
+      "elapsed_seconds": 557.4868666836992,
+      "failure_reason": "Full raw token context reached configured limit; no truncation",
+      "generated_tokens": 17898,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "context_limit"
+      }
+    },
+    {
+      "task_id": "57c3486_1",
+      "replicate_seed": 17,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0222939029336,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 18794,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "57c3486_1",
+      "replicate_seed": 18,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0060008051805,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 19110,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "6171bbc_1",
+      "replicate_seed": 17,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0091998479329,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 18903,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "6171bbc_1",
+      "replicate_seed": 18,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 599.5165449529886,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 18903,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "68ee2c9_1",
+      "replicate_seed": 17,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0108572752215,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 19262,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "68ee2c9_1",
+      "replicate_seed": 18,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0065790191293,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 19714,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "6bdbc26_1",
+      "replicate_seed": 17,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0054443180561,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 18158,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "6bdbc26_1",
+      "replicate_seed": 18,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0171402608976,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 18158,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "6c2c621_1",
+      "replicate_seed": 17,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 599.9959572548978,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 18691,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "6c2c621_1",
+      "replicate_seed": 18,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0083420481533,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 19453,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "b119b1f_1",
+      "replicate_seed": 17,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 599.9889213750139,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 19487,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "b119b1f_1",
+      "replicate_seed": 18,
+      "status": "timeout",
+      "success": false,
+      "elapsed_seconds": 600.0128307770938,
+      "failure_reason": "Budget expired during inference",
+      "generated_tokens": 19855,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "timeout"
+      }
+    },
+    {
+      "task_id": "d4e9306_1",
+      "replicate_seed": 17,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 29.69880664907396,
+      "failure_reason": null,
+      "generated_tokens": 903,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 6,
+        "success": false,
+        "passed_checks": 1,
+        "failed_checks": 5
+      }
+    },
+    {
+      "task_id": "d4e9306_1",
+      "replicate_seed": 18,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 25.909826670307666,
+      "failure_reason": null,
+      "generated_tokens": 903,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 6,
+        "success": false,
+        "passed_checks": 1,
+        "failed_checks": 5
+      }
+    },
+    {
+      "task_id": "df61dc5_1",
+      "replicate_seed": 17,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 123.00563265383244,
+      "failure_reason": null,
+      "generated_tokens": 4263,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 7,
+        "success": false,
+        "passed_checks": 2,
+        "failed_checks": 5
+      }
+    },
+    {
+      "task_id": "df61dc5_1",
+      "replicate_seed": 18,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 123.70115003315732,
+      "failure_reason": null,
+      "generated_tokens": 4263,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "num_tests": 7,
+        "success": false,
+        "passed_checks": 2,
+        "failed_checks": 5
+      }
+    },
+    {
+      "task_id": "fac291d_1",
+      "replicate_seed": 17,
+      "status": "context_limit",
+      "success": false,
+      "elapsed_seconds": 327.98768700798973,
+      "failure_reason": "Full raw token context reached configured limit; no truncation",
+      "generated_tokens": 11062,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "context_limit"
+      }
+    },
+    {
+      "task_id": "fac291d_1",
+      "replicate_seed": 18,
+      "status": "context_limit",
+      "success": false,
+      "elapsed_seconds": 330.40222477307543,
+      "failure_reason": "Full raw token context reached configured limit; no truncation",
+      "generated_tokens": 11062,
+      "peak_total_vram_bytes": 22518235136,
+      "evaluation_summary": {
+        "skipped": "execution failure",
+        "status": "context_limit"
+      }
+    }
+  ],
+  "scope": "Diagnostic outcome of the known broken-sampling runtime; not independent stochastic replications or a validated model capability estimate.",
+  "source_commit": "a457a8bc39c7f31b4c5f84b450fc3a237c536964",
+  "slurm_jobs": {
+    "execution": 13832917,
+    "scoring": 13832918
+  }
+}

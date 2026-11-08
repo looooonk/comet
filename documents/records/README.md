@@ -35,6 +35,12 @@ sampling-generator defect in the pinned runtime. Fix and validate sampling
 before treating seeds 17 and 18 as independent model-sampling replicates. The
 record is a partial diagnostic, not the completed pilot's success estimate.
 
+The [completed broader 8B pilot](baseline-qwen8b-2026-11-08-completion.md)
+finished all 38 rollouts and offline scoring: zero task successes, with 19
+timeouts, five context-limit failures, and fourteen unsuccessful normal
+completions. It used the defective sampler identified above; retain it as
+diagnostic evidence, not an estimate of corrected-model performance.
+
 The October 17 interruption and October 19 pending-job records below are
 historical snapshots. The continuation, postflight, and export all completed;
 the [completion evidence](retention-pilot-2026-10-20.json) supersedes their
@@ -57,6 +63,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Broader 8B pilot completion (2026-11-08)](baseline-qwen8b-2026-11-08-completion.md) | All 38 outcomes, offline scores, resource summary and artifact hashes; [evidence](baseline-qwen8b-2026-11-08-completion.json) |
 | [Corrected sampling and agent retry (2026-11-07)](sampling-repair-2026-11-07.md) | Seeded sampler repair, optional bounded error handling, validation and isolated twelve-rollout submission |
 | [Corrected-sampling diagnostic plan (2026-11-07)](sampling-repair-2026-11-07-plan.md) | Isolated managed runtime, RNG and checkpoint validation, and a paired twelve-rollout test of bounded execution guidance |
 | [Partial 8B trajectory diagnosis (2026-11-07)](baseline-qwen8b-2026-11-07-trajectory-diagnosis.md) | 24 inspected attempts, error-loop and budget attribution, sampling-generator defect, and fix priorities; [evidence](baseline-qwen8b-2026-11-07-trajectory-diagnosis.json) |
