@@ -43,80 +43,108 @@ class Runner:
         if integration_smoke and config.stage == "final":
             raise ValueError("Final evaluation requires the selected qualified hardware")
 
-    def run(self, *, resume: bool = False) -> dict:
+    def run(self, *, resume: bool = False, max_cells: int | None = None) -> dict:
+        if max_cells is not None:
+            if type(max_cells) is not int or max_cells <= 0:
+                raise ValueError("max_cells must be a positive integer")
+            if self.config.stage == "diagnostic":
+                raise ValueError("max_cells is unsupported for diagnostic checkpoint preparation")
         with run_lock(self.output):
             manifest = self._manifest(resume)
             if manifest["status"] == "completed":
                 return manifest
+            launch = {"at_unix": wall_time(), "max_cells": max_cells, "completed_cells": 0}
+            manifest.setdefault("launches", []).append(launch)
+            write_json(self.output / "manifest.json", manifest)
             initial = (
                 Condition("diagnostic_source", "full", 1.0, "never", 1)
                 if self.config.stage == "diagnostic"
                 else self.config.conditions[0]
             )
             try:
-                engine = self.engine_factory(initial)
-            except Exception as error:
-                if (
-                    not isinstance(error, MemoryError)
-                    and type(error).__name__ != "OutOfMemoryError"
-                ):
-                    raise
-                for reference in manifest["cells"]:
-                    if self._done(reference):
-                        continue
-                    condition = next(
-                        c for c in self.config.conditions if c.id == reference["condition_id"]
-                    )
-                    path = self.output / reference["path"]
-                    cell = (
-                        read_json(path)
-                        if path.exists()
-                        else self._new_cell(manifest, reference, condition)
-                    )
-                    if cell.get("inflight"):
-                        self._interrupt_cell(cell)
-                    cell.update(completed=True, infeasible=True, failure_reason=str(error))
-                    write_json(path, cell)
-                manifest.update(status="completed", finished_at_unix=wall_time())
-                write_json(self.output / "manifest.json", manifest)
-                return manifest
-            try:
-                if hasattr(engine, "warmup"):
-                    engine.warmup()
-                self.engine_metadata = engine.provenance() if hasattr(engine, "provenance") else {}
-                previous = manifest.get("engine")
-                if previous is not None and _runtime_contract(previous) != _runtime_contract(
-                    self.engine_metadata
-                ):
-                    raise ValueError(
-                        "Resume runtime dependencies or hardware differ from the original run"
-                    )
-                manifest.setdefault("engine", self.engine_metadata)
-                manifest.setdefault("launches", []).append(
-                    {"at_unix": wall_time(), "engine": self.engine_metadata}
-                )
-                write_json(self.output / "manifest.json", manifest)
-                if self.config.stage == "diagnostic":
-                    from comet.diagnostic import prepare_checkpoints
+                try:
+                    engine = self.engine_factory(initial)
+                except Exception as error:
+                    if (
+                        not isinstance(error, MemoryError)
+                        and type(error).__name__ != "OutOfMemoryError"
+                    ):
+                        raise
+                    for reference in manifest["cells"]:
+                        if self._done(reference):
+                            continue
+                        condition = next(
+                            c for c in self.config.conditions if c.id == reference["condition_id"]
+                        )
+                        path = self.output / reference["path"]
+                        cell = (
+                            read_json(path)
+                            if path.exists()
+                            else self._new_cell(manifest, reference, condition)
+                        )
+                        if cell.get("inflight"):
+                            self._interrupt_cell(cell)
+                        cell.update(completed=True, infeasible=True, failure_reason=str(error))
+                        write_json(path, cell)
+                        launch["completed_cells"] += 1
+                        if launch["completed_cells"] == max_cells:
+                            break
+                    return self._finish_launch(manifest, launch)
+                try:
+                    if hasattr(engine, "warmup"):
+                        engine.warmup()
+                    self.engine_metadata = engine.provenance() if hasattr(engine, "provenance") else {}
+                    previous = manifest.get("engine")
+                    if previous is not None and _runtime_contract(previous) != _runtime_contract(
+                        self.engine_metadata
+                    ):
+                        raise ValueError(
+                            "Resume runtime dependencies or hardware differ from the original run"
+                        )
+                    manifest.setdefault("engine", self.engine_metadata)
+                    launch["engine"] = self.engine_metadata
+                    write_json(self.output / "manifest.json", manifest)
+                    if self.config.stage == "diagnostic":
+                        from comet.diagnostic import prepare_checkpoints
 
-                    prepare_checkpoints(self, manifest, engine)
-                for condition in self.config.conditions:
-                    pending = [
-                        c
-                        for c in manifest["cells"]
-                        if c["condition_id"] == condition.id and not self._done(c)
-                    ]
-                    if not pending:
-                        continue
-                    engine.set_policy(condition.method, condition.retention)
-                    for reference in pending:
-                        self._run_cell(manifest, reference, condition, engine)
-            finally:
-                engine.close()
-            manifest["status"] = "completed"
-            manifest["finished_at_unix"] = wall_time()
-            write_json(self.output / "manifest.json", manifest)
-            return manifest
+                        prepare_checkpoints(self, manifest, engine)
+                    for condition in self.config.conditions:
+                        if launch["completed_cells"] == max_cells:
+                            break
+                        pending = [
+                            c
+                            for c in manifest["cells"]
+                            if c["condition_id"] == condition.id and not self._done(c)
+                        ]
+                        if max_cells is not None:
+                            pending = pending[:max_cells - launch["completed_cells"]]
+                        if not pending:
+                            continue
+                        engine.set_policy(condition.method, condition.retention)
+                        for reference in pending:
+                            self._run_cell(manifest, reference, condition, engine)
+                            launch["completed_cells"] += 1
+                finally:
+                    engine.close()
+                return self._finish_launch(manifest, launch)
+            except BaseException as error:
+                try:
+                    write_json(self.output / "manifest.json", manifest)
+                except Exception as journal_error:
+                    error.add_note(f"Could not preserve launch progress: {journal_error}")
+                raise
+
+    def _finish_launch(self, manifest: dict, launch: dict) -> dict:
+        completed = all(self._done(reference) for reference in manifest["cells"])
+        launch.update(finished_at_unix=wall_time(),
+                      stop_reason="all_cells_completed" if completed else "max_cells")
+        manifest["status"] = "completed" if completed else "running"
+        if completed:
+            manifest["finished_at_unix"] = launch["finished_at_unix"]
+        else:
+            manifest.pop("finished_at_unix", None)
+        write_json(self.output / "manifest.json", manifest)
+        return manifest
 
     def _done(self, reference: dict) -> bool:
         path = self.output / reference["path"]

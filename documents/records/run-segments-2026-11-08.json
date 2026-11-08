@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "purpose": "Clean operational stops between whole task/configuration/seed cells for short GPU allocations. No scientific configuration or budget changes.",
+  "source_sha256": {
+    "src/comet/runner.py": "e38b9411c980a139b0433fdc828f80a8b8b73019263999434c7de2bf34601858",
+    "src/comet/cli.py": "5c30dd792855424e5bfbad0a3c7981bca1bf75cb86239c2d5afb7ff1701999a6",
+    "scripts/run_experiment.sh": "e221214f4ba36392daf5c957e81baaf756bbf7b118383ac76be8a6348d7b9252",
+    "tests/test_run_segments.py": "f751ba8aa33ec7a66addff10fadfa16860d19abbf2c5a080cd705bb33cb661b5",
+    "documents/experiments.md": "2febc48a64ea5fecda77324f8246e788e69e2f3694ff5051be4f29de73290366"
+  },
+  "checks": [
+    {
+      "artifact": "checks/run-segments-20261108-2",
+      "passed": 78,
+      "pytest_xml_sha256": "40aee38deb72f42b706ff692a0ae8dc36e6e3f812d412647bc3eda6046c17363",
+      "source_record_sha256": "aabca138c0ba35fa02fa6a1d9e75d7079097f120f3bb3f951ac22dc47d61440a"
+    },
+    {
+      "artifact": "checks/run-segments-20261108-3",
+      "passed": 15,
+      "pytest_xml_sha256": "15c56396e4dbe2c36a90d63007512ca0de841849c08a001fea6274d22d91b4da",
+      "source_record_sha256": "fe3e9041f178a608d817b1136128ef4105ef197283bf0504512cad0f0ccf76ca"
+    }
+  ],
+  "validation_scope": "78 focused checks passed before the review correction; after removing uncharged per-cell manifest writes, 15 focused segment/default-resume/cleanup checks passed. Both used the managed CPU check path, including lint and shell checks.",
+  "invariants": [
+    "Identical configuration digest, original condition/task/seed order, attempts and shared cell budgets.",
+    "Complete cells are skipped on resume; interrupted cells retain reserved budget with no free replacements.",
+    "Incomplete runs cannot be scored; launch stops are not driven by evaluator feedback.",
+    "Launch counts persist at clean boundaries or caught exceptions, with cell journals authoritative after abrupt process death.",
+    "Diagnostic stage rejects cell limits because all source checkpoints are prepared before branching."
+  ],
+  "limitations": [
+    "CPU fixtures only; no live segmented GPU/AppWorld run yet.",
+    "Pending and running remote jobs continue using source312691d; this change was not injected into them."
+  ]
+}

@@ -119,6 +119,8 @@ def main(argv: list[str] | None = None) -> None:
     run.add_argument("--model-path", type=Path, required=True)
     run.add_argument("--appworld-root", type=Path, required=True)
     run.add_argument("--resume", action="store_true")
+    run.add_argument("--max-cells", type=int,
+                     help="Stop after this many newly completed cells; continue with --resume")
     run.add_argument(
         "--integration-smoke",
         action="store_true",
@@ -269,6 +271,11 @@ def main(argv: list[str] | None = None) -> None:
         from comet.runner import Runner
 
         config = Experiment.load(args.config)
+        if args.max_cells is not None:
+            if args.max_cells <= 0:
+                parser.error("--max-cells must be a positive integer")
+            if config.stage == "diagnostic":
+                parser.error("--max-cells is unsupported for diagnostic checkpoint preparation")
         os.environ["APPWORLD_ROOT"] = str(args.appworld_root.resolve())
         validate_tasks(config.split, config.task_ids)
 
@@ -296,7 +303,7 @@ def main(argv: list[str] | None = None) -> None:
             make_engine,
             lambda: AppWorldAdapter(args.appworld_root),
             integration_smoke=args.integration_smoke,
-        ).run(resume=args.resume)
+        ).run(resume=args.resume, max_cells=args.max_cells)
         _print({"run_id": result["run_id"], "status": result["status"], "output": str(args.output)})
 
 

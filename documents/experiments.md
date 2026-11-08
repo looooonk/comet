@@ -31,6 +31,29 @@ later shape-dependent compilation remains charged. Attempts, resets, tools,
 checkpoint work and recovery are charged.
 Evaluation is a separate command and is never called by execution.
 
+For short allocations, `comet run ... --max-cells N` stops cleanly after at most
+N newly terminal cells in the original condition/task/seed order. The shared
+launcher exposes the same operational option as `COMET_MAX_CELLS`:
+
+```sh
+COMET_MAX_CELLS=2 bash "$COMET_REPO/scripts/run_experiment.sh"
+COMET_RESUME=1 COMET_MAX_CELLS=2 bash "$COMET_REPO/scripts/run_experiment.sh"
+```
+
+Resume the identical source, runtime, configuration and output directory. The
+option does not change the research configuration, seeds, attempts or cell
+budgets; completed cells are skipped and interrupted cells retain their consumed
+budget. It never stops within a cell or consults success. Allow enough scheduler
+time for complete cell budgets plus model loading and shutdown. Clean launch records
+include `max_cells`, `completed_cells`, `finished_at_unix` and `stop_reason`
+(`max_cells` or `all_cells_completed`). Counts are persisted at clean stops and
+caught exceptions; after an abrupt process kill, cell journals remain authoritative.
+A clean limited launch exits successfully
+while its manifest remains `running`; score only after all cells finish and the
+manifest becomes `completed`. Omitting the option retains the complete-run
+behavior. Diagnostic runs reject it because they prepare all checkpoint sources
+before branching.
+
 The included configurations are:
 
 | Configuration | Purpose |
