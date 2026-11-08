@@ -28,6 +28,13 @@ improved from 0/3 to 1/3 successes and from four HTTP 401 turns to zero; task
 completion and pagination remain unresolved. This targeted diagnostic does not
 replace the broader retention pilot or qualify the main A100 experiment.
 
+The [partial 8B trajectory diagnosis](baseline-qwen8b-2026-11-07-trajectory-diagnosis.md)
+inspects 24 terminal attempts from the ongoing 38-rollout pilot. It identifies
+repeated authentication, formatting, and data-shape failures, plus a confirmed
+sampling-generator defect in the pinned runtime. Fix and validate sampling
+before treating seeds 17 and 18 as independent model-sampling replicates. The
+record is a partial diagnostic, not the completed pilot's success estimate.
+
 The October 17 interruption and October 19 pending-job records below are
 historical snapshots. The continuation, postflight, and export all completed;
 the [completion evidence](retention-pilot-2026-10-20.json) supersedes their
@@ -50,6 +57,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Partial 8B trajectory diagnosis (2026-11-07)](baseline-qwen8b-2026-11-07-trajectory-diagnosis.md) | 24 inspected attempts, error-loop and budget attribution, sampling-generator defect, and fix priorities; [evidence](baseline-qwen8b-2026-11-07-trajectory-diagnosis.json) |
 | [Broader 8B baseline plan (2026-11-07)](baseline-qwen8b-2026-11-07-plan.md) | Declared 38-rollout dev pilot: all 19 families, two replicate seeds, unchanged candidate prompt and full-cache settings |
 | [Runtime and baseline validation (2026-11-07)](runtime-baseline-validation-2026-11-07.md) | Managed environments, 8B/14B live GPU tests, paired prompt diagnostic, corrected historical audits; [evidence](runtime-baseline-validation-2026-11-07.json) |
 | [November 7 baseline investigation](full-cache-investigation-2026-11-07.md) | Full-cache failure mechanisms, audit classification gap, live CPU confirmation, and fix priorities |
