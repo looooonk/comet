@@ -123,6 +123,8 @@ def main(argv: list[str] | None = None) -> None:
     )
     evaluate = commands.add_parser("evaluate", help="Score a completed run offline")
     evaluate.add_argument("run", type=Path)
+    finalize = commands.add_parser("finalize", help="Finalize interrupted cells when no inference remains")
+    finalize.add_argument("run", type=Path)
     analyze = commands.add_parser(
         "analyze", help="Compute task-level oracle success and paired intervals"
     )
@@ -163,6 +165,11 @@ def main(argv: list[str] | None = None) -> None:
 
         result = evaluate_run(args.run)
         _print({"status": result["status"], "scores": str(args.run / "scores.json")})
+    elif args.command == "finalize":
+        from comet.finalization import finalize_run
+
+        result = finalize_run(args.run)
+        _print({"run_id": result["run_id"], "status": result["status"], "inference_performed": False})
     elif args.command == "analyze":
         from comet.analysis import analyze_runs
 

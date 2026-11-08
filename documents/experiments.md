@@ -140,6 +140,16 @@ The interrupted failure is finalized in both the cell and attempt records;
 component timings. See [resume-validation.md](resume-validation.md) for the
 opt-in real-process interruption check.
 
+If every unfinished cell is already inflight, has exhausted its budget, or has
+used its attempt limit, run `comet finalize RUN_DIRECTORY` in the original
+checkout and managed environment. This uses the same source, configuration and
+installed-package compatibility checks as resume, but never loads a GPU model or
+initializes AppWorld. It validates every cell before changing any metadata and
+refuses if any inference remains eligible. Completed artifacts are preserved;
+interrupted cells consume their remaining reserved budget. Ordinary GPU resumes
+still validate the original GPU/runtime identity. Finalization does not make
+historical runs compatible with a changed checkout or environment.
+
 ## Checkpoint diagnostic
 
 Use the diagnostic config with the same `run`, `evaluate`, and `analyze` commands.
