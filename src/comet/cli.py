@@ -146,6 +146,10 @@ def main(argv: list[str] | None = None) -> None:
     baseline.add_argument("comparison", type=Path)
     baseline.add_argument("--output", type=Path, required=True)
     baseline.add_argument("--title", default="AppWorld baseline diagnostic")
+    retention = commands.add_parser("plot-retention-matrix", help="Facet retention by method, recovery and attempt limit")
+    retention.add_argument("analysis", type=Path)
+    retention.add_argument("--output", type=Path, required=True)
+    retention.add_argument("--title", default="Retention comparison")
     plot = commands.add_parser("plot", help="Plot paired retention means and uncertainty")
     plot.add_argument("analysis", type=Path)
     plot.add_argument("--output", type=Path, required=True)
@@ -207,6 +211,11 @@ def main(argv: list[str] | None = None) -> None:
         from comet.plotting import plot_baseline
 
         plot_baseline(args.comparison, args.output, title=args.title)
+        _print({"figure": str(args.output)})
+    elif args.command == "plot-retention-matrix":
+        from comet.study_plots import plot_retention_matrix
+
+        plot_retention_matrix(args.analysis, args.output, title=args.title)
         _print({"figure": str(args.output)})
     else:
         from comet.appworld import AppWorldAdapter, validate_tasks

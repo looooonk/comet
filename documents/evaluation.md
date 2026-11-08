@@ -166,3 +166,21 @@ plots do not replace broader declared dev coverage or frozen final evaluation.
 ## Validation
 
 Focused tests cover fresh-state isolation, saved outcome isolation, checkpoint aliases and RNG, restoration without replay, unsupported state rejection, scoring gates and failure retention, task-level oracle accounting, exact seed pairing, and task-bootstrap uncertainty. The opt-in `tests/test_appworld_integration.py` uses `COMET_APPWORLD_ROOT` to check the pinned installed AppWorld package and a train task. It exercises task context, fresh reset, supervisor state changes, database and namespace restoration, ordinary continuation, independent offline scoring, and wall-budget interruption. Passing synthetic tests alone is not an AppWorld integration result. See the [validation guide](validation.md) for reusable checks and [records/](records/README.md) for dated evidence and hardware-specific limitations.
+
+## Retention matrix figures
+
+`comet plot-retention-matrix ANALYSIS --output FIGURE` plots all recorded methods,
+recovery policies and attempt ceilings from one compatible shared analysis. Each
+method/attempt-ceiling pair has its own row. Compressed conditions use policy
+curves, and full-cache references with the same ceiling appear separately at
+100% retention. No curve interpolates across different attempt limits or methods.
+Missing full controls or duplicate compressed conditions are rejected.
+
+The panels show oracle success, time, mean cell-peak occupied KV and mean cell-peak
+total VRAM. Bounded task-mean intervals remain nondegenerate for all-zero success;
+other intervals use the recorded task bootstrap. Missing resource points stay
+missing and partial task coverage is annotated. Unobserved interruption
+reservations trigger a budget-accounted time label. Slight horizontal policy
+offsets improve visibility at identical retention settings and do not change the
+underlying measured settings. The older `comet plot` command remains available
+for the original one-method, one-ceiling, no-recovery figure.
