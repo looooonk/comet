@@ -56,6 +56,13 @@ for this workflow. Rerunning setup for the same owner/profile synchronizes its
 locks and repairs an interrupted installation. Do not run setup while that
 environment is executing a job. Changed locks require setup again.
 
+For a repair test alongside an active job, use a new checkout and environment,
+leaving the active source, runtime, outputs, and dependent jobs unchanged. Set
+`UV_LINK_MODE=copy` before setup when package files must be independently writable;
+verify that representative installed files have different inodes from the active
+environment. Reuse model snapshots and caches, and audit the extra environment
+against workspace storage before retaining it.
+
 Check and experiment launchers verify this marker, the selected Python, and the
 installed COMET source location before executing. They clear `PYTHONPATH` so a
 stale override cannot select a different checkout. Source edits in the same

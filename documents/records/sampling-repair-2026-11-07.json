@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-11-08T02:07:31.789618+00:00",
+  "scope": "Submission and local validation only; live GPU validation and task outcomes pending.",
+  "code_commit": "396e7743bab1062d523dbf5e36b78758942dd806",
+  "configuration_digests": {
+    "pilot-sampling-control-qwen8b-v1": "a6987e12b12cbed448b719de69ba950aa9478c3dc18e2e7816525f85854595cc",
+    "pilot-agent-guard-qwen8b-v1": "7ec8bcd9e986a0d3846ff3ac5935362290a4f5cf49329c8fc07498a0f13bcc6f"
+  },
+  "local_validation": {
+    "passed": 112,
+    "skipped": 1,
+    "deselected": 8,
+    "skip_reason": "CPU profile omits PyTorch; live integrations deselected.",
+    "lint": "passed",
+    "shell_syntax": "passed"
+  },
+  "ci_runs": [
+    {
+      "id": 42435500211,
+      "status": "success"
+    },
+    {
+      "id": 42436058867,
+      "status": "success"
+    }
+  ],
+  "jobs_at_submission": {
+    "original": {
+      "id": 13832917,
+      "status": "RUNNING"
+    },
+    "original_scorer": {
+      "id": 13832918,
+      "status": "PENDING"
+    },
+    "setup": {
+      "id": 13834427,
+      "status": "COMPLETED"
+    },
+    "isolation": {
+      "id": 13834449,
+      "status": "RUNNING"
+    },
+    "gpu_checks": {
+      "id": 13834428,
+      "status": "PENDING"
+    },
+    "paired_execution": {
+      "id": 13834429,
+      "status": "PENDING"
+    },
+    "scoring": {
+      "id": 13834430,
+      "status": "PENDING"
+    },
+    "storage_audit": {
+      "id": 13834455,
+      "status": "PENDING"
+    }
+  },
+  "execution_artifacts": [
+    "sampling-control-qwen8b-20261107-13834429",
+    "agent-guard-qwen8b-20261107-13834429"
+  ],
+  "source_isolation": {
+    "original": {
+      "code_commit": "a457a8bc39c7f31b4c5f84b450fc3a237c536964",
+      "clean_checkout": true,
+      "engine_hashes_verified": {
+        "engine/engine.py": "1871c222c7b28d39ce73623358efa232f97b431fd76aa8bcfedec7c5793822e9",
+        "eviction/manager.py": "763c71a879e9e26e5043e071ab831195807a14226de407f0bd80b470c9d2cf53",
+        "eviction/relative.py": "079ab13bb5b23569c8518259f1924b49589d4f0c70d6167cb4b42ff090a55919",
+        "scheduler/config.py": "266e318bd330d5157555b4e80cfe7aa3936bd9381edf4359ec8cefdb7086cc4a",
+        "scheduler/cache.py": "c23a271091e2a6e86a2580eb6d796c47c396cf425ac462d13546ba2e5a796996"
+      }
+    },
+    "retry": {
+      "code_commit": "396e7743bab1062d523dbf5e36b78758942dd806",
+      "clean_checkout": true,
+      "engine_hashes_verified": {
+        "engine/engine.py": "1871c222c7b28d39ce73623358efa232f97b431fd76aa8bcfedec7c5793822e9",
+        "engine/sample.py": "ccfb29c95a1ede76128348dde1a2f4a645ece5c4105aa89610a9ae6579b1c860",
+        "eviction/manager.py": "763c71a879e9e26e5043e071ab831195807a14226de407f0bd80b470c9d2cf53",
+        "eviction/relative.py": "079ab13bb5b23569c8518259f1924b49589d4f0c70d6167cb4b42ff090a55919",
+        "scheduler/cache.py": "c23a271091e2a6e86a2580eb6d796c47c396cf425ac462d13546ba2e5a796996",
+        "scheduler/config.py": "266e318bd330d5157555b4e80cfe7aa3936bd9381edf4359ec8cefdb7086cc4a"
+      }
+    }
+  },
+  "artifacts": {
+    "cpu-agent-v2/pytest.xml": "53a940974f472fea7f0850c200e1ead722e2416530b1dbc62c71a8afa76bce62",
+    "source-isolation.json": "f24d757f4b80c2ef6625ab286def65e454d5fdec909575219c7d208f079a1a97",
+    "paired-test.sh": "fd35faa5d8fceb2680e719be8a01f48588afb71536e8dcf5c2cdc9d53079b377",
+    "score-pair.sh": "351d15eb19ccfddeee1c4fbb9862c7bcbfb13a37407108aaea5f21bad557e10c",
+    "isolate-runtime.sh": "d9def3020625c0295efd6c732ac6087c7b3c8a21166308f70807fe46df180e40",
+    "storage-audit.sh": "837c54a1766dbbe1e5a75592e6db6c81e601f2a78c98defcc2425e7ddf9e0ca3"
+  }
+}

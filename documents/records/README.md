@@ -57,6 +57,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Corrected sampling and agent retry (2026-11-07)](sampling-repair-2026-11-07.md) | Seeded sampler repair, optional bounded error handling, validation and isolated twelve-rollout submission |
 | [Corrected-sampling diagnostic plan (2026-11-07)](sampling-repair-2026-11-07-plan.md) | Isolated managed runtime, RNG and checkpoint validation, and a paired twelve-rollout test of bounded execution guidance |
 | [Partial 8B trajectory diagnosis (2026-11-07)](baseline-qwen8b-2026-11-07-trajectory-diagnosis.md) | 24 inspected attempts, error-loop and budget attribution, sampling-generator defect, and fix priorities; [evidence](baseline-qwen8b-2026-11-07-trajectory-diagnosis.json) |
 | [Broader 8B baseline plan (2026-11-07)](baseline-qwen8b-2026-11-07-plan.md) | Declared 38-rollout dev pilot: all 19 families, two replicate seeds, unchanged candidate prompt and full-cache settings |
