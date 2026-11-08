@@ -113,6 +113,13 @@ Native token histories and raw CPU logits support inspecting the first mismatch.
 These are trusted local tensor artifacts; the test reads them with
 `torch.load(..., weights_only=True)`.
 
+Each subprocess also writes a `*-partial.json` journal and hashed
+`*-partial-logits.pt` checkpoint. These distinguish completed cases from the
+current unvalidated capture, including a generation exception or an assertion
+in the first case. They are always marked incomplete; successful final artifacts
+supersede them. A process killed during a write can leave only the preceding
+checkpoint, so partial evidence is not a numerical pass.
+
 Model identity includes the pinned revision, configuration/tokenizer hashes,
 parameter count, and weight filenames, sizes, blob identifiers, and header hashes.
 This does not recompute a full hash of every multi-gigabyte weight shard; retain

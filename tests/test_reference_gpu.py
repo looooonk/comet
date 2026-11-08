@@ -71,6 +71,41 @@ def _sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def _record_progress(root, phase, *, current=None, records=None, tensors=None, identity=None,
+                     status="running", error=None, unvalidated_current=None):
+    path = root / f"{phase}-partial.json"
+    progress = read_json(path) if path.exists() else {"phase": phase, "complete": False, "records": []}
+    progress.update(status=status, current=current)
+    if identity is not None:
+        progress["identity"] = identity
+    if records is not None:
+        progress["records"] = records
+        progress.pop("unvalidated_current", None)
+    if unvalidated_current is not None:
+        progress["unvalidated_current"] = unvalidated_current
+    if tensors is not None:
+        import torch
+
+        checkpoint = root / f"{phase}-partial-logits.pt"
+        temporary = checkpoint.with_suffix(".pt.tmp")
+        torch.save(tensors, temporary)
+        os.replace(temporary, checkpoint)
+        progress["logits_sha256"] = _sha256(checkpoint)
+    if error is not None:
+        progress["error"] = f"{type(error).__name__}: {error}"
+    write_json(path, progress)
+
+
+def _record_current(root, phase, records, tensors, record, logits):
+    pending = {**record, "validation_status": "unvalidated"}
+    checkpoints = dict(tensors)
+    if logits is not None:
+        pending["logits_key"] = "__unvalidated_current__"
+        checkpoints[pending["logits_key"]] = logits
+    _record_progress(root, phase, current={"stage": "current_capture_unvalidated", "id": record["id"]},
+                     records=records, tensors=checkpoints, unvalidated_current=pending)
+
+
 def _identity():
     model = os.environ.get("COMET_TEST_MODEL", "Qwen/Qwen3-8B")
     revision = MODEL_PROFILES[model]["revision"]
@@ -113,6 +148,7 @@ def _native(root):
         max_context_tokens=1024, peak_vram_bytes=cap, workspace_reserve_bytes=4 << 30,
         prefill_chunk_tokens=64, require_a100=False,
     )
+    _record_progress(root, "native", identity=identity, current={"stage": "load_model"})
     engine = MiniSGLangEngine(settings)
     sampler = engine.scheduler.engine.sampler
     original_sample = sampler.sample
@@ -128,6 +164,7 @@ def _native(root):
     records, tensors = [], {}
     try:
         for case in CASES:
+            _record_progress(root, "native", current={"stage": "reset_and_prompt", "id": f"{case['id']}/fresh"})
             engine.start(17)
             prompt = engine.tokenizer.apply_chat_template(
                 case["messages"], tokenize=True, add_generation_prompt=True,
@@ -136,6 +173,8 @@ def _native(root):
             if case["id"] == "tool_history_chunked":
                 assert len(prompt) > settings.prefill_chunk_tokens
             for phase in ("fresh", "cached"):
+                key = f"{case['id']}/{phase}"
+                _record_progress(root, "native", current={"stage": "generation", "id": key})
                 if phase == "cached":
                     closing = ("" if engine.raw_token_ids[-1] == engine.tokenizer.eos_token_id
                                else "<|im_end|>")
@@ -146,20 +185,34 @@ def _native(root):
                     prompt = engine.tokenizer.encode(suffix_text, add_special_tokens=False)
                 history = engine.raw_token_ids + prompt
                 captured.clear()
-                generated = engine.generate(prompt, 4, 0.0, 1.0, time.monotonic() + 600, ignore_eos=True)
+                generated = None
+                try:
+                    generated = engine.generate(prompt, 4, 0.0, 1.0, time.monotonic() + 600, ignore_eos=True)
+                finally:
+                    current_logits = torch.stack(captured) if captured else None
+                    observed = (generated.token_ids if generated is not None
+                                else getattr(engine, "last_generation", {}).get("token_ids", []))
+                    _record_current(root, "native", records, tensors, {
+                        "id": key, "case": case, "phase": phase,
+                        "input_token_ids": history, "generated_token_ids": observed,
+                        "observed_raw_token_ids": engine.raw_token_ids,
+                        "captured_steps": len(captured), "generation_returned": generated is not None,
+                    }, current_logits)
                 assert len(captured) == len(generated.token_ids) == 4
                 assert engine.raw_token_ids == history + generated.token_ids
                 assert generated.prompt_tokens == len(prompt) + (phase == "cached")
                 assert not engine.retention_events
                 assert generated.memory["physical_cached_tokens"] == generated.memory["logical_cached_tokens"]
-                key = f"{case['id']}/{phase}"
-                tensors[key] = torch.stack(captured)
+                tensors[key] = current_logits
                 assert tensors[key].argmax(dim=-1).tolist() == generated.token_ids
                 records.append({"id": key, "case": case, "phase": phase,
                                 "input_token_ids": history, "generated_token_ids": generated.token_ids,
                                 "suffix_text": suffix_text if phase == "cached" else None,
                                 "suffix_token_ids": prompt if phase == "cached" else None,
                                 "prefill_tokens": generated.prompt_tokens})
+                _record_progress(root, "native", current={"stage": "case_completed", "id": key},
+                                 records=records, tensors=tensors)
+        _record_progress(root, "native", current={"stage": "write_complete_artifacts"})
         torch.save(tensors, root / "native-logits.pt")
         write_json(root / "native.json", {
             "identity": identity, "settings": asdict(settings), "engine": engine.provenance(),
@@ -205,6 +258,7 @@ def _reference(root):
     from transformers import AutoTokenizer, Qwen3ForCausalLM
 
     path, identity = _identity()
+    _record_progress(root, "reference", identity=identity, current={"stage": "load_model"})
     native = read_json(root / "native.json")
     assert identity == native["identity"]
     assert torch.cuda.device_count() == 1
@@ -230,6 +284,7 @@ def _reference(root):
     records, tensors = [], {}
     with torch.inference_mode():
         for record in native["records"]:
+            _record_progress(root, "reference", current={"stage": "inference", "id": record["id"]})
             history, generated = record["input_token_ids"], record["generated_token_ids"]
             case = record["case"]
             prompt = tokenizer.apply_chat_template(
@@ -243,11 +298,20 @@ def _reference(root):
             inputs = torch.tensor([history + generated[:-1]], device="cuda", dtype=torch.long)
             logits = model(input_ids=inputs, use_cache=False, logits_to_keep=len(generated)).logits
             logits = logits[0].float().cpu()
+            _record_current(root, "reference", records, tensors, {
+                "id": record["id"], "input_token_ids": history, "generated_token_ids": generated,
+                "reference_input_token_ids": history + generated[:-1],
+                "native_logits_shape": list(native_logits[record["id"]].shape),
+                "reference_logits_shape": list(logits.shape),
+            }, logits)
             assert logits.shape == native_logits[record["id"]].shape
             tensors[record["id"]] = logits
             comparisons = [_compare_logits(left, right, token) for left, right, token in
                            zip(native_logits[record["id"]], logits, generated, strict=True)]
             records.append({"id": record["id"], "input_tokens": len(history), "steps": comparisons})
+            _record_progress(root, "reference", current={"stage": "case_completed", "id": record["id"]},
+                             records=records, tensors=tensors)
+    _record_progress(root, "reference", current={"stage": "comparison"})
     torch.save(tensors, root / "reference-logits.pt")
     steps = [step for record in records for step in record["steps"]]
     agreement = sum(step.get("exact_greedy_agreement", False) for step in steps) / len(steps)
@@ -268,6 +332,20 @@ def _reference(root):
     assert passed, "Independent reference comparison failed; inspect comparison.json without relaxing tolerances"
 
 
+def _run_phase(phase, root):
+    write_json(root / f"{phase}-partial.json", {
+        "phase": phase, "status": "running", "complete": False,
+        "current": {"stage": "startup"}, "records": [],
+    })
+    try:
+        {"native": _native, "reference": _reference}[phase](root)
+    except BaseException as error:
+        current = read_json(root / f"{phase}-partial.json")["current"]
+        _record_progress(root, phase, current=current, status="failed", error=error)
+        raise
+    _record_progress(root, phase, status="superseded_by_complete_artifacts")
+
+
 if __name__ == "__main__":
     phase, directory = sys.argv[1:]
-    {"native": _native, "reference": _reference}[phase](Path(directory))
+    _run_phase(phase, Path(directory))
