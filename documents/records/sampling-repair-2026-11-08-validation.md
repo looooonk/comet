@@ -7,6 +7,9 @@ The [evidence JSON](sampling-repair-2026-11-08-validation.json) records validati
 source and artifact hashes, storage measurements, and the launch snapshot.
 Task scores for this corrected runtime remain pending.
 
+The [completed-results follow-up](sampling-repair-2026-11-08-results.md) supersedes
+the active-run snapshot below, including a later preemption and offline scoring.
+
 ## Overnight failure and recovery
 
 The [initial submission](sampling-repair-2026-11-07.md) did not reach GPU testing.

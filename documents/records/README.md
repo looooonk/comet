@@ -43,8 +43,11 @@ diagnostic evidence, not an estimate of corrected-model performance.
 
 The [November 8 corrected-sampler validation](sampling-repair-2026-11-08-validation.md)
 passed 130 live GPU/AppWorld and shared-pipeline tests. It recovered the initial
-setup timeout and started the paired twelve-rollout 8B diagnostic; corrected
-agent task scores remain pending.
+setup timeout and started the paired twelve-rollout 8B diagnostic. The
+[completed paired results](sampling-repair-2026-11-08-results.md) have zero
+successes in each arm; one guarded rollout was preempted and conservatively
+finalized as an interrupted failure. Sampling varies correctly, but agent task
+success remains unresolved.
 
 The October 17 interruption and October 19 pending-job records below are
 historical snapshots. The continuation, postflight, and export all completed;
@@ -68,6 +71,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Corrected-sampler paired results (2026-11-08)](sampling-repair-2026-11-08-results.md) | Both arms scored 0/6, bounded errors, verified seed variation, and conservative preemption handling; [evidence](sampling-repair-2026-11-08-results.json) |
 | [Sampling repair validation and relaunch (2026-11-08)](sampling-repair-2026-11-08-validation.md) | Overnight setup failure, completed GPU validation, active paired run, and measured storage; [evidence](sampling-repair-2026-11-08-validation.json) |
 | [Broader 8B pilot completion (2026-11-08)](baseline-qwen8b-2026-11-08-completion.md) | All 38 outcomes, offline scores, resource summary and artifact hashes; [evidence](baseline-qwen8b-2026-11-08-completion.json) |
 | [Corrected sampling and agent retry (2026-11-07)](sampling-repair-2026-11-07.md) | Seeded sampler repair, optional bounded error handling, validation and isolated twelve-rollout submission |
