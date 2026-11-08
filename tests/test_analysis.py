@@ -258,3 +258,22 @@ def test_terminal_journal_reservations_are_separate_from_measured_latency():
     assert result["latency_seconds"]["value"] == 100
     assert result["reserved_budget_seconds"]["value"] == 90
     assert result["oracle_success_rate"]["value"] == 0.5
+
+
+def test_policy_observations_keep_pairing_empty_cells_and_unknown_requests():
+    records = [cell("t1", "a", 17, [False, True]), cell("t2", "a", 17, [])]
+    records[0]["attempts"][0]["recovery_events"] = [
+        {"context_tokens": 2000, "tool_calls": 3, "rebuilds": 0, "triggered": True,
+         "result": {"admitted": None, "status": "pending"}},
+    ]
+    records[0]["attempts"][0]["reserved_budget_seconds"] = 4
+    observations = analyze_cells(records, bootstrap_samples=10)["conditions"]["a"]["observations"]
+    assert observations["actual_attempt_distribution"] == {0: 1, 2: 1}
+    assert observations["cells"][0] == {
+        "task_id": "t1", "seed": 17, "actual_attempts": 2, "first_attempt_success": False,
+        "oracle_success": True, "budget_accounted_seconds": 10, "reserved_budget_seconds": 4,
+    }
+    assert observations["cells"][1]["oracle_success"] is False
+    event = observations["decisions"][0]
+    assert (event["task_id"], event["seed"], event["attempt_index"], event["decision_index"]) == ("t1", 17, 0, 0)
+    assert event["result"]["admitted"] is None

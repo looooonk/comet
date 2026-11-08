@@ -157,6 +157,31 @@ def recovery_summary(cells: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def policy_observations(cells: list[dict]) -> dict:
+    """Keep paired identities and observed decisions for offline study figures."""
+    outcomes, decisions = [], []
+    for cell in sorted(cells, key=lambda item: (item["task_id"], item["seed"])):
+        identity = {"task_id": cell["task_id"], "seed": cell["seed"]}
+        attempts = cell["attempts"]
+        outcomes.append({
+            **identity, "actual_attempts": len(attempts),
+            "first_attempt_success": bool(attempts and attempts[0]["success"]),
+            "oracle_success": any(attempt["success"] for attempt in attempts),
+            "budget_accounted_seconds": cell["elapsed_seconds"],
+            "reserved_budget_seconds": reserved_seconds(cell),
+        })
+        for attempt in attempts:
+            for index, event in enumerate(attempt.get("recovery_events", [])):
+                decisions.append({**identity, "attempt_index": attempt["attempt_index"],
+                                  "decision_index": index, **event})
+    return {
+        "cells": outcomes, "decisions": decisions,
+        "actual_attempt_distribution": dict(sorted(Counter(len(cell["attempts"]) for cell in cells).items())),
+        "latency_scope": "Total observed cell budget accounting, including interruption reservations; "
+                         "not time to first success or a replay at smaller budgets.",
+    }
+
+
 def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
                   seed: int = 0) -> dict[str, Any]:
     if not cells or bootstrap_samples < 1:
@@ -270,6 +295,7 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
             "zero_attempt_cells": sum(not cell["attempts"] for cell in group.values()),
             "metrics": metrics,
             "recovery": recovery_summary(list(group.values())),
+            "observations": policy_observations(list(group.values())),
         }
         resource_values[condition_id] = {}
         for name, key in resource_fields.items():

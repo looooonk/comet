@@ -150,6 +150,15 @@ def main(argv: list[str] | None = None) -> None:
     retention.add_argument("analysis", type=Path)
     retention.add_argument("--output", type=Path, required=True)
     retention.add_argument("--title", default="Retention comparison")
+    for command, help_text, title in (
+        ("plot-recovery", "Plot paired recovery effects, cost and admission", "Recovery comparison"),
+        ("plot-triggers", "Plot observed trigger decisions and paired effects", "Recovery trigger observations"),
+        ("plot-attempts", "Plot first/oracle success, attempts and observed cost", "Attempt allocation comparison"),
+    ):
+        figure = commands.add_parser(command, help=help_text)
+        figure.add_argument("analysis", type=Path)
+        figure.add_argument("--output", type=Path, required=True)
+        figure.add_argument("--title", default=title)
     plot = commands.add_parser("plot", help="Plot paired retention means and uncertainty")
     plot.add_argument("analysis", type=Path)
     plot.add_argument("--output", type=Path, required=True)
@@ -216,6 +225,13 @@ def main(argv: list[str] | None = None) -> None:
         from comet.study_plots import plot_retention_matrix
 
         plot_retention_matrix(args.analysis, args.output, title=args.title)
+        _print({"figure": str(args.output)})
+    elif args.command in {"plot-recovery", "plot-triggers", "plot-attempts"}:
+        from comet.policy_plots import plot_attempts, plot_recovery, plot_triggers
+
+        plotters = {"plot-recovery": plot_recovery, "plot-triggers": plot_triggers,
+                    "plot-attempts": plot_attempts}
+        plotters[args.command](args.analysis, args.output, title=args.title)
         _print({"figure": str(args.output)})
     else:
         from comet.appworld import AppWorldAdapter, validate_tasks

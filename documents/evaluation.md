@@ -184,3 +184,39 @@ reservations trigger a budget-accounted time label. Slight horizontal policy
 offsets improve visibility at identical retention settings and do not change the
 underlying measured settings. The older `comet plot` command remains available
 for the original one-method, one-ceiling, no-recovery figure.
+
+## Recovery, trigger and attempt figures
+
+The shared analysis retains paired task/seed identities, actual attempt counts,
+cell outcomes, and recorded recovery decisions in each condition's `observations`.
+These are offline reporting data, never inputs to the runner. Regenerate older
+analysis files before using the following commands:
+
+```sh
+comet plot-recovery ANALYSIS --output recovery.svg
+comet plot-triggers ANALYSIS --output triggers.svg
+comet plot-attempts ANALYSIS --output attempts.svg
+```
+
+Recovery figures compare fixed and dynamic policies with a matched never-rebuild
+condition at the same method, retention and attempt ceiling. They show paired
+oracle-success differences, recorded time per observed request, mean cell budget
+share, admission coverage, and refusal reasons. Thin intervals are task-bootstrap
+95% intervals; pale wide intervals are conservative bounded task-mean intervals,
+so all-zero samples do not imply population certainty. Cost and admission bars
+are descriptive; repeated requests are not independent samples. Unknown admission
+and incomplete cost coverage remain explicit.
+
+Trigger figures show every located decision, including checks after a rebuild,
+with requests highlighted, alongside dynamic-minus-fixed paired success. These
+are observations on independently evolving trajectories, not fitted decision
+boundaries or causal estimates from individual points. Actual trigger rules and
+thresholds remain in the resolved run configuration.
+
+Attempt figures show first-attempt and oracle success, distributions of actual
+attempt counts including zero, and oracle success versus total cell time. Each
+seed is a separate budgeted cell. The cost panel describes executed schedules;
+it does not estimate time to first success or counterfactual outcomes under
+smaller budgets. Interruption reservations remain part of budget-accounted time
+and are identified in the caption. Oracle success assumes perfect outcome
+selection after execution; it is not an online selection policy.
