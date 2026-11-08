@@ -127,3 +127,31 @@ the asset-download checksum records alongside it. Keep the large logit artifacts
 outside tracked source and commit only a small validation record identifying
 their hashes and results. Until a saved live GPU run completes, this optional
 test is implemented but not numerically validated.
+
+## Diagnose a BF16 disagreement
+
+`scripts/calibrate_reference_cpu.py` compares the original six-case Qwen3-8B
+evidence against FP32 CPU Transformers inference on the same exact token
+histories. It checks the saved artifact hashes and pinned model/runtime identity,
+loads the original BF16 weights as FP32, and uses eager attention without a KV
+cache. It reports both native and Transformers BF16 errors relative to FP32,
+including per-position and pooled error ratios. It does not change tolerances
+or declare that either implementation passes.
+
+Use the managed GPU-profile environment for its pinned package versions, but
+request CPU resources only; the helper disables CUDA. For the initial diagnostic,
+reserve 64 GiB host RAM and 12 CPUs with a 30-minute allocation:
+
+```sh
+source "$COMET_REPO/scripts/activate_runtime.sh" gpu
+python "$COMET_REPO/scripts/calibrate_reference_cpu.py" \
+  --reference-run /path/to/completed/reference \
+  --model-path "$COMET_MODEL_PATH" --output /path/to/new/calibration \
+  --threads 12 --timeout-seconds 1500
+```
+
+Keep the raw FP32 logits, partial progress, source hashes, loading metadata,
+CPU memory/timings and `calibration.json`. The scheduler should impose an outer
+timeout because an individual model forward cannot be interrupted by the
+helper's between-operation budget checks. This is a numerical diagnostic, not
+an FP32 task experiment or evidence of GPU throughput.
