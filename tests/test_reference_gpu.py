@@ -106,10 +106,11 @@ def _native(root):
     import torch
 
     path, identity = _identity()
+    cap = int(os.environ.get("COMET_REFERENCE_CAP_BYTES", 40 << 30))
     settings = EngineSettings(
         model=identity["model"], model_path=str(path), model_revision=identity["model_revision"],
         tokenizer_revision=identity["tokenizer_revision"], method="full", retention=1.0,
-        max_context_tokens=1024, peak_vram_bytes=40 << 30, workspace_reserve_bytes=4 << 30,
+        max_context_tokens=1024, peak_vram_bytes=cap, workspace_reserve_bytes=4 << 30,
         prefill_chunk_tokens=64, require_a100=False,
     )
     engine = MiniSGLangEngine(settings)

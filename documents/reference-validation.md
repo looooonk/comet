@@ -42,7 +42,12 @@ IDs, including the cached continuation. An early greedy disagreement cannot
 change the reference's later input and conceal where divergence began. The
 reference does not execute any historical tool action or consult AppWorld scores.
 
-Both processes use the existing 40 GiB short-check memory allowance. The native
+Both processes default to the existing 40 GiB short-check memory allowance. An
+explicit `COMET_REFERENCE_CAP_BYTES` can select a smaller allowance for this
+synthetic check, such as `23622320128` (22 GiB) for Qwen3-8B on an L4. It is saved
+in the native settings and reused by the reference process. This does not alter
+any experiment configuration or qualify the smaller device for those settings.
+The native
 engine enforces its usual cap; the reference bounds its PyTorch allocator after
 accounting for initially external allocations. Reference allocator peaks are
 diagnostic metadata, not measured total-VRAM peaks for an experiment comparison.
