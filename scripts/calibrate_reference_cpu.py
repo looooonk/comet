@@ -18,7 +18,7 @@ from statistics import mean
 from comet.artifacts import provenance, read_json, write_json
 from comet.budget import Budget
 from comet.clocks import monotonic, wall_time
-from comet.engine.contracts import MODEL_REVISION, model_storage
+from comet.engine.contracts import model_storage, validate_model
 
 SOURCE_FILES = ("native.json", "comparison.json", "native-logits.pt", "reference-logits.pt")
 
@@ -51,9 +51,7 @@ def read_source(root: Path) -> tuple[dict, dict, dict]:
     if hashes["native-logits.pt"] != native["logits_sha256"]:
         raise ValueError("Source native logits hash differs")
     identity = native["identity"]
-    if (identity["model"] != "Qwen/Qwen3-8B" or identity["model_revision"] != MODEL_REVISION
-            or identity["tokenizer_revision"] != MODEL_REVISION):
-        raise ValueError("This calibration requires the recorded pinned Qwen3-8B source")
+    validate_model(identity["model"], identity["model_revision"], identity["tokenizer_revision"])
     records = native["records"]
     if (len(records) != 6 or len({record["id"] for record in records}) != 6
             or any(len(record["generated_token_ids"]) != 4 for record in records)

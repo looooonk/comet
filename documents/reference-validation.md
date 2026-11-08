@@ -146,17 +146,18 @@ test is implemented but not numerically validated.
 
 ## Diagnose a BF16 disagreement
 
-`scripts/calibrate_reference_cpu.py` compares the original six-case Qwen3-8B
-evidence against FP32 CPU Transformers inference on the same exact token
-histories. It checks the saved artifact hashes and pinned model/runtime identity,
+`scripts/calibrate_reference_cpu.py` compares six-case evidence for either
+registered, pinned Qwen3-8B or Qwen3-14B against FP32 CPU Transformers inference
+on the same exact token histories. It checks the saved artifact hashes and pinned model/runtime identity,
 loads the original BF16 weights as FP32, and uses eager attention without a KV
 cache. It reports both native and Transformers BF16 errors relative to FP32,
 including per-position and pooled error ratios. It does not change tolerances
 or declare that either implementation passes.
 
 Use the managed GPU-profile environment for its pinned package versions, but
-request CPU resources only; the helper disables CUDA. For the initial diagnostic,
-reserve 64 GiB host RAM and 12 CPUs with a 30-minute allocation:
+request CPU resources only; the helper disables CUDA. The 8B example below uses
+64 GiB host RAM and 12 CPUs with a 30-minute allocation. Size the 14B
+allocation separately for its larger FP32 weights and forward-pass memory:
 
 ```sh
 source "$COMET_REPO/scripts/activate_runtime.sh" gpu
