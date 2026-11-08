@@ -203,3 +203,58 @@ def test_analysis_ignores_locations_and_transient_engine_measurements(tmp_path):
     second = _scored_run(tmp_path / "second", "b", changed)
     result = analyze_runs([first, second], tmp_path / "analysis.json", bootstrap_samples=10)
     assert set(result["conditions"]) == {"a", "b"}
+
+
+def test_recovery_summary_retains_denials_failures_and_unknown_interruption(tmp_path):
+    records = [cell(f"t{index}", "a", 1, [False], [status])
+               for index, status in enumerate(("completed", "oom", "interrupted", "completed"))]
+    for record in records:
+        record["budget_seconds"] = 100
+        record["attempts"][0]["recovery_events"] = []
+    records[0]["attempts"][0]["recovery_events"] = [
+        {"triggered": False, "reason": "below_threshold"},
+        {"triggered": True, "result": {"admitted": False, "status": "denied", "seconds": 1,
+                                       "reason": "transient_cap"}},
+        {"triggered": True, "result": {"admitted": True, "status": "completed", "seconds": 3}},
+    ]
+    records[1]["attempts"][0]["recovery_events"] = [
+        {"triggered": True, "result": {"admitted": True, "status": "failed", "seconds": 2,
+                                       "failure_reason": "out of memory"}},
+    ]
+    records[2]["attempts"][0]["recovery_events"] = [
+        {"triggered": True, "result": {"admitted": None, "status": "pending"}},
+    ]
+    result = analyze_cells(records, bootstrap_samples=10)["conditions"]["a"]["recovery"]
+    assert result["decision_count"] == 5 and result["requested_count"] == 4
+    assert result["admitted_count"] == 2
+    assert result["admission_rate"] == {"value": pytest.approx(2 / 3),
+                                          "observed_requests": 3, "total_requests": 4}
+    assert result["result_status_counts"] == {"denied": 1, "completed": 1, "failed": 1, "pending": 1}
+    assert result["refusal_reasons"] == {"transient_cap": 1}
+    assert result["failure_reasons"] == {"out of memory": 1}
+    assert result["recorded_seconds"]["value"] == 6
+    assert result["mean_cell_budget_fraction"] == {
+        "value": pytest.approx(0.02), "complete_cells": 3, "total_cells": 4}
+    assert result["coverage"]["unknown_admission_requests"] == 1
+
+
+def test_partial_failure_costs_remain_visible_with_coverage():
+    records = [cell("t1", "a", 1, [False, False], ["completed", "oom"])]
+    records[0]["attempts"][0]["metrics"]["metric_coverage"] = {"estimated_flops": "complete"}
+    records[0]["attempts"][1]["metrics"]["metric_coverage"] = {"estimated_flops": "lower_bound"}
+    result = analyze_cells(records, bootstrap_samples=10)["conditions"]["a"]
+    assert result["metrics"]["estimated_flops"]["value"] == 400
+    assert result["metrics"]["estimated_flops"]["coverage"] == {"complete": 1, "lower_bound": 1}
+    assert result["recovery"]["recorded_seconds"]["value"] is None
+    assert result["recovery"]["coverage"]["attempts_with_decisions"] == 0
+
+
+def test_terminal_journal_reservations_are_separate_from_measured_latency():
+    records = [cell("t1", "a", 1, [True]), cell("t2", "a", 1, [False], ["interrupted"])]
+    records[0].update(elapsed_seconds=100, observed_elapsed_seconds=20, reserved_budget_seconds=80)
+    records[1].update(elapsed_seconds=100)
+    records[1]["attempts"][0]["reserved_budget_seconds"] = 100
+    result = analyze_cells(records, bootstrap_samples=10)["conditions"]["a"]
+    assert result["latency_seconds"]["value"] == 100
+    assert result["reserved_budget_seconds"]["value"] == 90
+    assert result["oracle_success_rate"]["value"] == 0.5

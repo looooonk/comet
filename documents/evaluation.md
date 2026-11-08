@@ -72,6 +72,27 @@ The analysis reports:
 
 Every resource aggregate reports the number of attempts with observations and the total number of attempts. Missing failure-path measurements are not silently replaced with zero. Throughput is unavailable when no positive decoding time was observed. Total estimated FLOPs and memory maxima describe the recorded observations; coverage makes partial instrumentation visible.
 
+Numeric metric summaries also retain the attempt-level coverage labels. A
+`lower_bound` token or FLOPs count includes completed forwards before a failure;
+it is not the full operation cost. A `partial` time records observed elapsed work,
+without claiming that an interrupted GPU operation finished. Older values without
+coverage metadata are `unspecified`, not retrospectively certified complete.
+Decode throughput retains its ratio of observed counts and times and reports
+whether those contributing attempts contain partial measurements. Do not compare
+that observed ratio as complete throughput when coverage differs across methods.
+
+Each condition includes a `recovery` summary of recorded policy decisions,
+requests, admissions, completed/denied/failed/pending results, consumed allowances,
+refusal reasons, and failure reasons. Admission rate divides admitted requests by
+requests with a known admission outcome; its coverage also gives the total request
+count. Unknown or pending outcomes are not refusals. Recorded recovery time includes
+admission checks and observed failed rebuild time. The mean cell budget fraction
+sums those recorded costs within a cell and divides by its configured shared budget;
+it includes zero recovery cost only when the decision log is available and no
+request occurred. Interrupted cells or cells missing any requested duration are
+excluded from this cost fraction with explicit coverage. Decision counts are
+observed counts, not proof that an interrupted attempt had no later decisions.
+
 `mean_peak_kv_bytes` and `mean_peak_total_vram_bytes` retain a cell only when every
 started attempt has its measurement; a zero-attempt cell has no observed peak.
 A task mean requires complete cells for every configured seed. The output lists
@@ -98,7 +119,49 @@ attempt `elapsed_seconds=0.0` may survive interruption as a journal placeholder;
 without final timing evidence, report measured duration as unavailable and retain
 the raw field separately.
 
+If a terminal attempt journal was saved before the cell journal was interrupted,
+the attempt's measured duration and outcome survive. In that case the unobserved
+tail is stored in the cell's `reserved_budget_seconds` instead. Analysis reports
+mean reserved budget separately and accounts for either journal location; the
+ordinary cell latency still includes that reservation. A terminal attempt status
+alone therefore does not establish that all of its cell time was measured.
+
 The engine FLOPs estimate counts `2 * parameter_count * processed_tokens` plus attention work `4 * layers * query_heads * head_dimension * attended_query_key_pairs`. It uses physical retained cache length plus causal within-prefill pairs and includes every recorded prefill/decode/rebuild forward. This is an architecture-level arithmetic estimate, not elapsed compute, GPU utilization, or a precise kernel operation count. Non-matmul operations and eviction-selection work are excluded; the full parameter count makes the dense term approximate. The method identifier is preserved in recorded metrics.
+
+## Paired protocol diagnostics
+
+`comet.comparison.compare_protocol_runs` compares exactly two completed, separately
+scored train/dev pilot runs. Declare the intended differences with
+`protocol_fields=["prompt"]`, `["agent"]`, or both. The function permits those
+fields plus experiment identifiers and notes to differ; every other configuration
+field, task, seed, condition, dependency, model, hardware identity, execution
+source/runtime, and evaluator source/runtime must match. It verifies scored cells
+against the saved terminal execution records. This explicit comparison does not
+relax `analyze_runs` or ordinary resume compatibility.
+
+Save the comparison to a new output outside both original run directories. It
+retains run IDs and configuration/execution digests, the declared intervention,
+paired candidate-minus-control success and cost estimates, and per-condition
+behavior summaries. Its success intervals use the same task-level bootstrap and
+nondegenerate bounded-mean intervals as ordinary analysis.
+
+Behavior summaries read each declared attempt's saved `trajectory.json` and record
+its hash. The normalized error rate is error turns divided by saved turns within
+each cell, averaged across replicate seeds within each task and then across tasks.
+This prevents a long failing loop from dominating every shorter trajectory.
+Missing trajectories are unavailable, not zero-error traces. Interrupted prefixes
+remain visible in the error-rate summary and its coverage; they do not describe a
+completed trajectory. A task-level behavior estimate requires observations for
+every paired seed. Measured duration excludes interrupted-attempt journal
+placeholders and reports its own complete-task coverage; reserved budget is
+reported separately.
+
+`comet.plotting.plot_baseline` renders a validated comparison's single full-cache
+N=1 condition: task success, execution statuses (including cells with no attempt),
+normalized errors, and measured attempt duration. Its caption distinguishes
+interrupted prefixes and budget reservations. Normal completion, fewer errors, or
+earlier stopping do not establish improved task success. These targeted diagnostic
+plots do not replace broader declared dev coverage or frozen final evaluation.
 
 ## Validation
 

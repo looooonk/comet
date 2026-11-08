@@ -135,6 +135,17 @@ def main(argv: list[str] | None = None) -> None:
     analyze.add_argument("--output", type=Path, required=True)
     analyze.add_argument("--bootstrap-samples", type=int, default=2000)
     analyze.add_argument("--seed", type=int, default=0)
+    compare = commands.add_parser("compare-protocol", help="Compare explicitly declared paired protocol arms")
+    compare.add_argument("control", type=Path)
+    compare.add_argument("candidate", type=Path)
+    compare.add_argument("--protocol-field", choices=("prompt", "agent"), action="append", required=True)
+    compare.add_argument("--output", type=Path, required=True)
+    compare.add_argument("--bootstrap-samples", type=int, default=2000)
+    compare.add_argument("--seed", type=int, default=0)
+    baseline = commands.add_parser("plot-baseline", help="Plot protocol success, failure, errors and duration")
+    baseline.add_argument("comparison", type=Path)
+    baseline.add_argument("--output", type=Path, required=True)
+    baseline.add_argument("--title", default="AppWorld baseline diagnostic")
     plot = commands.add_parser("plot", help="Plot paired retention means and uncertainty")
     plot.add_argument("analysis", type=Path)
     plot.add_argument("--output", type=Path, required=True)
@@ -184,6 +195,18 @@ def main(argv: list[str] | None = None) -> None:
         from comet.plotting import plot_retention
 
         plot_retention(args.analysis, args.output, title=args.title)
+        _print({"figure": str(args.output)})
+    elif args.command == "compare-protocol":
+        from comet.comparison import compare_protocol_runs
+
+        compare_protocol_runs(args.control, args.candidate, args.output,
+                              protocol_fields=args.protocol_field,
+                              bootstrap_samples=args.bootstrap_samples, seed=args.seed)
+        _print({"comparison": str(args.output)})
+    elif args.command == "plot-baseline":
+        from comet.plotting import plot_baseline
+
+        plot_baseline(args.comparison, args.output, title=args.title)
         _print({"figure": str(args.output)})
     else:
         from comet.appworld import AppWorldAdapter, validate_tasks

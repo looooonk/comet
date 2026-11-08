@@ -77,7 +77,84 @@ def _metric(attempts: list[dict[str, Any]], key: str, unit: str, aggregation: st
         raise ValueError(f"Invalid recorded metric: {key}")
     value = (sum(values) if aggregation == "sum" else max(values)) if values else None
     return {"value": value, "unit": unit, "aggregation": aggregation,
-            "observed_attempts": len(values), "total_attempts": len(attempts)}
+            "observed_attempts": len(values), "total_attempts": len(attempts),
+            "coverage": dict(Counter(
+                attempt.get("metrics", {}).get("metric_coverage", {}).get(key, "unspecified")
+                if isinstance(attempt.get("metrics", {}).get(key), (int, float)) else "unavailable"
+                for attempt in attempts
+            ))}
+
+
+def reserved_seconds(cell: dict) -> float:
+    return cell.get("reserved_budget_seconds", 0) + sum(
+        attempt.get("reserved_budget_seconds", 0) for attempt in cell["attempts"]
+    )
+
+
+def recovery_summary(cells: list[dict[str, Any]]) -> dict[str, Any]:
+    """Describe recorded decisions without treating absent failure records as denials."""
+    attempts = [attempt for cell in cells for attempt in cell["attempts"]]
+    events = [event for attempt in attempts for event in attempt.get("recovery_events", [])]
+    requests = [event for event in events if event.get("triggered")]
+    results = [event.get("result", {}) for event in requests]
+    admissions = [result["admitted"] for result in results
+                  if type(result.get("admitted")) is bool]
+    allowances = [result["allowance_consumed"] for result in results
+                  if type(result.get("allowance_consumed")) is bool]
+    statuses = Counter(
+        result.get("status", "completed" if result.get("admitted") is True else
+                   "denied" if result.get("admitted") is False else "unknown")
+        for result in results
+    )
+    durations = [result["seconds"] for result in results
+                 if isinstance(result.get("seconds"), (int, float))]
+    if any(not math.isfinite(value) or value < 0 for value in durations):
+        raise ValueError("Invalid recorded recovery seconds")
+    fractions = []
+    for cell in cells:
+        requested = [event for attempt in cell["attempts"]
+                     for event in attempt.get("recovery_events", []) if event.get("triggered")]
+        measured = [event.get("result", {}).get("seconds") for event in requested]
+        complete = all("recovery_events" in attempt and attempt["status"] != "interrupted"
+                       for attempt in cell["attempts"])
+        budget = cell.get("budget_seconds")
+        if (complete and isinstance(budget, (int, float)) and budget > 0
+                and all(isinstance(value, (int, float)) for value in measured)):
+            fractions.append(sum(measured) / budget)
+    return {
+        "decision_count": len(events), "requested_count": len(requests),
+        "admitted_count": sum(admissions),
+        "allowance_consumed_count": sum(allowances),
+        "admission_rate": {
+            "value": mean(admissions) if admissions else None,
+            "observed_requests": len(admissions), "total_requests": len(requests),
+        },
+        "result_status_counts": dict(statuses),
+        "refusal_reasons": dict(Counter(
+            result.get("reason", "unspecified") for result in results
+            if result.get("admitted") is False
+        )),
+        "failure_reasons": dict(Counter(
+            result.get("failure_reason", "unspecified") for result in results
+            if result.get("status") == "failed"
+        )),
+        "recorded_seconds": {
+            "value": sum(durations) if durations else None,
+            "observed_requests": len(durations), "total_requests": len(requests),
+            "includes": "admission checks and admitted rebuilds, including observed failure time",
+        },
+        "mean_cell_budget_fraction": {
+            "value": mean(fractions) if fractions else None,
+            "complete_cells": len(fractions), "total_cells": len(cells),
+        },
+        "coverage": {
+            "attempts_with_decisions": sum("recovery_events" in attempt for attempt in attempts),
+            "interrupted_attempts": sum(attempt["status"] == "interrupted" for attempt in attempts),
+            "total_attempts": len(attempts),
+            "unknown_admission_requests": len(requests) - len(admissions),
+            "requests_with_allowance_state": len(allowances),
+        },
+    }
 
 
 def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
@@ -131,7 +208,8 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
                        "mean_peak_total_vram_bytes": "peak_total_vram_bytes"}
     for condition_id, group in sorted(by_condition.items()):
         values: dict[str, list[float]] = {name: [] for name in (
-            "oracle_success_rate", "single_attempt_success_rate", "actual_attempts", "latency_seconds"
+            "oracle_success_rate", "single_attempt_success_rate", "actual_attempts", "latency_seconds",
+            "reserved_budget_seconds",
         )}
         for task in tasks:
             paired = [group[(task, seed_)] for seed_ in task_seeds[task]]
@@ -143,6 +221,7 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
             ))
             values["actual_attempts"].append(mean(len(cell["attempts"]) for cell in paired))
             values["latency_seconds"].append(mean(cell["elapsed_seconds"] for cell in paired))
+            values["reserved_budget_seconds"].append(mean(reserved_seconds(cell) for cell in paired))
         task_values[condition_id] = values
         bootstraps[condition_id] = {
             metric: [sum(samples[index] for index in draw) / len(tasks) for draw in draws]
@@ -168,6 +247,14 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
                      if decode_seconds else None,
             "unit": "decode tokens / decode second", "aggregation": "ratio of sums",
             "observed_attempts": len(decoding), "total_attempts": len(attempts),
+            "coverage": dict(Counter(
+                "complete" if all(item.get("metric_coverage", {}).get(key) == "complete"
+                                  for key in ("decode_tokens", "decode_seconds"))
+                else "partial" if any(item.get("metric_coverage", {}).get(key) in
+                                      {"partial", "lower_bound", "unavailable"}
+                                      for key in ("decode_tokens", "decode_seconds"))
+                else "unspecified" for item in decoding
+            )),
         }
         methods = {attempt.get("metrics", {}).get("flops_estimation_method") for attempt in attempts}
         metrics["estimated_flops"]["methods"] = sorted(method for method in methods if method)
@@ -182,6 +269,7 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
                                     for cell in group.values()),
             "zero_attempt_cells": sum(not cell["attempts"] for cell in group.values()),
             "metrics": metrics,
+            "recovery": recovery_summary(list(group.values())),
         }
         resource_values[condition_id] = {}
         for name, key in resource_fields.items():
@@ -215,6 +303,29 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
     return result
 
 
+def read_scored_run(directory: str | Path) -> tuple[dict, dict, dict]:
+    directory = Path(directory).resolve()
+    manifest = _read(directory / "manifest.json")
+    scores = _read(directory / "scores.json")
+    if scores.get("status") != "completed" or manifest.get("status") != "completed":
+        raise ValueError("Run execution and scoring must both be completed before analysis.")
+    if (scores["config_digest"] != manifest["config_digest"] or
+            scores["run_id"] != manifest["run_id"] or scores["stage"] != manifest["stage"]):
+        raise ValueError("Scoring does not match the execution manifest.")
+    if execution_digest(directory, manifest) != scores["execution_digest"]:
+        raise ValueError("Execution artifacts changed after scoring.")
+    runtime: dict[str, Any] = {
+        "engine": {key: value for key, value in manifest.get("engine", {}).items()
+                   if key not in {"model_path", "memory", "warmup"}},
+    }
+    for label, recorded in (("execution", manifest.get("provenance", {})),
+                            ("evaluation", scores.get("evaluation_provenance", {}))):
+        if not all(key in recorded for key in ("source_hashes", "installed_packages")):
+            raise ValueError(f"Run is missing {label} source or runtime provenance.")
+        runtime[label] = {key: recorded[key] for key in ("source_hashes", "installed_packages")}
+    return manifest, scores, runtime
+
+
 def analyze_runs(run_dirs: list[str | Path], output: str | Path, *, bootstrap_samples: int = 2000,
                  seed: int = 0) -> dict[str, Any]:
     cells: list[dict[str, Any]] = []
@@ -225,28 +336,11 @@ def analyze_runs(run_dirs: list[str | Path], output: str | Path, *, bootstrap_sa
     runtime_contract: dict[str, Any] | None = None
     for directory in run_dirs:
         directory = Path(directory).resolve()
-        manifest = _read(directory / "manifest.json")
-        scores = _read(directory / "scores.json")
-        if scores.get("status") != "completed" or manifest.get("status") != "completed":
-            raise ValueError("Run execution and scoring must both be completed before analysis.")
-        if (scores["config_digest"] != manifest["config_digest"] or
-                scores["run_id"] != manifest["run_id"] or scores["stage"] != manifest["stage"]):
-            raise ValueError("Scoring does not match the execution manifest.")
-        if execution_digest(directory, manifest) != scores["execution_digest"]:
-            raise ValueError("Execution artifacts changed after scoring.")
+        manifest, scores, runtime = read_scored_run(directory)
         smoke = manifest.get("integration_smoke", False)
         if integration_smoke is not None and smoke != integration_smoke:
             raise ValueError("Integration smoke outputs cannot be mixed with research results.")
         integration_smoke = smoke
-        runtime: dict[str, Any] = {
-            "engine": {key: value for key, value in manifest.get("engine", {}).items()
-                       if key not in {"model_path", "memory", "warmup"}},
-        }
-        for label, recorded in (("execution", manifest.get("provenance", {})),
-                                ("evaluation", scores.get("evaluation_provenance", {}))):
-            if not all(key in recorded for key in ("source_hashes", "installed_packages")):
-                raise ValueError(f"Run is missing {label} source or runtime provenance.")
-            runtime[label] = {key: recorded[key] for key in ("source_hashes", "installed_packages")}
         if runtime_contract is not None and runtime != runtime_contract:
             raise ValueError("Do not pool runs with different source, evaluator, runtime or hardware.")
         runtime_contract = runtime
