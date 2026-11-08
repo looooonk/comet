@@ -27,7 +27,8 @@ job, VM and disks absent, removed the verified cloud artifacts, and found no
 allocated NAT IP. No retry was submitted.
 
 Observed NAT traffic was 27.55 GiB, corresponding to approximately $1.24 in
-processing charges at the published rate. The conservative total estimate is
+processing charges at the [published NAT rate](https://cloud.google.com/nat/pricing).
+The conservative total estimate is
 **$1.98**, including machine time, disk and a storage/transfer reserve. Actual
 billing remains unmeasured; the original $5 allowance stays reserved when
 planning against the $40 ceiling. See the

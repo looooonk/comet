@@ -5,9 +5,11 @@
 The [November 8 numerical calibration](reference-calibration-2026-11-08.md)
 records 165 passed L40S checks and a failed relative-error screening gate. A
 separate FP32 CPU comparison found the native BF16 output closer to FP32 than
-the BF16 reference on 23/24 positions. The original failure remains preserved;
-the revised screen and separate prompt corpus still need live validation before
-the next task pilot.
+the BF16 reference on 23/24 positions. The revised default screen passed on
+A6000, but the separate corpus failed. Further FP32 and fresh-cache diagnostics
+did not support persistent-cache corruption. The bounded protocol pilot may
+proceed under the [explicit qualification](pilot-numerical-qualification-2026-11-08.json),
+preserving both failed screens; final-study qualification remains open.
 
 The [November 8 foundation repair](foundation-repair-2026-11-08.md) passed 149 CPU
 checks and reproduced the corrected-sampler baseline chart with explicit protocol

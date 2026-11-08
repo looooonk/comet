@@ -43,3 +43,12 @@ requires broader declared dev confirmation before retention/recovery sweeps. The
 hardware and newer-model authorizations are recorded in
 [hardware qualification](../experimental-hardware.md) and
 [exploratory models](../experimental-models.md).
+
+The [numerical qualification](pilot-numerical-qualification-2026-11-08.json)
+records a subsequent pilot-only exception to the reference-screen requirement
+above. After the separate corpus failed, independent FP32 and fresh-replay
+diagnostics supported finite-precision drift without an identified cache bug.
+The bounded paired pilot may proceed on A6000 with the production code and
+numerical settings unchanged and every other managed GPU check required.
+Preserve the failed screens and the explicit exclusion; this does not qualify
+final evaluation or establish equivalent sampling distributions.

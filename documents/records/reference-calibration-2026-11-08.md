@@ -59,3 +59,36 @@ and its CPU calibration at `5060c8f`, following
 [the numerical validation guide](../reference-validation.md). The calibration
 helper checks its metric-source tolerances against the recorded run, so use its
 recorded source when reproducing the original 0.02-screen evidence.
+
+## Separate-corpus outcome and bounded pilot decision
+
+The A6000 follow-on at `f942ca2` passed 187 ordinary checks with three skips,
+including the revised default-corpus screen. The separate corpus then failed:
+the largest absolute/relative RMSE was 0.75211/0.18250 and the largest
+Jensen-Shannon divergence was 0.01716. All 24 greedy choices still agreed.
+The job stopped before history replay or task execution. These failed gates
+remain unchanged.
+
+A second CPU FP32 calibration and fresh native replay localized the discrepancy.
+Across the separate corpus, native pooled RMSE against FP32 was 0.09420 versus
+0.14370 for Transformers BF16. Both agreed with all 24 FP32 greedy choices.
+For the largest-error tool continuation, fresh native inference had absolute
+RMSE 0.32374 and divergence 0.01144 against FP32, nearly the same as cached
+inference's 0.32690 and 0.01130. Cached-versus-fresh divergence at that position
+was only about 0.0000165. Rebuilding the cache did not remove the dominant error;
+simple persistent-cache corruption is not supported by this diagnostic.
+
+These results support finite-precision implementation drift as the leading
+explanation. They do not establish numerical equivalence: probability differences
+are meaningful, and matching greedy tokens does not establish matching sampling
+distributions. Transformers BF16 also differs from FP32, so it cannot be treated
+as exact numerical ground truth.
+
+The [bounded pilot qualification](pilot-numerical-qualification-2026-11-08.json)
+permits the already declared train/dev protocol comparison on A6000 while
+preserving both failed screens and the complete evidence. The production engine,
+BF16 precision and experimental settings stay unchanged. All other managed GPU
+checks remain required; the numerical screen is explicitly excluded from this
+pilot's launch gate under the recorded qualification. This is a reviewed pilot
+decision, not a numerical pass or final-study qualification. A new concrete
+inference or environment failure still requires investigation before expansion.
