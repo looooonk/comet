@@ -2,6 +2,12 @@
 
 ## Latest results
 
+The [November 8 foundation repair](foundation-repair-2026-11-08.md) passed 149 CPU
+checks and reproduced the corrected-sampler baseline chart with explicit protocol
+compatibility and measurement coverage. Live GPU checks and the
+[new executable-action prompt diagnostic](execution-prompt-2026-11-08-plan.md)
+remain pending; the reanalysis does not add model-success evidence.
+
 The [Qwen3-14B retention pilot](retention-pilot-2026-10-20.md) completed on
 October 20, 2026; its results were collected and reproduced on October 31.
 Full cache solved 1/8 dev tasks, and AgentKV at 80%, 50%, and 25% retention
