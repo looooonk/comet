@@ -345,6 +345,8 @@ def test_resume_inflight_conservatively_consumes_budget(
     attempt_path = tmp_path / cell["attempts"][0]["artifact_dir"] / "attempt.json"
     if missing_artifact:
         attempt_path.unlink()
+    else:
+        write_json(attempt_path, cell["attempts"][0])
     if load_failure:
         def unavailable(_condition):
             raise MemoryCapExceeded("model does not fit")

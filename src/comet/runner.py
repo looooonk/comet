@@ -220,14 +220,37 @@ class Runner:
         reserved = max(0.0, self.config.budget_seconds - cell["elapsed_seconds"])
         for attempt in cell["attempts"]:
             if attempt["status"] == "running":
+                path = self.output / attempt["artifact_dir"] / "attempt.json"
+                if path.exists():
+                    latest = read_json(path)
+                    if any(latest.get(key) != attempt.get(key)
+                           for key in ("attempt_index", "seed", "artifact_dir")):
+                        raise ValueError("Interrupted attempt journal has a different identity")
+                    attempt.update(latest)
+                if attempt["status"] != "running":
+                    observed = max(
+                        attempt.get("budget_elapsed_seconds", 0),
+                        cell["elapsed_seconds"] + attempt.get("elapsed_seconds", 0),
+                    )
+                    cell["observed_elapsed_seconds"] = observed
+                    cell["reserved_budget_seconds"] = max(0.0, self.config.budget_seconds - observed)
+                    if attempt["status"] == "completed" and observed >= self.config.budget_seconds:
+                        attempt.update(
+                            status="timeout",
+                            failure_reason="Durable attempt journal reached or exceeded the shared budget",
+                            budget_elapsed_seconds=observed,
+                        )
+                        write_json(path, attempt)
+                    continue
                 attempt.update(
                     status="interrupted",
                     failure_reason="process_interrupted",
                     budget_elapsed_seconds=self.config.budget_seconds,
                     reserved_budget_seconds=reserved,
                 )
-                write_json(self.output / attempt["artifact_dir"] / "attempt.json", attempt)
-        cell.update(elapsed_seconds=self.config.budget_seconds, completed=True, inflight=False)
+                write_json(path, attempt)
+        cell.update(elapsed_seconds=max(self.config.budget_seconds, cell.get("observed_elapsed_seconds", 0)),
+                    completed=True, inflight=False)
 
     def _persist_cell(self, path: Path, cell: dict, budget: Budget) -> None:
         write_json(path, cell)
@@ -339,7 +362,9 @@ class Runner:
                         or type(error).__name__ == "OutOfMemoryError"
                         else "error"
                     )
-                    attempt.update(status=status, failure_reason=f"Attempt cleanup failed: {error}")
+                    attempt.setdefault("cleanup_errors", []).append(f"{type(error).__name__}: {error}")
+                    if attempt["status"] == "completed":
+                        attempt.update(status=status, failure_reason=f"Attempt cleanup failed: {error}")
             budget.timings["cleanup"] = (
                 budget.timings.get("cleanup", 0) + budget.elapsed - cleanup_start
             )
@@ -349,10 +374,17 @@ class Runner:
             attempt["timings"] = {k: v - old_timings.get(k, 0) for k, v in budget.timings.items()}
             attempt["tool_calls"] = state["tool_calls"]
             attempt["rebuilds"] = state["rebuilds"]
-            for key, value in _plain(engine.memory_stats()).items():
-                if key.startswith("peak_"):
-                    value = max(value, attempt["metrics"].get(key, 0))
-                attempt["metrics"][key] = value
+            try:
+                memory = _plain(engine.memory_stats())
+            except Exception as error:
+                attempt["metrics"]["memory_error"] = f"{type(error).__name__}: {error}"
+                if attempt["status"] == "completed":
+                    attempt.update(status="error", failure_reason=f"Final memory measurement failed: {error}")
+            else:
+                for key, value in memory.items():
+                    if key.startswith("peak_"):
+                        value = max(value, attempt["metrics"].get(key, 0))
+                    attempt["metrics"][key] = value
             write_json(
                 directory / "trajectory.json",
                 {
@@ -362,6 +394,42 @@ class Runner:
                 },
             )
             write_json(directory / "attempt.json", attempt)
+
+    def _record_operation(self, attempt: dict, result: dict, *, recovery: bool = False) -> None:
+        metrics = attempt["metrics"]
+        coverage = metrics.setdefault("metric_coverage", {})
+        fields = {"estimated_flops": "estimated_flops"}
+        if recovery:
+            fields.update(rebuild_seconds="seconds", rebuild_prefill_tokens="prompt_tokens")
+        else:
+            fields.update(decode_seconds="decode_seconds", prefill_seconds="prefill_seconds",
+                          prefill_tokens="prompt_tokens", decode_tokens="decode_tokens",
+                          generated_tokens="generated_tokens")
+            if "token_ids" in result:
+                result = {**result, "generated_tokens": len(result["token_ids"])}
+        failed = result.get("status") == "failed"
+        for name, source in fields.items():
+            previous = coverage.get(name, "complete")
+            if source not in result:
+                coverage[name] = ("partial" if name.endswith("seconds") else "lower_bound") \
+                    if name in metrics else "unavailable"
+                continue
+            metrics[name] = metrics.get(name, 0) + result[source]
+            current = "complete"
+            if failed and name != "generated_tokens":
+                current = "partial" if name.endswith("seconds") else "lower_bound"
+            if previous != "complete":
+                current = "partial" if name.endswith("seconds") else "lower_bound"
+            coverage[name] = current
+        for name in ("incomplete_forward_tokens", "incomplete_forward_estimated_flops"):
+            if name in result:
+                metrics[name] = metrics.get(name, 0) + result[name]
+        for name, value in result.get("memory", {}).items():
+            if name.startswith("peak_"):
+                metrics[name] = max(metrics.get(name, 0), value)
+        metrics["flops_estimation_method"] = self.engine_metadata.get(
+            "estimated_flops_method", "unavailable"
+        )
 
     def _trajectory(
         self,
@@ -391,51 +459,69 @@ class Runner:
                 state["rebuilds"],
             )
             event = decision.to_dict()
+            attempt["recovery_events"].append(event)
             if decision.triggered:
-                with budget.charge("rebuild"):
-                    recovery = _plain(
-                        engine.recover(
+                event["result"] = {"status": "pending", "admitted": None,
+                                   "allowance_consumed": None}
+                write_json(directory / "recovery_events.json", attempt["recovery_events"])
+                write_json(directory / "attempt.json", attempt)
+                recovery, error, called = {}, None, False
+                started = budget.elapsed
+                try:
+                    with budget.charge("rebuild"):
+                        called = True
+                        recovery = _plain(engine.recover(
                             list(engine.raw_token_ids) + state["pending_tokens"],
                             deadline=budget.deadline,
-                        )
-                    )
-                event["result"] = recovery
-                attempt["metrics"]["estimated_flops"] = attempt["metrics"].get(
-                    "estimated_flops", 0
-                ) + recovery.get("estimated_flops", 0)
-                admitted = recovery.get("admitted", False)
-                if admitted:
-                    state["rebuilds"] += 1
-                    state["pending_tokens"] = []
-                    attempt["metrics"]["rebuild_prefill_tokens"] = recovery.get("input_tokens", 0)
-                    attempt["metrics"]["rebuild_seconds"] = recovery.get("seconds", 0)
-            attempt["recovery_events"].append(event)
-            with budget.charge("inference"):
-                generation = engine.generate(
-                    state["pending_tokens"],
-                    max_new_tokens=min(
-                        self.config.sampling.max_new_tokens,
-                        self.config.engine.max_context_tokens - context,
-                    ),
-                    temperature=self.config.sampling.temperature,
-                    top_p=self.config.sampling.top_p,
-                    deadline=budget.deadline,
-                )
-            result = _plain(generation)
-            for key in ("decode_seconds", "prefill_seconds", "estimated_flops"):
-                attempt["metrics"][key] = attempt["metrics"].get(key, 0) + result.get(key, 0)
-            attempt["metrics"]["decode_tokens"] = attempt["metrics"].get(
-                "decode_tokens", 0
-            ) + result.get("decode_tokens", 0)
-            attempt["metrics"]["flops_estimation_method"] = self.engine_metadata.get(
-                "estimated_flops_method", "unavailable"
-            )
-            attempt["metrics"]["generated_tokens"] = attempt["metrics"].get(
-                "generated_tokens", 0
-            ) + len(result["token_ids"])
-            attempt["metrics"]["prefill_tokens"] = attempt["metrics"].get(
-                "prefill_tokens", 0
-            ) + result.get("prompt_tokens", 0)
+                        ))
+                except BaseException as failure:
+                    error = failure
+                    raise
+                finally:
+                    progress = getattr(engine, "last_recovery", {}) if called else {}
+                    recovery = {**recovery, **progress}
+                    recovery.setdefault("status", "failed" if error else
+                                        "completed" if recovery.get("admitted") else "denied")
+                    recovery.setdefault("admitted", None)
+                    recovery.setdefault("allowance_consumed", recovery["admitted"])
+                    recovery.setdefault("seconds", budget.elapsed - started)
+                    if error is not None:
+                        recovery.setdefault("failure_reason", f"{type(error).__name__}: {error}")
+                    event["result"] = recovery
+                    if recovery["allowance_consumed"]:
+                        state["rebuilds"] += 1
+                        if len(engine.raw_token_ids) >= context:
+                            state["pending_tokens"] = []
+                    attempt["rebuilds"] = state["rebuilds"]
+                    self._record_operation(attempt, recovery, recovery=True)
+                    write_json(directory / "recovery_events.json", attempt["recovery_events"])
+                    write_json(directory / "attempt.json", attempt)
+            result, called, error = {}, False, None
+            try:
+                with budget.charge("inference"):
+                    called = True
+                    result = _plain(engine.generate(
+                        state["pending_tokens"],
+                        max_new_tokens=min(
+                            self.config.sampling.max_new_tokens,
+                            self.config.engine.max_context_tokens - context,
+                        ),
+                        temperature=self.config.sampling.temperature,
+                        top_p=self.config.sampling.top_p,
+                        deadline=budget.deadline,
+                    ))
+            except BaseException as failure:
+                error = failure
+                raise
+            finally:
+                progress = getattr(engine, "last_generation", {}) if called else {}
+                recorded = {**result, **progress}
+                recorded.setdefault("status", "failed" if error else "completed")
+                self._record_operation(attempt, recorded)
+                if error is not None:
+                    recorded.setdefault("failure_reason", f"{type(error).__name__}: {error}")
+                    attempt.setdefault("generation_failures", []).append(recorded)
+                    write_json(directory / "attempt.json", attempt)
             response = engine.tokenizer.decode(result["token_ids"], skip_special_tokens=True)
             try:
                 action = parse_action(

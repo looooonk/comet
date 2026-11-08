@@ -11,7 +11,7 @@ import pytest
 
 from comet.engine import EngineSettings, MiniSGLangEngine, retention_target
 from comet.engine.contracts import MODEL_PROFILES, model_storage
-from comet.errors import MemoryCapExceeded
+from comet.errors import BudgetExpired, MemoryCapExceeded
 
 
 @pytest.mark.gpu
@@ -161,11 +161,53 @@ def _persistence_check(tmp_path):
             same_output = engine.generate([], 4, 0.0, 1.0, time.monotonic() + 600)
             assert next_output.token_ids == same_output.token_ids
             records.append({"method": method, "memory": memory, "recovered": recovered.admitted})
+        records.extend(_failure_accounting_check(engine, compressed_checkpoint, suffix))
         evidence = Path(os.environ.get("COMET_GPU_EVIDENCE", tmp_path / "gpu-evidence.json"))
         evidence.parent.mkdir(parents=True, exist_ok=True)
         evidence.write_text(json.dumps({"device": engine.device_name, "integration_only": True, "checks": records}, indent=2) + "\n")
     finally:
         engine.close()
+
+
+def _failure_accounting_check(engine, checkpoint, suffix):
+    records = []
+    forward = engine.scheduler._forward
+    for operation in ("generate", "recover"):
+        engine.restore(checkpoint)
+        calls = 0
+
+        def fail_second_batch(batch):
+            nonlocal calls
+            calls += 1
+            if calls == 2:
+                raise BudgetExpired("injected second-batch timeout")
+            return forward(batch)
+
+        engine.scheduler._forward = fail_second_batch
+        try:
+            with pytest.raises(BudgetExpired, match="injected"):
+                if operation == "generate":
+                    engine.generate(suffix, 8, 0.0, 1.0, time.monotonic() + 600, ignore_eos=True)
+                else:
+                    engine.recover(engine.raw_token_ids + suffix, time.monotonic() + 600)
+        finally:
+            engine.scheduler._forward = forward
+        engine.synchronize()
+        progress = engine.last_generation if operation == "generate" else engine.last_recovery
+        assert progress["status"] == "failed"
+        assert progress["prompt_tokens"] > 0 and progress["estimated_flops"] > 0
+        assert progress["incomplete_forward_tokens"] > 0
+        assert progress["incomplete_forward_estimated_flops"] > 0
+        assert progress["prefill_seconds"] > 0
+        if operation == "generate":
+            assert progress["generated_tokens"] > 0
+            assert engine.raw_token_ids[-len(progress["token_ids"]):] == progress["token_ids"]
+        else:
+            assert progress["admitted"] and progress["allowance_consumed"]
+            assert engine.recovery_count == 1
+            assert engine.recover(engine.raw_token_ids, time.monotonic() + 600).reason == "recovery_limit"
+        records.append({"check": f"{operation}_timeout_accounting", "progress": progress})
+    return records
 
 
 def _equal_state(left, right, torch):
@@ -271,6 +313,12 @@ def _memory_cap_check(tmp_path):
             with pytest.raises(MemoryCapExceeded, match="CUDA allocator refused") as failure:
                 engine.generate([token], 1, 0.0, 1.0, time.monotonic() + 600, ignore_eos=True)
             assert isinstance(failure.value.__cause__, torch.cuda.OutOfMemoryError)
+            progress = engine.last_generation
+            assert progress["status"] == "failed"
+            assert progress["incomplete_forward_tokens"] > 0
+            assert progress["incomplete_forward_estimated_flops"] > 0
+            assert progress["estimated_flops"] == 0
+            assert progress["prefill_seconds"] > 0
         finally:
             engine.scheduler._forward = forward
         engine.synchronize()
@@ -281,6 +329,7 @@ def _memory_cap_check(tmp_path):
             "cause": type(failure.value.__cause__).__name__, "request_bytes": request,
             "allocated_before_bytes": allocated, "allocator_ceiling_bytes": allocator_ceiling,
             "physical_free_before_bytes": free, "memory": memory,
+            "progress": progress,
         })
         evidence.write_text(json.dumps({
             "integration_only": True, "provenance": engine.provenance(),

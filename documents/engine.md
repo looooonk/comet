@@ -143,6 +143,36 @@ query count. It excludes eviction scoring, elementwise kernels, and sampling,
 and is an estimate rather than a hardware FLOP measurement. Rebuild estimates
 are returned separately for the runner to add.
 
+Each native operation also exposes `last_generation` or `last_recovery`, including
+partial counters when it raises. Only completed scheduler batches contribute to
+forward-token counts and `estimated_flops`. A failed batch's scheduled tokens and
+estimated full-batch work are recorded as `incomplete_forward_tokens` and
+`incomplete_forward_estimated_flops`; these are excluded from the completed-work
+totals because the amount actually executed is unknown. Sampled tokens already
+delivered to the adapter remain in the raw transcript and the failed generation
+record. Forward timing includes elapsed host time until an exception; outstanding
+GPU work is synchronized and charged separately as cleanup.
+
+Attempt `metrics.metric_coverage` distinguishes `complete` counters, `lower_bound`
+work totals, `partial` timings, and `unavailable` measurements. A failed operation
+makes its work estimate a lower bound even when earlier batches completed. The
+observed generated-token count remains exact for tokens delivered to the adapter.
+These distinctions describe accounting coverage, not FLOPs estimation accuracy.
+Memory-probe errors are retained separately and cannot erase the primary failure
+or the last available memory measurements.
+
+The runner writes triggered recovery decisions to `recovery_events.json` and
+`attempt.json` before calling the engine. Finalized results distinguish
+`completed`, `denied`, and `failed`, with admission, refusal or failure reason,
+elapsed time, partial prefill work, and `allowance_consumed`. Admission is unknown
+when a failure precedes the admission decision. Native admission consumes the
+allowance before any rebuild mutation, including a rebuild that then fails.
+`rebuild_prefill_tokens` counts completed prefill work, rather than requested
+history length; `input_tokens` records the latter in the event. Rebuild elapsed
+time includes admission checks and failed work. Interrupted-run finalization
+merges the latest matching attempt journal and reserves the remaining cell budget;
+it preserves a durable terminal attempt if the cell journal had not caught up.
+
 ## Patch and checks
 
 The patch adds relative budgets and strict query-observation checks, preserves
@@ -195,6 +225,13 @@ request. This distinguishes experimental-cap rejection from physical device
 exhaustion. It verifies the real CUDA exception is translated to
 `MemoryCapExceeded` and the measured peak remains below the unchanged cap.
 This injection is test instrumentation, not an experimental inference path.
+The same check verifies that the failed forward's elapsed time and scheduled
+work survive the allocator error without claiming its FLOPs completed. The
+persistence subprocess additionally injects a timeout after one real completed
+batch in generation and recovery, checking partial counters, sampled tokens,
+and consumed rebuild allowance. CPU checks in `tests/test_failure_metrics.py`
+exercise runner journaling and error propagation; they do not replace these
+GPU checks.
 Set `COMET_GPU_MEMORY_EVIDENCE` to preserve its JSON report and neighboring
 before/after checkpoint files; otherwise they use pytest's temporary directory.
 Run just this check with `pytest tests/test_engine_gpu.py -k memory_cap`.

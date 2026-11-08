@@ -8,6 +8,7 @@ import subprocess
 import tempfile
 import threading
 import uuid
+from contextlib import contextmanager
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
@@ -111,6 +112,8 @@ class MiniSGLangEngine:
         self._orphan_req = None
         self._next_logits = None
         self._recoveries = 0
+        self._last_generation: dict = {}
+        self._last_recovery: dict = {}
         self._replies: list = []
         self._peak_total = 0
         self._peak_kv = 0
@@ -153,6 +156,14 @@ class MiniSGLangEngine:
     @property
     def recovery_count(self) -> int:
         return self._recoveries
+
+    @property
+    def last_generation(self) -> dict:
+        return dict(self._last_generation)
+
+    @property
+    def last_recovery(self) -> dict:
+        return dict(self._last_recovery)
 
     @property
     def retention_events(self) -> list[dict]:
@@ -331,11 +342,49 @@ class MiniSGLangEngine:
                     for req in batch.reqs)
         return 2 * self.parameter_count * tokens + self._attention_flop_factor * pairs
 
+    @contextmanager
+    def _count_forward(self, batch, progress: dict):
+        tokens = sum(req.extend_len for req in batch.reqs)
+        flops = self._forward_flops(batch)
+        component = "prefill_seconds" if batch.is_prefill else "decode_seconds"
+        started = monotonic()
+        try:
+            yield
+        except BaseException:
+            # A failed batch may have launched kernels without completing all its work.
+            progress["incomplete_forward_tokens"] += tokens
+            progress["incomplete_forward_estimated_flops"] += flops
+            raise
+        else:
+            progress["estimated_flops"] += flops
+            if batch.is_prefill:
+                progress["prompt_tokens"] += tokens
+            else:
+                progress["decode_tokens"] += batch.size
+        finally:
+            progress[component] += monotonic() - started
+
+    @staticmethod
+    def _operation_progress() -> dict:
+        return {
+            "status": "running", "failure_reason": None,
+            "prefill_seconds": 0.0, "decode_seconds": 0.0,
+            "prompt_tokens": 0, "decode_tokens": 0, "estimated_flops": 0,
+            "incomplete_forward_tokens": 0, "incomplete_forward_estimated_flops": 0,
+        }
+
+    def _operation_memory(self, progress: dict) -> None:
+        try:
+            progress["memory"] = self.memory_stats()
+        except Exception as error:
+            progress["memory_error"] = f"{type(error).__name__}: {error}"
+
     def start(self, seed: int):
         self._clear_session()
         self._session_id = f"comet-{uuid.uuid4().hex}"
         self._raw, self._phase, self._semantic = [], [], []
         self._recoveries = 0
+        self._last_generation, self._last_recovery = {}, {}
         self.scheduler.eviction_manager.retention_events.clear()
         self.torch.cuda.empty_cache()
         with self._memory_lock:
@@ -404,26 +453,29 @@ class MiniSGLangEngine:
     def generate(self, append_token_ids: list[int], max_new_tokens: int, temperature: float,
                  top_p: float, deadline: float, *, ignore_eos: bool = False) -> GenerationResult:
         from minisgl.core import SamplingParams
-        from minisgl.message import TokenizerErrorMsg, UserMsg
+        from minisgl.message import DetokenizeMsg, TokenizerErrorMsg, UserMsg
 
-        if self._session_id is None:
-            raise RuntimeError("call start(seed) before generate")
-        if max_new_tokens <= 0 or not 0 < top_p <= 1 or temperature < 0:
-            raise ValueError("invalid sampling settings")
-        if len(self._raw) + len(append_token_ids) + max_new_tokens > self.settings.max_context_tokens:
-            raise UnsupportedPath("generation would exceed the frozen maximum context; truncation is forbidden")
-        self._check_deadline(deadline)
-        self._append_phases(append_token_ids)
-        self._raw.extend(append_token_ids)
-        self._uid += 1
+        progress = self._last_generation = self._operation_progress()
         self._replies = []
-        prefill_seconds = decode_seconds = 0.0
-        prompt_tokens = estimated_flops = decode_outputs = 0
-        sampling = SamplingParams(temperature=temperature, top_p=top_p, max_tokens=max_new_tokens,
-                                  ignore_eos=ignore_eos)
         try:
+            if self._session_id is None:
+                raise RuntimeError("call start(seed) before generate")
+            if max_new_tokens <= 0 or not 0 < top_p <= 1 or temperature < 0:
+                raise ValueError("invalid sampling settings")
+            if len(self._raw) + len(append_token_ids) + max_new_tokens > self.settings.max_context_tokens:
+                raise UnsupportedPath("generation would exceed the frozen maximum context; truncation is forbidden")
+            self._check_deadline(deadline)
+            self._append_phases(append_token_ids)
+            self._raw.extend(append_token_ids)
+            self._uid += 1
+            sampling = SamplingParams(temperature=temperature, top_p=top_p, max_tokens=max_new_tokens,
+                                      ignore_eos=ignore_eos)
             if self._next_logits is not None and not append_token_ids:
-                prefill_seconds = self._sample_saved_logits(sampling)
+                started = monotonic()
+                try:
+                    self._sample_saved_logits(sampling)
+                finally:
+                    progress["prefill_seconds"] += monotonic() - started
             else:
                 self._next_logits = None
                 self.scheduler.engine.comet_last_prefill_logits = None
@@ -442,26 +494,17 @@ class MiniSGLangEngine:
                     forward = self.scheduler._schedule_next_batch()
                     if forward is None:
                         raise MemoryCapExceeded("insufficient KV pool for the pending suffix and generation")
-                    tokens = sum(req.extend_len for req in forward.batch.reqs)
-                    estimated_flops += self._forward_flops(forward.batch)
                     self._sample_memory()
-                    started = monotonic()
-                    output = self.scheduler._forward(forward)
-                    self.scheduler._process_last_data((forward, output))
-                    self.torch.cuda.synchronize()
-                    elapsed = monotonic() - started
-                    if forward.batch.is_prefill:
-                        prefill_seconds += elapsed
-                        prompt_tokens += tokens
-                    else:
-                        decode_seconds += elapsed
-                        decode_outputs += forward.batch.size
+                    with self._count_forward(forward.batch, progress):
+                        output = self.scheduler._forward(forward)
+                        self.scheduler._process_last_data((forward, output))
+                        self.torch.cuda.synchronize()
                 self._check_deadline(deadline)
             self._check_deadline(deadline)
             errors = [reply.error for reply in self._replies if isinstance(reply, TokenizerErrorMsg)]
             if errors:
                 raise UnsupportedPath("; ".join(errors))
-            result = [reply.next_token for reply in self._replies]
+            result = [reply.next_token for reply in self._replies if isinstance(reply, DetokenizeMsg)]
             state = self._state()
             if state is None or state.req is None:
                 raise UnsupportedPath("native session did not park its KV state")
@@ -470,40 +513,70 @@ class MiniSGLangEngine:
             state.full_phase_ids = self.torch.tensor(self._phase, dtype=self.torch.int32)
             if state.req.full_input_ids.tolist() != self._raw:
                 raise UnsupportedPath("native session and raw token transcript diverged")
+            memory = self.memory_stats()
+            progress["status"] = "completed"
             return GenerationResult(result, bool(result and result[-1] == self.tokenizer.eos_token_id),
-                                    decode_seconds, prefill_seconds, prompt_tokens, decode_outputs,
-                                    self.memory_stats(), estimated_flops, len(result))
-        except self.torch.cuda.OutOfMemoryError as exc:
-            raise MemoryCapExceeded("CUDA allocator refused memory under the experimental cap") from exc
+                                    progress["decode_seconds"], progress["prefill_seconds"],
+                                    progress["prompt_tokens"], progress["decode_tokens"], memory,
+                                    progress["estimated_flops"], len(result))
+        except BaseException as error:
+            progress.update(status="failed", failure_reason=f"{type(error).__name__}: {error}")
+            if type(error).__name__ == "OutOfMemoryError":
+                raise MemoryCapExceeded("CUDA allocator refused memory under the experimental cap") from error
+            raise
+        finally:
+            progress["token_ids"] = [reply.next_token for reply in self._replies
+                                     if isinstance(reply, DetokenizeMsg)]
+            progress["generated_tokens"] = len(progress["token_ids"])
+            self._operation_memory(progress)
 
     def recover(self, full_token_ids: list[int], deadline: float) -> RecoveryResult:
         started = monotonic()
         full_token_ids = list(full_token_ids)
-        if full_token_ids[:len(self._raw)] != self._raw:
-            raise ValueError("recovery must preserve the exact current raw token transcript prefix")
-        if self._recoveries:
-            return RecoveryResult(False, "recovery_limit", 0.0, len(self._raw), self.memory_stats())
-        if not full_token_ids:
-            return RecoveryResult(False, "empty_history", 0.0, 0, self.memory_stats())
-        self._check_deadline(deadline)
-        if len(full_token_ids) > self.settings.max_context_tokens:
-            return RecoveryResult(False, "full_history_exceeds_context", monotonic() - started,
-                                  len(full_token_ids), self.memory_stats())
-        if len(full_token_ids) > self.scheduler.engine.num_pages:
-            return RecoveryResult(False, "full_history_exceeds_kv_pool", monotonic() - started,
-                                  len(full_token_ids), self.memory_stats())
-        free, total = self.torch.cuda.mem_get_info()
-        available = self.settings.peak_vram_bytes - (total - free)
-        available += self.torch.cuda.memory_reserved() - self.torch.cuda.memory_allocated()
-        if self._workspace_bound(len(full_token_ids)) > available:
-            return RecoveryResult(False, "transient_workspace_exceeds_cap", monotonic() - started,
-                                  len(full_token_ids), self.memory_stats())
-        suffix = full_token_ids[len(self._raw):]
-        self._append_phases(suffix)
-        self._raw.extend(suffix)
-        self._recoveries += 1
-        estimated_flops = self._prefill_history(deadline)
-        return RecoveryResult(True, None, monotonic() - started, len(self._raw), self.memory_stats(), estimated_flops)
+        progress = self._last_recovery = {
+            **self._operation_progress(), "admitted": None, "reason": None,
+            "allowance_consumed": False, "input_tokens": len(full_token_ids),
+        }
+        try:
+            if full_token_ids[:len(self._raw)] != self._raw:
+                raise ValueError("recovery must preserve the exact current raw token transcript prefix")
+            reason = None
+            if self._recoveries:
+                reason = "recovery_limit"
+            elif not full_token_ids:
+                reason = "empty_history"
+            else:
+                self._check_deadline(deadline)
+                if len(full_token_ids) > self.settings.max_context_tokens:
+                    reason = "full_history_exceeds_context"
+                elif len(full_token_ids) > self.scheduler.engine.num_pages:
+                    reason = "full_history_exceeds_kv_pool"
+                else:
+                    free, total = self.torch.cuda.mem_get_info()
+                    available = self.settings.peak_vram_bytes - (total - free)
+                    available += self.torch.cuda.memory_reserved() - self.torch.cuda.memory_allocated()
+                    if self._workspace_bound(len(full_token_ids)) > available:
+                        reason = "transient_workspace_exceeds_cap"
+            if reason is not None:
+                progress.update(admitted=False, reason=reason, status="denied")
+            else:
+                self._recoveries += 1
+                progress.update(admitted=True, allowance_consumed=True)
+                suffix = full_token_ids[len(self._raw):]
+                self._append_phases(suffix)
+                self._raw.extend(suffix)
+                self._prefill_history(deadline)
+                progress["status"] = "completed"
+            return RecoveryResult(progress["admitted"], reason, monotonic() - started,
+                                  len(full_token_ids), self.memory_stats(), progress["estimated_flops"])
+        except BaseException as error:
+            progress.update(status="failed", failure_reason=f"{type(error).__name__}: {error}")
+            if type(error).__name__ == "OutOfMemoryError":
+                raise MemoryCapExceeded("CUDA allocator refused memory under the experimental cap") from error
+            raise
+        finally:
+            progress["seconds"] = monotonic() - started
+            self._operation_memory(progress)
 
     def _workspace_bound(self, tokens: int) -> int:
         if self.settings.method == "rkv":
@@ -522,7 +595,6 @@ class MiniSGLangEngine:
         self._session_id = f"comet-{uuid.uuid4().hex}"
         table = scheduler.table_manager.allocate()
         req = None
-        estimated_flops = 0
         for end in range(min(len(self._raw), self.settings.prefill_chunk_tokens),
                          len(self._raw) + self.settings.prefill_chunk_tokens, self.settings.prefill_chunk_tokens):
             end = min(end, len(self._raw))
@@ -542,10 +614,10 @@ class MiniSGLangEngine:
             with torch.inference_mode(), scheduler.engine_stream_ctx:
                 scheduler.engine.stream.wait_stream(scheduler.stream)
                 forward = scheduler._prepare_batch(Batch([req], "prefill"))
-                estimated_flops += self._forward_flops(forward.batch)
                 self._sample_memory()
-                output = scheduler._forward(forward)
-                output.copy_done_event.synchronize()
+                with self._count_forward(forward.batch, self._last_recovery):
+                    output = scheduler._forward(forward)
+                    output.copy_done_event.synchronize()
                 self._check_deadline(deadline)
         if req is None:
             raise ValueError("cannot recover empty history")
@@ -557,7 +629,7 @@ class MiniSGLangEngine:
             scheduler.session_manager.finish_request(req)
             torch.cuda.synchronize()
         self._check_deadline(deadline)
-        return estimated_flops
+        return self._last_recovery["estimated_flops"]
 
     def checkpoint(self, path: str | Path) -> dict:
         from .snapshot import save_snapshot
