@@ -158,3 +158,31 @@ index 700868c..15bbe62 100644
      compact_interval: int = 128
      compact_after_prefill: bool = False
      compact_before_park: bool = False
+diff --git a/python/minisgl/engine/sample.py b/python/minisgl/engine/sample.py
+--- a/python/minisgl/engine/sample.py
++++ b/python/minisgl/engine/sample.py
+@@ -30,19 +30,20 @@
+     import flashinfer.sampling as sampling
+ 
+     probs = sampling.softmax(logits, temperatures, enable_pdl=is_sm90_supported())
++    generator = torch.cuda.default_generators[probs.device.index]
+     if top_k is None and top_p is None:
+-        return sampling.sampling_from_probs(probs)
++        return sampling.sampling_from_probs(probs, generator=generator)
+ 
+     if top_p is None:
+         assert top_k is not None
+-        return sampling.top_k_sampling_from_probs(probs, top_k)
++        return sampling.top_k_sampling_from_probs(probs, top_k, generator=generator)
+ 
+     if top_k is None:
+         assert top_p is not None
+-        return sampling.top_p_sampling_from_probs(probs, top_p)
++        return sampling.top_p_sampling_from_probs(probs, top_p, generator=generator)
+ 
+     assert top_k is not None and top_p is not None
+-    return sampling.top_k_top_p_sampling_from_probs(probs, top_k, top_p)
++    return sampling.top_k_top_p_sampling_from_probs(probs, top_k, top_p, generator=generator)
+ 
+ 
+ @dataclass

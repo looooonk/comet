@@ -148,7 +148,12 @@ are returned separately for the runner to add.
 The patch adds relative budgets and strict query-observation checks, preserves
 per-layer/per-head retained positions outside debug mode, permits the memory guard
 to initialize CUDA first, decouples the logical context limit from physical pool
-size, and skips sampling for batches containing only prefill chunks. CUDA graphs
+size, and skips sampling for batches containing only prefill chunks. Sampling
+explicitly uses PyTorch's default CUDA generator, which is seeded per attempt
+and preserved by the shared checkpoint/recovery implementation. FlashInfer 0.5.3
+otherwise creates a fresh generator for each call and ignores the attempt seed.
+The local patch covers unfiltered, top-k, top-p, and combined sampling without
+changing either dependency revision. CUDA graphs
 are disabled consistently across methods. FlashInfer attention, batch size one,
 and the pinned Qwen3 model implementation are shared by every method.
 
@@ -164,6 +169,10 @@ identical raw transcript. Two contrasting new user instructions share the same
 checkpoint, close the prior assistant turn, and use the Qwen non-thinking
 prefill. Each cached/fresh pair must match, and the two continuations must differ.
 Set `COMET_GPU_EVIDENCE` to preserve its JSON report.
+The `sampling` check uses fixed high-entropy logits to verify advancement, seed
+control, exact RNG-state replay, and unchanged greedy behavior. The model
+persistence check also requires sampled generation to advance the CUDA RNG.
+`scripts/run_checks.sh gpu` saves the independent sampler evidence in `sampling.json`.
 `COMET_TEST_MODEL` defaults to `Qwen/Qwen3-8B`; select `Qwen/Qwen3-14B` explicitly
 with its corresponding snapshot for exploratory integration checks. The long
 32K capacity case additionally requires `COMET_TEST_CAPACITY=1`; see the

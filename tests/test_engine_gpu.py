@@ -5,6 +5,7 @@ import sys
 import time
 from dataclasses import asdict
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -15,7 +16,7 @@ from comet.errors import MemoryCapExceeded
 
 @pytest.mark.gpu
 @pytest.mark.skipif(not os.environ.get("COMET_RUN_GPU_TESTS"), reason="explicit GPU integration opt-in required")
-@pytest.mark.parametrize("check", ["persistence", "memory_cap", pytest.param(
+@pytest.mark.parametrize("check", ["sampling", "persistence", "memory_cap", pytest.param(
     "capacity", marks=pytest.mark.skipif(not os.environ.get("COMET_TEST_CAPACITY"),
                                         reason="explicit long-context preflight opt-in required"),
 )])
@@ -25,6 +26,48 @@ def test_native_gpu(check, tmp_path):
         capture_output=True, text=True, timeout=900,
     )
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+def _sampling_check(tmp_path):
+    import torch
+    from minisgl.core import SamplingParams
+    from minisgl.engine.sample import Sampler
+
+    MiniSGLangEngine._verify_installation()
+    device = torch.device("cuda", 0)
+    sampler = Sampler(device, 64)
+    logits = torch.zeros((64, 64), device=device)
+    records = []
+    for top_k, top_p in ((-1, 1.0), (8, 1.0), (-1, 0.95), (8, 0.95)):
+        params = SamplingParams(temperature=0.6, top_k=top_k, top_p=top_p)
+        batch = SimpleNamespace(reqs=[SimpleNamespace(sampling_params=params)] * 64)
+        args = sampler.prepare(batch)
+        sampler.sample(logits, args)
+        torch.cuda.manual_seed_all(17)
+        before = torch.cuda.get_rng_state().clone()
+        first = sampler.sample(logits, args)
+        after = torch.cuda.get_rng_state().clone()
+        second = sampler.sample(logits, args)
+        torch.cuda.set_rng_state(before)
+        replayed = sampler.sample(logits, args)
+        torch.cuda.manual_seed_all(18)
+        other = sampler.sample(logits, args)
+        assert not torch.equal(before, after)
+        assert torch.equal(first, replayed)
+        assert not torch.equal(first, second)
+        assert not torch.equal(first, other)
+        records.append({"top_k": top_k, "top_p": top_p, "rng_advanced": True,
+                        "replay_equal": True, "successive_samples_differ": True,
+                        "seed_controls_samples": True, "first_samples": first.tolist()})
+    greedy = sampler.prepare(SimpleNamespace(reqs=[SimpleNamespace(
+        sampling_params=SamplingParams(temperature=0.0))] * 64))
+    before = torch.cuda.get_rng_state().clone()
+    assert torch.equal(sampler.sample(logits, greedy), torch.zeros(64, device=device))
+    assert torch.equal(before, torch.cuda.get_rng_state())
+    evidence = Path(os.environ.get("COMET_GPU_SAMPLING_EVIDENCE", tmp_path / "sampling.json"))
+    evidence.parent.mkdir(parents=True, exist_ok=True)
+    evidence.write_text(json.dumps({"device": torch.cuda.get_device_name(),
+                                   "checks": records, "greedy_preserves_rng": True}, indent=2) + "\n")
 
 
 def _persistence_check(tmp_path):
@@ -77,8 +120,10 @@ def _persistence_check(tmp_path):
         repeated = engine.generate(suffix, 4, 0.0, 1.0, time.monotonic() + 600)
         assert repeated.token_ids == second.token_ids
         engine.restore(checkpoint)
+        before_sampling = torch.cuda.get_rng_state().clone()
         sampled = engine.generate(suffix, 8, 0.6, 0.9, time.monotonic() + 600)
         sampled_rng = torch.cuda.get_rng_state().clone()
+        assert not torch.equal(before_sampling, sampled_rng)
         engine.restore(checkpoint)
         sampled_again = engine.generate(suffix, 8, 0.6, 0.9, time.monotonic() + 600)
         assert sampled.token_ids == sampled_again.token_ids
@@ -306,5 +351,5 @@ def _capacity_check(tmp_path):
 
 
 if __name__ == "__main__":
-    {"persistence": _persistence_check, "memory_cap": _memory_cap_check,
+    {"sampling": _sampling_check, "persistence": _persistence_check, "memory_cap": _memory_cap_check,
      "capacity": _capacity_check}[sys.argv[1]](Path(sys.argv[2]))

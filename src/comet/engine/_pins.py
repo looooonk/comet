@@ -1,1 +1,8 @@
-PATCH_FILE_HASHES = {'engine/engine.py': '1871c222c7b28d39ce73623358efa232f97b431fd76aa8bcfedec7c5793822e9', 'eviction/manager.py': '763c71a879e9e26e5043e071ab831195807a14226de407f0bd80b470c9d2cf53', 'eviction/relative.py': '079ab13bb5b23569c8518259f1924b49589d4f0c70d6167cb4b42ff090a55919', 'scheduler/config.py': '266e318bd330d5157555b4e80cfe7aa3936bd9381edf4359ec8cefdb7086cc4a', 'scheduler/cache.py': 'c23a271091e2a6e86a2580eb6d796c47c396cf425ac462d13546ba2e5a796996'}
+PATCH_FILE_HASHES = {
+    "engine/engine.py": "1871c222c7b28d39ce73623358efa232f97b431fd76aa8bcfedec7c5793822e9",
+    "engine/sample.py": "ccfb29c95a1ede76128348dde1a2f4a645ece5c4105aa89610a9ae6579b1c860",
+    "eviction/manager.py": "763c71a879e9e26e5043e071ab831195807a14226de407f0bd80b470c9d2cf53",
+    "eviction/relative.py": "079ab13bb5b23569c8518259f1924b49589d4f0c70d6167cb4b42ff090a55919",
+    "scheduler/cache.py": "c23a271091e2a6e86a2580eb6d796c47c396cf425ac462d13546ba2e5a796996",
+    "scheduler/config.py": "266e318bd330d5157555b4e80cfe7aa3936bd9381edf4359ec8cefdb7086cc4a"
+}

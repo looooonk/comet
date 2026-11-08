@@ -177,6 +177,7 @@ class MiniSGLangEngine:
             driver = None
         return {
             "backend": "native_minisgl", "minisgl_revision": MINISGL_REVISION,
+            "sampling_rng": "torch_cuda_default_generator_v1",
             "patch_file_sha256": PATCH_FILE_HASHES,
             "model": self.settings.model,
             "model_scope": "main" if self.settings.model == "Qwen/Qwen3-8B" else "exploratory_pilot",

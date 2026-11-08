@@ -13,6 +13,7 @@ if [[ "$profile" == gpu ]]; then
     export COMET_GPU_EVIDENCE="$COMET_CHECK_OUTPUT/gpu.json"
     export COMET_GPU_MEMORY_EVIDENCE="$COMET_CHECK_OUTPUT/memory.json"
     export COMET_GPU_CAPACITY_EVIDENCE="$COMET_CHECK_OUTPUT/capacity.json"
+    export COMET_GPU_SAMPLING_EVIDENCE="$COMET_CHECK_OUTPUT/sampling.json"
 fi
 mkdir -p "$(dirname "$COMET_CHECK_OUTPUT")"
 mkdir "$COMET_CHECK_OUTPUT"
