@@ -1,0 +1,60 @@
+{
+  "status": "declared_feasibility_progression",
+  "engine_source_commit": "312691d00fe84ce52a504071ccd5ed0bdd40a0f9",
+  "config_provenance": "Versioned configurations accompanying this plan; verify listed SHA-256 values before launch. Record configuration commit separately from the unchanged engine source.",
+  "initial_submission": {
+    "lengths": [
+      2048,
+      8192
+    ],
+    "slurm_walltime": "00:50:00",
+    "validation_hard_limit_seconds": 300,
+    "stop_on_any_incomplete_cell": true
+  },
+  "decode_tokens": 8,
+  "repetitions": 1,
+  "configs": [
+    {
+      "path": "history-feasibility-qwen8b-a6000-l2048-v1.json",
+      "sha256": "f5ae8448500c84165aca17122576a7b469445fab693205f95c37cc5dfb48a95b",
+      "logical_length": 2048,
+      "cell_timeout_seconds": 60,
+      "process_hard_limit_seconds": 840,
+      "individual_slurm_walltime": "00:15:00"
+    },
+    {
+      "path": "history-feasibility-qwen8b-a6000-l8192-v1.json",
+      "sha256": "4bbbdff258a1281c58d291b3478e345a31b63912917a159199b566e05df9d02b",
+      "logical_length": 8192,
+      "cell_timeout_seconds": 120,
+      "process_hard_limit_seconds": 1500,
+      "individual_slurm_walltime": "00:30:00"
+    },
+    {
+      "path": "history-feasibility-qwen8b-a6000-l16384-v1.json",
+      "sha256": "54834a687ec6a18dca033c951890df1c86acf7fa88ca2565282300c99c644daf",
+      "logical_length": 16384,
+      "cell_timeout_seconds": 240,
+      "process_hard_limit_seconds": 2700,
+      "individual_slurm_walltime": "00:50:00"
+    },
+    {
+      "path": "history-feasibility-qwen8b-a6000-l32600-v1.json",
+      "sha256": "d4c2be90f37a113c8c613ec57553311e5dd66cc7a3485f8556e7726b9bee61ae",
+      "logical_length": 32600,
+      "cell_timeout_seconds": 480,
+      "process_hard_limit_seconds": 5100,
+      "individual_slurm_walltime": "01:30:00"
+    }
+  ],
+  "later_timing": {
+    "repetitions": 3,
+    "decode_tokens": 8,
+    "lengths": "Only the prespecified lengths with all ten feasible conditions; retain excluded-length failures in capacity results.",
+    "freeze_after": "Review measured elapsed/memory by condition at each feasible length.",
+    "cell_timeout_rule": "max(30, ceil(3 * maximum feasibility cell seconds at that length))",
+    "process_hard_limit_rule": "max(600, ceil(6 * sum feasibility cell seconds at that length + 300))",
+    "slurm_rule": "Round process hard limit plus 120 seconds upward to the next five-minute boundary.",
+    "summary": "All three repetitions; median and range, with first-use timing shown separately if different. No task-level confidence interval."
+  }
+}
