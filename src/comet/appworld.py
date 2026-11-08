@@ -26,6 +26,8 @@ from comet.errors import UnsupportedPath
 
 APPWORLD_REVISION = "42b5bcf3cd334fee33f0c37c02070a9f5807add5"
 APPWORLD_DATA_VERSION = "0.2.0"
+APPWORLD_DATABASE_PATH_VERSION = "structured-memory-v1"
+_DATABASE_PATHS_CONFIGURED = False
 _BOOKKEEPING = {"In", "Out", "_ih", "_oh", "_dh", "_", "__", "___"}
 _ATOMS = (type(None), bool, int, float, complex, str, bytes, bytearray, range,
           datetime.date, datetime.time, datetime.timedelta, Decimal, Fraction)
@@ -39,6 +41,29 @@ def verify_appworld_revision() -> None:
         raise UnsupportedPath(
             f"Install AppWorld from commit {APPWORLD_REVISION}; found {actual!r}."
         )
+
+
+def configure_appworld_database_paths() -> None:
+    global _DATABASE_PATHS_CONFIGURED
+    if _DATABASE_PATHS_CONFIGURED:
+        return
+    verify_appworld_revision()
+    from appworld.apps.lib.models.db import Database
+
+    original = Database._get_engine_to_details
+
+    def engine_details(engine: Any) -> tuple[Any, ...]:
+        url, path, home, storage, connection = original(engine)
+        if engine.url.query.get("mode") == "memory":
+            database = engine.url.database
+            if not database or not database.startswith("file:") or database.count("/") != 1:
+                raise UnsupportedPath(f"Unsupported AppWorld memory database: {database!r}")
+            # SQLAlchemy's rendered URL escapes file:, splitting mutation and export counters.
+            home = ":memory:" + database.removeprefix("file:").rsplit("/", 1)[0]
+        return url, path, home, storage, connection
+
+    Database._get_engine_to_details = staticmethod(engine_details)
+    _DATABASE_PATHS_CONFIGURED = True
 
 
 def validate_tasks(split: str, task_ids: list[str]) -> None:
@@ -112,7 +137,7 @@ class AppWorldAdapter:
         if (self.artifact_dir / "reference.json").exists():
             raise FileExistsError(f"Completed environment already exists: {self.artifact_dir}")
         if self._factory is None:
-            verify_appworld_revision()
+            configure_appworld_database_paths()
             from appworld import AppWorld, update_root
 
             update_root(str(self.root))
@@ -186,6 +211,7 @@ class AppWorldAdapter:
             "appworld_root": str(self.root), "experiment_name": self.experiment_name,
             "appworld_revision": APPWORLD_REVISION,
             "data_version": APPWORLD_DATA_VERSION, "task_directory": "task",
+            "database_path_version": APPWORLD_DATABASE_PATH_VERSION,
         }
         (path / "reference.json").write_text(json.dumps(reference, indent=2) + "\n")
         return reference
@@ -231,6 +257,7 @@ class AppWorldAdapter:
         metadata = {
             "schema_version": 1, "task_id": self.task_id, "seed": self.seed,
             "appworld_revision": APPWORLD_REVISION, "data_version": APPWORLD_DATA_VERSION,
+            "database_path_version": APPWORLD_DATABASE_PATH_VERSION,
             "execution_sha256": hashlib.sha256(payload).hexdigest(),
         }
         (path / "checkpoint.json").write_text(json.dumps(metadata, indent=2) + "\n")
@@ -241,7 +268,8 @@ class AppWorldAdapter:
         metadata = json.loads((path / "checkpoint.json").read_text())
         for key, value in {"schema_version": 1, "task_id": self.task_id, "seed": self.seed,
                            "appworld_revision": APPWORLD_REVISION,
-                           "data_version": APPWORLD_DATA_VERSION}.items():
+                           "data_version": APPWORLD_DATA_VERSION,
+                           "database_path_version": APPWORLD_DATABASE_PATH_VERSION}.items():
             if metadata.get(key) != value:
                 raise ValueError(f"Incompatible AppWorld checkpoint: {key}.")
         payload = (path / "execution.pkl").read_bytes()

@@ -128,6 +128,9 @@ def main(argv: list[str] | None = None) -> None:
     )
     evaluate = commands.add_parser("evaluate", help="Score a completed run offline")
     evaluate.add_argument("run", type=Path)
+    rescore = commands.add_parser("rescore", help="Score a separate copy while preserving original results")
+    rescore.add_argument("run", type=Path)
+    rescore.add_argument("--output", type=Path, required=True)
     finalize = commands.add_parser("finalize", help="Finalize interrupted cells when no inference remains")
     finalize.add_argument("run", type=Path)
     analyze = commands.add_parser(
@@ -208,6 +211,11 @@ def main(argv: list[str] | None = None) -> None:
 
         result = evaluate_run(args.run)
         _print({"status": result["status"], "scores": str(args.run / "scores.json")})
+    elif args.command == "rescore":
+        from comet.evaluation import rescore_run
+
+        result = rescore_run(args.run, args.output)
+        _print({"status": result["status"], "scores": str(args.output / "scores.json")})
     elif args.command == "finalize":
         from comet.finalization import finalize_run
 

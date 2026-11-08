@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "scope": "Completed targeted train/dev protocol diagnostic; useful baseline not established",
+  "scope": "Completed targeted train/dev execution diagnostic; original task-success scores provisional",
   "job_id": "13837736",
   "execution_commit": "312691d00fe84ce52a504071ccd5ed0bdd40a0f9",
   "device": "NVIDIA RTX A6000",
@@ -547,5 +547,11 @@
       "bytes": 2812,
       "sha256": "e25102a3c65f8393c89353c4a47b2608addfb1c5804ca3dddf64957e4eb90c21"
     }
-  ]
+  ],
+  "score_validity": {
+    "status": "provisional_saved_state_counter_defect",
+    "followup": "appworld-scoring-repair-2026-11-08.md",
+    "original_score_files_preserved": true,
+    "execution_outcomes_unchanged": true
+  }
 }

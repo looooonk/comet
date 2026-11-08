@@ -10,6 +10,14 @@ Verified upstream entry points at that revision are `AppWorld(..., load_ground_t
 
 AppWorld freezes the task's clock through Freezegun. COMET's elapsed-time measurements must use the real monotonic clock rather than task time. An outer deadline may be turned into an ordinary execution error by IPython; the runner also checks the budget on return and records the attempt as a timeout. The adapter restores AppWorld's process-wide execution patches even if execution raises.
 
+COMET normalizes named in-memory database identities from SQLAlchemy's structured
+URL. The pinned AppWorld parser uses a rendered URL; percent-encoding of `file:`
+can otherwise separate live mutation counters from the counters saved or loaded
+for evaluation. This compatibility patch changes the database identity used for
+bookkeeping, not the database connection or task actions. Saved outcomes and new
+checkpoints record `database_path_version: "structured-memory-v1"`. Checkpoint
+restore rejects older metadata, whose historical counters may be missing.
+
 The initial task context contains the instruction, public supervisor information, task date, app descriptions, and the `api_docs` and `supervisor` documentation. Other APIs are discoverable through the documented API interface. It contains no reference solution, required-action list, evaluator feedback, or private task data. The configurable system prompt is stored in the resolved run configuration. A model turn must contain exactly one nonempty fenced `python` or `py` block. One accepted block is one tool call, even when the block invokes several AppWorld APIs. Invalid formatting produces an observation without executing code.
 
 ## Attempt and checkpoint state
@@ -27,6 +35,33 @@ Checkpoint execution files are trusted local pickle artifacts with identity and 
 Run the shared CLI's `evaluate` command after execution. `evaluate_run` checks the manifest's exact Cartesian task/condition/seed set, every cell's identity and completion flag, ordered attempt indices, attempt limits, and terminal statuses before invoking any evaluator. It holds the run lock and writes `scores.json` separately from online artifacts. A scoring error raises instead of being silently converted into a failed benchmark task. Completed cell scores survive an interrupted scoring job; modified execution artifacts invalidate existing scores.
 
 Only attempts with execution status `completed` are eligible for a successful AppWorld score. Timeouts, out-of-memory errors, context-limit terminations, interrupted attempts, infeasible attempts, and other execution errors remain failures. Zero-attempt cells remain in the denominator. Failure outcomes are not given free replacements. Each eligible saved outcome is copied into a separate scoring namespace, with AppWorld caches cleared before and after evaluation. The task score and report are saved without opening another online attempt. Merely calling `complete_task()` does not guarantee that the evaluator passes.
+
+Scoring verifies actual saved state for every model. In the temporary scoring
+copy only, each model's change counter is set to its initial counter plus one.
+This disables the pinned evaluator's counter-equality shortcut: its unchanged
+row-count and record-hash comparisons determine whether a model changed. It does
+not declare every model changed, alter a row, replay an API action, or change a
+task requirement. The initial counters are loaded without ground truth, and
+`evaluation/state-comparison.json` records the original counter-file hash and
+comparison metadata. Global counter caches are cleared before and after scoring.
+This also permits truthful evaluation of intact historical SQL snapshots whose
+exported counters were lost.
+
+Use an explicit scoring revision to preserve existing outputs:
+
+```sh
+comet rescore "$ORIGINAL_RUN" --output "$NEW_SCORING_RUN"
+comet analyze "$NEW_SCORING_RUN" --output "$NEW_SCORING_RUN/analysis.json"
+```
+
+The new directory contains byte-identical execution metadata, cells and available
+checkpoints, with the same execution digest. It archives prior scores/analysis
+under `rescoring/` and records their hashes and the new scorer provenance.
+Original reports remain untouched. A preparation marker prevents an interrupted copy from being scored; create a
+new revision if preparation failed. Once preparation completes, interrupted
+scoring resumes with `comet evaluate "$NEW_SCORING_RUN"`; it still requires the same evaluator and
+execution digests. Revisions are alternative scores of the same execution, not
+additional independent runs, and must not be pooled together.
 
 The evaluator runs after every attempt for the run has finished. It cannot guide actions, select recovery, rank attempts while executing, or stop the remaining attempt schedule. Oracle success is `any(success)` within a task/condition/replicate-seed cell. It is an upper bound assuming perfect outcome selection, not an implemented online selection policy. Single-attempt success uses attempt index zero, not the first successful or first feasible attempt.
 
