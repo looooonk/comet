@@ -205,6 +205,16 @@ The scheduler time limit is a job ceiling; the shared task budget is enforced by
 COMET's configuration and runner. Set `COMET_RESUME=1` to request a compatible
 resume into the same run directory. It must retain prior attempt and budget usage.
 Slurm requeue or preemption must never start a fresh budget under the same run ID.
+The Slurm wrappers disable automatic requeue and append scheduler logs. This
+prevents a reclaimed GPU allocation from silently rerunning a fresh launch or
+truncating its failure log. For a deliberate resume, keep the original checkout,
+environment, configuration and output directory, set `COMET_RESUME=1`, and request
+the original GPU model explicitly. Installed runtime and GPU metadata must still
+match. An interrupted attempt consumes its reserved cell budget and remains a
+failure; completed cells are skipped. For multi-configuration jobs, resume each
+existing run separately before starting an uncreated run, then score only after
+every execution is terminal. Checks need a fresh evidence directory after failure.
+The same requeue and log flags should be used by site-specific batch wrappers.
 
 `COMET_APPWORLD_ROOT` can override the default `$COMET_STORAGE/appworld`.
 `CUDA_HOME` defaults to `/usr/local/cuda`; an explicit value also controls the

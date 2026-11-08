@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=comet-setup
 #SBATCH --nodes=1
+#SBATCH --no-requeue
+#SBATCH --open-mode=append
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G

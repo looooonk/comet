@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=comet
 #SBATCH --nodes=1
+#SBATCH --no-requeue
+#SBATCH --open-mode=append
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=48G
