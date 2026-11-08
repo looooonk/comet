@@ -50,6 +50,15 @@ All twelve trajectories contain errors. The next step is the separately declared
 Broader 8B retention sweeps would currently produce an uninformative success
 floor. Preserve this diagnostic while seeking an informative train/dev regime.
 
+The bounded [transcript audit](execution-transcript-audit-2026-11-08.json)
+reconstructed all twelve saved trajectories using the pinned tokenizer: consumed
+responses and observations matched across 773 turns, with the two expected
+incomplete final responses at the explicit context limit. Supervisor identity,
+available apps and task context were present; message roles and reasoning
+retention followed the pinned Qwen template and canonical AppWorld conventions.
+No transport or template defect was identified within this audit. This does not
+prove that the model, inference engine or environment is universally correct.
+
 The [result inventory](execution-prompt-2026-11-08-results.json) records run IDs,
 configuration and artifact hashes, paired uncertainty, resource coverage and
 estimated FLOPs. The [attempt table](execution-prompt-2026-11-08-attempts.csv)
