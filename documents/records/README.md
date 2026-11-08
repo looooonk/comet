@@ -6,7 +6,9 @@ The [new executable-action prompt diagnostic](execution-prompt-2026-11-08-result
 completed all twelve attempts and offline scoring. Both prompts scored 0/6; each
 had four unsuccessful normal completions, one context limit and one timeout.
 The stronger prompt did not establish a useful 8B baseline. A separate 14B
-pilot is declared, pending its numerical review.
+pilot is declared and has a
+[separate bounded numerical qualification](qwen14b-pilot-qualification-2026-11-08.md);
+no 14B task outcome is claimed by that qualification.
 
 The [November 8 numerical calibration](reference-calibration-2026-11-08.md)
 records 165 passed L40S checks and a failed relative-error screening gate. A
@@ -95,6 +97,7 @@ runtime artifacts are not included in this directory.
 | --- | --- |
 | [Executable-action prompt results (2026-11-08)](execution-prompt-2026-11-08-results.md) | Both paired arms scored 0/6; verified 12 attempts, residual execution failures, resource coverage and diagnostic figure |
 | [Offline policy and attained-success figures (2026-11-08)](policy-curves-2026-11-08.md) | Paired curves, timestamp and reservation coverage, 55 focused checks; historical/synthetic render validation only |
+| [Bounded Qwen3-14B pilot qualification (2026-11-08)](qwen14b-pilot-qualification-2026-11-08.md) | 186 integration checks passed, failed default screen preserved, separate corpus passed and FP32 calibration; [evidence](qwen14b-pilot-qualification-2026-11-08.json) |
 | [Separate 14B executable-action pilot plan (2026-11-08)](execution-qwen14b-2026-11-08-plan.md) | Predeclared six-cell fallback, unchanged task/sampling/budget settings, fresh validation required |
 | [Checkpoint eligibility and cost repair (2026-11-08)](checkpoint-repair-2026-11-08.md) | Completed-source rejection, prefix cost preservation, cleanup accounting and 64 CPU checks; [evidence](checkpoint-repair-2026-11-08.json) |
 | [Bounded GCP L4 attempt (2026-11-08)](gcp-reference-2026-11-08.md) | Verified setup and weights, pre-load cap rejection, estimated $1.98 cost and completed cleanup; [evidence](gcp-reference-2026-11-08.json) |

@@ -7,6 +7,12 @@ has authorized this separate 14B exploration. Its configuration is declared
 before new 14B outcomes; review the current 8B results and fresh 14B validation
 before launching it.
 
+The new 8B comparison subsequently completed at 0/6 in both arms. The
+[separate 14B qualification](qwen14b-pilot-qualification-2026-11-08.md) now
+permits this bounded pilot on L40, retaining the failed default numerical screen
+and the independent FP32 calibration evidence. The settings below were declared
+before the new 14B task outcomes.
+
 `configs/pilot-execution-candidate-qwen14b-v1.json` uses pinned Qwen3-14B BF16 and
 the executable-action candidate prompt, with the same three dev tasks and seeds
 17/18. It retains 600 seconds per cell, a 40 GiB cap, 32,768-token context,
