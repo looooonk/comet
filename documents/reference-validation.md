@@ -44,11 +44,17 @@ reference does not execute any historical tool action or consult AppWorld scores
 
 Both processes default to the existing 40 GiB short-check memory allowance. An
 explicit `COMET_REFERENCE_CAP_BYTES` can select a smaller allowance for this
-synthetic check, such as `23622320128` (22 GiB) for Qwen3-8B on an L4. It is saved
-in the native settings and reused by the reference process. This does not alter
-any experiment configuration or qualify the smaller device for those settings.
-The native
-engine enforces its usual cap; the reference bounds its PyTorch allocator after
+synthetic check. Before downloading model weights, record
+`torch.cuda.mem_get_info()` and `torch.cuda.get_device_properties(0).total_memory`
+on the allocated device and reject a cap above either reported total. Nominal
+GPU capacity and the `nvidia-smi` total can include memory reserved by the device;
+they do not establish the usable CUDA allowance. For a short Qwen3-8B check on an
+L4, `22548578304` (21 GiB) is a provisional fallback that still needs this
+preflight and live validation. It is not a validated long-context setting.
+The selected cap is saved in the native settings and reused by the reference
+process. This does not alter any experiment configuration or qualify the smaller
+device for those settings. The native engine enforces its usual cap; the
+reference bounds its PyTorch allocator after
 accounting for initially external allocations. Reference allocator peaks are
 diagnostic metadata, not measured total-VRAM peaks for an experiment comparison.
 The GPU must have room for that allowance and the pinned BF16 model. Neither
@@ -165,3 +171,23 @@ CPU memory/timings and `calibration.json`. The scheduler should impose an outer
 timeout because an individual model forward cannot be interrupted by the
 helper's between-operation budget checks. This is a numerical diagnostic, not
 an FP32 task experiment or evidence of GPU throughput.
+
+To localize a discrepancy in cached continuations, use
+`scripts/diagnose_cached_reference.py` on the same GPU model as the saved run.
+It restores the recorded full-cache settings, resets the native engine, and
+re-prefills each exact cached input history. The sampler forces the four recorded
+tokens while preserving the fresh logits and their own argmax choices. This
+keeps every conditional input identical, even if the fresh path would choose a
+different token. It reports descriptive cached-versus-fresh errors without
+changing or applying acceptance gates.
+
+```sh
+python "$COMET_REPO/scripts/diagnose_cached_reference.py" \
+  --reference-run /path/to/completed/reference --model-path "$COMET_MODEL_PATH" \
+  --cases "$COMET_REPO/configs/diagnostics/reference-heldout-v1.json" \
+  --output /path/to/new/cache-diagnostic --timeout-seconds 600
+```
+
+Use the same reference-test source and corpus identity as the saved run. Keep
+`fresh.json`, raw fresh logits, provenance and partial captures alongside the
+original cached and independent reference tensors.
