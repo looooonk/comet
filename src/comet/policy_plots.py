@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import textwrap
 from collections import defaultdict
 from pathlib import Path
@@ -249,3 +250,92 @@ def plot_attempts(analysis_path: Path, output: Path, *, title="Attempt allocatio
               "Cost points describe completed schedules, not time to first success or performance under a smaller budget. "
               + ("Unobserved interruption reservations are included." if reserved else "No interruption reservations recorded."),
               top=1 - 1.2 / height, bottom=1.2 / height, left=0.29)
+
+
+def plot_attained_oracle(analysis_path: Path, output: Path, *, title="Attained oracle success over time") -> None:
+    analysis, rows = _load(analysis_path)
+    if any("attained_oracle_curve" not in row.get("observations", {}) for row in rows):
+        raise ValueError("Reanalyze the run to retain attained-success timing and coverage")
+    budgets = {row["observations"]["attained_oracle_curve"]["budget_seconds"] for row in rows} - {None}
+    if len(budgets) > 1:
+        raise ValueError("Success-time curves require compatible declared budgets")
+    full = {row["condition"]["max_attempts"]: row for row in rows if row["condition"]["method"] == "full"}
+    groups = sorted(_groups(rows), key=lambda item: (item[0][2], list(NAMES).index(item[0][0]), -item[0][1]))
+    panels, used_full = [], set()
+    for (method, retention, attempts), group in groups:
+        if attempts not in full:
+            raise ValueError("Each compressed curve panel needs a full-cache control with the same attempt limit")
+        panels.append((f"{NAMES[method]} {retention:.0%} | N={attempts}",
+                       [full[attempts]] + [group[policy] for policy in COLORS if policy in group]))
+        used_full.add(attempts)
+    if len(full) > 1:
+        panels.append(("Full KV attempt limits", [row for _, row in sorted(full.items())]))
+    else:
+        panels.extend((f"Full KV | N={attempts}", [row]) for attempts, row in sorted(full.items())
+                      if attempts not in used_full)
+    if not panels:
+        raise ValueError("No supported conditions to plot")
+    columns = min(3, len(panels))
+    panel_rows = math.ceil(len(panels) / columns)
+    width, height = max(8, 4.6 * columns), 2.9 * panel_rows + 2.4
+    plt = _plotting()
+    with plt.rc_context({"font.size": 8, "axes.spines.top": False, "axes.spines.right": False,
+                         "svg.fonttype": "none"}):
+        fig, axes = plt.subplots(panel_rows, columns, figsize=(width, height), squeeze=False)
+        for ax, (label, conditions) in zip(axes.flat, panels, strict=False):
+            unavailable = []
+            full_comparison = len(conditions) > 1 and all(row["condition"]["method"] == "full" for row in conditions)
+            for row in conditions:
+                condition = row["condition"]
+                curve = row["observations"]["attained_oracle_curve"]
+                coverage = curve["coverage"]
+                is_full = condition["method"] == "full"
+                name = "Full KV" if is_full else condition["recovery"].capitalize()
+                color = "#333333" if is_full else COLORS[condition["recovery"]]
+                style = "--" if is_full else {"never": "-", "fixed": "-.", "dynamic": ":"}[condition["recovery"]]
+                if full_comparison:
+                    name += f" N={condition['max_attempts']}"
+                    index = sorted(full).index(condition["max_attempts"])
+                    color = ("#333333", "#aa4499", "#44aa99", "#999933")[index % 4]
+                    style = ("--", "-", "-.", ":")[index % 4]
+                legend = f"{name} ({coverage['complete_cells']}/{coverage['total_cells']})"
+                if curve["status"] != "available":
+                    reasons = sorted({reason for cell in coverage["unavailable_cells"] for reason in cell["reasons"]})
+                    unavailable.append(f"{name}: " + ", ".join(reason.replace("_", " ") for reason in reasons))
+                    ax.plot([], [], color=color, linestyle=style, label=legend + " unavailable")
+                    continue
+                points = curve["points"]
+                times = [point["seconds"] for point in points]
+                for field, alpha in (("bounded_mean_ci95", 0.025), ("ci95", 0.075)):
+                    low, high = ([100 * point[field][side] for point in points] for side in (0, 1))
+                    ax.fill_between(times, low, high, step="post", color=color, alpha=alpha, linewidth=0)
+                    if field == "bounded_mean_ci95":
+                        for edge in (low, high):
+                            ax.step(times, edge, where="post", color=color, alpha=0.35,
+                                    linestyle=":", linewidth=0.6)
+                ax.step(times, [100 * point["value"] for point in points], where="post",
+                        color=color, linestyle=style, linewidth=1.8, label=legend)
+            if unavailable:
+                ax.text(0.98, 0.43, "\n".join(textwrap.fill(line, 48) for line in unavailable),
+                        transform=ax.transAxes, ha="right", va="center", fontsize=6.5,
+                        bbox={"facecolor": "white", "alpha": 0.85, "edgecolor": "none"})
+            if budgets:
+                ax.set_xlim(0, next(iter(budgets)))
+            else:
+                ax.set_xticks([])
+            ax.set(title=label, ylim=(-2, 102), xlabel="Cumulative budget-accounted time (s)",
+                   ylabel="Attained oracle success (%)")
+            ax.grid(alpha=0.15)
+            ax.set_axisbelow(True)
+            ax.legend(loc="upper left", frameon=True, facecolor="white", edgecolor="none",
+                      framealpha=0.85, fontsize=7, ncol=2)
+        for ax in list(axes.flat)[len(panels):]:
+            ax.set_visible(False)
+        caption = "\n".join(textwrap.fill(line, int(width * 14)) for line in (
+            "Recorded executed schedules; perfect outcome selection is an upper bound, not an online selector or a smaller-budget rerun.",
+            "Steps use measured attempt completion times. Failures and zero-attempt cells remain; interruption reservations are not completion times.",
+            "Legend: cells with complete curve information / all cells. Untimed successes make a condition unavailable; they are not counted as failures.",
+            "Pointwise 95% intervals: darker task-bootstrap bands and pale conservative bounded-mean bands; not simultaneous across time or conditions.",
+        ))
+        bottom = (0.65 + 0.15 * len(caption.splitlines())) / height
+        _save(fig, analysis, output, title, caption, top=1 - 1.15 / height, bottom=bottom, left=0.075)

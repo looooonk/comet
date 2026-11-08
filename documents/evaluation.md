@@ -220,3 +220,43 @@ it does not estimate time to first success or counterfactual outcomes under
 smaller budgets. Interruption reservations remain part of budget-accounted time
 and are identified in the caption. Oracle success assumes perfect outcome
 selection after execution; it is not an online selection policy.
+
+## Attained success over time
+
+`comet plot-success-time ANALYSIS --output success-time.svg` plots success
+available by cumulative budget-accounted time along the schedules that actually
+executed. Reanalyze older scored runs to add the required timing observations.
+This is a descriptive oracle upper bound assuming perfect outcome selection,
+not an online selector, a rerun under a smaller budget, or a counterfactual
+budget-performance curve. A scored success becomes available at its recorded
+attempt completion, including charged preparation, resets, tools and cleanup;
+post-hoc scoring time remains excluded.
+
+Each condition's `observations.attempts` retains paired task/seed identities,
+execution status, separately scored success, the recorded
+`budget_elapsed_seconds`, validated `completion_seconds`, and timing coverage.
+Cell observations identify the first successful attempt and its timestamp.
+Interrupted attempts and their reserved budget never supply measured completion
+times. A later cell-level reservation does not invalidate an earlier measured
+success. There is no fallback to summed attempt durations or total cell time.
+Invalid, missing, or nonmonotone success timestamps remain unavailable.
+Malformed reservation values invalidate their attempt and subsequent cumulative
+timestamps; aggregation rejects these invalid totals explicitly.
+
+The `observations.attained_oracle_curve` uses exact observed success times, zero,
+and the declared budget endpoint. It averages seeds within each task and reuses
+the analysis's paired task-bootstrap draws at every time and condition. Failed
+and zero-attempt cells remain in the denominator. If any first-success time or
+declared budget is unavailable, that condition has no estimated curve; its
+coverage and affected identities remain explicit. It is neither dropped nor
+treated as an all-failure condition. No-success cells need no completion timestamp
+to contribute their known zero along the executed schedule.
+
+Figures use right-continuous steps without smoothing, at most three columns,
+separate attempt-ceiling panels, and up to three recovery policies plus the
+matched full-cache control. Darker bands show pointwise task-bootstrap 95%
+intervals; pale bounded task-mean intervals remain nondegenerate for all-zero or
+all-one samples. These intervals are not simultaneous across time or conditions.
+Legend counts report cells with complete curve information over all cells.
+When several full-cache attempt limits are available, an additional panel compares
+those controls directly; compressed panels retain only their matching control.

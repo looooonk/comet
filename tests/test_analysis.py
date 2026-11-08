@@ -272,6 +272,9 @@ def test_policy_observations_keep_pairing_empty_cells_and_unknown_requests():
     assert observations["cells"][0] == {
         "task_id": "t1", "seed": 17, "actual_attempts": 2, "first_attempt_success": False,
         "oracle_success": True, "budget_accounted_seconds": 10, "reserved_budget_seconds": 4,
+        "budget_seconds": None,
+        "first_success_time": {"seconds": None, "coverage": "unavailable", "attempt_index": 1,
+                               "reason": "unobserved_prior_reservation"},
     }
     assert observations["cells"][1]["oracle_success"] is False
     event = observations["decisions"][0]

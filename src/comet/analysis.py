@@ -86,9 +86,11 @@ def _metric(attempts: list[dict[str, Any]], key: str, unit: str, aggregation: st
 
 
 def reserved_seconds(cell: dict) -> float:
-    return cell.get("reserved_budget_seconds", 0) + sum(
-        attempt.get("reserved_budget_seconds", 0) for attempt in cell["attempts"]
-    )
+    values = [cell.get("reserved_budget_seconds", 0)] + [
+        attempt.get("reserved_budget_seconds", 0) for attempt in cell["attempts"]]
+    if any(not _finite_number(value) or value < 0 for value in values):
+        raise ValueError("Invalid recorded reserved_budget_seconds")
+    return sum(values)
 
 
 def recovery_summary(cells: list[dict[str, Any]]) -> dict[str, Any]:
@@ -157,29 +159,135 @@ def recovery_summary(cells: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _finite_number(value) -> bool:
+    return type(value) in (int, float) and math.isfinite(value)
+
+
+def _attempt_times(cell: dict) -> list[dict]:
+    records = []
+    previous, reserved_prefix, bad_order = 0.0, False, False
+    for index, attempt in enumerate(cell["attempts"]):
+        seconds = attempt.get("budget_elapsed_seconds")
+        reserved = attempt.get("reserved_budget_seconds", 0)
+        invalid_reservation = not _finite_number(reserved) or reserved < 0
+        if attempt["attempt_index"] != index:
+            bad_order = True
+        reason = None
+        if invalid_reservation:
+            reason = "invalid_reservation"
+        elif attempt["status"] == "interrupted":
+            reason = "interrupted"
+        elif _finite_number(reserved) and reserved > 0:
+            reason = "interruption_reservation"
+        elif reserved_prefix:
+            reason = "unobserved_prior_reservation"
+        elif seconds is None:
+            reason = "missing_timestamp"
+        elif not _finite_number(seconds) or seconds < 0:
+            reason = "invalid_timestamp"
+        elif seconds < previous or bad_order:
+            reason = "nonmonotone_schedule"
+            bad_order = True
+        elif _finite_number(cell.get("elapsed_seconds")) and seconds > cell["elapsed_seconds"]:
+            reason = "after_recorded_cell_end"
+        elif (attempt["success"] and _finite_number(cell.get("budget_seconds"))
+              and seconds > cell["budget_seconds"]):
+            reason = "success_after_declared_budget"
+        records.append({
+            "task_id": cell["task_id"], "seed": cell["seed"], "attempt_index": attempt["attempt_index"],
+            "status": attempt["status"], "success": attempt["success"],
+            "budget_elapsed_seconds": seconds if _finite_number(seconds) else None,
+            "completion_seconds": seconds if reason is None else None,
+            "timing_status": reason or "recorded",
+            "reserved_budget_seconds": reserved if _finite_number(reserved) else None,
+        })
+        if _finite_number(seconds) and reason not in {"interrupted", "interruption_reservation"}:
+            previous = max(previous, seconds)
+        reserved_prefix |= invalid_reservation or attempt["status"] == "interrupted" or reserved > 0
+    return records
+
+
 def policy_observations(cells: list[dict]) -> dict:
     """Keep paired identities and observed decisions for offline study figures."""
-    outcomes, decisions = [], []
+    outcomes, decisions, recorded_attempts = [], [], []
     for cell in sorted(cells, key=lambda item: (item["task_id"], item["seed"])):
         identity = {"task_id": cell["task_id"], "seed": cell["seed"]}
         attempts = cell["attempts"]
+        times = _attempt_times(cell)
+        recorded_attempts.extend(times)
+        first_success = next((attempt for attempt in times if attempt["success"]), None)
+        success_time = {
+            "seconds": first_success["completion_seconds"] if first_success else None,
+            "coverage": ("recorded" if first_success["completion_seconds"] is not None else "unavailable")
+                        if first_success else "no_success",
+            "attempt_index": first_success["attempt_index"] if first_success else None,
+            "reason": first_success["timing_status"] if first_success and
+                      first_success["completion_seconds"] is None else None,
+        }
         outcomes.append({
             **identity, "actual_attempts": len(attempts),
             "first_attempt_success": bool(attempts and attempts[0]["success"]),
             "oracle_success": any(attempt["success"] for attempt in attempts),
             "budget_accounted_seconds": cell["elapsed_seconds"],
             "reserved_budget_seconds": reserved_seconds(cell),
+            "budget_seconds": cell.get("budget_seconds") if _finite_number(cell.get("budget_seconds")) else None,
+            "first_success_time": success_time,
         })
         for attempt in attempts:
             for index, event in enumerate(attempt.get("recovery_events", [])):
                 decisions.append({**identity, "attempt_index": attempt["attempt_index"],
                                   "decision_index": index, **event})
     return {
-        "cells": outcomes, "decisions": decisions,
+        "cells": outcomes, "decisions": decisions, "attempts": recorded_attempts,
         "actual_attempt_distribution": dict(sorted(Counter(len(cell["attempts"]) for cell in cells).items())),
         "latency_scope": "Total observed cell budget accounting, including interruption reservations; "
                          "not time to first success or a replay at smaller budgets.",
     }
+
+
+def _attained_oracle_curve(observations: dict, tasks: list[str], task_seeds: dict,
+                          draws: list[list[int]], event_times: set[float]) -> dict:
+    cells = observations["cells"]
+    valid_budgets = [cell["budget_seconds"] for cell in cells
+                     if _finite_number(cell["budget_seconds"]) and cell["budget_seconds"] > 0]
+    budget = valid_budgets[0] if len(valid_budgets) == len(cells) and len(set(valid_budgets)) == 1 else None
+    missing = []
+    for cell in cells:
+        reasons = []
+        if not _finite_number(cell["budget_seconds"]) or cell["budget_seconds"] <= 0:
+            reasons.append("missing_or_invalid_budget")
+        elif len(set(valid_budgets)) > 1:
+            reasons.append("inconsistent_cell_budgets")
+        if cell["first_success_time"]["coverage"] == "unavailable":
+            reasons.append(cell["first_success_time"]["reason"])
+        if reasons:
+            missing.append({"task_id": cell["task_id"], "seed": cell["seed"], "reasons": reasons})
+    result = {
+        "status": "unavailable" if missing else "available", "budget_seconds": budget,
+        "coverage": {
+            "total_cells": len(cells), "complete_cells": len(cells) - len(missing),
+            "success_cells": sum(cell["oracle_success"] for cell in cells),
+            "timed_success_cells": sum(cell["first_success_time"]["coverage"] == "recorded" for cell in cells),
+            "unavailable_cells": missing,
+        },
+        "scope": "Success available by cumulative budget-accounted attempt completion time along executed "
+                 "schedules; perfect-selection upper bound, not smaller-budget reruns or an online selector.",
+        "points": [],
+    }
+    if missing:
+        return result
+    by_identity = {(cell["task_id"], cell["seed"]): cell["first_success_time"]["seconds"] for cell in cells}
+    previous_values, estimate = None, None
+    for seconds in sorted({0.0, budget} | {time for time in event_times if time <= budget}):
+        values = [mean(float(by_identity[(task, seed)] is not None and
+                             by_identity[(task, seed)] <= seconds) for seed in task_seeds[task])
+                  for task in tasks]
+        if values != previous_values:
+            samples = [sum(values[index] for index in draw) / len(tasks) for draw in draws]
+            estimate = _estimate(values, samples, bounds=(0, 1))
+            previous_values = values
+        result["points"].append({"seconds": seconds, **estimate})
+    return result
 
 
 def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
@@ -213,6 +321,11 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
         raise ValueError("Every task must use the same frozen replicate seed schedule.")
     rng = random.Random(seed)
     draws = [[rng.randrange(len(tasks)) for _ in tasks] for _ in range(bootstrap_samples)]
+    observations = {key: policy_observations(list(group.values())) for key, group in by_condition.items()}
+    event_times = {cell["first_success_time"]["seconds"] for observed in observations.values()
+                   for cell in observed["cells"] if cell["first_success_time"]["coverage"] == "recorded"}
+    for observed in observations.values():
+        observed["attained_oracle_curve"] = _attained_oracle_curve(observed, tasks, task_seeds, draws, event_times)
     result: dict[str, Any] = {
         "schema_version": 1,
         "primary_metric": "oracle task success within budget (perfect-selection upper bound)",
@@ -221,7 +334,7 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
                         "resampling_unit": "task, retaining all attempts and paired replicate seeds",
                         "standard_error_method": "sample standard deviation of task means / sqrt(tasks)",
                         "bounded_mean_method": "Hoeffding, clipped to [0,1] for success and [-1,1] for differences",
-                        "interval_scope": "pointwise 95%; not simultaneous across conditions or metrics",
+                        "interval_scope": "pointwise 95%; not simultaneous across conditions, metrics or time",
                         "assumption": "independent sampled tasks; repeats do not increase task count"},
         "task_count": len(tasks), "tasks": tasks, "replicate_seeds": task_seeds[tasks[0]],
         "conditions": {}, "paired_comparisons": [],
@@ -295,7 +408,7 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
             "zero_attempt_cells": sum(not cell["attempts"] for cell in group.values()),
             "metrics": metrics,
             "recovery": recovery_summary(list(group.values())),
-            "observations": policy_observations(list(group.values())),
+            "observations": observations[condition_id],
         }
         resource_values[condition_id] = {}
         for name, key in resource_fields.items():

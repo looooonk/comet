@@ -154,6 +154,7 @@ def main(argv: list[str] | None = None) -> None:
         ("plot-recovery", "Plot paired recovery effects, cost and admission", "Recovery comparison"),
         ("plot-triggers", "Plot observed trigger decisions and paired effects", "Recovery trigger observations"),
         ("plot-attempts", "Plot first/oracle success, attempts and observed cost", "Attempt allocation comparison"),
+        ("plot-success-time", "Plot attained oracle success along executed schedules", "Attained oracle success over time"),
     ):
         figure = commands.add_parser(command, help=help_text)
         figure.add_argument("analysis", type=Path)
@@ -226,11 +227,16 @@ def main(argv: list[str] | None = None) -> None:
 
         plot_retention_matrix(args.analysis, args.output, title=args.title)
         _print({"figure": str(args.output)})
-    elif args.command in {"plot-recovery", "plot-triggers", "plot-attempts"}:
-        from comet.policy_plots import plot_attempts, plot_recovery, plot_triggers
+    elif args.command in {"plot-recovery", "plot-triggers", "plot-attempts", "plot-success-time"}:
+        from comet.policy_plots import (
+            plot_attained_oracle,
+            plot_attempts,
+            plot_recovery,
+            plot_triggers,
+        )
 
         plotters = {"plot-recovery": plot_recovery, "plot-triggers": plot_triggers,
-                    "plot-attempts": plot_attempts}
+                    "plot-attempts": plot_attempts, "plot-success-time": plot_attained_oracle}
         plotters[args.command](args.analysis, args.output, title=args.title)
         _print({"figure": str(args.output)})
     else:

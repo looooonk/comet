@@ -87,6 +87,8 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Offline policy and attained-success figures (2026-11-08)](policy-curves-2026-11-08.md) | Paired curves, timestamp and reservation coverage, 55 focused checks; historical/synthetic render validation only |
+| [Separate 14B executable-action pilot plan (2026-11-08)](execution-qwen14b-2026-11-08-plan.md) | Predeclared six-cell fallback, unchanged task/sampling/budget settings, fresh validation required |
 | [Checkpoint eligibility and cost repair (2026-11-08)](checkpoint-repair-2026-11-08.md) | Completed-source rejection, prefix cost preservation, cleanup accounting and 64 CPU checks; [evidence](checkpoint-repair-2026-11-08.json) |
 | [Bounded GCP L4 attempt (2026-11-08)](gcp-reference-2026-11-08.md) | Verified setup and weights, pre-load cap rejection, estimated $1.98 cost and completed cleanup; [evidence](gcp-reference-2026-11-08.json) |
 | [Numerical screen and FP32 calibration (2026-11-08)](reference-calibration-2026-11-08.md) | Original failed screen, independent higher-precision diagnosis, revised gate, failed separate corpus and explicit bounded-pilot qualification; [evidence](reference-calibration-2026-11-08.json) |
