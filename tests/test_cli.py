@@ -55,8 +55,8 @@ def test_freeze_accepts_matching_pilot_and_preserves_evidence(freeze_files):
 
 
 @pytest.mark.parametrize(("keys", "value", "message"), [
-    (("integration_smoke",), True, "completed A100"),
-    (("status",), "running", "completed A100"),
+    (("integration_smoke",), True, "completed qualified-hardware"),
+    (("status",), "running", "completed qualified-hardware"),
     (("config", "split"), "test_normal", "Test outcomes"),
     (("config", "budget_seconds"), 121, "numerical settings"),
     (("config", "peak_vram_bytes"), 35_000_000_000, "numerical settings"),

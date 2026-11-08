@@ -41,7 +41,7 @@ class Runner:
         self.engine_factory, self.environment_factory = engine_factory, environment_factory
         self.clock, self.integration_smoke = clock, integration_smoke
         if integration_smoke and config.stage == "final":
-            raise ValueError("Final evaluation requires the specified A100 hardware")
+            raise ValueError("Final evaluation requires the selected qualified hardware")
 
     def run(self, *, resume: bool = False) -> dict:
         with run_lock(self.output):

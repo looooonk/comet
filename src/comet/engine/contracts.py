@@ -6,6 +6,8 @@ from dataclasses import asdict, dataclass
 from fractions import Fraction
 from pathlib import Path
 
+from comet.errors import MemoryCapExceeded, UnsupportedPath
+
 MINISGL_REVISION = "254c57bc84e4a7895159ba1062bd46c83626f511"
 MODEL_REVISION = "b968826d9c46dd6066d109eabc6255188de91218"
 MODEL_PROFILES = {
@@ -59,6 +61,7 @@ class EngineSettings:
     prefill_chunk_tokens: int
     require_a100: bool = True
     model: str = "Qwen/Qwen3-8B"
+    device_name: str | None = None
 
     def __post_init__(self):
         retention_target(0, self.retention, self.method)
@@ -70,10 +73,25 @@ class EngineSettings:
             raise ValueError("workspace reserve must be smaller than the VRAM cap")
         if self.prefill_chunk_tokens > self.max_context_tokens:
             raise ValueError("prefill chunk exceeds maximum context")
+        if self.device_name is not None and (
+            not isinstance(self.device_name, str) or not self.device_name.strip()
+        ):
+            raise ValueError("device_name must be an explicit GPU model name")
+
+    def validate_device(self, name: str, total_bytes: int) -> None:
+        if self.device_name is not None:
+            if name != self.device_name:
+                raise UnsupportedPath(f"Configured GPU {self.device_name!r}; found {name!r}")
+        elif self.require_a100 and ("A100" not in name or total_bytes < 79_000_000_000):
+            raise UnsupportedPath("Legacy configs require A100 80GB; select device_name for qualified hardware")
+        if self.peak_vram_bytes > total_bytes:
+            raise MemoryCapExceeded("configured VRAM cap exceeds device capacity")
 
     def fingerprint(self, *, policy: bool = True) -> str:
         data = asdict(self)
         data.pop("model_path")
+        if self.device_name is None:
+            data.pop("device_name")
         if not policy:
             data.pop("method")
             data.pop("retention")

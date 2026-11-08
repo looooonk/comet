@@ -45,6 +45,7 @@ class Engine:
     max_context_tokens: int
     workspace_reserve_bytes: int
     prefill_chunk_tokens: int
+    device_name: str | None = None
 
 
 @dataclass(frozen=True)
@@ -151,6 +152,10 @@ class Experiment:
             raise ValueError("dynamic_rule must be and or or")
         if self.engine.dtype != "bfloat16":
             raise ValueError("All supported models require BF16")
+        if self.engine.device_name is not None and (
+            not isinstance(self.engine.device_name, str) or not self.engine.device_name.strip()
+        ):
+            raise ValueError("device_name must be an explicit GPU model name")
         validate_model(self.engine.model, self.engine.model_revision, self.engine.tokenizer_revision)
         if self.engine.model != "Qwen/Qwen3-8B" and self.stage != "pilot":
             raise ValueError("Qwen3-14B is an exploratory pilot model; the research contract uses Qwen3-8B")
@@ -188,7 +193,10 @@ class Experiment:
             raise ValueError("A diagnostic cell is one continuation of its shared checkpoint")
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        data = asdict(self)
+        if self.engine.device_name is None:
+            del data["engine"]["device_name"]
+        return data
 
     @property
     def settings_digest(self) -> str:

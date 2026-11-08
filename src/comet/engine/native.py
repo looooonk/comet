@@ -40,10 +40,7 @@ class MiniSGLangEngine:
         if not torch.cuda.is_available() or torch.cuda.device_count() != 1:
             raise UnsupportedPath("expose exactly one NVIDIA GPU with CUDA_VISIBLE_DEVICES")
         properties = torch.cuda.get_device_properties(0)
-        if settings.require_a100 and ("A100" not in properties.name or properties.total_memory < 79_000_000_000):
-            raise UnsupportedPath("main experiments require one A100 80GB; use integration mode for smoke checks")
-        if settings.peak_vram_bytes > properties.total_memory:
-            raise MemoryCapExceeded("configured VRAM cap exceeds device capacity")
+        settings.validate_device(properties.name, properties.total_memory)
         model_config, self.parameter_count = model_storage(settings.model_path, settings.model_revision,
                                                            settings.model)
         if settings.max_context_tokens > model_config["max_position_embeddings"]:

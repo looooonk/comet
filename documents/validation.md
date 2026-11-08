@@ -64,8 +64,10 @@ and artifact directory.
 Then run small train/dev tasks through the execution, scoring, and analysis
 commands in [experiments.md](experiments.md). Distinguish an agent reaching
 completion from passing the AppWorld evaluator. Retain failed attempts and their
-budget charges. Non-A100 runs must use integration mode and cannot qualify the
-required A100 80GB research pilot or final evaluation.
+budget charges. Unqualified hardware checks must use integration mode and cannot qualify final
+evaluation. The [hardware decision](experimental-hardware.md) permits other
+adequately sized GPUs; explicitly pin `engine.device_name`, validate the intended
+range, and keep comparisons on the same GPU model.
 
 ## Recording evidence
 

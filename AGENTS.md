@@ -10,7 +10,7 @@ General documents must be independent of individual accounts, workspaces, and ru
 
 Implement the agreed experiments before expanding scope. Do not silently replace the model, benchmark, inference engine, methods, metrics, or budget semantics. Record any user- or team-authorized departure from the proposal in `documents/`, with its rationale and affected comparisons, and update the corresponding instructions and configs. Routine implementation choices do not need a new research decision.
 
-The user authorized a pinned Qwen3-14B exploratory train/dev pilot if Qwen3-8B is inadequate for the requested retention comparison. Follow [documents/experimental-models.md](documents/experimental-models.md): keep these results separate, use the same engine and BF16 methods, and retain Qwen3-8B for the main research contract and final evaluation. Qwen3.5-9B is unsupported by the pinned engine.
+The user authorized a pinned Qwen3-14B exploratory train/dev pilot if Qwen3-8B is inadequate for the requested retention comparison. Newer models up to 14B are also authorized exploratory fallbacks if Qwen3 remains brittle; document and validate any required engine or state-accounting departure before running them. Follow [documents/experimental-models.md](documents/experimental-models.md): keep these results separate, use the same engine and BF16 methods, and retain Qwen3-8B for the main research contract and final evaluation. Qwen3.5-9B is unsupported by the pinned engine.
 
 ## Research contract
 
@@ -21,6 +21,8 @@ COMET tests whether recovering cached history improves agent task success beyond
 
 The initial dynamic policy decides when to recover. It does not adapt the retention level or attempt limit during evaluation. Additional models, benchmarks, eviction methods, text summarization, quantization, training, and alternative search strategies are outside the main experiment matrix unless the team changes the plan. Papers in the proposal's literature review are context, not additional implementation requirements.
 
+The user authorized adequately sized alternative GPUs for pilots and final evaluation on November 8, 2026. Follow [documents/experimental-hardware.md](documents/experimental-hardware.md); A100 availability must not block progress. Qualify the selected device and preserve comparable caps and budgets.
+
 ### Fixed setup
 
 | Component | Required setup |
@@ -28,7 +30,7 @@ The initial dynamic policy decides when to recover. It does not adapt the retent
 | Model | Qwen3-8B in BF16 |
 | Benchmark | AppWorld |
 | Inference engine | AgentKV Mini-SGLang for every method, including the full-cache baseline |
-| Hardware | One NVIDIA A100 80GB GPU |
+| Hardware | One qualified NVIDIA GPU; match GPU model within each comparison |
 | Execution | Sequential attempts, batch size 1 |
 | Baseline | Full KV with eviction disabled; one attempt and budget-matched oracle best-of-N |
 | Eviction methods | StreamingLLM, R-KV, and AgentKV using the existing AgentKV engine implementations |
@@ -60,7 +62,7 @@ Use one configuration-driven pipeline for all methods. Method and recovery-polic
 
 The proposal does not supply numerical values for the following. Establish them on train/dev, store them in a versioned configuration, and do not invent defaults presented as settled experiment choices:
 
-- Per-task wall-clock budget and peak VRAM cap. The GPU's 80GB capacity is not itself a chosen experimental cap.
+- Per-task wall-clock budget and peak VRAM cap. The GPU's capacity is not itself a chosen experimental cap.
 - Maximum context length and the behavior when that limit is reached.
 - Sampling settings, prompts, maximum attempts N, and the seed schedule.
 - Task count, split identifiers, and exact task subset.

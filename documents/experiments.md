@@ -20,8 +20,9 @@ comet evaluate "$COMET_RUN"
 comet analyze "$COMET_RUN" --output "$COMET_RUN/analysis.json"
 ```
 
-Run these commands inside an allocated GPU node. On an alternative GPU, export
-`COMET_INTEGRATION_SMOKE=1` before launching; those results remain visibly separate
+Run these commands inside an allocated GPU node. For a qualified research GPU, set `engine.device_name` to its exact reported
+model name. Legacy configs without that field require A100 80GB. For unqualified
+hardware checks, export `COMET_INTEGRATION_SMOKE=1`; those results remain separate
 and cannot qualify a final experiment for freezing. Both Slurm and GCP wrappers
 call the same launcher and managed runtime checks. Model loading is excluded from
 the task budget. A deterministic synthetic warmup of all methods also runs as
@@ -50,7 +51,7 @@ The completion variant uses the preloaded `apis` object, prints query results,
 and separates documentation queries from subsequent API calls. It enables
 reasoning, allows 2048 generated tokens per turn, and uses a 32,768-token context.
 Both conditions share the same prompt and numerical settings. These provisional
-settings do not establish task-solving quality or qualify non-A100 runs as
+settings do not establish task-solving quality or qualify unvalidated hardware as
 research pilot evidence. Run history and observations belong in
 [records/](records/README.md).
 
@@ -188,12 +189,12 @@ sampling, seeds, budgets, thresholds, context length and N. Then:
 
 ```sh
 comet freeze configs/final-candidate.json --output configs/final-v1.json \
-  --pilot-run runs/measured-a100-pilot
+  --pilot-run runs/measured-qualified-pilot
 comet run configs/final-v1.json --output runs/final-v1 \
   --model-path "$COMET_MODEL_PATH" --appworld-root "$APPWORLD_ROOT"
 ```
 
-Freeze requires completed, non-smoke train/dev pilot evidence with matching
+Freeze requires completed, non-smoke train/dev pilot evidence on the selected device with matching
 numerical settings and a completed attempt. It records the settings and evidence
 digests. The command does not make scientific judgments about task sample size or
 trigger quality: contributors must review those before the test run. Editing a
@@ -217,5 +218,5 @@ Keep complete run directories outside tracked source. Copy them intact when
 moving between machines; AppWorld scoring also needs its pinned data root. Small
 validation summaries in [records/](records/README.md) identify hardware, jobs,
 and portable artifact filenames and hashes. Keep general documentation independent
-of personal locations and run histories. Do not treat fixture tests or non-A100
+of personal locations and run histories. Do not treat fixture tests or unqualified
 integration results as research measurements.

@@ -44,12 +44,15 @@ def freeze(config_path: Path, output: Path, pilot_runs: list[Path]) -> dict:
             or manifest["status"] != "completed"
             or manifest.get("integration_smoke", True)
         ):
-            raise ValueError("Freeze requires completed A100 train/dev pilot runs")
+            raise ValueError("Freeze requires completed qualified-hardware train/dev pilot runs")
         if manifest["config"]["split"] not in {"train", "dev"}:
             raise ValueError("Test outcomes cannot be freeze evidence")
         pilot = Experiment.from_dict(manifest["config"], allow_unfrozen=True).to_dict()
         if any(proposed[key] != pilot[key] for key in fields):
             raise ValueError("Frozen numerical settings must match the supplied measured pilot")
+        expected_device = config.engine.device_name
+        if expected_device and manifest.get("engine", {}).get("device_name") != expected_device:
+            raise ValueError("Pilot GPU does not match the explicitly selected device_name")
         cells = [read_json(run / c["path"]) for c in manifest["cells"]]
         if not cells or any(not cell["completed"] for cell in cells):
             raise ValueError("Pilot evidence is incomplete")
@@ -205,6 +208,7 @@ def main(argv: list[str] | None = None) -> None:
                     workspace_reserve_bytes=config.engine.workspace_reserve_bytes,
                     prefill_chunk_tokens=config.engine.prefill_chunk_tokens,
                     require_a100=not args.integration_smoke,
+                    device_name=config.engine.device_name,
                 )
             )
 

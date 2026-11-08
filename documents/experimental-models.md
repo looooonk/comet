@@ -8,6 +8,15 @@ eviction algorithm. Its configuration must say `stage: "pilot"`; diagnostic and
 final configurations reject it, including during freeze preparation. Keep its
 runs, scores, plots, and uncertainty estimates separate from 8B results.
 
+On November 8, 2026, the user additionally authorized newer models with at most
+14B parameters, including Qwen3.5-4B and Qwen3.5-9B, if the Qwen3 series remains
+too brittle for useful comparisons. This authorizes exploratory investigation;
+it does not establish engine support or equivalent retention/recovery semantics.
+First test the already supported 14B model. Before a newer-model run, pin its
+model/tokenizer revisions, establish implementation and state-accounting support,
+and document any required serving-engine departure and affected comparisons.
+Do not bypass the model registry checks or mix these results into the 8B study.
+
 ## Pinned implementation
 
 Model and tokenizer use `Qwen/Qwen3-14B` revision

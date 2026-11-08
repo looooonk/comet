@@ -114,8 +114,9 @@ sinfo -o '%P %a %l %G %D'
 
 Choose an account and partition from the associations and current scheduler
 inventory available to you. Verify the allocated GPU before running a job.
-Non-A100 validation requires integration mode and must not enter A100 research
-comparisons. Keep dated hardware and validation observations in
+For a selected research device, set `engine.device_name` to its exact reported
+name and qualify it using [hardware qualification](experimental-hardware.md).
+Unqualified checks use integration mode and remain outside final comparisons. Keep dated hardware and validation observations in
 [records/](records/README.md), omitting account-specific access details.
 
 Store datasets, weights, environments, and runs in the account's project storage.
@@ -199,8 +200,9 @@ sbatch --account="$COMET_SLURM_ACCOUNT" --partition="$COMET_SLURM_PARTITION" \
 ```
 
 This generic GPU request is suitable only for explicitly configured infrastructure
-smokes. Final evaluation must unset `COMET_INTEGRATION_SMOKE`, select and verify
-the prescribed A100 80GB hardware.
+smokes. Final evaluation must unset `COMET_INTEGRATION_SMOKE` and select and verify
+the exact qualified GPU model recorded in `engine.device_name`. Legacy configs
+without that field retain their original A100 80GB requirement.
 The scheduler time limit is a job ceiling; the shared task budget is enforced by
 COMET's configuration and runner. Set `COMET_RESUME=1` to request a compatible
 resume into the same run directory. It must retain prior attempt and budget usage.
