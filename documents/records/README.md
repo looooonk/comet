@@ -109,6 +109,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [AppWorld first-reset cost (2026-11-08)](appworld-reset-cost-2026-11-08.md) | Profiled lazy imports/base-database setup with identical fresh state; accounting proposal pending, no historical timings changed |
 | [Independent action-validation plan (2026-11-08)](action-validation-2026-11-08-plan.md) | Comment-only rejection without an error cutoff, preserved legacy hashes and a paired four-cell dev regression; live pilot pending |
 | [Combined checkpoint/branch validation (2026-11-08)](checkpoint-branch-validation-2026-11-08.json) | Live full/AgentKV50 branches restored identical state, consumed pending observations once and recovered without replay; forced-output integration only |
 | [4B targeted pilot results (2026-11-08)](execution-qwen4b-instruct-2026-11-08-results.md) | Six normal completions, corrected 0/6 scores and complete 69-turn transcript audit; broader capability remains open |
