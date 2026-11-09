@@ -4,8 +4,8 @@ The previous execution goal has been cleared. Old model runs are stopped and
 superseded plans are archived in Git. Do not resume the legacy 4B/8B/14B pilots.
 The November 8 execution request activates this plan; the user authorized
 autonomous implementation and experiments with smaller models first. The new
-Qwen3.5-9B runtime and frozen L4 study are complete. Supplemental Blackwell
-results and resource handoff remain below; legacy pilots stay retired.
+Qwen3.5-9B runtime, frozen L4 study, supplemental Blackwell comparisons and
+resource handoff are complete. Legacy pilots stay retired.
 
 ## Central result
 
@@ -168,9 +168,14 @@ provenance, and stop when checks fail. Rebuild cleaned caches only as needed.
   grid and Q1 diagnostic, keeping their hardware cohort separate from L4.
   Both complete runs passed local scored-run verification; 27 figure exports
   and full summaries are linked from `documents/records/qwen9b-blackwell-findings.md`.
-- [ ] Verify cloud and cluster jobs have ended, preserve useful artifacts and
+- [x] Verify cloud and cluster jobs have ended, preserve useful artifacts and
   record cleanup. The optional Blackwell test replication is not required if
   its predeclared access, dev-confirmation or launch-time gates cannot be met.
+  No GPU jobs remain. Completed outputs are retrieved; the 1.237 GiB cloud
+  backup is retained after an incomplete global transfer. The optional frozen
+  Blackwell test was not executed because queue estimates exceeded the deadline.
+  See `documents/records/qwen9b-resource-handoff.json` and
+  `documents/records/qwen9b-final-blackwell-status.json`.
 
 ## What to reuse
 

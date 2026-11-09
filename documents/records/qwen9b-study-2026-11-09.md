@@ -583,3 +583,18 @@ guarantee all partitions can start by noon. A fresh audit also found only one
 free A6000 and one free L40S, insufficient to qualify and finish a comparable
 alternative cohort within the remaining window. No additional cloud spending
 is planned; incomplete partitions will never be reported as a completed study.
+
+At 11:30 ET the queue's first projected slot had moved to 12:45, the second to
+14:10 and the third had no estimate. The three still-unstarted test requests
+were canceled: scheduler accounting records zero elapsed time and zero
+allocated CPUs for each. The [frozen Blackwell test status](qwen9b-final-blackwell-status.json)
+is therefore **not executed**, not a completed or failed task comparison.
+Its declared settings remain saved for provenance, without automatic resumption.
+
+Final closeout at 11:32 ET verified an empty cluster queue and no GCP jobs,
+VMs or disks. The completed L4 and Blackwell results are local and published;
+the incomplete cloud-wide transfer's 1.237 GiB backup is retained under the
+recorded cleanup rule. One shared model cache/runtime remains available on the
+cluster. The owned local monitor, SSH control connection and sleep inhibitor
+were stopped. All required TODO deliverables are complete; the optional test
+replication was closed because adequate queue capacity was unavailable.

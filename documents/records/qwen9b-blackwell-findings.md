@@ -112,7 +112,9 @@ it is not an independent larger task sample.
 
 This gate permitted freezing the unchanged three-task test matrix in
 [`final-blackwell-v1.json`](../../configs/qwen9b/final-blackwell-v1.json).
-Its three condition partitions remain queued and are not test evidence yet.
+Its three condition partitions [were not executed](qwen9b-final-blackwell-status.json)
+because queue estimates exceeded the deadline. They are prepared protocols,
+not additional test evidence.
 
 ## Artifacts and limits
 
@@ -129,5 +131,5 @@ FLOPs omit recurrent updates, eviction and elementwise operations.
 Different budgets, starting states, hardware, caps and storage costs separate
 these cohorts from each other and from L4. Do not pool them or interpret their
 differences as a controlled hardware comparison. The optional held-out
-Blackwell replication is separately gated by dev confirmation and the recorded
-launch deadline; this document does not count it as completed evidence.
+Blackwell replication passed dev confirmation but was canceled before execution
+because of queue capacity. This document does not count it as completed evidence.

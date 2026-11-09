@@ -7,7 +7,9 @@
   [trajectory case study](qwen9b-final-case-study.json) and
   [24 figure exports](qwen9b-final-figures.json).
 - [Resource handoff](qwen9b-resource-handoff.json): verified cloud compute
-  cleanup, retained backup inventory and outstanding cluster retrieval.
+  and cluster cleanup, retrieved outputs and retained backup inventory.
+- [Optional Blackwell test status](qwen9b-final-blackwell-status.json): frozen
+  but not executed because queue capacity could not meet the deadline.
 - [Completed L4 pilot summary](qwen9b-pilot-summary.json): all 109 paired cells
   from compression, recovery, budgets, fine-grid and dev runs; full analyses and
   [figure exports](qwen9b-pilot-figures.json) retain their individual outcomes.

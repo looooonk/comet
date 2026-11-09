@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "cloud_cleanup_complete_blackwell_train_retrieved_replication_queued",
+  "status": "complete",
   "cloud": {
     "run_id": "gpu-20261109-074439-b5e235",
     "worker_status": "completed",
@@ -13,7 +13,7 @@
     "job_absent": true,
     "owned_instances": [],
     "owned_disks": [],
-    "checked_at_utc": "2026-11-09T14:58:45Z",
+    "checked_at_utc": "2026-11-09T16:31:00Z",
     "backup_objects_retained": true,
     "backup_inventory_object_count": 3142,
     "backup_inventory_bytes": 1328720740,
@@ -126,13 +126,13 @@
       13841503,
       13841504
     ],
-    "last_verified_state": "supplemental train and diagnostic jobs completed with exit zero",
-    "retrieval_status": "both complete output directories retrieved and scored-run execution verified",
+    "last_verified_state": "all owned jobs terminal; user queue empty",
+    "retrieval_status": "complete train, diagnostic and dev output directories retrieved and validated",
     "maximum_allocation_end_et": [
       "2026-11-09T10:39:38-05:00",
       "2026-11-09T10:32:20-05:00"
     ],
-    "new_allocations_submitted": true,
+    "new_allocations_submitted": false,
     "completed_jobs": [
       {
         "job_id": 13841503,
@@ -165,18 +165,16 @@
       "diagnostic_results_mib_approx": 582,
       "additional_model_or_environment_copies": false
     },
-    "conditional_final_jobs": [
-      13842925,
-      13842926,
-      13842927
-    ],
     "canceled_unstarted_jobs": [
       13842376,
       13842384,
       13842393,
       13842780,
       13842781,
-      13842782
+      13842782,
+      13842925,
+      13842926,
+      13842927
     ],
     "final_initialization_cutoff_et": "2026-11-09T12:00:00-05:00",
     "final_allocation_limit_seconds": 5100,
@@ -190,7 +188,11 @@
       "cpus": 2,
       "memory_gib": 12,
       "threads": 2
-    }
+    },
+    "active_owned_jobs": [],
+    "final_status": "not_executed_due_to_queue_deadline",
+    "cleanup_verified_at_utc": "2026-11-09T16:31:00Z",
+    "frozen_final_status_record": "qwen9b-final-blackwell-status.json"
   },
   "local_storage": {
     "free_gib_at_audit": 157,
@@ -198,5 +200,11 @@
     "hybrid_artifacts_mib_approx": 830,
     "new_model_weights_downloaded_locally": false
   },
-  "cost_note": "Planning allowances, not measured billing, are recorded in qwen9b-cloud-ledger.json."
+  "cost_note": "Planning allowances, not measured billing, are recorded in qwen9b-cloud-ledger.json.",
+  "local_session_cleanup": {
+    "monitor_stopped": true,
+    "ssh_control_connection_closed": true,
+    "owned_sleep_inhibitor_stopped": true,
+    "checked_at_utc": "2026-11-09T16:32:02Z"
+  }
 }

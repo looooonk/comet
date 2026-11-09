@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "stage": "final",
+  "status": "not_executed",
+  "reason": "Insomnia queue estimates exceeded the bounded completion window; no test partition began.",
+  "configuration": "configs/qwen9b/final-blackwell-v1.json",
+  "config_digest": "1ff4b83dafd7817f82a848e1b8c604c422e0e17b08746893d69d253faf1bf4c8",
+  "settings_digest": "ccd5ec4ff332c87e8d024341362d274bbbfdc5570c6a956953848d29a9a80c19",
+  "task_ids": [
+    "59fae45_1",
+    "042a9fc_1",
+    "83a7951_1"
+  ],
+  "seeds": [
+    17
+  ],
+  "declared_conditions": 29,
+  "declared_cells": 87,
+  "completed_cells": 0,
+  "attempt_count": 0,
+  "dev_gate": "passed; full-cache oracle success 1/2 versus 0/2 first attempts",
+  "queue_observed_at_utc": "2026-11-09T16:30:32Z",
+  "estimated_starts_et": [
+    "2026-11-09T12:45:00-05:00",
+    "2026-11-09T14:10:00-05:00",
+    null
+  ],
+  "canceled_jobs": [
+    {
+      "job_id": 13842925,
+      "state": "CANCELLED",
+      "elapsed_seconds": 0,
+      "allocated_cpus": 0
+    },
+    {
+      "job_id": 13842926,
+      "state": "CANCELLED",
+      "elapsed_seconds": 0,
+      "allocated_cpus": 0
+    },
+    {
+      "job_id": 13842927,
+      "state": "CANCELLED",
+      "elapsed_seconds": 0,
+      "allocated_cpus": 0
+    }
+  ],
+  "cleanup_verified_at_utc": "2026-11-09T16:31:00Z",
+  "interpretation": "Prepared frozen configurations only. Not part of measured test results. Do not automatically resume."
+}

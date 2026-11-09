@@ -235,10 +235,12 @@ rebuilds are admitted. Wide paired uncertainty and differences from L4 reinforce
 the conditional nature of these effects. These are train observations, not
 additional test samples or a controlled hardware comparison.
 
-The optional held-out Blackwell replication is queued behind a fresh dev check.
-Its unchanged matrix is divided among three bounded allocations, with a noon
-initialization cutoff; the execution plan is in the study record. It is not
-counted as completed evidence.
+The additional Blackwell dev check passed, but the optional held-out replication
+[was not executed](qwen9b-final-blackwell-status.json): queue estimates exceeded
+the available completion window. Its frozen configurations are preserved as
+prepared protocols, not measured test evidence. All owned compute jobs have
+ended; the [resource handoff](qwen9b-resource-handoff.json) records retrieved
+artifacts and the retained cloud backup.
 
 ## Reproduction and exports
 
