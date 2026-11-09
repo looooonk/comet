@@ -103,6 +103,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Checkpoint fixture repair (2026-11-08)](checkpoint-integration-2026-11-08.json) | Preserved prohibited-import failure, supported action repair and passed real AppWorld syntax check; live branching retry pending |
 | [4B bounded pilot qualification (2026-11-08)](qwen4b-pilot-numerical-qualification-2026-11-08.md) | 278 integration checks, preserved failed screens and both FP32 calibrations support the six-cell exploratory pilot |
 | [Repeated 12k history timing (2026-11-08)](history-timing-12k-2026-11-08.md) | Ninety verified passes, retained variation and non-monotone memory; final 16k point submitted |
 | [Repeated 8k history timing (2026-11-08)](history-timing-8k-2026-11-08.md) | Ninety verified passes, three-length curves, retained timing variation and non-monotone reservation peaks |

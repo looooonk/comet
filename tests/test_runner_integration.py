@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from comet.appworld import AppWorldAdapter, validate_tasks
+from comet.appworld import AppWorldAdapter, validate_tasks, verify_appworld_revision
 from comet.artifacts import read_json, write_json
 from comet.config import Condition, Experiment
 from comet.engine import EngineSettings, MiniSGLangEngine, retention_target
@@ -42,23 +42,37 @@ def _config():
 def _action(label, index):
     if label == "source" and index == 0:
         return """import random
-import numpy as np
 profile = apis.supervisor.show_profile()
 password = next(row['password'] for row in apis.supervisor.show_account_passwords()
                 if row['account_name'] == 'phone')
 token = apis.phone.login(username=profile['phone_number'], password=password)['access_token']
-marker = {'events': ['prefix'], 'python': random.random(), 'numpy': float(np.random.random())}
+marker = {'events': ['prefix'], 'python': random.random()}
 print(apis.phone.send_text_message(phone_number=profile['phone_number'],
       message='COMET checkpoint prefix', access_token=token))"""
     if label != "source" and index == 0:
         return f"""marker['events'].append({label!r})
 marker['branch_python'] = random.random()
-marker['branch_numpy'] = float(np.random.random())
 print(apis.phone.send_text_message(phone_number=profile['phone_number'],
       message='COMET checkpoint branch ' + {label!r}, access_token=token))"""
     if label != "source" and index == 1:
         return "print(marker)\napis.supervisor.complete_task()"
     raise AssertionError(f"Unexpected validation action: {label}/{index}")
+
+
+def _action_syntax():
+    from appworld.common import safety_guard
+
+    verify_appworld_revision()
+    guard = safety_guard.SafetyGuard()
+    records = []
+    for label, count in (("source", 1), ("full", 2), ("agentkv_never", 2), ("agentkv_fixed", 2)):
+        for index in range(count):
+            code = _action(label, index)
+            safe, reason = guard.is_syntax_safe(code)
+            records.append({"label": label, "index": index, "safe": safe, "reason": reason,
+                            "code_sha256": hashlib.sha256(code.encode()).hexdigest()})
+    return {"validator_sha256": hashlib.sha256(Path(safety_guard.__file__).read_bytes()).hexdigest(),
+            "actions": records}
 
 
 def _hash(value):
@@ -109,11 +123,14 @@ def _kv_hash(tensors, torch):
 
 
 def _check(root):
+    import numpy
+
     config = _config()
     output = root / "run"
     source = output / "checkpoints/0d8a4ee_1-17"
     report = {"status": "running", "integration_only": True, "forced_outputs": True,
               "task_success_claim": False, "config_digest": config.digest,
+              "host_numpy_version": numpy.__version__,
               "environments": [], "generations": [], "branch_starts": [], "recoveries": []}
     write_json(root / "config.json", config.to_dict())
     write_json(root / "report.json", report)
@@ -266,6 +283,9 @@ def _check(root):
 
     runner._trajectory = checked_trajectory
     try:
+        report["action_syntax"] = _action_syntax()
+        journal()
+        assert all(row["safe"] for row in report["action_syntax"]["actions"]), report["action_syntax"]
         validate_tasks(config.split, config.task_ids)
         manifest = runner.run()
         assert manifest["status"] == "completed" and manifest["integration_smoke"]
@@ -301,7 +321,7 @@ def _check(root):
             assert len(final["probe_messages"][f"COMET checkpoint branch {condition.id}"]) == 1
             assert final["probe_messages"]["COMET checkpoint prefix"] == prefix_messages
             assert sum(len(rows) for rows in final["probe_messages"].values()) == 2
-            draws.append((final["marker"]["branch_python"], final["marker"]["branch_numpy"]))
+            draws.append(final["marker"]["branch_python"])
             calls = [row for row in report["generations"] if row["environment"] == condition.id]
             assert len(calls) == 2
             pending = saved["agent"]["pending_tokens"]
@@ -362,6 +382,19 @@ def test_checkpoint_validation_config_and_action_bounds():
         _action("source", 1)
     with pytest.raises(AssertionError, match="Unexpected validation action"):
         _action("full", 2)
+
+
+@pytest.mark.appworld
+def test_checkpoint_actions_pass_pinned_safety_guard():
+    from appworld.common.safety_guard import SafetyGuard
+
+    records = _action_syntax()
+    records["prohibited_numpy_rejected"] = not SafetyGuard().is_syntax_safe("import numpy as np")[0]
+    if path := os.environ.get("COMET_CHECKPOINT_ACTION_EVIDENCE"):
+        write_json(Path(path), records)
+    assert len(records["actions"]) == 7
+    assert all(row["safe"] for row in records["actions"]), records
+    assert records["prohibited_numpy_rejected"]
 
 
 if __name__ == "__main__":

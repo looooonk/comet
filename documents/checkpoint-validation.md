@@ -8,13 +8,16 @@ submit jobs or use the evaluator.
 
 The declared fixture is **dev task `0d8a4ee_1`, seed 17**; runtime split validation
 must confirm its membership. One full-cache source executes an isolated self-message
-and stores a Python marker and Python/NumPy random draws. The source remains
+and stores a Python marker and a permitted Python random draw. The source remains
 incomplete at its one-tool boundary. Three independent continuations use full KV,
 AgentKV 50% without recovery, and AgentKV 50% with a fixed trigger at one tool call.
 Each branch sends its own message and then calls the supervisor completion API.
 The test forces native sampled token IDs to these bounded Python actions; all
 model forwards, cache operations, and tool executions remain real. These outputs
 are **integration evidence, not task-success or recovery-quality evidence**.
+All seven action blocks must pass the pinned AppWorld syntax safety guard before
+model loading. NumPy is prohibited inside AppWorld actions; its RNG is inspected
+only by the host-side checkpoint validator, without importing it in tool code.
 
 Validation limits are explicit: 120 seconds per cell including its charged source
 preparation, 40 GiB peak total VRAM, 6 GiB workspace reserve, an 8,192-token context,
@@ -51,7 +54,8 @@ tool observations, and recovery evidence. It checks that:
   matches the source tensors; compressed branches meet the retention target.
 - The source action executes only during preparation. Branches restore its
   mutation without replay, start without another branch's marker or effects,
-  and produce identical next Python/NumPy random draws.
+  and produce identical next Python random draws. Host-side NumPy RNG fingerprints
+  match the saved environment state; no NumPy tool action is executed.
 - The pending observation enters inference exactly once, including the immediate
   recovery path. Recovery leaves the environment and RNG unchanged and consumes
   its allowance once. Forced output does not validate stochastic sampling; the
