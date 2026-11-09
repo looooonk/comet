@@ -1,0 +1,10 @@
+{
+  "extends": "train-budget-120-l4-v1.json",
+  "experiment_id": "qwen9b-dev-confirmation-l4-v1",
+  "split": "dev",
+  "task_ids": [
+    "4ec8de5_1",
+    "396c5a2_1"
+  ],
+  "notes": "Separate dev confirmation uses the first two predeclared confirmation families in the outcome-independent hash order. Preserves all seven initial matched conditions, the v4 prompt, 120-second shared budget, N=2, 21 GiB cap and declared thresholds. Selected before any new-model outcome on these tasks. Intended to confirm capability and compaction behavior after train-only budget/fine-grid exploration. No test outcomes inform selection; all failures remain."
+}
