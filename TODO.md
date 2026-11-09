@@ -2,8 +2,8 @@
 
 The previous execution goal has been cleared. Old model runs are stopped and
 superseded plans are archived in Git. Do not resume the legacy 4B/8B/14B pilots.
-This is the starting plan for the next implementation run, not an instruction to
-launch infrastructure during cleanup. Insomnia retains only the protected
+The November 8 execution request activates this plan; the user authorized
+autonomous implementation and experiments with smaller models first. Insomnia retains only the protected
 AppWorld benchmark root; old environments, checkouts, model weights and generated
 caches are removed. Build a fresh runtime for the selected new model.
 
@@ -52,7 +52,7 @@ available official releases during cleanup; no replacement is selected.
 - [x] Review GPU fit, runtime and cost under the user's autonomous execution
   authorization. Prioritize 9B on available 48 GB Insomnia GPUs, monitor queues,
   and retain the $40 cumulative GCP ceiling. See `documents/hybrid-backend.md`.
-- [ ] Pin dependencies/assets and implement one shared integration rather than
+- [x] Pin dependencies/assets and implement one shared integration rather than
   method-specific runners. Preserve AppWorld and offline scoring unless an
   explicit research decision changes them.
 

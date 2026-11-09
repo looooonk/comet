@@ -30,6 +30,19 @@ def test_phase_markers_survive_split_tokens_and_tool_turns():
     assert second == [2, 2, 3, 3]
 
 
+def test_delta_kernel_forwards_state_without_transformer_only_keywords():
+    from comet.engine.hybrid import delta_kernel
+
+    calls = []
+    delta_kernel(lambda *args, **kwargs: calls.append((args, kwargs)),
+                 "q", "k", "v", g="decay", beta="rate", initial_state="state",
+                 output_final_state=True, use_cache=True, output_attentions=False)
+    args, kwargs = calls[0]
+    assert args == ("q", "k", "v")
+    assert kwargs["initial_state"] == "state" and kwargs["output_final_state"]
+    assert "use_cache" not in kwargs and "output_attentions" not in kwargs
+
+
 @pytest.mark.gpu
 @pytest.mark.skipif(os.environ.get("COMET_RUN_HYBRID_TESTS") != "1", reason="opt-in hybrid GPU check")
 def test_live_hybrid_reference_persistence_recovery_and_branches(tmp_path):
@@ -43,7 +56,7 @@ def test_live_hybrid_reference_persistence_recovery_and_branches(tmp_path):
     settings = EngineSettings(
         model=MODEL, model_path=os.environ["COMET_MODEL_PATH"], model_revision=REVISION,
         tokenizer_revision=REVISION, backend="transformers_hybrid", method="full", retention=1.0,
-        max_context_tokens=4096, peak_vram_bytes=int(os.environ.get("COMET_GPU_CAP_BYTES", 40 * 2**30)),
+        max_context_tokens=8192, peak_vram_bytes=int(os.environ.get("COMET_GPU_CAP_BYTES", 40 * 2**30)),
         workspace_reserve_bytes=4 * 2**30, prefill_chunk_tokens=128, require_a100=False,
     )
     engine = create_engine(settings)
@@ -77,6 +90,9 @@ def test_live_hybrid_reference_persistence_recovery_and_branches(tmp_path):
         del reference, chunked_logits
         source = tmp_path / "source.pt"
         engine.checkpoint(source)
+        answer = engine.generate([], 16, 0.0, 1.0, deadline)
+        evidence["reference"]["greedy_text"] = engine.tokenizer.decode(answer.token_ids, skip_special_tokens=True)
+        engine.restore(source)
         suffix = engine.tokenizer.encode("\nA further observation: continue.\n")
         grid = (0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9) if os.environ.get("COMET_TEST_RETENTION_GRID") == "1" else (0.5,)
         for method in ("streamingllm", "rkv", "agentkv"):
@@ -114,6 +130,15 @@ def test_live_hybrid_reference_persistence_recovery_and_branches(tmp_path):
         assert not engine.recover(engine.raw_token_ids, deadline).admitted
         engine.settings = original
         evidence["cap_refusal"] = True
+        if os.environ.get("COMET_TEST_CAPACITY") == "1":
+            capacity_tokens = engine.tokenizer.encode("Archive entry: completed routine item. " * 1500)
+            capacity_tokens = capacity_tokens[:settings.max_context_tokens - 2]
+            evidence["capacity"] = []
+            for method in ("full", "streamingllm", "rkv", "agentkv"):
+                engine.set_policy(method, 1.0 if method == "full" else 0.25)
+                engine.start(17)
+                engine.generate(capacity_tokens, 2, 0.0, 1.0, deadline)
+                evidence["capacity"].append({"method": method, "memory": engine.memory_stats()})
         evidence["engine"] = engine.provenance()
     finally:
         destination = os.environ.get("COMET_GPU_EVIDENCE")

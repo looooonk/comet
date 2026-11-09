@@ -477,6 +477,8 @@ class Runner:
         metrics = attempt["metrics"]
         coverage = metrics.setdefault("metric_coverage", {})
         fields = {"estimated_flops": "estimated_flops"}
+        if "compaction_seconds" in result:
+            fields["compaction_seconds"] = "compaction_seconds"
         if recovery:
             fields.update(rebuild_seconds="seconds", rebuild_prefill_tokens="prompt_tokens")
         else:

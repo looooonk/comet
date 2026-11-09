@@ -1,5 +1,8 @@
 # Results and cleanup records
 
+- [Qwen3.5-9B study](qwen9b-study-2026-11-09.md): declared samples and current
+  implementation/validation progress for the new hybrid backend.
+
 - [Legacy results](legacy-results.md): useful findings, two retained cost figures,
   limitations, and links to archived evidence.
 - [Compact verified summary](legacy-results.json): figure hashes and the completed

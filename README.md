@@ -25,7 +25,7 @@ We will compare full memory with three ways of retaining less of the model's cac
 4. **Evaluate complete tasks.** Run the agreed comparisons from fresh task states on the fixed test set.
 5. **Analyze and report.** Compare success and cost, explain uncertainty, and preserve the records needed to reproduce results.
 
-The repository includes a shared experiment runner, pinned AgentKV Mini-SGLang integration, AppWorld execution and offline scoring, and paired task-level analysis. Legacy schema examples remain for development. No new Qwen candidate is implemented or qualified yet, and no experiment is currently scheduled. See the [new direction and next steps](documents/research-direction.md).
+The repository includes a shared experiment runner, pinned AgentKV Mini-SGLang integration, AppWorld execution and offline scoring, and paired task-level analysis. Legacy schema examples remain for development. Qwen3.5-9B now has a shared hybrid-state implementation undergoing live qualification. The first task pilot is declared; research results remain pending. See the [new direction and next steps](documents/research-direction.md).
 
 Start with the [setup guide](documents/setup.md), then the [experiment workflow](documents/experiments.md). The [validation guide](documents/validation.md) explains the checks; [personal and run records](documents/records/README.md) preserve dated evidence and limitations. One managed setup and validation path serves local development, CI, Insomnia, and GCP. Insomnia job scripts support short development runs; the same environment and commands run on a suitably sized GCP GPU for longer experiments.
 

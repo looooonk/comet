@@ -6,7 +6,7 @@ The [candidate list](experimental-models.md) includes dense and MoE models up to
 35B total parameters. The old 14B ceiling is no longer the selection constraint.
 The original proposal remains background; this decision supersedes its model
 and hardware assumptions. Backend and hybrid-state support must be designed
-before new experiments. No replacement is implemented or qualified yet.
+before new experiments. Qwen3.5-9B is the first selected candidate. Its shared hybrid backend is implemented and undergoing live qualification; see the [backend decision](hybrid-backend.md).
 
 ## Central deliverable
 

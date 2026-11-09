@@ -1,4 +1,5 @@
 -r appworld.in
+-c appworld.lock
 torch==2.9.1
 transformers==5.22.2
 accelerate==1.12.0

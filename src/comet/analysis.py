@@ -372,6 +372,8 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
             "peak_kv_bytes": _metric(attempts, "peak_kv_bytes", "bytes", "max"),
             "generated_tokens": _metric(attempts, "generated_tokens", "tokens", "sum"),
             "prefill_tokens": _metric(attempts, "prefill_tokens", "tokens", "sum"),
+            "compaction_seconds": _metric(attempts, "compaction_seconds", "seconds", "sum"),
+            "peak_recurrent_state_bytes": _metric(attempts, "peak_recurrent_state_bytes", "bytes", "max"),
         }
         decoding = [attempt["metrics"] for attempt in attempts
                     if isinstance(attempt.get("metrics", {}).get("decode_tokens"), (int, float))

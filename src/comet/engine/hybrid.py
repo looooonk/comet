@@ -6,6 +6,7 @@ import importlib.metadata
 import random
 import threading
 from dataclasses import replace
+from functools import partial
 
 from comet.clocks import monotonic
 from comet.errors import BudgetExpired, MemoryCapExceeded, UnsupportedPath
@@ -24,6 +25,14 @@ def hybrid_attention(module, query, key, value, attention_mask, scaling=None, **
         is_causal=False, scale=scaling, enable_gqa=True,
     )
     return output.transpose(1, 2).contiguous(), None
+
+
+def delta_kernel(kernel, query, key, value, *, g, beta, initial_state=None,
+                 output_final_state=False, use_qk_l2norm_in_kernel=True,
+                 cu_seqlens=None, **kwargs):
+    return kernel(query, key, value, g=g, beta=beta, initial_state=initial_state,
+                  output_final_state=output_final_state,
+                  use_qk_l2norm_in_kernel=use_qk_l2norm_in_kernel, cu_seqlens=cu_seqlens)
 
 
 class HybridEngine:
@@ -90,8 +99,8 @@ class HybridEngine:
         from transformers.models.qwen3_5 import modeling_qwen3_5
 
         # Keep the upstream hybrid forward and replace only its equivalent recurrent kernels.
-        modeling_qwen3_5.torch_chunk_gated_delta_rule = chunk_gated_delta_rule
-        modeling_qwen3_5.torch_recurrent_gated_delta_rule = fused_recurrent_gated_delta_rule
+        modeling_qwen3_5.torch_chunk_gated_delta_rule = partial(delta_kernel, chunk_gated_delta_rule)
+        modeling_qwen3_5.torch_recurrent_gated_delta_rule = partial(delta_kernel, fused_recurrent_gated_delta_rule)
 
     def _clear(self):
         from transformers import DynamicCache
@@ -220,11 +229,13 @@ class HybridEngine:
         from comet_agentkv import LayerEvictionView, create_eviction_plan
 
         if self.settings.method == "full":
-            return
+            return 0.0
         target = retention_target(len(self._raw), self.settings.retention, self.settings.method)
         before = self.cache.get_seq_length()
         if before <= target:
-            return
+            return 0.0
+        self.synchronize()
+        started = monotonic()
         plan = create_eviction_plan(self.settings.method)
         plan = (replace(plan, window_tokens=target - min(target, plan.sink_tokens), sink_tokens=min(target, plan.sink_tokens))
                 if self.settings.method == "streamingllm" else replace(plan, budget=target))
@@ -251,6 +262,8 @@ class HybridEngine:
             self._positions[index] = self._positions[index].gather(1, keep)
         self._events.append({"logical_cached_tokens": len(self._raw), "physical_before": before,
                              "target_tokens": target})
+        self.synchronize()
+        return monotonic() - started
 
     def _forward(self, tokens, deadline, progress, *, prefill, compact=True):
         self._check_deadline(deadline)
@@ -278,7 +291,7 @@ class HybridEngine:
                 self._tail, self._phase = tail, phase
                 self._check_memory()
                 if compact:
-                    self._compact()
+                    progress["compaction_seconds"] += self._compact()
                 self.synchronize()
             progress["estimated_flops"] += (2 * self._text_parameters * count
                 + self._attention_factor * (count * cached + count * (count + 1) // 2))
@@ -291,7 +304,7 @@ class HybridEngine:
     def _progress():
         return {"status": "running", "failure_reason": None, "prefill_seconds": 0.0,
                 "decode_seconds": 0.0, "prompt_tokens": 0, "decode_tokens": 0,
-                "estimated_flops": 0, "generated_tokens": 0}
+                "estimated_flops": 0, "generated_tokens": 0, "compaction_seconds": 0.0}
 
     def _prefill(self, tokens, deadline, progress, *, compact=True):
         chunk = self.settings.prefill_chunk_tokens
@@ -354,10 +367,14 @@ class HybridEngine:
             if required > self.settings.peak_vram_bytes:
                 reason = "memory_cap"
         if reason:
-            return RecoveryResult(False, reason, monotonic() - started, len(full_token_ids), self.memory_stats())
+            result = RecoveryResult(False, reason, monotonic() - started, len(full_token_ids), self.memory_stats())
+            self._last_recovery = {"status": "denied", "admitted": False,
+                                   "allowance_consumed": False, "reason": reason}
+            return result
         self._check_deadline(deadline)
         rng, cpu_rng, python_rng = self.torch.cuda.get_rng_state_all(), self.torch.get_rng_state(), random.getstate()
         progress = self._progress()
+        progress.update(admitted=True, allowance_consumed=True)
         old_events = self._events
         self._clear()
         self.torch.cuda.empty_cache()
@@ -366,7 +383,7 @@ class HybridEngine:
         try:
             self._prefill(full_token_ids, deadline, progress, compact=False)
             with self.torch.inference_mode():
-                self._compact()
+                progress["compaction_seconds"] += self._compact()
             self.synchronize()
             self._check_deadline(deadline)
             progress["status"] = "completed"
