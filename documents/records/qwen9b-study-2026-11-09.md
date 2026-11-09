@@ -434,7 +434,7 @@ The additional cohort improves sample coverage and exposes the single/oracle
 distinction; it cannot retune the frozen L4 test study, and its hardware-specific
 results remain separate.
 
-A second available Blackwell GPU is allocated to the 28-arm Q1 diagnostic on
+A second available Blackwell GPU is planned for the 28-arm Q1 diagnostic on
 the same three train families (`q1-diagnostic-blackwell-v1.json`), preserving
 the 90-second branch budget and 21 GiB cap. This raises the diagnostic from one
 to three task families without delaying the parallel fine grid or changing
@@ -442,3 +442,13 @@ the frozen L4 evaluation. Both supplemental runs use immutable source `47596b5`;
 the later diagnostic configuration is staged externally and saved in its run
 manifest. Fresh Blackwell 16K qualification gates both runs. Attempts remain
 sequential within each task/configuration.
+
+Blackwell allocation `13841496` passed all 12 focused checks, then failed the
+16K full-cache capacity check under the 21 GiB cap: a 120 MiB SDPA allocation
+exceeded the allocator's remaining allowance. It ended after 8m34s, before any
+task attempt; the diagnostic had not yet been submitted. The
+[failed qualification](qwen9b-blackwell-cap21-failure.json) is retained.
+Both supplemental configurations now have explicitly declared v2 variants with
+a **24 GiB** cap, adding 3 GiB headroom. Model, precision, recovery workspace,
+budgets, task sample and all policies are unchanged. Fresh 16K qualification
+must pass before either task run. The frozen 21 GiB L4 study is unaffected.

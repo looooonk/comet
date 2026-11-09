@@ -1,0 +1,6 @@
+{
+  "extends": "train-finegrid-blackwell-v1.json",
+  "experiment_id": "qwen9b-train-finegrid-blackwell-v2",
+  "peak_vram_bytes": 25769803776,
+  "notes": "New Blackwell cohort version after the 21 GiB 16K qualification failed an allocator reservation before any task attempt. The 24 GiB total-VRAM cap adds 3 GiB headroom, with unchanged precision, 2 GiB recovery workspace, model, protocol, sampling, tasks, budgets, attempt limits and thresholds. Every condition in this cohort uses the same 24 GiB cap. Fresh all-method 16K capacity/recovery qualification must pass. Preserve the failed 21 GiB check and analyze separately from frozen 21 GiB L4 results. Source remains immutable at 47596b5; the resolved versioned configuration is staged externally."
+}
