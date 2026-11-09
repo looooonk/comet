@@ -29,8 +29,12 @@ def main() -> None:
         require_a100=False,
     )
     engine = MiniSGLangEngine(settings)
-    records = {"integration_smoke": True, "settings": dataclasses.asdict(settings),
-               "device_name": engine.device_name, "checks": []}
+    records = {
+        "integration_smoke": True,
+        "settings": dataclasses.asdict(settings),
+        "device_name": engine.device_name,
+        "checks": [],
+    }
 
     def record(name, value):
         item = {"check": name, "result": value}
@@ -39,8 +43,13 @@ def main() -> None:
         (args.output / "result.json").write_text(json.dumps(records, indent=2) + "\n")
 
     def generate(text, count=8):
-        return engine.generate(engine.tokenizer.encode(text, add_special_tokens=False), count, 0.0, 1.0,
-                               time.monotonic() + 300)
+        return engine.generate(
+            engine.tokenizer.encode(text, add_special_tokens=False),
+            count,
+            0.0,
+            1.0,
+            time.monotonic() + 300,
+        )
 
     try:
         engine.start(42)
@@ -77,11 +86,14 @@ def main() -> None:
                 assert not second.admitted and second.reason == "recovery_limit"
                 state = engine.memory_stats()
                 assert state["physical_cached_tokens"] <= state["retention_target_tokens"]
-                record(f"{method}_{retention}", {
-                    "generation": dataclasses.asdict(actual),
-                    "recovery": dataclasses.asdict(recovered),
-                    "second_recovery": dataclasses.asdict(second),
-                })
+                record(
+                    f"{method}_{retention}",
+                    {
+                        "generation": dataclasses.asdict(actual),
+                        "recovery": dataclasses.asdict(recovered),
+                        "second_recovery": dataclasses.asdict(second),
+                    },
+                )
         records["passed"] = True
         record("completed", True)
     finally:

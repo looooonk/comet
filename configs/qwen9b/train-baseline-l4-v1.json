@@ -1,7 +1,0 @@
-{
-  "extends": "train-baseline-v1.json",
-  "experiment_id": "qwen9b-train-baseline-l4-v1",
-  "peak_vram_bytes": 23622320128,
-  "engine": {"device_name": "NVIDIA L4", "workspace_reserve_bytes": 2147483648},
-  "notes": "Unfrozen fallback capability/cost pilot on one GCP L4. Same predeclared four train families, seed, prompt, sampling, context and 300-second task budget. The 22 GiB total-VRAM cap and 2 GiB recovery workspace are a separately qualified hardware cohort; do not pool with 40 GiB Insomnia comparisons. Proceed only after the corresponding live memory and state checks pass."
-}

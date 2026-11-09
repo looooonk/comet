@@ -1,33 +1,19 @@
-# Qwen hybrid implementation decision
+# Qwen3.5-9B hybrid backend
 
-The November 8 execution request authorizes implementation, Insomnia/GCP jobs,
-and autonomous routine choices toward the November 9, 11 AM ET target. The user
-subsequently requested smaller models first and removed the nonexistent 14B
-candidate. Cleanup-only prohibitions no longer describe this execution phase.
+The selected model is [Qwen/Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B),
+pinned at `c202236235762e1c871ad0ccb60c8ee5ba337b9a` for model and tokenizer.
+The official snapshot uses safetensors under Apache-2.0, with BF16 weights and
+small FP32 recurrent parameters. Its chat template controls thinking mode.
 
-## Verified candidates and selection
+The text model has 32 layers: eight full-attention layers and 24 gated-delta
+recurrent layers. Four KV heads of dimension 256 per attention layer give
+32 KiB of BF16 KV per token, or 512 MiB at 16,384 tokens, independently of
+recurrent state and weights. Stored parameters total 9,653,104,368 (about
+19.3 GB of weights). Larger architectures are unsupported; their former candidate
+inventory remains in Git history. See the [research contract](research-direction.md)
+for model and hardware qualification boundaries.
 
-Official Hugging Face metadata and configuration files were checked on November
-8. All five available candidates use Apache-2.0 and safetensors. Qwen3.5 files
-include small FP32 recurrent parameters alongside BF16 weights; this is the
-official format, not quantization. Thinking can be enabled or disabled through
-the official chat template. Qwen3.8 additionally exposes reasoning effort.
-
-| Official repository | Pinned revision | Architecture | Stored parameters |
-| --- | --- | --- | ---: |
-| [Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B) | `c202236235762e1c871ad0ccb60c8ee5ba337b9a` | Dense hybrid | 9,653,104,368 |
-| [Qwen3.5-27B](https://huggingface.co/Qwen/Qwen3.5-27B) | `fc05daec18b0a78c049392ed2e771dde82bdf654` | Dense hybrid | 27,781,427,952 |
-| [Qwen3.5-35B-A3B](https://huggingface.co/Qwen/Qwen3.5-35B-A3B) | `59d61f3ce65a6d9863b86d2e96597125219dc754` | Hybrid MoE | 35,951,822,704 |
-| [Qwen3.6-35B-A3B](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) | `345d467b117d1fd5eda9b879a5988de9ae5f47a7` | Hybrid MoE | 35,951,822,704 |
-| [Qwen3.8-27B](https://huggingface.co/Qwen/Qwen3.8-27B) | `37561816e66b5b9153b1b64c10968c18c1e6f4a0` | Dense hybrid | 27,781,427,952 |
-
-Implement **Qwen3.5-9B first**. It has 32 text layers: eight full-attention
-layers and 24 gated-delta recurrent layers. Each attention layer has four KV
-heads of dimension 256. Full BF16 KV therefore grows by 32 KiB per token;
-16,384 tokens occupy 512 MiB, independently of recurrent state and weights.
-The approximately 19.3 GB stored weights fit a 48 GB GPU with substantial
-headroom. Larger models remain candidates, not parallel implementation work.
-MoE's active parameter count does not reduce the resident expert weight size.
+## Shared implementation
 
 Use one Transformers 5.22.2 backend for every method, with the existing pinned
 AgentKV selectors. This implements the user-authorized new backend phase; it
@@ -86,28 +72,9 @@ R-KV uses recent queries. Eviction takes place after each prefill chunk and each
 generated token. A generated terminal token is included in the raw history and
 processed cache so turn boundaries cannot silently lose or duplicate state.
 
-## Hardware and time plan
+## Qualification
 
-Prefer an available 48 GB Insomnia device for 9B; request the exact device model
-and keep comparisons on that model. H100 queue time does not block this route.
-Check queue delays during setup and execution and switch pending requests when
-an adequate alternative is available. Initial context/output limits and caps
-remain provisional until live checks and dev costs establish useful headroom.
-
-An L4 leaves less headroom for 9B and requires its own measured memory cap and
-qualification. Check current quota and availability before provisioning; do not
-assume access to a larger GPU. Keep comparisons on the same device model and
-cap. Run IDs, available quota and the spending ledger belong in the
-[execution record](records/qwen9b-study-2026-11-09.md). Revise runtime and cost
-estimates from pilot measurements; deadlines do not relax task-budget accounting.
-
-Judge validation by meaningful output agreement, state correctness and task
-behavior, not bitwise equality. Preserve material discrepancies and failures.
-Do not freeze settings or mark live qualification complete from CPU tests.
-
-The user also authorized lowering task difficulty and other reasonable research
-adjustments when needed to expose the intended compaction/success phenomenon.
-Prefer the outlined AppWorld study; declare departures as new exploratory
-versions, select difficulty on train/dev, retain every measured condition and
-freeze before test. This flexibility does not permit manufactured results or
-unreported selection using test outcomes.
+[Live records](records/README.md) establish the scope of the A6000, L4 and
+Blackwell checks. Every new device/cap combination requires its own validation.
+Use meaningful output agreement, state correctness and task behavior; preserve
+material numerical discrepancies. CPU tests do not establish live qualification.

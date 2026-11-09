@@ -1,6 +1,0 @@
-{
-  "extends": "train-baseline-l4-v1.json",
-  "experiment_id": "qwen9b-train-baseline-l4-v2",
-  "peak_vram_bytes": 22548578304,
-  "notes": "Corrected L4 capability/cost pilot: the measured usable device capacity is 23,570,219,008 bytes, slightly below 22 GiB. Use a declared 21 GiB total-VRAM cap with the same 2 GiB workspace. No task attempts ran under v1. All other predeclared baseline settings are unchanged. This remains a separate hardware cohort from the 40 GiB Insomnia configurations."
-}

@@ -10,8 +10,14 @@ from collections import Counter
 from pathlib import Path
 
 CATEGORIES = (
-    "HTTP 401", "HTTP 422", "Unexpected parameter", "No API named",
-    "Invalid action", "TypeError", "AttributeError", "NameError",
+    "HTTP 401",
+    "HTTP 422",
+    "Unexpected parameter",
+    "No API named",
+    "Invalid action",
+    "TypeError",
+    "AttributeError",
+    "NameError",
 )
 HTTP_PATTERNS = {
     f"HTTP {status}": re.compile(rf"(?:HTTP |Response status code is ){status}\b")
@@ -54,8 +60,10 @@ def summarize(trajectory: dict, *, schema_version: int = 2) -> dict:
         else:
             streak = 0
     return {
-        "turns": len(turns), "error_turns": error_turns,
-        "first_error_turn": first_error, "longest_error_streak": longest_streak,
+        "turns": len(turns),
+        "error_turns": error_turns,
+        "first_error_turn": first_error,
+        "longest_error_streak": longest_streak,
         "repeated_action_strings": len(actions) - len(set(actions)),
         "categories": dict(categories),
     }
@@ -66,23 +74,35 @@ def audit(root: Path, *, schema_version: int = 2) -> dict:
     for path in sorted(root.rglob("trajectory.json")):
         raw = path.read_bytes()
         row = summarize(json.loads(raw), schema_version=schema_version)
-        rows.append({"trajectory": path.relative_to(root).as_posix(),
-                     "sha256": hashlib.sha256(raw).hexdigest(), **row})
+        rows.append(
+            {
+                "trajectory": path.relative_to(root).as_posix(),
+                "sha256": hashlib.sha256(raw).hexdigest(),
+                **row,
+            }
+        )
     if not rows:
         raise ValueError("No saved trajectories found")
-    return {"schema_version": schema_version,
-            "scope": "Offline symptoms, not causal attribution or task scores. Missing trajectories are not imputed.",
-            "trajectory_count": len(rows),
-            "trajectories_with_errors": sum(row["error_turns"] > 0 for row in rows),
-            "trajectories": rows}
+    return {
+        "schema_version": schema_version,
+        "scope": "Offline symptoms, not causal attribution or task scores. Missing trajectories are not imputed.",
+        "trajectory_count": len(rows),
+        "trajectories_with_errors": sum(row["error_turns"] > 0 for row in rows),
+        "trajectories": rows,
+    }
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("run", type=Path)
     parser.add_argument("--output", required=True, type=Path)
-    parser.add_argument("--schema-version", type=int, choices=(1, 2), default=2,
-                        help="Use 1 only to reproduce historical audits (default: 2)")
+    parser.add_argument(
+        "--schema-version",
+        type=int,
+        choices=(1, 2),
+        default=2,
+        help="Use 1 only to reproduce historical audits (default: 2)",
+    )
     args = parser.parse_args()
     if args.output.exists():
         parser.error("Output already exists; choose a new audit output")
@@ -91,8 +111,10 @@ def main() -> None:
     with args.output.open("x", encoding="utf-8") as stream:
         json.dump(result, stream, indent=2)
         stream.write("\n")
-    print(f"Audited {result['trajectory_count']} trajectories; "
-          f"{result['trajectories_with_errors']} contain error turns")
+    print(
+        f"Audited {result['trajectory_count']} trajectories; "
+        f"{result['trajectories_with_errors']} contain error turns"
+    )
 
 
 if __name__ == "__main__":

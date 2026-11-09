@@ -44,17 +44,29 @@ class MiniSGLangEngine:
             raise UnsupportedPath("expose exactly one NVIDIA GPU with CUDA_VISIBLE_DEVICES")
         properties = torch.cuda.get_device_properties(0)
         settings.validate_device(properties.name, properties.total_memory)
-        model_config, self.parameter_count = model_storage(settings.model_path, settings.model_revision,
-                                                           settings.model)
+        model_config, self.parameter_count = model_storage(
+            settings.model_path, settings.model_revision, settings.model
+        )
         if settings.max_context_tokens > model_config["max_position_embeddings"]:
-            raise UnsupportedPath("configured context exceeds the pinned model's supported positions")
+            raise UnsupportedPath(
+                "configured context exceeds the pinned model's supported positions"
+            )
         self._num_layers = model_config["num_hidden_layers"]
         self._num_kv_heads = model_config["num_key_value_heads"]
-        self._attention_flop_factor = (4 * model_config["num_hidden_layers"]
-                                      * model_config["num_attention_heads"] * model_config["head_dim"])
+        self._attention_flop_factor = (
+            4
+            * model_config["num_hidden_layers"]
+            * model_config["num_attention_heads"]
+            * model_config["head_dim"]
+        )
         self.kv_bytes_per_token = (
-            2 * 2 * model_config["num_hidden_layers"] * model_config["num_key_value_heads"]
-            * model_config.get("head_dim", model_config["hidden_size"] // model_config["num_attention_heads"])
+            2
+            * 2
+            * model_config["num_hidden_layers"]
+            * model_config["num_key_value_heads"]
+            * model_config.get(
+                "head_dim", model_config["hidden_size"] // model_config["num_attention_heads"]
+            )
         )
         free, total = torch.cuda.mem_get_info()
         self._external_bytes = total - free - torch.cuda.memory_reserved()
@@ -136,7 +148,9 @@ class MiniSGLangEngine:
             raise UnsupportedPath("install the pinned, patched Mini-SGLang checkout first")
         source = Path(next(iter(spec.submodule_search_locations)))
         result = subprocess.run(
-            ["git", "-C", str(source), "rev-parse", "HEAD"], capture_output=True, text=True,
+            ["git", "-C", str(source), "rev-parse", "HEAD"],
+            capture_output=True,
+            text=True,
         )
         if result.returncode or result.stdout.strip() != MINISGL_REVISION:
             raise UnsupportedPath("Mini-SGLang checkout does not match the pinned revision")
@@ -145,8 +159,10 @@ class MiniSGLangEngine:
             if not file.exists() or hashlib.sha256(file.read_bytes()).hexdigest() != expected:
                 raise UnsupportedPath(f"Mini-SGLang patch file mismatch: {name}")
         changes = subprocess.run(
-            ["git", "-C", str(source), "diff", "HEAD", "--name-only"], capture_output=True,
-            text=True, check=True,
+            ["git", "-C", str(source), "diff", "HEAD", "--name-only"],
+            capture_output=True,
+            text=True,
+            check=True,
         ).stdout.splitlines()
         if set(changes) - {"python/minisgl/" + name for name in PATCH_FILE_HASHES}:
             raise UnsupportedPath("unrecorded changes in the pinned Mini-SGLang checkout")
@@ -173,35 +189,61 @@ class MiniSGLangEngine:
 
     def provenance(self) -> dict:
         versions = {}
-        for name in ("torch", "transformers", "flashinfer-python", "sgl-kernel", "triton", "safetensors"):
+        for name in (
+            "torch",
+            "transformers",
+            "flashinfer-python",
+            "sgl-kernel",
+            "triton",
+            "safetensors",
+        ):
             try:
                 versions[name] = importlib.metadata.version(name)
             except importlib.metadata.PackageNotFoundError:
                 versions[name] = None
         try:
-            driver = subprocess.run(
-                ["nvidia-smi", "--query-gpu=driver_version", "--format=csv,noheader"],
-                capture_output=True, text=True, timeout=5, check=True,
-            ).stdout.splitlines()[0].strip()
+            driver = (
+                subprocess.run(
+                    ["nvidia-smi", "--query-gpu=driver_version", "--format=csv,noheader"],
+                    capture_output=True,
+                    text=True,
+                    timeout=5,
+                    check=True,
+                )
+                .stdout.splitlines()[0]
+                .strip()
+            )
         except (OSError, subprocess.SubprocessError, IndexError):
             driver = None
         return {
-            "backend": "native_minisgl", "minisgl_revision": MINISGL_REVISION,
+            "backend": "native_minisgl",
+            "minisgl_revision": MINISGL_REVISION,
             "sampling_rng": "torch_cuda_default_generator_v1",
             "patch_file_sha256": PATCH_FILE_HASHES,
             "model": self.settings.model,
-            "model_scope": "main" if self.settings.model == "Qwen/Qwen3-8B" else "exploratory_pilot",
+            "model_scope": "main"
+            if self.settings.model == "Qwen/Qwen3-8B"
+            else "exploratory_pilot",
             "model_revision": self.settings.model_revision,
             "tokenizer_revision": self.settings.tokenizer_revision,
             "model_path": str(Path(self.settings.model_path).resolve()),
             "model_parameter_count": self.parameter_count,
-            "dtype": "bfloat16", "device_name": self.device_name,
-            "device_total_bytes": self.device_total_bytes, "cuda_runtime": self.torch.version.cuda,
+            "dtype": "bfloat16",
+            "device_name": self.device_name,
+            "device_total_bytes": self.device_total_bytes,
+            "cuda_runtime": self.torch.version.cuda,
             "driver_version": driver,
-            "packages": versions, "attention_backend": "flashinfer_fa2", "cuda_graphs": False,
-            "query_ring_stages": 4, "query_ring_capacity_per_stage": 8,
+            "packages": versions,
+            "attention_backend": "flashinfer_fa2",
+            "cuda_graphs": False,
+            "query_ring_stages": 4,
+            "query_ring_capacity_per_stage": 8,
             "estimated_flops_method": "dense_2P_per_forward_token_plus_causal_qk_av_4LHD_per_attention_pair",
-            "estimated_flops_exclusions": ["eviction_scoring", "elementwise_operations", "sampling"],
+            "estimated_flops_exclusions": [
+                "eviction_scoring",
+                "elementwise_operations",
+                "sampling",
+            ],
             "memory": self.memory_stats(),
             "warmup": self._warmup_record,
         }
@@ -216,16 +258,22 @@ class MiniSGLangEngine:
         count = min(original.max_context_tokens - 2, max(128, original.prefill_chunk_tokens))
         token = self.tokenizer.encode("warmup", add_special_tokens=False)[0]
         started = monotonic()
-        conditions = [("full", 1.0)] + [(method, retention) for method in ("streamingllm", "rkv", "agentkv")
-                                       for retention in (0.8, 0.5, 0.25)]
+        conditions = [("full", 1.0)] + [
+            (method, retention)
+            for method in ("streamingllm", "rkv", "agentkv")
+            for retention in (0.8, 0.5, 0.25)
+        ]
         try:
             for method, retention in conditions:
                 self.set_policy(method, retention)
                 self.start(0)
                 self.generate([token] * count, 2, 0.0, 1.0, deadline, ignore_eos=True)
             self._warmup_record = {
-                "seconds": monotonic() - started, "prompt_tokens": count, "max_new_tokens": 2,
-                "conditions": conditions, "task_data_used": False,
+                "seconds": monotonic() - started,
+                "prompt_tokens": count,
+                "max_new_tokens": 2,
+                "conditions": conditions,
+                "task_data_used": False,
                 "later_shape_dependent_compilation": "charged_to_task_budget",
             }
             return self._warmup_record
@@ -268,12 +316,16 @@ class MiniSGLangEngine:
             raise UnsupportedPath(f"total-device memory monitoring failed: {self._monitor_error}")
         peak = max(self._peak_total, self.torch.cuda.max_memory_reserved() + self._peak_external)
         if peak > self.settings.peak_vram_bytes:
-            raise MemoryCapExceeded(f"peak total VRAM {peak} exceeds cap {self.settings.peak_vram_bytes}")
+            raise MemoryCapExceeded(
+                f"peak total VRAM {peak} exceeds cap {self.settings.peak_vram_bytes}"
+            )
         with self._memory_lock:
             if self._peak_external > self._allocator_external_bytes:
                 self._allocator_external_bytes = self._peak_external
                 ceiling = self.settings.peak_vram_bytes - self._allocator_external_bytes
-                self.torch.cuda.set_per_process_memory_fraction(ceiling / self.device_total_bytes, device=0)
+                self.torch.cuda.set_per_process_memory_fraction(
+                    ceiling / self.device_total_bytes, device=0
+                )
 
     def _check_deadline(self, deadline: float):
         if monotonic() >= deadline:
@@ -286,7 +338,9 @@ class MiniSGLangEngine:
         cached = state.req.physical_cached_len if state is not None and state.req is not None else 0
         logical = state.req.logical_cached_len if state is not None and state.req is not None else 0
         return {
-            "peak_total_vram_bytes": max(self._peak_total, self.torch.cuda.max_memory_reserved() + self._peak_external),
+            "peak_total_vram_bytes": max(
+                self._peak_total, self.torch.cuda.max_memory_reserved() + self._peak_external
+            ),
             "peak_total_vram_sampled_bytes": self._peak_total,
             "peak_torch_allocated_bytes": self.torch.cuda.max_memory_allocated(),
             "peak_torch_reserved_bytes": self.torch.cuda.max_memory_reserved(),
@@ -297,7 +351,9 @@ class MiniSGLangEngine:
             "kv_pool_tokens": self.scheduler.engine.num_pages,
             "physical_cached_tokens": cached,
             "logical_cached_tokens": logical,
-            "retention_target_tokens": retention_target(logical, self.settings.retention, self.settings.method),
+            "retention_target_tokens": retention_target(
+                logical, self.settings.retention, self.settings.method
+            ),
             "memory_sample_interval_seconds": 0.01,
             "total_peak_kind": "max(sampled device use, allocator peak plus maximum external use)",
         }
@@ -307,7 +363,9 @@ class MiniSGLangEngine:
         self.torch.cuda.synchronize()
         # Batch size one permits a complete allocator reset after an interrupted forward.
         scheduler.cache_manager.free_slots = self.torch.arange(
-            scheduler.engine.num_pages, dtype=self.torch.int32, device=scheduler.device,
+            scheduler.engine.num_pages,
+            dtype=self.torch.int32,
+            device=scheduler.device,
         )
         scheduler.cache_manager.peak_used_pages = 0
         scheduler.table_manager._free_slots = [0]
@@ -332,7 +390,9 @@ class MiniSGLangEngine:
         settings = replace(self.settings, method=method, retention=retention)
         self._clear_session()
         manager = self.scheduler.eviction_manager
-        manager.plan = manager.base_plan = create_eviction_plan("none" if method == "full" else method)
+        manager.plan = manager.base_plan = create_eviction_plan(
+            "none" if method == "full" else method
+        )
         manager.disabled = method == "full"
         manager.retention_fraction = None if method == "full" else retention
         manager.retention_events.clear()
@@ -340,8 +400,10 @@ class MiniSGLangEngine:
 
     def _forward_flops(self, batch) -> int:
         tokens = sum(req.extend_len for req in batch.reqs)
-        pairs = sum(req.extend_len * req.physical_cached_len + req.extend_len * (req.extend_len + 1) // 2
-                    for req in batch.reqs)
+        pairs = sum(
+            req.extend_len * req.physical_cached_len + req.extend_len * (req.extend_len + 1) // 2
+            for req in batch.reqs
+        )
         return 2 * self.parameter_count * tokens + self._attention_flop_factor * pairs
 
     @contextmanager
@@ -369,10 +431,15 @@ class MiniSGLangEngine:
     @staticmethod
     def _operation_progress() -> dict:
         return {
-            "status": "running", "failure_reason": None,
-            "prefill_seconds": 0.0, "decode_seconds": 0.0,
-            "prompt_tokens": 0, "decode_tokens": 0, "estimated_flops": 0,
-            "incomplete_forward_tokens": 0, "incomplete_forward_estimated_flops": 0,
+            "status": "running",
+            "failure_reason": None,
+            "prefill_seconds": 0.0,
+            "decode_seconds": 0.0,
+            "prompt_tokens": 0,
+            "decode_tokens": 0,
+            "estimated_flops": 0,
+            "incomplete_forward_tokens": 0,
+            "incomplete_forward_estimated_flops": 0,
         }
 
     def _operation_memory(self, progress: dict) -> None:
@@ -426,7 +493,9 @@ class MiniSGLangEngine:
         req.max_device_len = req.device_len + sampling_params.max_tokens
         req.session_prompt_len = len(self._raw)
         req.prefill_only = False
-        req.phase_text_tail = self.tokenizer.decode(self._raw[-128:], skip_special_tokens=False)[-128:]
+        req.phase_text_tail = self.tokenizer.decode(self._raw[-128:], skip_special_tokens=False)[
+            -128:
+        ]
         state.status = "RUNNING"
         batch = Batch([req], "prefill")
         batch.padded_reqs = [req]
@@ -452,8 +521,16 @@ class MiniSGLangEngine:
         scheduler.engine.comet_last_prefill_logits = None
         return monotonic() - started
 
-    def generate(self, append_token_ids: list[int], max_new_tokens: int, temperature: float,
-                 top_p: float, deadline: float, *, ignore_eos: bool = False) -> GenerationResult:
+    def generate(
+        self,
+        append_token_ids: list[int],
+        max_new_tokens: int,
+        temperature: float,
+        top_p: float,
+        deadline: float,
+        *,
+        ignore_eos: bool = False,
+    ) -> GenerationResult:
         from minisgl.core import SamplingParams
         from minisgl.message import DetokenizeMsg, TokenizerErrorMsg, UserMsg
 
@@ -464,14 +541,23 @@ class MiniSGLangEngine:
                 raise RuntimeError("call start(seed) before generate")
             if max_new_tokens <= 0 or not 0 < top_p <= 1 or temperature < 0:
                 raise ValueError("invalid sampling settings")
-            if len(self._raw) + len(append_token_ids) + max_new_tokens > self.settings.max_context_tokens:
-                raise UnsupportedPath("generation would exceed the frozen maximum context; truncation is forbidden")
+            if (
+                len(self._raw) + len(append_token_ids) + max_new_tokens
+                > self.settings.max_context_tokens
+            ):
+                raise UnsupportedPath(
+                    "generation would exceed the frozen maximum context; truncation is forbidden"
+                )
             self._check_deadline(deadline)
             self._append_phases(append_token_ids)
             self._raw.extend(append_token_ids)
             self._uid += 1
-            sampling = SamplingParams(temperature=temperature, top_p=top_p, max_tokens=max_new_tokens,
-                                      ignore_eos=ignore_eos)
+            sampling = SamplingParams(
+                temperature=temperature,
+                top_p=top_p,
+                max_tokens=max_new_tokens,
+                ignore_eos=ignore_eos,
+            )
             if self._next_logits is not None and not append_token_ids:
                 started = monotonic()
                 try:
@@ -481,21 +567,27 @@ class MiniSGLangEngine:
             else:
                 self._next_logits = None
                 self.scheduler.engine.comet_last_prefill_logits = None
-                self.scheduler._process_one_msg(UserMsg(
-                    uid=self._uid,
-                    input_ids=self.torch.tensor(self._raw, dtype=self.torch.int32),
-                    phase_ids=self.torch.tensor(self._phase, dtype=self.torch.int32),
-                    semantic_phase_ids=self.torch.tensor(self._semantic, dtype=self.torch.int32),
-                    sampling_params=sampling,
-                    session_id=self._session_id,
-                ))
+                self.scheduler._process_one_msg(
+                    UserMsg(
+                        uid=self._uid,
+                        input_ids=self.torch.tensor(self._raw, dtype=self.torch.int32),
+                        phase_ids=self.torch.tensor(self._phase, dtype=self.torch.int32),
+                        semantic_phase_ids=self.torch.tensor(
+                            self._semantic, dtype=self.torch.int32
+                        ),
+                        sampling_params=sampling,
+                        session_id=self._session_id,
+                    )
+                )
             while self.scheduler.prefill_manager.runnable or self.scheduler.decode_manager.runnable:
                 self._check_deadline(deadline)
                 with self.torch.inference_mode(), self.scheduler.engine_stream_ctx:
                     self.scheduler.engine.stream.wait_stream(self.scheduler.stream)
                     forward = self.scheduler._schedule_next_batch()
                     if forward is None:
-                        raise MemoryCapExceeded("insufficient KV pool for the pending suffix and generation")
+                        raise MemoryCapExceeded(
+                            "insufficient KV pool for the pending suffix and generation"
+                        )
                     self._sample_memory()
                     with self._count_forward(forward.batch, progress):
                         output = self.scheduler._forward(forward)
@@ -503,10 +595,14 @@ class MiniSGLangEngine:
                         self.torch.cuda.synchronize()
                 self._check_deadline(deadline)
             self._check_deadline(deadline)
-            errors = [reply.error for reply in self._replies if isinstance(reply, TokenizerErrorMsg)]
+            errors = [
+                reply.error for reply in self._replies if isinstance(reply, TokenizerErrorMsg)
+            ]
             if errors:
                 raise UnsupportedPath("; ".join(errors))
-            result = [reply.next_token for reply in self._replies if isinstance(reply, DetokenizeMsg)]
+            result = [
+                reply.next_token for reply in self._replies if isinstance(reply, DetokenizeMsg)
+            ]
             state = self._state()
             if state is None or state.req is None:
                 raise UnsupportedPath("native session did not park its KV state")
@@ -517,18 +613,28 @@ class MiniSGLangEngine:
                 raise UnsupportedPath("native session and raw token transcript diverged")
             memory = self.memory_stats()
             progress["status"] = "completed"
-            return GenerationResult(result, bool(result and result[-1] == self.tokenizer.eos_token_id),
-                                    progress["decode_seconds"], progress["prefill_seconds"],
-                                    progress["prompt_tokens"], progress["decode_tokens"], memory,
-                                    progress["estimated_flops"], len(result))
+            return GenerationResult(
+                result,
+                bool(result and result[-1] == self.tokenizer.eos_token_id),
+                progress["decode_seconds"],
+                progress["prefill_seconds"],
+                progress["prompt_tokens"],
+                progress["decode_tokens"],
+                memory,
+                progress["estimated_flops"],
+                len(result),
+            )
         except BaseException as error:
             progress.update(status="failed", failure_reason=f"{type(error).__name__}: {error}")
             if type(error).__name__ == "OutOfMemoryError":
-                raise MemoryCapExceeded("CUDA allocator refused memory under the experimental cap") from error
+                raise MemoryCapExceeded(
+                    "CUDA allocator refused memory under the experimental cap"
+                ) from error
             raise
         finally:
-            progress["token_ids"] = [reply.next_token for reply in self._replies
-                                     if isinstance(reply, DetokenizeMsg)]
+            progress["token_ids"] = [
+                reply.next_token for reply in self._replies if isinstance(reply, DetokenizeMsg)
+            ]
             progress["generated_tokens"] = len(progress["token_ids"])
             self._operation_memory(progress)
 
@@ -536,12 +642,17 @@ class MiniSGLangEngine:
         started = monotonic()
         full_token_ids = list(full_token_ids)
         progress = self._last_recovery = {
-            **self._operation_progress(), "admitted": None, "reason": None,
-            "allowance_consumed": False, "input_tokens": len(full_token_ids),
+            **self._operation_progress(),
+            "admitted": None,
+            "reason": None,
+            "allowance_consumed": False,
+            "input_tokens": len(full_token_ids),
         }
         try:
-            if full_token_ids[:len(self._raw)] != self._raw:
-                raise ValueError("recovery must preserve the exact current raw token transcript prefix")
+            if full_token_ids[: len(self._raw)] != self._raw:
+                raise ValueError(
+                    "recovery must preserve the exact current raw token transcript prefix"
+                )
             reason = None
             if self._recoveries:
                 reason = "recovery_limit"
@@ -556,7 +667,9 @@ class MiniSGLangEngine:
                 else:
                     free, total = self.torch.cuda.mem_get_info()
                     available = self.settings.peak_vram_bytes - (total - free)
-                    available += self.torch.cuda.memory_reserved() - self.torch.cuda.memory_allocated()
+                    available += (
+                        self.torch.cuda.memory_reserved() - self.torch.cuda.memory_allocated()
+                    )
                     if self._workspace_bound(len(full_token_ids)) > available:
                         reason = "transient_workspace_exceeds_cap"
             if reason is not None:
@@ -564,17 +677,25 @@ class MiniSGLangEngine:
             else:
                 self._recoveries += 1
                 progress.update(admitted=True, allowance_consumed=True)
-                suffix = full_token_ids[len(self._raw):]
+                suffix = full_token_ids[len(self._raw) :]
                 self._append_phases(suffix)
                 self._raw.extend(suffix)
                 self._prefill_history(deadline)
                 progress["status"] = "completed"
-            return RecoveryResult(progress["admitted"], reason, monotonic() - started,
-                                  len(full_token_ids), self.memory_stats(), progress["estimated_flops"])
+            return RecoveryResult(
+                progress["admitted"],
+                reason,
+                monotonic() - started,
+                len(full_token_ids),
+                self.memory_stats(),
+                progress["estimated_flops"],
+            )
         except BaseException as error:
             progress.update(status="failed", failure_reason=f"{type(error).__name__}: {error}")
             if type(error).__name__ == "OutOfMemoryError":
-                raise MemoryCapExceeded("CUDA allocator refused memory under the experimental cap") from error
+                raise MemoryCapExceeded(
+                    "CUDA allocator refused memory under the experimental cap"
+                ) from error
             raise
         finally:
             progress["seconds"] = monotonic() - started
@@ -597,20 +718,28 @@ class MiniSGLangEngine:
         self._session_id = f"comet-{uuid.uuid4().hex}"
         table = scheduler.table_manager.allocate()
         req = None
-        for end in range(min(len(self._raw), self.settings.prefill_chunk_tokens),
-                         len(self._raw) + self.settings.prefill_chunk_tokens, self.settings.prefill_chunk_tokens):
+        for end in range(
+            min(len(self._raw), self.settings.prefill_chunk_tokens),
+            len(self._raw) + self.settings.prefill_chunk_tokens,
+            self.settings.prefill_chunk_tokens,
+        ):
             end = min(end, len(self._raw))
             self._check_deadline(deadline)
             req = Req(
                 input_ids=torch.tensor(self._raw[:end], dtype=torch.int32),
-                table_idx=table, physical_cached_len=0 if req is None else req.physical_cached_len,
+                table_idx=table,
+                physical_cached_len=0 if req is None else req.physical_cached_len,
                 logical_cached_len=0 if req is None else req.logical_cached_len,
                 retained_positions=None if req is None else req.retained_positions,
-                output_len=1, uid=self._uid, sampling_params=SamplingParams(max_tokens=1),
-                session_id=self._session_id, full_input_ids=torch.tensor(self._raw, dtype=torch.int32),
+                output_len=1,
+                uid=self._uid,
+                sampling_params=SamplingParams(max_tokens=1),
+                session_id=self._session_id,
+                full_input_ids=torch.tensor(self._raw, dtype=torch.int32),
                 phase_ids=torch.tensor(self._phase[:end], dtype=torch.int32),
                 full_phase_ids=torch.tensor(self._phase, dtype=torch.int32),
-                semantic_phase_ids=torch.tensor(self._semantic[:end], dtype=torch.int32), prefill_only=True,
+                semantic_phase_ids=torch.tensor(self._semantic[:end], dtype=torch.int32),
+                prefill_only=True,
             )
             scheduler.token_pool[table, :end].copy_(req.input_ids)
             with torch.inference_mode(), scheduler.engine_stream_ctx:
@@ -635,10 +764,12 @@ class MiniSGLangEngine:
 
     def checkpoint(self, path: str | Path) -> dict:
         from .snapshot import save_snapshot
+
         return save_snapshot(self, Path(path))
 
     def restore(self, path: str | Path, *, branch: bool = False) -> dict:
         from .snapshot import restore_snapshot
+
         return restore_snapshot(self, Path(path), branch=branch)
 
     def close(self):

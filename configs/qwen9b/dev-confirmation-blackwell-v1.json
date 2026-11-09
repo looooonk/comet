@@ -1,9 +1,0 @@
-{
-  "extends": "dev-confirmation-l4-v1.json",
-  "experiment_id": "qwen9b-dev-confirmation-blackwell-v1",
-  "engine": {
-    "device_name": "NVIDIA RTX PRO 6000 Blackwell Server Edition"
-  },
-  "peak_vram_bytes": 25769803776,
-  "notes": "Hardware-specific repetition of the same two predeclared dev-confirmation families and seven conditions, with unchanged 120-second shared budget, N=2, v4 prompt, 16K context and recovery thresholds. Uses the already qualified Blackwell runtime and 24 GiB cap. No test outcomes select settings or tasks. This checks separate dev capability before a conditional Blackwell held-out replication; it is not pooled with L4."
-}

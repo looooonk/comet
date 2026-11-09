@@ -1,31 +1,24 @@
-# Experiment configurations
+# Configurations
 
-The active study uses Qwen3.5-9B with the qualified hybrid backend. Start from
-the [research direction](../documents/research-direction.md); the
-[findings](../documents/records/qwen9b-findings.md) distinguish completed evidence
-from pending experiments.
+The current study uses Qwen3.5-9B through the shared hybrid backend.
 
-- `qwen9b/`: versioned train/dev studies, checkpoint diagnostics and the frozen
-  `final-l4-v1.json` test evaluation. L4 and Blackwell configurations use separate
-  qualified caps and must be analyzed separately. Earlier versions preserve
-  failed or superseded experiments; directory membership does not imply success.
-- `examples/`: small legacy Qwen3 schema and integration examples, not approved
-  study settings or pending jobs. Their model support does not transfer to the
-  new candidate architectures.
-- `diagnostics/`: independent numerical-reference inputs retained for regression
-  testing. A selected new model needs a suitable, explicitly versioned corpus.
-- `../tests/fixtures/` contains synthetic analysis input and one historical resolved
-  config used only to verify backward-compatible config hashes.
+| Directory | Contents |
+| --- | --- |
+| `qwen9b/l4/` | Capability baseline, compression and budget pilots, fine grid, diagnostic, dev confirmation and frozen test |
+| `qwen9b/blackwell/` | Separate three-family train grid, diagnostic and dev confirmation |
+| `qwen9b/checks/` | Process-interruption validation inputs |
+| `examples/` | Legacy schema/integration examples used by regression tests |
+| `diagnostics/` | Pinned numerical-reference inputs for the legacy backend |
 
-Obsolete legacy experiment configs were removed during the November 8 cleanup.
-They remain available at Git commit
-`55fca50bfe3c69dfaa4420585e78850da1b3aaf4`, for example:
+`qwen9b/base.json` contains common fields; select a study file, not the base.
+`extends` paths are relative to the child file. Objects merge one level and lists
+replace in full. Every retained study resolves to its original settings and
+configuration hash, including `qwen9b/l4/final-v1.json` and its freeze evidence.
+Superseded pilot versions and the unexecuted Blackwell test plan are in Git history.
 
-```sh
-git show 55fca50:configs/pilot-execution-candidate-qwen14b-v1.json
-```
-
-Declare task/split IDs, paired seeds, model/tokenizer revisions, prompts, sampling,
-context/output limits, runtime/memory caps, retention grid, recovery policy and
-attempt ceiling before execution. Keep old/new versions separate. Freeze final
-settings only after useful train/dev evidence.
+For a new study, copy an appropriate configuration to a new version. Declare tasks,
+split, paired seeds, model/tokenizer pins, prompt, sampling, context/output limits,
+time/memory caps, retention, recovery thresholds and attempt ceiling. Validate with
+`comet validate CONFIG`. Freeze test settings after train/dev qualification; never
+edit a parent of an active or frozen study. See the
+[workflow](../documents/experiments.md) and [results](../documents/records/README.md).

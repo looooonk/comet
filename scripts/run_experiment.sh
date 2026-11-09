@@ -52,7 +52,13 @@ if [[ -n "${SLURM_JOB_ID:-}" ]]; then
 fi
 args=(run "$COMET_CONFIG" --output "$COMET_RUN" --model-path "$COMET_MODEL"
     --appworld-root "$APPWORLD_ROOT")
-if [[ "${COMET_RESUME:-0}" == 1 ]]; then args+=(--resume); fi
-if [[ -n "${COMET_MAX_CELLS:-}" ]]; then args+=(--max-cells "$COMET_MAX_CELLS"); fi
-if [[ "${COMET_INTEGRATION_SMOKE:-0}" == 1 ]]; then args+=(--integration-smoke); fi
+if [[ "${COMET_RESUME:-0}" == 1 ]]; then
+    args+=(--resume)
+fi
+if [[ -n "${COMET_MAX_CELLS:-}" ]]; then
+    args+=(--max-cells "$COMET_MAX_CELLS")
+fi
+if [[ "${COMET_INTEGRATION_SMOKE:-0}" == 1 ]]; then
+    args+=(--integration-smoke)
+fi
 exec comet "${args[@]}"

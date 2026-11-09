@@ -14,8 +14,9 @@ sizes = {path.name: path.stat().st_size for path in files}
 marker = destination / ".comet-staged.json"
 if marker.exists():
     record = json.loads(marker.read_text())
-    if record["files"] != sizes or any((destination / name).stat().st_size != size
-                                       for name, size in sizes.items()):
+    if record["files"] != sizes or any(
+        (destination / name).stat().st_size != size for name, size in sizes.items()
+    ):
         raise ValueError("Existing staged snapshot differs; use a fresh job directory")
 else:
     destination.mkdir(parents=True, exist_ok=True)
@@ -26,7 +27,11 @@ else:
     started = time.monotonic()
     for path in files:
         shutil.copyfile(path, destination / path.name)
-    record = {"revision": source.name, "files": sizes,
-              "bytes": sum(sizes.values()), "seconds": time.monotonic() - started}
+    record = {
+        "revision": source.name,
+        "files": sizes,
+        "bytes": sum(sizes.values()),
+        "seconds": time.monotonic() - started,
+    }
     marker.write_text(json.dumps(record, indent=2) + "\n")
 print(json.dumps(record))

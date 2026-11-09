@@ -1,0 +1,49 @@
+{
+  "extends": "../base.json",
+  "experiment_id": "qwen9b-resume-check-l4-v2",
+  "stage": "pilot",
+  "split": "train",
+  "task_ids": [
+    "76f2c72_1"
+  ],
+  "budget_seconds": 120,
+  "peak_vram_bytes": 22548578304,
+  "max_attempts": 2,
+  "engine": {
+    "max_context_tokens": 8192,
+    "workspace_reserve_bytes": 2147483648,
+    "device_name": "NVIDIA L4"
+  },
+  "triggers": {
+    "fixed_tool_calls": 2,
+    "dynamic_context_tokens": 2048,
+    "dynamic_tool_calls": 2
+  },
+  "conditions": [
+    {
+      "id": "preserved",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "interrupted",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "fresh",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    }
+  ],
+  "prompt": "You operate a live AppWorld task by executing Python. Return exactly one fenced Python code block per turn, with short executable code and no prose. Python variables persist. Print values needed for the next decision.\n\nThe Python object apis ALREADY EXISTS. Call its methods directly, for example apis.supervisor.show_profile(). NEVER import apis, api_docs, supervisor, or an app module. Do not use requests, HTTP URLs, api.call, or a client library.\n\nYour FIRST action must only inspect the available API names for an app relevant to the task. Example for a Spotify task:\n```python\nprint(apis.api_docs.show_api_descriptions(app_name=\"spotify\"))\n```\nReplace spotify with the relevant app name. Stop the code block and wait for the actual result. Before calling an unfamiliar API, inspect its complete documentation in a separate turn:\n```python\nprint(apis.api_docs.show_api_doc(app_name=\"spotify\", api_name=\"login\"))\n```\nUse the actual app and API names returned by the documentation. Read the documented argument names, return shape, authentication and pagination. Call APIs with keyword arguments. Do not guess names, arguments, IDs, passwords or response fields.\n\nObtain credentials with apis.supervisor.show_account_passwords(). Select the record whose account_name exactly equals the app name, such as spotify or file_system; do not look for a supervisor password. Use the app's documented username type from the supplied supervisor profile or apis.supervisor.show_profile(). Save the login result's access_token and pass access_token explicitly to endpoints that require it. Never invent a password or use the email address as a password.\n\nWork in short steps. After an error, inspect the relevant API documentation and fix the specific assumption. Never repeat the same failing block unchanged. Earlier calls in a failed block may already have taken effect. Inspect actual returned values, handle every documented page until exhausted, and follow all qualifiers and exclusions in the user instruction. Verify requested changes through ordinary APIs. Finally call apis.supervisor.complete_task(), or pass the computed answer through its documented answer argument for a question. Do not complete merely because a code block ran without an error. Tool observations appear in <tool_response> tags.",
+  "checkpoint_after_tool_calls": null,
+  "frozen": null,
+  "notes": "Integration-only process interruption check using the corrected preloaded-API prompt and the declared train arithmetic task, which reached completion in the protocol pilot. Task correctness is not an acceptance condition. No research-success or freeze evidence is claimed from this forced interruption."
+}

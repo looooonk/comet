@@ -3,10 +3,10 @@
 COMET uses the same runner for full KV, StreamingLLM, R-KV and AgentKV. The
 [current research direction](research-direction.md) supersedes the original
 model assumptions. Versioned Qwen3.5-9B studies live in `configs/qwen9b/`, including
-the frozen `final-l4-v1.json` test configuration. Legacy schema examples remain
+the frozen `l4/final-v1.json` test configuration. Legacy schema examples remain
 separate from those studies; see the [configuration guide](../configs/README.md).
 
-The [experiment resolution guide](experimental-resolution.md) describes
+The [research contract](research-direction.md) describes
 authorized supplemental retention, runtime-budget and trigger sweeps. Keep the
 required core comparisons and declare each added grid before execution.
 
@@ -22,7 +22,7 @@ Follow [setup.md](setup.md) to install the pinned engine and AppWorld data, then
 ```sh
 source "$COMET_REPO/scripts/activate_runtime.sh" hybrid
 export COMET_RUNTIME_PROFILE=hybrid
-export COMET_CONFIG="$COMET_REPO/configs/qwen9b/train-protocol-l4-v4.json"
+export COMET_CONFIG="$COMET_REPO/configs/qwen9b/l4/baseline-v4.json"
 export COMET_RUN="$COMET_STORAGE/runs/qwen9b-train-unique-id"
 export COMET_MODEL=/path/to/pinned/model/snapshot
 comet validate "$COMET_CONFIG"
@@ -84,7 +84,7 @@ while its manifest remains `running`; score only after all cells finish and the
 manifest becomes `completed`. Omitting the option retains the complete-run
 behavior.
 
-The retained schema examples are `configs/examples/pilot-smoke.json` (full KV
+The regression schema examples are `configs/examples/pilot-smoke.json` (full KV
 and three eviction methods) and `configs/examples/checkpoint-diagnostic.json`
 (full KV and three recovery policies for AgentKV at 50%). They illustrate the
 legacy configuration format; they are not queued runs or selected settings for
@@ -108,8 +108,8 @@ latency and mean per-cell peak KV use task-bootstrap intervals. The shared
 analysis also records task-level standard errors and paired differences.
 Intervals are pointwise, not simultaneous guarantees. Lines connect measured
 points without imposing a monotone or smooth fit. See [evaluation.md](evaluation.md)
-for definitions and coverage rules. Keep figures with their analysis, source
-configuration, hardware description, and limitations in `records/`.
+for definitions and coverage rules. Keep selected figures with their analysis, configuration, hardware and limitations
+in `documents/records/`; regenerate other views when needed.
 
 For a multi-method aggressivity figure, use `comet plot-aggressivity ANALYSIS
 --output FIGURE.svg`. It uses percentage removed on the horizontal axis and
@@ -125,6 +125,10 @@ Configurations are JSON. `extends` resolves relative to the child file; top-leve
 objects merge one level and lists replace in full. The run records the fully
 resolved configuration and its SHA-256 digest, so later edits to a parent file
 cannot change recorded results. `comet matrix CONFIG` prints all 29 conditions.
+
+The analysis implementation lives in `src/comet/analysis/`, with separate
+statistics, metric aggregation and policy-observation modules. The public
+`comet.analysis` functions and command-line interface are unchanged.
 
 ## Observables and decisions
 
@@ -142,7 +146,7 @@ the original cache. One admitted rebuild is allowed per attempt. Recovery
 re-prefills the full accumulated raw transcript including the pending tool
 observation, then reapplies retention. The next token is sampled from the saved
 prefill logits; the observation is not appended twice. No past tool action is
-executed again. [engine.md](engine.md) defines KV rounding and memory
+executed again. [engine.md](reference/engine.md) defines KV rounding and memory
 accounting.
 
 The raw token stream is append-only across tool turns. Qwen chat role delimiters
@@ -178,7 +182,7 @@ avoids granting free compute when an operation has no reliable end timestamp.
 Resume continues other unfinished cells; it does not replay completed attempts.
 The interrupted failure is finalized in both the cell and attempt records;
 `reserved_budget_seconds` distinguishes the unobserved reservation from measured
-component timings. See [resume-validation.md](resume-validation.md) for the
+component timings. See [resume-validation.md](validation/resume.md) for the
 opt-in real-process interruption check.
 
 If every unfinished cell is already inflight, has exhausted its budget, or has
@@ -230,7 +234,7 @@ coverage and premature-completion errors. Use a predeclared representative
 sample for capability estimates; a targeted regression set is a separate test.
 See the [current research direction](research-direction.md).
 
-The optional [agent protocol](agent-protocol.md) changes feedback and action
+The optional [agent protocol](reference/agent-protocol.md) changes feedback and action
 validation. If enabled, evaluate it as an explicit paired intervention and freeze
 the same setting across retention conditions. Historical prompt/guard pilots are
 not pending work and must not restart automatically.
@@ -276,47 +280,6 @@ validation summaries in [records/](records/README.md) identify hardware, jobs,
 and portable artifact filenames and hashes. Keep general documentation independent
 of personal locations and run histories. Do not treat fixture tests or unqualified
 integration results as research measurements.
-
-
-## Bounded cloud study sessions
-
-For adaptive train/dev work, `infra/gcp/study_worker.sh` keeps one prepared GPU
-allocation alive while accepting successive immutable launch plans. This is an
-operational wrapper around the same experiment launcher, scorer and analysis;
-it does not change task execution or budgets. Set up and activate the managed
-hybrid runtime first, and export `COMET_REPO`, `COMET_ENV`, `COMET_STORAGE`,
-`COMET_MODEL`, `COMET_RUNTIME_PROFILE` and `OUTPUT_DIR` as usual.
-
-The cloud staging mount contains `queue/NN-name/run.sh` and that plan's resolved
-configs. Upload all inputs before its final `READY` marker. Only trusted,
-reviewed scripts for this study belong in the queue. The worker copies a ready
-plan to its own output directory once, executes it with `COMET_PLAN_DIR` and
-`COMET_RESULTS_DIR`, and publishes a closed archive and exit status under
-`reports/NN-name/`. A nonzero exit remains visible and is not automatically
-retried. Source `infra/gcp/study_segments.sh` before starting the worker when a
-plan uses `run_segments config.json run-name cell-limit segment-limit`.
-
-Clean cell segments use the existing `--max-cells` and `--resume` behavior;
-completed segments are archived under `checkpoints/` before the next launch.
-Scoring runs only after the complete experiment manifest is closed. Optional
-`scripts/monitor_cells.py OUTPUT_DIR` prints execution statuses and timing,
-never evaluator outcomes. Preserve the submitted plan with the results.
-
-A `queue/STOP` marker ends the worker after its current plan. Its own queue
-loop lasts at most 6 hours 45 minutes; the cloud task must also have an explicit
-outer timeout, which bounds any active plan. The study authorization permits a
-seven-hour workload session while retaining one GPU, zero retries and the
-existing cumulative spending ceiling. Restore the cloud helper's default
-one-hour submission limit after this explicit submission; do not change global
-concurrency, GPU counts or billing. `COMET_CLOUD_STAGE` can override the mount
-root for a local transport check.
-
-An interrupted active segment may have newer journals than its last closed
-archive. Do not restart those cells with refunded budgets. Fetch current journals
-when available; otherwise retain the missing active segment as interrupted and
-account for its full reserved budgets. Do not present a closed backup as proof
-that no later computation occurred. The existing runtime/source checks still
-apply when resuming on another worker.
 
 
 ## Parallel condition partitions of a frozen study

@@ -13,29 +13,53 @@ MODEL_REVISION = "b968826d9c46dd6066d109eabc6255188de91218"
 MODEL_PROFILES = {
     "Qwen/Qwen3.5-9B": {
         "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
-        "parameters": 9653104368, "supports_thinking": True,
+        "parameters": 9653104368,
+        "supports_thinking": True,
         "backend": "transformers_hybrid",
-        "dimensions": {"hidden_size": 4096, "num_hidden_layers": 32,
-                       "num_attention_heads": 16, "intermediate_size": 12288},
+        "dimensions": {
+            "hidden_size": 4096,
+            "num_hidden_layers": 32,
+            "num_attention_heads": 16,
+            "intermediate_size": 12288,
+        },
     },
     "Qwen/Qwen3-8B": {
-        "revision": MODEL_REVISION, "parameters": 8190735360, "supports_thinking": True,
-        "dimensions": {"hidden_size": 4096, "num_hidden_layers": 36,
-                       "num_attention_heads": 32, "intermediate_size": 12288},
+        "revision": MODEL_REVISION,
+        "parameters": 8190735360,
+        "supports_thinking": True,
+        "dimensions": {
+            "hidden_size": 4096,
+            "num_hidden_layers": 36,
+            "num_attention_heads": 32,
+            "intermediate_size": 12288,
+        },
     },
     "Qwen/Qwen3-14B": {
-        "revision": "40c069824f4251a91eefaf281ebe4c544efd3e18", "parameters": 14768307200,
+        "revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+        "parameters": 14768307200,
         "supports_thinking": True,
-        "dimensions": {"hidden_size": 5120, "num_hidden_layers": 40,
-                       "num_attention_heads": 40, "intermediate_size": 17408},
+        "dimensions": {
+            "hidden_size": 5120,
+            "num_hidden_layers": 40,
+            "num_attention_heads": 40,
+            "intermediate_size": 17408,
+        },
     },
     "Qwen/Qwen3-4B-Instruct-2507": {
-        "revision": "cdbee75f17c01a7cc42f958dc650907174af0554", "parameters": 4022468096,
+        "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+        "parameters": 4022468096,
         "supports_thinking": False,
-        "dimensions": {"hidden_size": 2560, "num_hidden_layers": 36,
-                       "num_attention_heads": 32, "intermediate_size": 9728},
-        "architecture": {"tie_word_embeddings": True, "rope_theta": 5000000,
-                         "max_position_embeddings": 262144},
+        "dimensions": {
+            "hidden_size": 2560,
+            "num_hidden_layers": 36,
+            "num_attention_heads": 32,
+            "intermediate_size": 9728,
+        },
+        "architecture": {
+            "tie_word_embeddings": True,
+            "rope_theta": 5000000,
+            "max_position_embeddings": 262144,
+        },
     },
 }
 METHODS = {"full", "streamingllm", "rkv", "agentkv"}
@@ -61,7 +85,9 @@ def retention_target(logical_tokens: int, retention: float, method: str) -> int:
     if not 0 < retention < 1:
         raise ValueError("compressed retention must be strictly between 0 and 1")
     fraction = Fraction(str(retention))
-    requested = (logical_tokens * fraction.numerator + fraction.denominator - 1) // fraction.denominator
+    requested = (
+        logical_tokens * fraction.numerator + fraction.denominator - 1
+    ) // fraction.denominator
     mandatory = {"streamingllm": 16, "rkv": 8, "agentkv": 24}[method]
     return min(logical_tokens, max(requested, mandatory))
 
@@ -87,7 +113,12 @@ class EngineSettings:
         profile = validate_model(self.model, self.model_revision, self.tokenizer_revision)
         if self.backend != profile.get("backend", "native_minisgl"):
             raise ValueError("model architecture does not match the selected backend")
-        for key in ("max_context_tokens", "peak_vram_bytes", "workspace_reserve_bytes", "prefill_chunk_tokens"):
+        for key in (
+            "max_context_tokens",
+            "peak_vram_bytes",
+            "workspace_reserve_bytes",
+            "prefill_chunk_tokens",
+        ):
             if isinstance(getattr(self, key), bool) or getattr(self, key) <= 0:
                 raise ValueError(f"{key} must be positive")
         if self.workspace_reserve_bytes >= self.peak_vram_bytes:
@@ -104,7 +135,9 @@ class EngineSettings:
             if name != self.device_name:
                 raise UnsupportedPath(f"Configured GPU {self.device_name!r}; found {name!r}")
         elif self.require_a100 and ("A100" not in name or total_bytes < 79_000_000_000):
-            raise UnsupportedPath("Legacy configs require A100 80GB; select device_name for qualified hardware")
+            raise UnsupportedPath(
+                "Legacy configs require A100 80GB; select device_name for qualified hardware"
+            )
         if self.peak_vram_bytes > total_bytes:
             raise MemoryCapExceeded("configured VRAM cap exceeds device capacity")
 
@@ -153,22 +186,39 @@ def model_storage(model_path: str, revision: str, model: str = "Qwen/Qwen3-8B") 
     config = json.loads((path / "config.json").read_text())
     hybrid = profile.get("backend") == "transformers_hybrid"
     expected = {
-        "architectures": ["Qwen3ForCausalLM"], "model_type": "qwen3",
-        "num_key_value_heads": 8, "head_dim": 128, "vocab_size": 151936,
-        "hidden_act": "silu", "attention_bias": False, "tie_word_embeddings": False,
-        "rope_scaling": None, "rope_theta": 1000000, "max_position_embeddings": 40960,
-        "sliding_window": None, "use_sliding_window": False, "rms_norm_eps": 1e-6,
-        "torch_dtype": "bfloat16", **profile["dimensions"], **profile.get("architecture", {}),
+        "architectures": ["Qwen3ForCausalLM"],
+        "model_type": "qwen3",
+        "num_key_value_heads": 8,
+        "head_dim": 128,
+        "vocab_size": 151936,
+        "hidden_act": "silu",
+        "attention_bias": False,
+        "tie_word_embeddings": False,
+        "rope_scaling": None,
+        "rope_theta": 1000000,
+        "max_position_embeddings": 40960,
+        "sliding_window": None,
+        "use_sliding_window": False,
+        "rms_norm_eps": 1e-6,
+        "torch_dtype": "bfloat16",
+        **profile["dimensions"],
+        **profile.get("architecture", {}),
     }
     if hybrid:
         if config.get("architectures") != ["Qwen3_5ForConditionalGeneration"]:
             raise ValueError("expected the pinned Qwen3.5 hybrid architecture")
         config = config["text_config"]
         expected = {
-            **profile["dimensions"], "model_type": "qwen3_5_text", "dtype": "bfloat16",
-            "head_dim": 256, "num_key_value_heads": 4, "vocab_size": 248320,
-            "linear_num_key_heads": 16, "linear_num_value_heads": 32,
-            "linear_key_head_dim": 128, "linear_value_head_dim": 128,
+            **profile["dimensions"],
+            "model_type": "qwen3_5_text",
+            "dtype": "bfloat16",
+            "head_dim": 256,
+            "num_key_value_heads": 4,
+            "vocab_size": 248320,
+            "linear_num_key_heads": 16,
+            "linear_num_value_heads": 32,
+            "linear_key_head_dim": 128,
+            "linear_value_head_dim": 128,
             "linear_conv_kernel_dim": 4,
             "layer_types": ["linear_attention"] * 3 + ["full_attention"],
         }

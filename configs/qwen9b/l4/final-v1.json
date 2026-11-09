@@ -1,0 +1,284 @@
+{
+  "extends": "../base.json",
+  "experiment_id": "qwen9b-final-l4-v1",
+  "stage": "final",
+  "split": "test_normal",
+  "task_ids": [
+    "59fae45_1",
+    "042a9fc_1"
+  ],
+  "budget_seconds": 120,
+  "peak_vram_bytes": 22548578304,
+  "max_attempts": 2,
+  "engine": {
+    "max_context_tokens": 16384,
+    "workspace_reserve_bytes": 2147483648,
+    "device_name": "NVIDIA L4"
+  },
+  "triggers": {
+    "fixed_tool_calls": 4,
+    "dynamic_context_tokens": 6144,
+    "dynamic_tool_calls": 3
+  },
+  "conditions": [
+    {
+      "id": "full_once",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "full_best_of_n",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_80_never",
+      "method": "streamingllm",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_80_fixed",
+      "method": "streamingllm",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_80_dynamic",
+      "method": "streamingllm",
+      "retention": 0.8,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_never",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_fixed",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_dynamic",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_25_never",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_25_fixed",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_25_dynamic",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_80_never",
+      "method": "rkv",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_80_fixed",
+      "method": "rkv",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_80_dynamic",
+      "method": "rkv",
+      "retention": 0.8,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_never",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_fixed",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_dynamic",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_25_never",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_25_fixed",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_25_dynamic",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_80_never",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_80_fixed",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_80_dynamic",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_dynamic",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_never",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_fixed",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_dynamic",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_90_never",
+      "method": "agentkv",
+      "retention": 0.9,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_70_never",
+      "method": "agentkv",
+      "retention": 0.7,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_60_never",
+      "method": "agentkv",
+      "retention": 0.6,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_40_never",
+      "method": "agentkv",
+      "retention": 0.4,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_30_never",
+      "method": "agentkv",
+      "retention": 0.3,
+      "recovery": "never",
+      "max_attempts": 2
+    }
+  ],
+  "prompt": "You operate a live AppWorld task by executing Python. Return exactly one fenced Python code block per turn, with short executable code and no prose. Python variables persist. Print values needed for the next decision.\n\nThe Python object apis ALREADY EXISTS. Call its methods directly, for example apis.supervisor.show_profile(). NEVER import apis, api_docs, supervisor, or an app module. Do not use requests, HTTP URLs, api.call, or a client library.\n\nYour FIRST action must only inspect the available API names for an app relevant to the task. Example for a Spotify task:\n```python\nprint(apis.api_docs.show_api_descriptions(app_name=\"spotify\"))\n```\nReplace spotify with the relevant app name. Stop the code block and wait for the actual result. Before calling an unfamiliar API, inspect its complete documentation in a separate turn:\n```python\nprint(apis.api_docs.show_api_doc(app_name=\"spotify\", api_name=\"login\"))\n```\nUse the actual app and API names returned by the documentation. Read the documented argument names, return shape, authentication and pagination. Call APIs with keyword arguments. Do not guess names, arguments, IDs, passwords or response fields.\n\nObtain credentials with apis.supervisor.show_account_passwords(). Select the record whose account_name exactly equals the app name, such as spotify or file_system; do not look for a supervisor password. Use the app's documented username type from the supplied supervisor profile or apis.supervisor.show_profile(). Save the login result's access_token and pass access_token explicitly to endpoints that require it. Never invent a password or use the email address as a password.\n\nWork in short steps. After an error, inspect the relevant API documentation and fix the specific assumption. Never repeat the same failing block unchanged. Earlier calls in a failed block may already have taken effect. Inspect actual returned values, handle every documented page until exhausted, and follow all qualifiers and exclusions in the user instruction. Verify requested changes through ordinary APIs. Finally call apis.supervisor.complete_task(), or pass the computed answer through its documented answer argument for a question. Do not complete merely because a code block ran without an error. Tool observations appear in <tool_response> tags.\n\nFor login, username is the supervisor's email for file_system and Spotify, and the supervisor's phone_number for phone. An app name is never the username. A password is never an access_token. This is a working file_system login pattern; adapt the app and username type using its documentation:\n```python\nprofile = apis.supervisor.show_profile()\npasswords = apis.supervisor.show_account_passwords()\npassword = next(row[\"password\"] for row in passwords if row[\"account_name\"] == \"file_system\")\nlogin_result = apis.file_system.login(username=profile[\"email\"], password=password)\naccess_token = login_result[\"access_token\"]\nprint(\"Authenticated\")\n```\nKeep the returned access_token in a Python variable and reuse that variable. Do not copy long token strings into later code. For large collections, keep all records in Python variables, process all required pages, and print only counts, field names, small samples or selected relevant fields. Avoid filling the conversation with entire unfiltered collections. You can process and update all records without printing all of them.",
+  "checkpoint_after_tool_calls": null,
+  "frozen": {
+    "frozen_at_unix": 1794226675.9063778,
+    "pilot_evidence": [
+      {
+        "artifact_id": "comet-run:3555e1d1-d825-4252-8fda-4f9761e15925",
+        "config_digest": "44cf5ede50c71cb2c1fc0e86c4c807f85e45fa1748ebe2c9c3fab2251b48299a",
+        "manifest_digest": "593c92eec83d6cebdf9cb2aa9ffd2f805529a4037230cf752388f1acde42f4e6",
+        "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925"
+      },
+      {
+        "artifact_id": "comet-run:0e289877-d5bf-4ab4-aa8d-3edbdbb55911",
+        "config_digest": "550c6070743d969d97d8f93f72179b89ab0f3aef311861bed5590438c2d394e8",
+        "manifest_digest": "9a8e7458ef9db5629b88f9c0bbccf4f327bc63d63ae0762f347579665656d506",
+        "run_id": "0e289877-d5bf-4ab4-aa8d-3edbdbb55911"
+      }
+    ],
+    "settings_digest": "9071d6fbda3eab3797d8d0d02eabcbb81d7ca18d52ecd9b1929164811ece7167"
+  },
+  "notes": "Unfrozen candidate, declared before any new-model test outcome. First two test_normal families in the predeclared SHA-256 order, seed 17, 120 seconds shared by N<=2, 21 GiB on one L4. Preserves all 29 core Q2 conditions and adds AgentKV no-recovery retention 90/70/60/40/30%, yielding 34 conditions and 68 paired cells. The full all-method eight-level grid is measured separately on train. Supplemental final points focus on AgentKV to save 40 maximum GPU-minutes versus a 44-condition final, leaving time for all required methods/policies, diagnostics and cleanup before the deadline. No unmeasured intermediate competitor points will be implied. Freeze only after the independent 120-second pilot and separate dev confirmation complete, at least one dev task succeeds, and the train fine grid contains both successes and failures. Test outcomes cannot change this design. Two test families and one seed give limited population precision; report counts, paired uncertainty and every failure."
+}

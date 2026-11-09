@@ -19,7 +19,7 @@ start = text.index('    if method in {"triattn", "triattention"}:')
 end = text.index("    raise ValueError(", start)
 (package / "__init__.py").write_text(text[:start] + text[end:])
 shutil.copy(root / "vendor/minisgl/LICENSE", target / "LICENSE")
-(target / "pyproject.toml").write_text('''[build-system]
+(target / "pyproject.toml").write_text("""[build-system]
 requires = ["setuptools==80.9.0"]
 build-backend = "setuptools.build_meta"
 [project]
@@ -29,9 +29,15 @@ dependencies = ["torch==2.9.1"]
 license = "MIT"
 [tool.setuptools.packages.find]
 include = ["comet_agentkv*"]
-''')
-(target / "adaptation.json").write_text(json.dumps({
-    "revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
-    "modules": modules,
-    "changes": "Relative imports; factory omits unused TriAttention and legacy manager imports."
-}, indent=2) + "\n")
+""")
+(target / "adaptation.json").write_text(
+    json.dumps(
+        {
+            "revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
+            "modules": modules,
+            "changes": "Relative imports; factory omits unused TriAttention and legacy manager imports.",
+        },
+        indent=2,
+    )
+    + "\n"
+)

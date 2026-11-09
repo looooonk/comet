@@ -27,8 +27,12 @@ if args.action == "pack":
     with tarfile.open(temporary, "w", copybufsize=8 * 2**20) as archive:
         archive.add(source, arcname=".")
     temporary.replace(args.archive)
-    record = {"source": str(source), "identity": identity,
-              "bytes": args.archive.stat().st_size, "seconds": time.monotonic() - started}
+    record = {
+        "source": str(source),
+        "identity": identity,
+        "bytes": args.archive.stat().st_size,
+        "seconds": time.monotonic() - started,
+    }
     record_path.write_text(json.dumps(record, indent=2) + "\n")
 else:
     record = json.loads(record_path.read_text())
@@ -60,8 +64,13 @@ else:
             if prefix.startswith(b"#!") and str(source).encode() in prefix.split(b"\n", 1)[0]:
                 content = path.read_bytes()
                 first, rest = content.split(b"\n", 1)
-                path.write_bytes(first.replace(str(source).encode(), str(destination).encode()) + b"\n" + rest)
+                path.write_bytes(
+                    first.replace(str(source).encode(), str(destination).encode()) + b"\n" + rest
+                )
         marker.write_text(json.dumps(record, indent=2) + "\n")
-    record = {"identity": identity, "destination": str(destination),
-              "seconds": time.monotonic() - started}
+    record = {
+        "identity": identity,
+        "destination": str(destination),
+        "seconds": time.monotonic() - started,
+    }
 print(json.dumps(record))

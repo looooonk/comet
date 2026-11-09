@@ -10,10 +10,16 @@ from comet.artifacts import read_json, write_json
 from comet.errors import UnsupportedPath
 
 PHASE_MARKERS = (
-    ("<|im_start|>system", 0), ("<|im_start|>user", 0),
-    ("<|im_start|>assistant", 1), ("<think>", 1), ("</think>", 2),
-    ("<tool_call>", 2), ("</tool_call>", 2),
-    ("<tool_response>", 3), ("</tool_response>", 3), ("<|im_end|>", 0),
+    ("<|im_start|>system", 0),
+    ("<|im_start|>user", 0),
+    ("<|im_start|>assistant", 1),
+    ("<think>", 1),
+    ("</think>", 2),
+    ("<tool_call>", 2),
+    ("</tool_call>", 2),
+    ("<tool_response>", 3),
+    ("</tool_response>", 3),
+    ("<|im_end|>", 0),
 )
 
 
@@ -50,16 +56,23 @@ def save(engine, path):
         "observations": tensor_tree(engine._observations, engine.torch, "cpu"),
         "positions": tensor_tree(engine._positions, engine.torch, "cpu"),
         "next_logits": tensor_tree(engine._next_logits, engine.torch, "cpu"),
-        "raw": engine._raw, "tail": engine._tail, "phase": engine._phase,
-        "recoveries": engine._recoveries, "events": engine._events,
-        "python_rng": random.getstate(), "torch_rng": engine.torch.get_rng_state(),
-        "cuda_rng": engine.torch.cuda.get_rng_state_all(), "memory": engine.memory_stats(),
+        "raw": engine._raw,
+        "tail": engine._tail,
+        "phase": engine._phase,
+        "recoveries": engine._recoveries,
+        "events": engine._events,
+        "python_rng": random.getstate(),
+        "torch_rng": engine.torch.get_rng_state(),
+        "cuda_rng": engine.torch.cuda.get_rng_state_all(),
+        "memory": engine.memory_stats(),
     }
     metadata = {
-        "schema": "hybrid_v1", "backend": engine.settings.backend,
+        "schema": "hybrid_v1",
+        "backend": engine.settings.backend,
         "settings_fingerprint": engine.settings.fingerprint(),
         "base_fingerprint": engine.settings.fingerprint(policy=False),
-        "full_cache": engine.settings.method == "full", "raw_tokens": len(engine._raw),
+        "full_cache": engine.settings.method == "full",
+        "raw_tokens": len(engine._raw),
         "physical_cached_tokens": engine.cache.get_seq_length(),
         "transformers": engine.TRANSFORMERS_VERSION,
     }
@@ -75,9 +88,11 @@ def restore(engine, path, branch):
     path = Path(path)
     metadata = read_json(path.with_suffix(path.suffix + ".json"))
     fingerprint = "base_fingerprint" if branch else "settings_fingerprint"
-    if (metadata.get("schema") != "hybrid_v1"
-            or metadata.get("transformers") != engine.TRANSFORMERS_VERSION
-            or metadata.get(fingerprint) != engine.settings.fingerprint(policy=not branch)):
+    if (
+        metadata.get("schema") != "hybrid_v1"
+        or metadata.get("transformers") != engine.TRANSFORMERS_VERSION
+        or metadata.get(fingerprint) != engine.settings.fingerprint(policy=not branch)
+    ):
         raise UnsupportedPath("hybrid checkpoint settings or runtime mismatch")
     if branch and not metadata["full_cache"]:
         raise UnsupportedPath("diagnostic branches require a full-cache source")
@@ -85,8 +100,11 @@ def restore(engine, path, branch):
     engine._clear()
     for layer, state in zip(engine.cache.layers, payload["layers"], strict=True):
         vars(layer).update(tensor_tree(state, engine.torch, "cuda"))
-    for attribute, key in (("_observations", "observations"), ("_positions", "positions"),
-                           ("_next_logits", "next_logits")):
+    for attribute, key in (
+        ("_observations", "observations"),
+        ("_positions", "positions"),
+        ("_next_logits", "next_logits"),
+    ):
         setattr(engine, attribute, tensor_tree(payload[key], engine.torch, "cuda"))
     engine._raw = payload["raw"]
     engine._tail, engine._phase = payload["tail"], payload["phase"]

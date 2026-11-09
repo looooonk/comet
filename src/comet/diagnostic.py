@@ -55,7 +55,9 @@ def prepare_checkpoints(runner, manifest: dict, engine) -> None:
             with budget.charge("checkpoint_eligibility"):
                 record["source_completed"] = environment.completed()
             if record["source_completed"]:
-                raise UnsupportedPath("Task completed at or before the requested checkpoint boundary")
+                raise UnsupportedPath(
+                    "Task completed at or before the requested checkpoint boundary"
+                )
             if state["tool_calls"] < config.checkpoint_after_tool_calls:
                 raise UnsupportedPath("Trajectory stopped before the requested checkpoint boundary")
             record["checkpoint_eligible"] = True
@@ -68,28 +70,41 @@ def prepare_checkpoints(runner, manifest: dict, engine) -> None:
             record.update(status="failed", failure_reason=f"{type(error).__name__}: {error}")
         finally:
             cleanup_start = budget.elapsed
-            cleanup = ([engine.synchronize] if hasattr(engine, "synchronize") else []) + [environment.close]
+            cleanup = ([engine.synchronize] if hasattr(engine, "synchronize") else []) + [
+                environment.close
+            ]
             for finish in cleanup:
                 try:
                     finish()
                 except Exception as error:
-                    record.setdefault("cleanup_errors", []).append(f"{type(error).__name__}: {error}")
+                    record.setdefault("cleanup_errors", []).append(
+                        f"{type(error).__name__}: {error}"
+                    )
                     if record["status"] == "completed":
-                        record.update(status="failed", failure_reason=f"Preparation cleanup failed: {error}")
+                        record.update(
+                            status="failed", failure_reason=f"Preparation cleanup failed: {error}"
+                        )
             try:
                 memory = engine.memory_stats()
             except Exception as error:
                 attempt["metrics"]["memory_error"] = f"{type(error).__name__}: {error}"
                 if record["status"] == "completed":
-                    record.update(status="failed", failure_reason=f"Preparation memory measurement failed: {error}")
+                    record.update(
+                        status="failed",
+                        failure_reason=f"Preparation memory measurement failed: {error}",
+                    )
             else:
                 for key, value in memory.items():
                     if key.startswith("peak_"):
                         value = max(value, attempt["metrics"].get(key, 0))
                     attempt["metrics"][key] = value
-            budget.timings["cleanup"] = budget.timings.get("cleanup", 0) + budget.elapsed - cleanup_start
+            budget.timings["cleanup"] = (
+                budget.timings.get("cleanup", 0) + budget.elapsed - cleanup_start
+            )
             if record["status"] == "completed" and not budget.remaining:
-                record.update(status="failed", failure_reason="Budget expired during preparation cleanup")
+                record.update(
+                    status="failed", failure_reason="Budget expired during preparation cleanup"
+                )
             record.update(
                 elapsed_seconds=budget.elapsed,
                 timings=budget.timings,

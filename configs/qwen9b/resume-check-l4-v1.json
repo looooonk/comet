@@ -1,7 +1,0 @@
-{
-  "extends": "resume-check-v1.json",
-  "experiment_id": "qwen9b-resume-check-l4-v1",
-  "peak_vram_bytes": 22548578304,
-  "engine": {"device_name": "NVIDIA L4", "workspace_reserve_bytes": 2147483648},
-  "notes": "Live process interruption and isolated fresh-attempt validation for the L4 cohort at its declared 21 GiB cap. This is integration evidence, not task-success or freeze evidence."
-}

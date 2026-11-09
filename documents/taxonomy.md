@@ -15,7 +15,7 @@ it does not claim that any method improves task success or speed.
 
 Retention counts KV entries against the full-cache logical history at the same
 step. Mandatory entries, rounding and physical ownership are documented in
-[engine accounting](engine.md). Occupied KV, reserved pool capacity and total
+[engine accounting](reference/engine.md). Occupied KV, reserved pool capacity and total
 VRAM are separate measurements. Different selection costs and independently
 evolving trajectories can offset memory savings; a smaller cache does not imply
 faster execution.
@@ -52,5 +52,5 @@ component costs and failed/infeasible cells make that upper bound interpretable.
 
 These neighboring categories explain the scope; they are not unimplemented
 requirements. A newly authorized model or hardware exploration retains its own
-configuration and evidence, as described in [models](experimental-models.md) and
-[hardware](experimental-hardware.md).
+configuration and evidence, as described in [models](research-direction.md) and
+[hardware](research-direction.md).

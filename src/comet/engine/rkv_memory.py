@@ -1,8 +1,9 @@
 """Bounded-workspace evaluation of the pinned R-KV redundancy score."""
 
 
-def redundancy_scores(k_by_head, *, redundancy_threshold, retain_ratio,
-                      retain_direction, max_similarity_bytes=1 << 30):
+def redundancy_scores(
+    k_by_head, *, redundancy_threshold, retain_ratio, retain_direction, max_similarity_bytes=1 << 30
+):
     import torch
 
     heads, length, _ = k_by_head.shape

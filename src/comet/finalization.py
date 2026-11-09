@@ -16,8 +16,9 @@ def finalize_run(output: Path) -> dict:
     def unavailable(*args, **kwargs):
         raise RuntimeError("Metadata finalization must never initialize an engine or environment")
 
-    runner = Runner(config, output, unavailable, unavailable,
-                    integration_smoke=saved["integration_smoke"])
+    runner = Runner(
+        config, output, unavailable, unavailable, integration_smoke=saved["integration_smoke"]
+    )
     with run_lock(output):
         manifest = runner._manifest(resume=True)
         if manifest["status"] == "completed":
@@ -27,7 +28,9 @@ def finalize_run(output: Path) -> dict:
         for reference in manifest["cells"]:
             path = output / reference["path"]
             if not path.exists():
-                raise ValueError(f"Inference remains eligible for {reference['id']}; use run --resume")
+                raise ValueError(
+                    f"Inference remains eligible for {reference['id']}; use run --resume"
+                )
             cell = read_json(path)
             if cell["completed"]:
                 continue
@@ -36,15 +39,21 @@ def finalize_run(output: Path) -> dict:
                 cell["elapsed_seconds"] < config.budget_seconds
                 and len(cell["attempts"]) < condition.max_attempts
             ):
-                raise ValueError(f"Inference remains eligible for {reference['id']}; use run --resume")
+                raise ValueError(
+                    f"Inference remains eligible for {reference['id']}; use run --resume"
+                )
             pending.append((reference, condition))
         # Validate the entire run before changing any cell.
         for reference, condition in pending:
             runner._run_cell(manifest, reference, condition, None)
-        manifest.setdefault("finalizations", []).append({
-            "at_unix": wall_time(), "mode": "metadata_only", "inference_performed": False,
-            "cells": [reference["id"] for reference, _ in pending],
-        })
+        manifest.setdefault("finalizations", []).append(
+            {
+                "at_unix": wall_time(),
+                "mode": "metadata_only",
+                "inference_performed": False,
+                "cells": [reference["id"] for reference, _ in pending],
+            }
+        )
         manifest.update(status="completed", finished_at_unix=wall_time())
         write_json(output / "manifest.json", manifest)
         return manifest

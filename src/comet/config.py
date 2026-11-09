@@ -163,7 +163,11 @@ class Experiment:
             raise ValueError("require_executable must be boolean")
         if self.environment_warmup is not None:
             task_id = self.environment_warmup.task_id
-            if not isinstance(task_id, str) or not task_id or not task_id.replace("_", "").isalnum():
+            if (
+                not isinstance(task_id, str)
+                or not task_id
+                or not task_id.replace("_", "").isalnum()
+            ):
                 raise ValueError("Invalid environment_warmup task ID")
             seed = self.environment_warmup.seed
             _number(seed, "environment_warmup seed", 0, 2**32 - 1)
@@ -177,13 +181,16 @@ class Experiment:
             not isinstance(self.engine.device_name, str) or not self.engine.device_name.strip()
         ):
             raise ValueError("device_name must be an explicit GPU model name")
-        profile = validate_model(self.engine.model, self.engine.model_revision,
-                                 self.engine.tokenizer_revision)
+        profile = validate_model(
+            self.engine.model, self.engine.model_revision, self.engine.tokenizer_revision
+        )
         if self.engine.backend != profile.get("backend", "native_minisgl"):
             raise ValueError("model architecture does not match the selected backend")
         if self.engine.model not in {"Qwen/Qwen3-8B", "Qwen/Qwen3.5-9B"} and self.stage != "pilot":
-            raise ValueError(f"{self.engine.model} is an exploratory pilot model; "
-                             "the research contract uses Qwen3-8B")
+            raise ValueError(
+                f"{self.engine.model} is an exploratory pilot model; "
+                "the research contract uses Qwen3-8B"
+            )
         if self.sampling.enable_thinking and not profile["supports_thinking"]:
             raise ValueError(f"{self.engine.model} requires enable_thinking=false")
         if self.engine.workspace_reserve_bytes >= self.peak_vram_bytes:

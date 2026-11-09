@@ -1,0 +1,38 @@
+{
+  "extends": "../base.json",
+  "experiment_id": "qwen9b-train-protocol-l4-v4",
+  "stage": "pilot",
+  "split": "train",
+  "task_ids": [
+    "34d9492_1",
+    "76f2c72_1",
+    "771d8fc_1",
+    "692c77d_1"
+  ],
+  "budget_seconds": 300,
+  "peak_vram_bytes": 22548578304,
+  "max_attempts": 1,
+  "engine": {
+    "max_context_tokens": 16384,
+    "workspace_reserve_bytes": 2147483648,
+    "device_name": "NVIDIA L4"
+  },
+  "triggers": {
+    "fixed_tool_calls": 2,
+    "dynamic_context_tokens": 2048,
+    "dynamic_tool_calls": 2
+  },
+  "conditions": [
+    {
+      "id": "full_once",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    }
+  ],
+  "prompt": "You operate a live AppWorld task by executing Python. Return exactly one fenced Python code block per turn, with short executable code and no prose. Python variables persist. Print values needed for the next decision.\n\nThe Python object apis ALREADY EXISTS. Call its methods directly, for example apis.supervisor.show_profile(). NEVER import apis, api_docs, supervisor, or an app module. Do not use requests, HTTP URLs, api.call, or a client library.\n\nYour FIRST action must only inspect the available API names for an app relevant to the task. Example for a Spotify task:\n```python\nprint(apis.api_docs.show_api_descriptions(app_name=\"spotify\"))\n```\nReplace spotify with the relevant app name. Stop the code block and wait for the actual result. Before calling an unfamiliar API, inspect its complete documentation in a separate turn:\n```python\nprint(apis.api_docs.show_api_doc(app_name=\"spotify\", api_name=\"login\"))\n```\nUse the actual app and API names returned by the documentation. Read the documented argument names, return shape, authentication and pagination. Call APIs with keyword arguments. Do not guess names, arguments, IDs, passwords or response fields.\n\nObtain credentials with apis.supervisor.show_account_passwords(). Select the record whose account_name exactly equals the app name, such as spotify or file_system; do not look for a supervisor password. Use the app's documented username type from the supplied supervisor profile or apis.supervisor.show_profile(). Save the login result's access_token and pass access_token explicitly to endpoints that require it. Never invent a password or use the email address as a password.\n\nWork in short steps. After an error, inspect the relevant API documentation and fix the specific assumption. Never repeat the same failing block unchanged. Earlier calls in a failed block may already have taken effect. Inspect actual returned values, handle every documented page until exhausted, and follow all qualifiers and exclusions in the user instruction. Verify requested changes through ordinary APIs. Finally call apis.supervisor.complete_task(), or pass the computed answer through its documented answer argument for a question. Do not complete merely because a code block ran without an error. Tool observations appear in <tool_response> tags.\n\nFor login, username is the supervisor's email for file_system and Spotify, and the supervisor's phone_number for phone. An app name is never the username. A password is never an access_token. This is a working file_system login pattern; adapt the app and username type using its documentation:\n```python\nprofile = apis.supervisor.show_profile()\npasswords = apis.supervisor.show_account_passwords()\npassword = next(row[\"password\"] for row in passwords if row[\"account_name\"] == \"file_system\")\nlogin_result = apis.file_system.login(username=profile[\"email\"], password=password)\naccess_token = login_result[\"access_token\"]\nprint(\"Authenticated\")\n```\nKeep the returned access_token in a Python variable and reuse that variable. Do not copy long token strings into later code. For large collections, keep all records in Python variables, process all required pages, and print only counts, field names, small samples or selected relevant fields. Avoid filling the conversation with entire unfiltered collections. You can process and update all records without printing all of them.",
+  "checkpoint_after_tool_calls": null,
+  "frozen": null,
+  "notes": "Train repair after v3 solved 1/4, two tasks reached the 8192-token context ceiling, and one failed authentication. Explicitly extends context to 16384 and adds a general observed-credential login example, token-variable reuse and concise printing. All prior outcomes retained. Same four tasks, seed, sampling, 300-second budget and 21 GiB cap. Requires the new 16384-token capacity check before execution."
+}

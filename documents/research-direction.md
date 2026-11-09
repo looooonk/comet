@@ -1,78 +1,103 @@
-# Research direction
+# Research contract
 
-The November 8, 2026 user decision replaces continued tuning of the legacy
-Qwen3 4B/8B/14B baselines with a new implementation phase for newer Qwen models.
-The [candidate list](experimental-models.md) includes dense and MoE models up to
-35B total parameters. The old 14B ceiling is no longer the selection constraint.
-The original proposal remains background; this decision supersedes its model
-and hardware assumptions. Qwen3.5-9B is the selected study model, using one
-implemented and validated hybrid backend; see the
-[backend decision](hybrid-backend.md) and [current evidence](records/qwen9b-findings.md).
-Every new device/cap combination still requires its own live qualification.
+COMET tests whether recovering cached history improves agent task success beyond
+further compressed attempts under a fixed runtime budget and memory cap. The
+study uses Qwen3.5-9B on AppWorld through the shared Transformers hybrid backend.
+This replaces the original proposal's Qwen3-8B/Mini-SGLang/A100 assumptions;
+legacy pilots are historical, not pending work. See the
+[backend decision](hybrid-backend.md), [proposal](proposal.pdf) and
+[completed results](records/README.md).
 
-## Central deliverable
+## Questions and central plot
 
-Produce a fine-grained **compaction aggressivity versus test-time task success
-rate** plot that reveals useful accuracy, memory and compute tradeoffs.
+- **Q1:** Within each eviction method and retention setting, compare a
+  context-length/tool-count recovery trigger with never-rebuild and fixed-tool-count
+  policies, starting from identical saved pre-compression checkpoints.
+- **Q2:** Compare compressed oracle best-of-N with and without recovery at 80%,
+  50% and 25% retention against full-cache best-of-N, with matched budgets and caps.
 
-- **Horizontal axis:** percentage of eligible KV entries removed,
-  With retention $r$, this is $100\left(1-r\right)$, increasing from full cache
-  toward stronger compaction.
-  The initial candidate grid is 0, 10, 20, 30, 40, 50, 60, 70 and 75 percent.
-  It includes the proposal's 80%, 50% and 25% retention anchors. Confirm and
-  refine this grid on dev before freezing it; do not invent unmeasured points.
-- **Vertical axis:** AppWorld task success rate. Show single-attempt success and
-  oracle best-of-N within a common runtime budget as distinct views. Oracle
-  selection is an upper bound; it is not an online selection policy.
-- **Comparison:** full cache, StreamingLLM, R-KV and AgentKV through one validated
-  backend, with clearly separated panels for recovery policies and budgets.
-  Any architecture-driven method change must be explicit before evaluation.
-- **Uncertainty:** paired seeds and task-bootstrap intervals. Seeds and attempts
-  do not increase the number of independent tasks. Report counts and failures.
-- **Supporting curves:** occupied KV and total peak VRAM, actual attempts,
-  end-to-end latency, decode throughput, estimated FLOPs and rebuild cost.
+The central plot shows **compaction aggressivity versus task success**. With
+retention $r$, the horizontal axis is $100\left(1-r\right)$ percent of eligible
+attention KV entries removed. Show first-attempt and oracle success separately,
+with recovery-policy and budget panels, sample counts and paired task-bootstrap
+intervals. Oracle selection is a perfect-outcome-selection upper bound, not an
+online policy. Supporting figures report attempts, latency, throughput, occupied
+KV, total peak VRAM, estimated FLOPs and recovery cost.
 
-A plot with every condition at 0% or 100% is not a sufficient final deliverable.
-Use train/dev to find useful intermediate difficulty, context lengths and budgets
-where methods can differ. Confirm that setting on separate dev coverage, then
-freeze the test design. This is a design objective, not permission to manufacture
-a result: retain flat outcomes, all predeclared points and failures; never pick
-successful test tasks or hide unfavorable conditions. If the qualified setting
-still produces a flat test curve, report it and propose a distinct experiment.
+Find an informative operating regime on train/dev and confirm it on separate dev
+coverage before freezing test settings. An all-zero or all-one pilot is a reason
+to revisit the declared design, not to hide outcomes. Retain every predeclared
+point and failure even if the final test curve is flat. Never choose favorable
+test tasks, fabricate differences or imply unmeasured intermediate points.
 
-## Retained questions and invariants
+## Fixed comparisons
 
-Q1 compares never-rebuild, fixed-tool-count recovery and a context/tool-count
-trigger at matched method and retention. Diagnostic branches start from identical
-saved agent, environment, model state and RNG. Q2 compares compressed oracle
-best-of-N, with and without recovery, against full-cache best-of-N under matched
-runtime and total-memory caps. Final attempts always start from fresh task state.
+| Component | Contract |
+| --- | --- |
+| Model and benchmark | Qwen3.5-9B, AppWorld, pinned model/tokenizer/data revisions |
+| Engine | Shared Transformers hybrid backend and pinned AgentKV selectors |
+| Methods | Full KV, StreamingLLM, R-KV and AgentKV |
+| Retention | Separate 100% control; required 80%, 50% and 25% compressed anchors |
+| Recovery | Never, fixed tool count, context-length/tool-count trigger; at most one rebuild per attempt |
+| Execution | Sequential attempts, batch size one, paired seeds and identical task subsets |
+| Controls | Single-attempt full cache and budget-matched full-cache oracle best-of-N |
+| Hardware | Same qualified GPU model/count and experimental total-VRAM cap within each comparison |
 
-Recovery re-prefills the full raw transcript at most once per attempt, reapplies
-the retention policy and never replays tools. All attempts share a task budget;
-resets, tools, checkpoints and rebuilds remain charged. Model loading and offline
-scoring are excluded consistently. The user also approved measuring one fixed
-training-environment initialization separately; see [timing](experiments.md).
-Every condition uses the same timing definition and hardware contract.
+Retention counts full-attention KV entries relative to full-cache inference at
+the same raw-token step, with the [documented rounding and mandatory floors](hybrid-backend.md).
+It is not a fraction of GPU capacity or a shorter text prompt. Recurrent state is
+preserved and counted separately. Recovery reconstructs all model state from the
+full transcript, reapplies retention and never replays tools or rolls back actions.
 
-For a hybrid model, specify which states can be compacted and how recurrent
-state is restored or reconstructed. The x-axis must describe the actual object
-being compressed. Record mandatory retained entries, realized retention and
-non-KV memory separately. Active MoE parameters do not define resident weight
-memory or inference cost by themselves.
+Each task/condition/seed has one shared wall-clock budget across all attempts.
+Resets, tools, checkpoint preparation, recovery, saving and cleanup are charged.
+Model initialization and post-hoc evaluation are excluded consistently. A versioned
+config may opt into one isolated train-environment initialization/close per launch,
+measured separately without tools, model observations or evaluator access.
+Timeouts, OOM and infeasibility stay in the denominators. Recovery must fit the
+same transient memory cap; failed attempts receive no replacement budget.
 
-## Study workflow
+## Resolution and freezing
 
-1. Verify official candidate identities and select a model/backend/hardware plan.
-2. Implement and validate the model's complete persistent state, sampling,
-   compaction, recovery and AppWorld integration; retain one shared pipeline.
-3. Establish a useful predeclared full-cache dev baseline, then pilot the fine
-   aggressivity grid and independently executed runtime budgets.
-4. Tune recovery on dev, freeze model/configs/tasks/seeds, and execute Q1/Q2.
-5. Produce the central plot, supporting costs, uncertainty and answers.
+The measured supplemental retention grid is 25%, 30%, 40%, 50%, 60%, 70%, 80%
+and 90%, alongside full cache. Finer train/dev grids and neighboring trigger
+thresholds are authorized when declared as new versions. Preserve the required
+anchors and distinguish supplemental coverage from the core matrix. The initial
+dynamic policy changes when to rebuild, not retention or the attempt ceiling.
 
-Historical configs and dated plans are archived in Git, summarized in
-[legacy results](records/legacy-results.md). They are not a queue to resume.
-The authorized new study uses versioned Qwen3.5-9B configurations, with completed
-pilot evidence, frozen settings and execution status indexed in
-[the current records](records/README.md).
+Run each declared runtime budget independently. An attained-success curve from
+completion timestamps describes one executed schedule; it is not a rerun at
+shorter budgets. Rebuild admission can depend on remaining time.
+
+Freeze the model/backend/device, exact task/split IDs, prompts, sampling, seeds,
+context/output limits, behavior at those limits, attempt ceiling, wall-clock
+budget, total-VRAM cap, retention grid and trigger thresholds before test.
+Context length and tool-count definitions, threshold combination and check timing
+must be explicit. Frozen changes define a new experiment version. See the
+[workflow](experiments.md) for freeze, execution and resume commands.
+
+Additional models, benchmarks, methods, summarization, quantization, training or
+alternative search strategies require a separate research decision. Larger Qwen
+candidates remain unsupported until their identities and complete attention,
+recurrent and expert-state handling are verified and qualified.
+
+## Hardware and qualification
+
+Alternative adequately sized GPUs are authorized; A100 availability must not
+block progress. The completed study qualified one L4 at 21 GiB and a separate
+RTX PRO 6000 Blackwell Server Edition cohort at 24 GiB. GPU capacity is not the
+experimental cap. Keep these cohorts separate; different devices and host/storage
+costs are not a controlled hardware comparison.
+
+Before using another device/cap, validate numerical output and sampling, all
+persistent state, compaction, checkpoints, recovery peaks, AppWorld isolation and
+interruption accounting over the intended range, then run train/dev pilots.
+Do not qualify a new model or device from legacy tests. Preserve the exact runtime,
+local selector patches and measured evidence. Multi-GPU configurations require
+explicit topology, device-count and memory-accounting support.
+
+Use appropriately sized cluster resources where practical. The existing GCP
+ceiling is $40 total, including temporary storage; consult the
+[ledger](records/qwen9b/cloud-ledger.json) before paid provisioning. Historical
+allowances are not measured billing. The proposal's 50-100 GPU-hour estimate was
+provisional; derive future budgets from measured pilot costs.
