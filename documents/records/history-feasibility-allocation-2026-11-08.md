@@ -128,5 +128,19 @@ and thread policy. Its 50-minute allocation retained 120-second preflight and
 in 225 seconds, verifying all ten cells and thirty passes. All 78 files
 (457,852 bytes) were copied and independently SHA-256 checked. The
 [16k result](history-feasibility-16k-2026-11-08.md) reports measured costs,
-memory and the three-length feasibility figures. No 32,600-token or repeated
-timing job has been submitted.
+memory and the three-length feasibility figures.
+
+## Subsequent 32,600-token allocation
+
+Job 13839242 ran the exact predeclared 32,600-token configuration in a
+90-minute allocation with 120-second preflight and 5,100-second benchmark
+bounds. It terminated after 274 seconds on ins093. Seven conditions completed;
+all three R-KV conditions failed the allocator/cap path in final prefill. The
+benchmark saved every condition before the wrapper rejected progression and
+returned exit 1. All 70 files (579,837 bytes) were copied and independently
+SHA-256 verified. A read-only post-run source/runtime check matched the original
+pins. These are configured-runtime capacity failures, distinct from earlier
+allocation and validation failures. See the
+[32,600-token result](history-feasibility-32600-2026-11-08.md) for partial memory
+accounting and all seven successful conditions. No automatic retry, cap change
+or repeated-timing submission followed.

@@ -102,6 +102,8 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [32,600-token capacity result (2026-11-08)](history-feasibility-32600-2026-11-08.md) | Seven completed conditions and three R-KV cap failures, with verified partial measurements and all-condition coverage |
+| [Repeated history timing plan (2026-11-08)](history-timing-2026-11-08-plan.md) | Five declared lengths, 64 decode forwards and three repetitions; all repetitions retained with first-use effects visible |
 | [Corrected pilot scoring (2026-11-08)](appworld-corrected-pilot-scoring-2026-11-08.md) | Five live checks; 14 completed snapshots exhaustively scored; all three arms remain 0/6 with original bytes preserved |
 | [AppWorld scoring repair (2026-11-08)](appworld-scoring-repair-2026-11-08.md) | Reproduced counter-path defect, validated state-preservation fix, and separate rescoring; original recent task scores provisional |
 | [16k matched-history result (2026-11-08)](history-feasibility-16k-2026-11-08.md) | Thirty verified passes, 27.786 GiB peak total VRAM, and actual three-length cost figures |

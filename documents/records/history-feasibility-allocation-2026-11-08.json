@@ -797,5 +797,54 @@
     "verified_remote_files": 78,
     "verified_remote_bytes": 457852,
     "result_record": "history-feasibility-16k-2026-11-08.json"
+  },
+  "subsequent_32600_attempt": {
+    "job_id": "13839242",
+    "status": "completed_with_capacity_failures_verified",
+    "source_commit": "312691d00fe84ce52a504071ccd5ed0bdd40a0f9",
+    "configuration_commit": "bf936982474f6dae313cd71b5e0369466dd9c655",
+    "qualification_sha256": "ea51f38c4d6c59e4bcf0505cf70b02ac3ae8dbef03580c2565fc26c2be629409",
+    "files": [
+      {
+        "name": "history-feasibility-qwen8b-a6000-l32600-v1.json",
+        "sha256": "d4c2be90f37a113c8c613ec57553311e5dd66cc7a3485f8556e7726b9bee61ae",
+        "bytes": 647
+      },
+      {
+        "name": "run-history-feasibility.sh",
+        "sha256": "6d6eb90a5b57407c682bcb79c5a41d36e540a37bdb80c76917f26ad4beb4f4fa",
+        "bytes": 11892
+      },
+      {
+        "name": "verify_reused_validation.py",
+        "sha256": "0e295affc4b5b1492b85ccfdf1c23440e10d7b66733826320989f6a0b74ebb03",
+        "bytes": 8705
+      }
+    ],
+    "allocation": {
+      "gpu": "A6000",
+      "gpus": 1,
+      "cpus": 6,
+      "host_ram": "32G",
+      "walltime_seconds": 5400,
+      "excluded_nodes": [
+        "ins091"
+      ],
+      "requeue": false
+    },
+    "phase_hard_limits_seconds": {
+      "preflight": 120,
+      "l32600": 5100
+    },
+    "node": "ins093",
+    "allocation_elapsed_seconds": 274,
+    "completed_cells": 7,
+    "failed_cells": 3,
+    "verified_complete_passes": 21,
+    "verified_partial_failed_passes": 3,
+    "not_attempted_passes": 6,
+    "verified_remote_files": 70,
+    "verified_remote_bytes": 579837,
+    "result_record": "history-feasibility-32600-2026-11-08.json"
   }
 }
