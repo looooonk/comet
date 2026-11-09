@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "status": "cloud_cleanup_complete_cluster_retrieval_pending",
+  "cloud": {
+    "run_id": "gpu-20261109-074439-b5e235",
+    "worker_status": "completed",
+    "worker_exit_code": 0,
+    "batch_terminal_state": "FAILED",
+    "batch_failure": "maximum runtime during final directory transfer",
+    "scientific_final_plan_exit_code": 0,
+    "upload_complete_marker": false,
+    "compute_cleanup_verified": true,
+    "job_absent": true,
+    "owned_instances": [],
+    "owned_disks": [],
+    "checked_at_utc": "2026-11-09T14:58:45Z",
+    "backup_objects_retained": true,
+    "backup_inventory_object_count": 3142,
+    "backup_inventory_bytes": 1328720740,
+    "backup_reason": "Incomplete global transfer marker; preserve prefix. Complete closed per-plan archives were independently retrieved.",
+    "verified_root_metadata": {
+      "exit_code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gpu-device.txt": "ccf570cb35e68300da72082649b29b26b2e0296c1c98937f79c4c6a48fdee079",
+      "run.log": "324e80da0facb2bd529b9d49a14115ba9ee59e4c47f728023266cd3794c2349f",
+      "system-packages.txt": "3e46e493e35c1595cc95eb018a3072eb9b601a36e46e19a462908157103aecc2",
+      "triton-device.json": "de5538c23c57b502f7b3d13ab3363bff02618939d36ab6d5cf74399be4f9a437",
+      "upstream.json": "3179f9ac543db81514ceea687f88b5ab885832cd9e845b10106c63e3420837e5",
+      "worker-events.log": "5d5cc180370415f8fb457f558a9195b1edffbf5298c26c565793d7fa03848185",
+      "worker-status.txt": "d3be030801b90ea8057d3997d9845c7f850cc7b784450645d5ec2811cc927d7a"
+    },
+    "retrieved_plan_archives": [
+      {
+        "plan": "00-protocol-pilot",
+        "bytes": 624640,
+        "sha256": "126d4d640f05c529eb48fd245f4afcdd9e9f5ea5db6e3af40a15413bbb04627b"
+      },
+      {
+        "plan": "01-train-dev-metadata",
+        "bytes": 20480,
+        "sha256": "9069be7b416b4c76fbe1b3de9223726c3b708b5541cb277e02657b794bbb5091"
+      },
+      {
+        "plan": "02-resume-check",
+        "bytes": 573440,
+        "sha256": "fcd8816c5ee433350164a7bab072817af9857f2a0299b5e76baa86479f1b8a12"
+      },
+      {
+        "plan": "03-context-protocol-pilot",
+        "bytes": 51200,
+        "sha256": "b3ee8751d9b7ca28e4a6f7b9846c3d65f9a46352d09feacb2cb8886cea1724bb"
+      },
+      {
+        "plan": "04-compression-pilot",
+        "bytes": 20480,
+        "sha256": "b654ae18d8c063bd748136a06ac86c3c0075b66023e1caeec8b8178bd32a66ec"
+      },
+      {
+        "plan": "05-tiled-context-pilot",
+        "bytes": 1177600,
+        "sha256": "69673e4926ddc87e95b20f5d350790955c97a71495d1309351307d5f5a15b788"
+      },
+      {
+        "plan": "06-compression-pilot",
+        "bytes": 4823040,
+        "sha256": "46111f3d822f9b855c78fcb32f628718b0abc64b69da4b986f952dc338bc7373"
+      },
+      {
+        "plan": "06-segment-1",
+        "bytes": 2457600,
+        "sha256": "f93559179a9bdff2a8bdc9975eb49a66a721234d80e202a4b6238b5b3ec082af"
+      },
+      {
+        "plan": "07-hybrid-tool-effects",
+        "bytes": 92160,
+        "sha256": "77c02667b84dce3a468f7547bee59d1bd73686d22c7723bf9678486f9205536c"
+      },
+      {
+        "plan": "07-q1-diagnostic",
+        "bytes": 200714240,
+        "sha256": "6d38eea521a65482de8e10e8d821153c36c1da5452403c50e057f6a7190b4623"
+      },
+      {
+        "plan": "08-budget-120",
+        "bytes": 3788800,
+        "sha256": "1edcf0d0e12730046cd418875cb18d24f9885b15d9ed7e527015032d5ba3f39a"
+      },
+      {
+        "plan": "09-budget-90",
+        "bytes": 3123200,
+        "sha256": "1c5c8733c2badbdd39ac1f5edeb309eb987e261b304569579ae0f0547c1cca04"
+      },
+      {
+        "plan": "10-train-finegrid",
+        "bytes": 6277120,
+        "sha256": "71d095e1b0d2609af5ce218bdff11f15fe1aacd7cf2ccad4581007bcc6448554"
+      },
+      {
+        "plan": "11-dev-confirmation",
+        "bytes": 3584000,
+        "sha256": "82828c7767e23b9af2a9065f147f942649c562653b27012f6b4c1d206a662c2e"
+      },
+      {
+        "plan": "12-final-segment-1",
+        "bytes": 3901440,
+        "sha256": "3ba6630aaec280353fb670b1d0125518f441ae23df280298669e82ba877f6511"
+      },
+      {
+        "plan": "12-final-segment-2",
+        "bytes": 7925760,
+        "sha256": "23fba983d92279134eea449fb4c3b4ec8f25ba8cb42a6ee7d8755df41832b310"
+      },
+      {
+        "plan": "12-final-segment-3",
+        "bytes": 13035520,
+        "sha256": "2ade70253bac0acbb36400d2faa40a9db1c64f53b5181cb5dc6754277eea56b0"
+      },
+      {
+        "plan": "12-final-study",
+        "bytes": 20940800,
+        "sha256": "18d622f10791233dd49486cf85ce1e9d4f93b042979baa2140dd6672ea3d78ed"
+      }
+    ]
+  },
+  "cluster": {
+    "jobs": [
+      13841503,
+      13841504
+    ],
+    "last_verified_state": "running",
+    "retrieval_status": "awaiting SSH-agent unlock",
+    "maximum_allocation_end_et": [
+      "2026-11-09T10:39:38-05:00",
+      "2026-11-09T10:32:20-05:00"
+    ],
+    "new_allocations_submitted": false
+  },
+  "local_storage": {
+    "free_gib_at_audit": 157,
+    "managed_cpu_environment_mib": 115,
+    "hybrid_artifacts_mib_approx": 830,
+    "new_model_weights_downloaded_locally": false
+  },
+  "cost_note": "Planning allowances, not measured billing, are recorded in qwen9b-cloud-ledger.json."
+}

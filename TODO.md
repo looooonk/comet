@@ -3,9 +3,9 @@
 The previous execution goal has been cleared. Old model runs are stopped and
 superseded plans are archived in Git. Do not resume the legacy 4B/8B/14B pilots.
 The November 8 execution request activates this plan; the user authorized
-autonomous implementation and experiments with smaller models first. Insomnia retains only the protected
-AppWorld benchmark root; old environments, checkouts, model weights and generated
-caches are removed. Build a fresh runtime for the selected new model.
+autonomous implementation and experiments with smaller models first. The new
+Qwen3.5-9B runtime and frozen L4 study are complete. Supplemental Blackwell
+results and resource handoff remain below; legacy pilots stay retired.
 
 ## Central result
 
@@ -60,9 +60,10 @@ The existing GCP ceiling remains **$40 total**. Two completed cloud jobs have a
 combined estimate of about **$3.54**, not a billing measurement; **$10 remains
 reserved pending reconciliation**. Four short failed launches retain $3 each;
 the completed baseline retains $3.25, one canceled startup $0.50, and the bounded
-seven-hour L4 session reserves $10, leaving **$4.25 uncommitted**. See the
-[cloud ledger](documents/records/qwen9b-cloud-ledger.json). The active cohort uses
-a 21 GiB cap. Vast.ai still requires a separate spending
+completed seven-hour L4 session retains a $10 allowance, leaving
+**$4.25 uncommitted**. See the
+[cloud ledger](documents/records/qwen9b-cloud-ledger.json). The completed L4 cohort uses a 21 GiB cap; supplemental Blackwell runs use
+a separately qualified 24 GiB cap. Vast.ai still requires a separate spending
 decision and is a last resort. The November 8 execution request authorizes the
 new experiments within the existing GCP ceiling.
 
