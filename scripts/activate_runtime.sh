@@ -4,6 +4,15 @@ comet_runtime_profile=${1:?Usage: source scripts/activate_runtime.sh cpu|appworl
 case "$comet_runtime_profile" in cpu|appworld|gpu|hybrid) ;; *) return 2 ;; esac
 : "${COMET_REPO:?Set COMET_REPO to the checkout directory}"
 : "${COMET_ENV:?Set COMET_ENV to the matching managed environment}"
+if [[ -n "${COMET_RUNTIME_ARCHIVE:-}" ]]; then
+    comet_local_runtime="${SLURM_TMPDIR:-${TMPDIR:?Set a job-local TMPDIR}}/comet-runtime"
+    if [[ "$COMET_ENV" != "$comet_local_runtime" ]]; then
+        "$COMET_ENV/bin/python" "$COMET_REPO/scripts/stage_runtime.py" stage \
+            "$COMET_ENV" "$COMET_RUNTIME_ARCHIVE" "$comet_local_runtime" || return $?
+        export COMET_ENV="$comet_local_runtime"
+    fi
+    unset comet_local_runtime
+fi
 export PATH="$COMET_ENV/bin:$PATH"
 export PYTHONUNBUFFERED=1
 unset PYTHONPATH

@@ -33,9 +33,17 @@ same allocation, records bytes/time, and leaves the persistent snapshot intact.
 Allocate at least 21 GB of scratch space for 9B. Staging is model initialization,
 outside task timing; ordinary execution and rebuild allocations remain charged.
 
-This guide describes the retained legacy implementation. New Qwen support is
-not implemented yet; follow the [current direction](research-direction.md) before
-selecting a model, changing the backend or launching another experiment.
+On slow shared storage, archive the ready managed runtime once inside a CPU
+allocation: `python scripts/stage_runtime.py pack "$COMET_ENV" RUNTIME.tar`.
+Set `COMET_RUNTIME_ARCHIVE` to that archive for subsequent jobs. Activation
+unpacks the same environment into job-local scratch and checks its checkout,
+profile and locks as usual; it does not resolve or install new packages.
+Rebuild the archive after runtime changes. Allow another 8 GB of scratch for
+the hybrid profile. Initialization logs record staging time. Persistent caches
+and outputs remain in their configured locations.
+
+The sections below describe the retained legacy implementation. Follow the
+[current direction](research-direction.md) when selecting the active backend.
 
 COMET has a small CPU environment for configuration, policies, accounting, analysis,
 and unit tests. Model inference uses a separate Linux x86_64 Python 3.12 environment.

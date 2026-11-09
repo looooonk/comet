@@ -48,12 +48,15 @@ else:
                  "COMET_GPU_EVIDENCE": "must-clear", "CUDA_VISIBLE_DEVICES": "0"}
     variables.pop("SLURM_JOB_ID", None)
     variables.pop("COMET_MODEL_PATH", None)
+    variables.pop("COMET_LOCAL_MODEL", None)
+    variables.pop("COMET_RUNTIME_ARCHIVE", None)
     return environment, output, variables
 
 
 @pytest.mark.parametrize("lint", [False, True])
 def test_gpu_cpu_only_keeps_profile_and_omits_model_device_requirements(tmp_path, lint):
     environment, output, variables = _launcher_environment(tmp_path, lint=lint)
+    variables["COMET_LOCAL_MODEL"] = "1"
     result = subprocess.run(["/bin/bash", str(LAUNCHER), "gpu", "--cpu-only"], env=variables,
                             text=True, capture_output=True)
     assert result.returncode == 0, result.stderr

@@ -30,7 +30,7 @@ fi
 mkdir -p "$(dirname "$COMET_CHECK_OUTPUT")"
 mkdir "$COMET_CHECK_OUTPUT"
 trap 'status=$?; printf "%s\n" "$status" > "$COMET_CHECK_OUTPUT/exit-status.txt"' EXIT
-if [[ "${COMET_LOCAL_MODEL:-0}" == 1 ]]; then
+if [[ "${COMET_LOCAL_MODEL:-0}" == 1 && "$cpu_only" != true && ( "$profile" == gpu || "$profile" == hybrid ) ]]; then
     model_source=${COMET_MODEL_PATH:?Set COMET_MODEL_PATH before local staging}
     model_destination="${SLURM_TMPDIR:-${TMPDIR:?Set a job-local TMPDIR}}/comet-model/$(basename "$model_source")"
     python scripts/stage_model.py "$model_source" "$model_destination" > "$COMET_CHECK_OUTPUT/model-staging.json"
