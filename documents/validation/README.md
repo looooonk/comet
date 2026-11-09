@@ -114,6 +114,15 @@ describes the opt-in combined Runner/AppWorld/GPU branching fixture. Follow
 [resume-validation.md](resume.md) for clean segmentation followed by
 process interruption; it needs a dedicated configuration and artifact directory.
 
+For a partition's full hybrid qualification, set `COMET_RESUME_CONFIG` and a fresh
+`COMET_CHECK_OUTPUT`, then run `bash scripts/qualify_hybrid.sh`. It runs the
+state, memory and AppWorld checks first, exits that CUDA-owning process, and runs
+the CLI interruption/resume check in a separate process. Otherwise retained CUDA
+allocations in the test parent can consume the child runner's memory allowance.
+Both phases must pass; their reports and the qualification exit status are saved
+separately. Parallel AppWorld checks verify cleanup of their own scoring namespace,
+since other workers may legitimately create or remove neighboring namespaces.
+
 Then run small train/dev tasks through the execution, scoring, and analysis
 commands in [experiments.md](../experiments.md). Distinguish an agent reaching
 completion from passing the AppWorld evaluator. Retain failed attempts and their

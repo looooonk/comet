@@ -94,3 +94,28 @@ def test_check_launcher_rejects_invalid_optional_arguments(args):
                             text=True, capture_output=True)
     assert result.returncode == 2
     assert "supported only with the gpu runtime profile" in result.stderr
+
+
+@pytest.mark.parametrize("first_status", [0, 1])
+def test_hybrid_qualification_isolates_resume_and_stops_on_failure(tmp_path, first_status):
+    repo = tmp_path / "repo"
+    (repo / "scripts").mkdir(parents=True)
+    (repo / "scripts/run_checks.sh").write_text(
+        'mkdir "$COMET_CHECK_OUTPUT"\n'
+        'printf "%s\\n" "$PYTEST_ADDOPTS" > "$COMET_CHECK_OUTPUT/selection"\n'
+        'if [[ "$COMET_CHECK_OUTPUT" == */inprocess ]]; then exit "$FIRST_STATUS"; fi\n'
+    )
+    output = tmp_path / "evidence"
+    variables = {**os.environ, "COMET_REPO": str(repo), "COMET_CHECK_OUTPUT": str(output),
+                 "COMET_RESUME_CONFIG": "train-fixture.json", "FIRST_STATUS": str(first_status)}
+    launcher = LAUNCHER.with_name("qualify_hybrid.sh")
+    result = subprocess.run(["/bin/bash", str(launcher)], env=variables,
+                            text=True, capture_output=True)
+    assert result.returncode == first_status, result.stderr
+    selection = (output / "inprocess/selection").read_text()
+    assert "test_hybrid.py" in selection and "test_resume_integration.py" not in selection
+    if first_status == 0:
+        assert (output / "process-resume/selection").read_text().strip() == "tests/test_resume_integration.py"
+    else:
+        assert not (output / "process-resume").exists()
+    assert (output / "exit-status.txt").read_text().strip() == str(first_status)

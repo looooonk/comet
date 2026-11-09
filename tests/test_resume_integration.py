@@ -87,7 +87,9 @@ def test_live_process_interruption_and_resume():
         launch = manifest["launches"][0]
         assert launch["max_cells"] == launch["completed_cells"] == 1
         assert launch["stop_reason"] == "max_cells"
-        assert read_json(before_dir / "cell.json")["completed"]
+        before_cell = read_json(before_dir / "cell.json")
+        assert before_cell["completed"] and not before_cell["infeasible"], before_cell
+        assert before_cell["attempts"], "Resume validation must execute a real attempt."
         assert not target_dir.exists() and not after_dir.exists()
         preserved = _fingerprints(before_dir)
         snapshot = _fingerprints(output)

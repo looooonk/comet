@@ -77,7 +77,7 @@ def live_world():
 def test_live_mutation_counters_survive_checkpoint_and_offline_load(
     live_world, tmp_path, mutate, monkeypatch,
 ):
-    from appworld import AppWorld
+    from appworld import AppWorld, evaluator
     from appworld.apps.lib.models.db import CachedDBHandler, ModelHashHandler, get_db_home_path
     from appworld.apps.phone import models as phone
     from appworld.collections.models import ModelCollection, ModelCollectionPair
@@ -147,8 +147,8 @@ print(apis.phone.send_text_message(phone_number=profile['phone_number'],
     (legacy / "reference.json").write_text(json.dumps(reference))
     original_bytes = {path.relative_to(legacy): path.read_bytes()
                       for path in legacy.rglob("*") if path.is_file()}
-    scoring_root = live_world.root / "experiments/outputs/comet-scoring"
-    namespaces = set(scoring_root.glob("*"))
+    scoring_namespaces = []
+    evaluate_task = evaluator.evaluate_task
     observed_changes = []
     changed_model_names = ModelCollectionPair.changed_model_names
 
@@ -157,7 +157,14 @@ print(apis.phone.send_text_message(phone_number=profile['phone_number'],
         observed_changes.append(result.copy())
         return result
 
+    def observe_scoring(*args, **kwargs):
+        namespace = live_world.root / "experiments/outputs" / kwargs["experiment_name"]
+        assert namespace.is_dir()
+        scoring_namespaces.append(namespace)
+        return evaluate_task(*args, **kwargs)
+
     monkeypatch.setattr(ModelCollectionPair, "changed_model_names", observe_changes)
+    monkeypatch.setattr(evaluator, "evaluate_task", observe_scoring)
     outcome = score_environment(legacy)
     assert type(outcome["success"]) is bool
     assert expected in observed_changes
@@ -174,7 +181,8 @@ print(apis.phone.send_text_message(phone_number=profile['phone_number'],
     assert outcome["state_comparison"]["policy"] == audit["policy"]
     assert CachedDBHandler.is_empty()
     assert not ModelHashHandler.data
-    assert set(scoring_root.glob("*")) == namespaces
+    assert len(scoring_namespaces) == 1
+    assert not scoring_namespaces[0].exists()
 
 
 @pytest.mark.appworld
