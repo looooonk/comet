@@ -4311,5 +4311,210 @@
       "sha256": "e576d9c79259c6efaaad2b0672a90275f9b4344a37d4cb4ab4d439d64bda71ea",
       "bytes": 38763
     }
-  ]
+  ],
+  "rkv_selection_diagnostic": {
+    "native_source_revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
+    "native_source_path": "python/minisgl/eviction/r1kv.py",
+    "native_source_sha256": "2ddf3473ddc5150af6aafc02fcaf60651b96270ff0280779962f7ad472c895c8",
+    "native_source_matches_pinned_git_blob": true,
+    "interpretation": "The pinned selector forms pairwise key-similarity matrices and per-pair masks/indices. COMET checks compaction after every sampled step to enforce relative retention. Instrumented whole-pass selection cost grows with history. This is implementation-specific evidence, not proof of an optimized algorithm lower bound or allocator-peak causality.",
+    "retention": 0.5,
+    "points": [
+      {
+        "logical_length": 2048,
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 1.1989150624722242,
+          "median": 1.1975716021843255,
+          "minimum": 1.1949218409135938,
+          "observed": 3,
+          "values": [
+            1.1975716021843255,
+            1.1989150624722242,
+            1.1949218409135938
+          ]
+        },
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.0707794539630413,
+          "median": 0.06983887078240514,
+          "minimum": 0.06948554515838623,
+          "observed": 3,
+          "values": [
+            0.0707794539630413,
+            0.06948554515838623,
+            0.06983887078240514
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 3.4092907030135393,
+          "median": 3.4076214958913624,
+          "minimum": 3.4037758060730994,
+          "observed": 3,
+          "values": [
+            3.4076214958913624,
+            3.4092907030135393,
+            3.4037758060730994
+          ]
+        }
+      },
+      {
+        "logical_length": 4096,
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 3.2486605322919786,
+          "median": 3.248334126546979,
+          "minimum": 3.244837010279298,
+          "observed": 3,
+          "values": [
+            3.244837010279298,
+            3.2486605322919786,
+            3.248334126546979
+          ]
+        },
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.10851317783817649,
+          "median": 0.10602364083752036,
+          "minimum": 0.10481183836236596,
+          "observed": 3,
+          "values": [
+            0.10481183836236596,
+            0.10851317783817649,
+            0.10602364083752036
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 5.9825556627474725,
+          "median": 5.977320178877562,
+          "minimum": 5.973860053811222,
+          "observed": 3,
+          "values": [
+            5.973860053811222,
+            5.9825556627474725,
+            5.977320178877562
+          ]
+        }
+      },
+      {
+        "logical_length": 8192,
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 11.719133242964745,
+          "median": 11.719039843417704,
+          "minimum": 11.714082337915897,
+          "observed": 3,
+          "values": [
+            11.714082337915897,
+            11.719133242964745,
+            11.719039843417704
+          ]
+        },
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.242439485155046,
+          "median": 0.23658446734771132,
+          "minimum": 0.2353312843479216,
+          "observed": 3,
+          "values": [
+            0.23658446734771132,
+            0.2353312843479216,
+            0.242439485155046
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 15.67732550483197,
+          "median": 15.667714057955891,
+          "minimum": 15.666779830120504,
+          "observed": 3,
+          "values": [
+            15.667714057955891,
+            15.666779830120504,
+            15.67732550483197
+          ]
+        }
+      },
+      {
+        "logical_length": 12288,
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 25.321423633489758,
+          "median": 25.31793911382556,
+          "minimum": 25.314031679183245,
+          "observed": 3,
+          "values": [
+            25.31793911382556,
+            25.321423633489758,
+            25.314031679183245
+          ]
+        },
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.3585030119866133,
+          "median": 0.3511241730302572,
+          "minimum": 0.2838153503835201,
+          "observed": 3,
+          "values": [
+            0.2838153503835201,
+            0.3585030119866133,
+            0.3511241730302572
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 30.527643366716802,
+          "median": 30.522350081708282,
+          "minimum": 30.447529275901616,
+          "observed": 3,
+          "values": [
+            30.447529275901616,
+            30.527643366716802,
+            30.522350081708282
+          ]
+        }
+      },
+      {
+        "logical_length": 16384,
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 43.27488694433123,
+          "median": 43.27311888663098,
+          "minimum": 43.27172725275159,
+          "observed": 3,
+          "values": [
+            43.27311888663098,
+            43.27172725275159,
+            43.27488694433123
+          ]
+        },
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.37721715960651636,
+          "median": 0.3748441548086703,
+          "minimum": 0.3582298820838332,
+          "observed": 3,
+          "values": [
+            0.37721715960651636,
+            0.3748441548086703,
+            0.3582298820838332
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 49.766843180172145,
+          "median": 49.765050497837365,
+          "minimum": 49.743343395181,
+          "observed": 3,
+          "values": [
+            49.766843180172145,
+            49.765050497837365,
+            49.743343395181
+          ]
+        }
+      }
+    ]
+  }
 }

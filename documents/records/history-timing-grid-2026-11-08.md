@@ -85,6 +85,19 @@ prefix-plus-continuation replay. They are nested inside inference, not per-token
 rates or additional costs to add again. Instrumented throughput never substitutes
 for the ordinary measurement.
 
+At 50% retention, median R-KV selection time grows from 1.198 seconds at 2k to
+3.248, 11.719, 25.318 and 43.273 seconds at the subsequent lengths. The complete
+instrumented passes take 3.408, 5.977, 15.668, 30.522 and 49.765 seconds. These
+measurements locate most of the long-history cost in selection. The pinned
+[R-KV selector](https://github.com/LiuTaowen-Tony/kv-management-minisgl/blob/254c57bc84e4a7895159ba1062bd46c83626f511/python/minisgl/eviction/r1kv.py)
+forms pairwise key-similarity matrices and per-pair masks/indices, with head
+chunking to bound intermediate storage. COMET checks compaction after every
+sampled step to enforce the declared relative-retention budget. The inspected
+selector is byte-identical to the pinned upstream file; its identity and raw
+selection measurements are in the evidence record. This supports an
+implementation-specific cost explanation, not a lower bound for optimized
+R-KV or an explanation of the non-monotone allocator peaks.
+
 All runs used immutable engine source `312691d`, configuration commit `94bd8b0`,
 the same pinned Qwen3-8B BF16 model and runtime, A6000 hardware, a 40 GiB cap,
 32k context, 6 GiB workspace reserve, 256-token prefill chunks and six-thread
