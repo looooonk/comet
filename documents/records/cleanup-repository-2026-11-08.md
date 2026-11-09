@@ -45,6 +45,16 @@ The ignored archive and full cleanup inventories are retained as portable artifa
 groups `legacy-20261108` and `cleanup-20261108`. Extract only needed evidence;
 do not recreate the old workspace wholesale.
 
+Final Insomnia reconciliation left only the protected AppWorld benchmark root;
+its generated outputs are empty. The two non-overlapping removal scopes total
+93,999,575,935 logical bytes (about 94.0 GB), not a measured free-space increase.
+Ten environments, nine checkouts, old 8B/4B weights and all owned generated caches
+are gone. [Runtime/cloud details](cleanup-resources-2026-11-08.md) distinguish
+provider-retained deleted cloud objects from active resources. A verified 1.87 MB
+supplement preserves 678 older unique result files found during the last storage
+audit; its identity is in the Insomnia record. New model work needs a fresh
+checkout and runtime, not a resume of the deleted installations.
+
 ## Verification and handoff
 
 The managed CPU suite passed **331 tests**, with one unavailable Torch-module

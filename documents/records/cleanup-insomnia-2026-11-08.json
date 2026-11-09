@@ -1,494 +1,69 @@
 {
-  "schema_version": 1,
-  "record_id": "cleanup-insomnia-2026-11-08",
-  "reason": "User ended the COMET experiment effort and requested all runs stopped and disposable artifacts removed.",
-  "scope": "Cancellation of the incomplete broader 4B pilot and removal of its raw outputs, redundant task staging and local source bundles, and obsolete synthetic validation binaries. Runtime/model-cache cleanup and GCP are recorded separately.",
+  "schema_version": 2,
+  "status": "complete",
+  "scope": "User-requested stop and aggressive cleanup of COMET-owned Insomnia storage. Resource/model removal is recorded separately.",
   "cancelled_job": {
     "job_id": "13840259",
-    "artifact_id": "baseline-broad-qwen4b-instruct-20261108-13840259",
-    "scheduler_state": "CANCELLED",
-    "started_at": "2026-11-08T22:02:31-05:00",
-    "cancelled_at": "2026-11-08T22:50:59-05:00",
-    "allocation_elapsed_seconds": 2908,
-    "batch_signal": 15,
-    "hardware": "NVIDIA RTX A6000",
-    "runtime_commit": "fd6ee15be5b98db00ef687d43cc66cc6a8a2cb5c",
-    "model": "Qwen/Qwen3-4B-Instruct-2507",
-    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
-    "config_sha256": "436ee4c3f56518691dd02ae1d4265e0c515bf803b981da35400e8362bd434dbf",
-    "config_digest": "7a29ae2e2ae387ccf186294f0c8d04f39b1ee41229b14060cd1ee207a52ca4bf",
-    "planned_cells": 38,
+    "elapsed_seconds": 2908,
     "terminal_cells": 7,
-    "normally_completed_cells": 3,
+    "normal_completions": 3,
     "budget_timeouts": 4,
     "interrupted_cells": 1,
     "unstarted_cells": 30,
+    "planned_cells": 38,
     "scoring_started": false,
-    "task_success_result": null,
-    "source_and_runtime_unchanged": true,
-    "caveat": "Normal completion is not evaluated task success. The signal interrupted the wrapper before manifest finalization: the manifest still said running and the exit text said 0, but scheduler cancellation and missing all-38/scoring guards are authoritative.",
-    "cells": [
-      {
-        "task_id": "0d8a4ee_1",
-        "seed": 17,
-        "terminal_before_cancellation": true,
-        "saved_status": "completed",
-        "effective_status": "completed",
-        "elapsed_seconds_recorded": 34.86816230788827,
-        "failure_reason": null,
-        "trajectory_summary": {
-          "tool_turns": 8,
-          "raw_tokens": 6116,
-          "action_kind_counts": {
-            "other": 8
-          },
-          "top_repeated_actions": [
-            {
-              "sha256": "ed82fc67d9f37ec9072a2b2d8cba691a2477c681d1923de31d0c80303444fe79",
-              "count": 1,
-              "bytes": 149
-            },
-            {
-              "sha256": "c1992c22a8486a218b61d2d99620c6fce3f1f8630cdd0397a0b7f2236383bb7b",
-              "count": 1,
-              "bytes": 169
-            },
-            {
-              "sha256": "0a22d31567fd5aa123dcee15a1e3d71e9bd6e1af53c9683fe4f5695e41113f49",
-              "count": 1,
-              "bytes": 328
-            }
-          ]
-        }
-      },
-      {
-        "task_id": "0d8a4ee_1",
-        "seed": 18,
-        "terminal_before_cancellation": true,
-        "saved_status": "completed",
-        "effective_status": "completed",
-        "elapsed_seconds_recorded": 14.098110704217106,
-        "failure_reason": null,
-        "trajectory_summary": {
-          "tool_turns": 7,
-          "raw_tokens": 5011,
-          "action_kind_counts": {
-            "other": 7
-          },
-          "top_repeated_actions": [
-            {
-              "sha256": "ff4a9b07b3b770fbbf9e64943097651ebfd89a8714343d90414597cd69bb889b",
-              "count": 1,
-              "bytes": 149
-            },
-            {
-              "sha256": "1a3002ff8f25aa17b172027c8009e86bd5d4718436d7fbdcce0f79a4dcd9c3a2",
-              "count": 1,
-              "bytes": 169
-            },
-            {
-              "sha256": "aa9fd5fa7497e9ae06cc0cf986bcadc5b5cd96333bc29ea80fd62d2c58e1a96c",
-              "count": 1,
-              "bytes": 372
-            }
-          ]
-        }
-      },
-      {
-        "task_id": "23cf851_1",
-        "seed": 17,
-        "terminal_before_cancellation": true,
-        "saved_status": "timeout",
-        "effective_status": "timeout",
-        "elapsed_seconds_recorded": 603.7824950800277,
-        "failure_reason": "Budget expired during trajectory_save",
-        "trajectory_summary": {
-          "tool_turns": 194,
-          "raw_tokens": 28288,
-          "action_kind_counts": {
-            "other": 9,
-            "empty": 185
-          },
-          "top_repeated_actions": [
-            {
-              "sha256": "3048b40c6d07628a520952bc69c40458161f8d73db32280fd27e22a09334deb1",
-              "count": 183,
-              "bytes": 518
-            },
-            {
-              "sha256": "a9a3e243a35d4b6ed7b2d26bf9291a74b54380318358c24d84d031948e954c4a",
-              "count": 1,
-              "bytes": 168
-            },
-            {
-              "sha256": "850633b2d1ff4b3ada61e690e5a4b576691bbb0befe94cc5693c861a5c551574",
-              "count": 1,
-              "bytes": 227
-            }
-          ]
-        }
-      },
-      {
-        "task_id": "23cf851_1",
-        "seed": 18,
-        "terminal_before_cancellation": true,
-        "saved_status": "timeout",
-        "effective_status": "timeout",
-        "elapsed_seconds_recorded": 601.9048354891129,
-        "failure_reason": "Budget expired during tool",
-        "trajectory_summary": {
-          "tool_turns": 256,
-          "raw_tokens": 13046,
-          "action_kind_counts": {
-            "other": 5,
-            "literal_only": 251
-          },
-          "top_repeated_actions": [
-            {
-              "sha256": "dc937b59892604f5a86ac96936cd7ff09e25f18ae6b758e8014a24c7fa039e91",
-              "count": 249,
-              "bytes": 4
-            },
-            {
-              "sha256": "a9a3e243a35d4b6ed7b2d26bf9291a74b54380318358c24d84d031948e954c4a",
-              "count": 1,
-              "bytes": 168
-            },
-            {
-              "sha256": "719219da56b7f9da7f67897b2027adbb65633c9cedee80db2c233e8738665780",
-              "count": 1,
-              "bytes": 219
-            }
-          ]
-        }
-      },
-      {
-        "task_id": "37a8675_1",
-        "seed": 17,
-        "terminal_before_cancellation": true,
-        "saved_status": "completed",
-        "effective_status": "completed",
-        "elapsed_seconds_recorded": 39.225518700666726,
-        "failure_reason": null,
-        "trajectory_summary": {
-          "tool_turns": 11,
-          "raw_tokens": 7617,
-          "action_kind_counts": {
-            "other": 11
-          },
-          "top_repeated_actions": [
-            {
-              "sha256": "b56dc5034dca3decabf350af9f9b61cded723d6622318153c7a4d965a0e411ef",
-              "count": 1,
-              "bytes": 143
-            },
-            {
-              "sha256": "6bb2a113421fc7d18577e9e72d4d62e86254f511c26375e29e18e40f740ff9a2",
-              "count": 1,
-              "bytes": 191
-            },
-            {
-              "sha256": "ea29ae376198ee63689dfb7ece1eff966a896ee662d0533139ee752c41e8afd1",
-              "count": 1,
-              "bytes": 137
-            }
-          ]
-        }
-      },
-      {
-        "task_id": "37a8675_1",
-        "seed": 18,
-        "terminal_before_cancellation": true,
-        "saved_status": "timeout",
-        "effective_status": "timeout",
-        "elapsed_seconds_recorded": 603.2622116967104,
-        "failure_reason": "Budget expired during trajectory_save",
-        "trajectory_summary": {
-          "tool_turns": 632,
-          "raw_tokens": 25089,
-          "action_kind_counts": {
-            "other": 21,
-            "literal_only": 611
-          },
-          "top_repeated_actions": [
-            {
-              "sha256": "68e7a69974a641064a6a5ae8b1a00997939a325ec585a49e9fe82b386a21726a",
-              "count": 610,
-              "bytes": 9
-            },
-            {
-              "sha256": "b56dc5034dca3decabf350af9f9b61cded723d6622318153c7a4d965a0e411ef",
-              "count": 1,
-              "bytes": 143
-            },
-            {
-              "sha256": "6bb2a113421fc7d18577e9e72d4d62e86254f511c26375e29e18e40f740ff9a2",
-              "count": 1,
-              "bytes": 191
-            }
-          ]
-        }
-      },
-      {
-        "task_id": "383cbac_1",
-        "seed": 17,
-        "terminal_before_cancellation": true,
-        "saved_status": "timeout",
-        "effective_status": "timeout",
-        "elapsed_seconds_recorded": 601.7829982768744,
-        "failure_reason": "Budget expired during trajectory_save",
-        "trajectory_summary": {
-          "tool_turns": 437,
-          "raw_tokens": 18612,
-          "action_kind_counts": {
-            "other": 11,
-            "literal_only": 426
-          },
-          "top_repeated_actions": [
-            {
-              "sha256": "aea92132c4cbeb263e6ac2bf6c183b5d81737f179f21efdc5863739672f0f470",
-              "count": 424,
-              "bytes": 2
-            },
-            {
-              "sha256": "ae9eacb7a35fe07d16b393f370d4613c52a8727172fc22be3e012c4c59315470",
-              "count": 1,
-              "bytes": 158
-            },
-            {
-              "sha256": "fa467ae1f23f0abfd4d82e82724f1c7e10f6b39597fb40e418d9da9ef348cf25",
-              "count": 1,
-              "bytes": 207
-            }
-          ]
-        }
-      },
-      {
-        "task_id": "383cbac_1",
-        "seed": 18,
-        "terminal_before_cancellation": false,
-        "saved_status": "running",
-        "effective_status": "interrupted_by_user_cancellation",
-        "elapsed_seconds_recorded": 0.0,
-        "failure_reason": null,
-        "trajectory_summary": {
-          "tool_turns": 91,
-          "raw_tokens": 19179,
-          "action_kind_counts": {
-            "other": 9,
-            "empty": 82
-          },
-          "top_repeated_actions": [
-            {
-              "sha256": "37685c99d371513f7ff1cd5434bffd7691a3769266fc9d1780f8610f0a7cd61f",
-              "count": 13,
-              "bytes": 436
-            },
-            {
-              "sha256": "fe663af69fb1a28027df4f418e0f1210fdf5583cf82fc4c1079a8aa307a56407",
-              "count": 11,
-              "bytes": 476
-            },
-            {
-              "sha256": "77188fb22472853c1419fa7b18a4345a3670ea5dc4856eaafa723a82aa498a6d",
-              "count": 7,
-              "bytes": 454
-            }
-          ]
-        }
-      }
-    ]
+    "task_success_result": null
   },
-  "deletions": [
-    {
-      "artifact": "baseline-broad-qwen4b-instruct-20261108-13840259",
-      "kind": "remote incomplete experiment output",
-      "files": 121,
-      "logical_bytes": 2648816,
-      "observed_allocated_bytes": 2913280,
-      "verified_absent": true,
-      "retained": "Compact provenance, complete file hash inventory, cell statuses/timings/metrics, and ordinary loop summaries; no raw trajectories."
-    },
-    {
-      "artifact": "task launch staging, excluding separately owned action-validation staging",
-      "kind": "remote redundant transport inputs",
-      "files": 147,
-      "logical_bytes": 2306720,
-      "observed_file_allocated_bytes": 3104768,
-      "verification": "All file owners and hashes rechecked with an empty scheduler queue. 137 files had identical local copies; eight additional source bundles mapped to preserved Git commits; two small wrappers were retained as compact command provenance."
-    },
-    {
-      "artifact": "local incomplete broad-pilot prefixes and expanded trace audits",
-      "kind": "local incomplete output",
-      "files": 4,
-      "logical_bytes": 804371,
-      "verification": "Original hashes retained; replaced by compact ordinary-action loop summary."
-    },
-    {
-      "artifact": "obsolete synthetic validation checkpoints and logits",
-      "kind": "remote validation binaries",
-      "files": 127,
-      "logical_bytes": 2869779858,
-      "observed_allocated_bytes": 2870790144,
-      "remaining_tensor_files": [],
-      "verification": "Full portable file inventory retains paths, sizes and SHA256. Reused 101 existing checksums only where file content/inode timestamps preceded the checksum record; streamed fresh hashes for 26 remaining files. Rechecked size, modification/change timestamps and checksum-record identity immediately before deletion. Compact measurements, logs, identities and scientific task outputs were preserved."
-    },
-    {
-      "artifact": "redundant local source bundles",
-      "kind": "local transport inputs",
-      "files": 3,
-      "logical_bytes": 331212,
-      "verification": "Every bundle head was verified as a commit in the root repository before deletion; file hashes and heads retained. Action-validation paths were excluded."
-    }
-  ],
-  "preserved_inventory": [
-    {
-      "artifact_class": "completed run outputs",
-      "allocated_bytes_before_cleanup": 927216128,
-      "decision": "Preserved all except the canceled broad run explicitly listed above."
-    },
-    {
-      "artifact_class": "compact diagnostic validation evidence",
-      "decision": "Compact measurements, logs, identities and per-file checksums preserved; obsolete synthetic checkpoint/logit binaries removed as separately inventoried.",
-      "allocated_bytes_before_binary_cleanup": 3358333952
-    },
-    {
-      "artifact_class": "task Hugging Face model cache",
-      "allocated_bytes_observed": 24460264448,
-      "decision": "Untouched by this cleanup scope. No partial/incomplete download fragments found. Separately authorized removal of the exclusively owned 4B snapshot is covered by the resource-cleanup owner; shared model caches remain preserved."
-    },
-    {
-      "artifact_class": "shared managed-package cache",
-      "allocated_bytes_observed": 9354406912,
-      "decision": "Preserved; managed environments may share its files."
-    },
-    {
-      "artifact_class": "AppWorld dataset/runtime data",
-      "allocated_bytes_observed": null,
-      "decision": "Preserved. A bounded 60-second size inventory did not finish; no deletion inferred from that timeout."
-    },
-    {
-      "artifact_class": "historical checkouts and managed environments",
-      "decision": "Handled in the separate resource-cleanup record; untouched by this cleanup scope."
-    }
-  ],
-  "verification": {
-    "scheduler_queue_empty_after": true,
-    "cancellation_terminal": true,
-    "no_new_jobs_submitted": true,
-    "no_completed_scientific_output_deleted": true,
-    "no_other_users_data_touched": true,
-    "local_watcher_ended": true,
-    "no_model_cache_deleted_by_this_scope": true,
-    "obsolete_validation_tensor_files_remaining": 0
+  "removed_by_this_scope": {
+    "remote_logical_bytes": 13692356829,
+    "local_logical_bytes": 1135583,
+    "categories": [
+      "canceled incomplete pilot and local raw prefixes",
+      "redundant launch inputs and local Git bundles",
+      "obsolete synthetic checkpoint/logit binaries",
+      "archived run/validation copies and old logs",
+      "generated AppWorld working outputs",
+      "exclusive package, compile and test caches"
+    ],
+    "generated_cache_files": 44916,
+    "generated_cache_logical_bytes": 9380405014,
+    "remaining_output_files_removed": 6931,
+    "remaining_output_logical_bytes": 1428789160,
+    "generated_appworld_output_files": 5749,
+    "generated_appworld_output_logical_bytes": 8427261,
+    "extra_obsolete_binaries_in_output_tree": 24
   },
-  "accounting_note": "Logical and allocated sizes describe observed files, not a claim about physical quota reclaimed; shared extents and concurrent authorized cleanup can change free-space totals.",
-  "evidence": [
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "broad-retained-provenance.json",
-      "bytes": 119324,
-      "sha256": "a75dc05064658c8e2e6ad480f013e3e8fa8e96a41c9e0de290adb3969fb646af"
+  "preservation": {
+    "main_archive": {
+      "artifact": "legacy-20261108.tar.gz",
+      "sha256": "c1b897ae83bf6f3fe19f3e9445f593b1226f2b67cac608b285b97eb28d226e4e"
     },
-    {
+    "verified_supplement": {
       "artifact_group": "cleanup-20261108/insomnia",
-      "path": "bundle-source-preservation.json",
-      "bytes": 923,
-      "sha256": "b84a036c69d01f4e1caba3d1da1020c58e7916679f024a5f26c69e489fa8d2d6"
+      "path": "remote-evidence-supplement-20261108.tar.gz",
+      "bytes": 1871567,
+      "sha256": "2548853aaead8b1d4cd5d1b6e14ef586b13895ccdcab02d3d4b048b0bcf0fccd",
+      "verified_files": 678,
+      "uncompressed_bytes": 29753309
     },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "cancellation-accounting.txt",
-      "bytes": 733,
-      "sha256": "daf215153b5428c1ba2ff1d2c71d62ccf5d4372b775bcbb210a0385ff68c1410"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "compact-staging-command-provenance.json",
-      "bytes": 1774,
-      "sha256": "4072b977f29dc1f140c34c00a543c852269f9bb25ef826db956e15bdc4dd7e24"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "final-scheduler-accounting.txt",
-      "bytes": 389,
-      "sha256": "c91aba0d64cc8ab48627d37ef9a746d38254d9bf6ace6d3665887bcd040493db"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "local-bundle-candidates.json",
-      "bytes": 1187,
-      "sha256": "7611ab526566bd1e40ac40318279a32405544d1004c8478a2d4468e8d31e4406"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "local-bundle-deletions.json",
-      "bytes": 1501,
-      "sha256": "2013250a891e2bad1cc1a0523a33d5fb3f9de6c43bdfc8c4a0b96998cd9c409f"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "local-deletions.json",
-      "bytes": 1299,
-      "sha256": "4d19e86b013884f2dad17939eed67d0cb4fba85202c507e9682752be152d38fd"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "ordinary-action-loop-summary.json",
-      "bytes": 1246,
-      "sha256": "82e9b089e89abe0bbfd6aefc42a14380e240476667a0e7f0df01c93f29b51cc2"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "remote-broad-deletion.json",
-      "bytes": 398,
-      "sha256": "d3de6ccfe16d2b88d893723caa9ecfa9bf983eb056775d0632f94ebc91c4ea75"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "remote-staging-deletion.json",
-      "bytes": 909,
-      "sha256": "5cb251d7fa3e115d97d867facead720d073e91208ef3d0e0ebb8d28ffea74f14"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "remote-staging-inventory.json",
-      "bytes": 36603,
-      "sha256": "ca149ab7971f808854433b4ab7e413b002c4483184d72b5443db2f5c31492a8f"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "remote-storage-inventory.json",
-      "bytes": 3353,
-      "sha256": "1ce246990a1ac188999d20834d6ef83287d22ec798df92c8236e3fc606303974"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "remote-validation-binary-candidates.json",
-      "bytes": 29197,
-      "sha256": "2037a088157f0e073070dc958492f5649be277135bce5d64ab9be9396bb33d42"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "remote-validation-binary-deletion.json",
-      "bytes": 299,
-      "sha256": "ddf4938962cf8acab3cb90c2d6b30bcd262d1050ad0826168b768869c41d65bf"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "remote-validation-binary-inventory.json",
-      "bytes": 75530,
-      "sha256": "430ba47da400885b16bcf3bcb7dcc67b2cf4edbf6fa1bce2f54080de485117d2"
-    },
-    {
-      "artifact_group": "cleanup-20261108/insomnia",
-      "path": "staging-redundancy.json",
-      "bytes": 112024,
-      "sha256": "b63343bfeb8ad5fa8fd7e36cd89216d74eedf8ad4a6aeae515cbfff7022b3087"
-    }
-  ],
-  "totals_by_storage_location": {
-    "remote_logical_bytes_deleted": 2874735394,
-    "local_logical_bytes_deleted": 1135583
-  }
+    "notes": "Completed useful outcomes remain in the two verified archives. Obsolete binaries and canceled working copies retain compact measurements, identities and hashes only; no canceled raw trajectories were reintroduced."
+  },
+  "final_verification": {
+    "remaining_base_children": [
+      "appworld"
+    ],
+    "canonical_appworld_data_present": true,
+    "generated_appworld_outputs_empty": true,
+    "owned_runs_validation_jobs_logs_caches_environments_checkouts_absent": true,
+    "scheduler_queue_empty": true,
+    "temporary_remote_cleanup_journals_removed": true,
+    "remaining_size_measurement": "The bounded 60-second size walk timed out; no space-reclamation claim is inferred from it. Explicit scope absence and protected data presence were verified.",
+    "unrelated_projects_and_external_shared_14b_untouched": true
+  },
+  "evidence": {
+    "artifact_group": "cleanup-20261108/insomnia",
+    "index": "cleanup-evidence-index.json",
+    "sha256": "fd99cf3cf4bfd7358d5770b9a0a433d1265f267f231bbc0c79de7f231c831c40"
+  },
+  "accounting": "Byte totals are logical file sizes, not measured physical quota reclaimed. They exclude the other agent's runtime/model totals and must not be added to overlapping inventory counts."
 }
