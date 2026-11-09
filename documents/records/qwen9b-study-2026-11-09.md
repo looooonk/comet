@@ -462,3 +462,23 @@ uses the launcher's normal shared-source staging path, retaining the successful
 qualification rather than repeating it. Fine-grid job `13841503` started;
 diagnostic job `13841504` is queued with an estimated 07:58 ET start, within
 the extended deadline. Both use source `47596b5` and separate output roots.
+
+The diagnostic started at 07:47 ET, earlier than the queue estimate. Its three
+eligible source checkpoints were prepared after two tools, with zero prior
+rebuilds; preparation costs were 5.31, 6.06 and 6.85 seconds. Each cost remains
+charged to every corresponding branch. Insomnia authentication stopped responding
+again around 08:21 ET; already running jobs continue independently.
+
+Before final L4 scoring, a conditional Blackwell replication is declared in
+`final-candidate-blackwell-v1.json`: the first three original test families,
+all 29 core conditions, 120 seconds, N=2, seed 17 and the qualified 24 GiB cap
+(87 cells). The prompt, context and policies are unchanged. A separate repetition
+of the same two-family dev confirmation is declared in
+`dev-confirmation-blackwell-v1.json`. Freeze requires completed/scored Blackwell
+train and dev runs, mixed train outcomes and at least one dev success. No test
+outcome changes these choices, and cohorts cannot be pooled across hardware.
+The optional replication must start by **10:20 ET** in a bounded 3h20 allocation,
+leaving time for analysis and cleanup before 14:00 ET. If access or queue timing
+prevents this, record it as not executed rather than delaying the existing study
+or changing its frozen settings. Maximum task execution is 174 GPU-minutes;
+the dev check adds at most 28 GPU-minutes. No additional cloud spending is planned.
