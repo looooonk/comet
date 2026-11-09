@@ -219,3 +219,28 @@ The corrected measurement run is `gpu-20261109-071607-51dbc9`, source `ebd58fb`,
 with the same 21 GiB cap and four-task baseline. Four completed short failures
 now retain $3 each; the new $5 reservation and historical $10 leave $13
 uncommitted under the $40 ceiling. All four prior compute cleanups are verified.
+
+
+The corrected L4 run passed all 17 focused checks, including full-cache and
+all three compressed 8,192-token capacity checks. Reference cosine was 0.99898,
+top-10 overlap 0.9 and the greedy answer was `7391`. Measured capacity peaks
+were 20.05 GiB full, 18.58 GiB StreamingLLM/AgentKV and 20.01 GiB R-KV, below
+the unchanged 21 GiB cap. This qualifies the intended synthetic state/context
+range on the L4; task competence is a separate question.
+
+The first four-task full-cache pilot scored **0/4**. All four attempts stopped
+after four consecutive API errors, at 67.8-130.6 seconds. Three tasks repeatedly
+imported app modules instead of using the preloaded `apis` object. The phone
+task tried HTTP requests, an invented client, wrong login arguments and guessed
+credentials. Resets took about one second; decoding was about 13.6 tokens/s.
+There were no timeout, context-limit or memory failures. See the
+[portable baseline record](qwen9b-l4-baseline.json). These failures remain in
+the evidence and do not establish a compaction effect.
+
+`train-protocol-l4-v3.json` declares a matched prompt-only correction on the same
+four train tasks: explicit preloaded-object examples, a documentation-first
+initial action and authentication from observed account records. The examples
+follow the pinned [AppWorld usage guide](https://github.com/StonyBrookNLP/appworld/blob/42b5bcf3cd334fee33f0c37c02070a9f5807add5/README.md).
+Sampling, context, task/seed selection, budget and cap remain unchanged. No
+answers, evaluator feedback or test outcomes inform the agent. This is a new
+pilot version, not a relabeling of the failed baseline.
