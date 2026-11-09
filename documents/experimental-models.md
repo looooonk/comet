@@ -4,7 +4,7 @@ The user ended the effort to make the legacy Qwen3 4B/8B/14B pilots the main
 baseline. The next implementation phase will investigate newer Qwen models for
 a useful AppWorld task-success regime and the central
 [compaction-aggressivity study](research-direction.md). The former 14B ceiling
-is superseded. No replacement model or serving backend is selected yet.
+is superseded. The first implementation candidate is Qwen3.5-9B with a shared Transformers hybrid backend; see the [verified identities and state contract](hybrid-backend.md). Live qualification remains required.
 
 ## Candidate list
 
@@ -15,7 +15,6 @@ If a name has no official release, record that fact rather than inventing a
 repository or substituting another model silently.
 
 - Qwen3.5-9B
-- Qwen3.5-14B
 - Qwen3.5-27B
 - Qwen3.5-35B-A3B
 - Qwen3.6-35B-A3B

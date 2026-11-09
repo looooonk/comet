@@ -12,7 +12,7 @@ def identity(repo: Path, profile: str) -> dict:
     files = ["uv.lock"] if profile == "cpu" else [
         f"infra/requirements/{profile}.lock", "dependencies.lock.json",
     ]
-    if profile == "gpu":
+    if profile in {"gpu", "hybrid"}:
         files.append("patches/minisgl-comet.patch")
     files.append("pyproject.toml")
     return {"schema_version": 1, "checkout": str(repo.resolve()), "profile": profile,
@@ -52,7 +52,7 @@ def main():
     parser.add_argument("action", choices=("prepare", "record", "verify"))
     parser.add_argument("repo", type=Path)
     parser.add_argument("environment", type=Path)
-    parser.add_argument("profile", choices=("cpu", "appworld", "gpu"))
+    parser.add_argument("profile", choices=("cpu", "appworld", "gpu", "hybrid"))
     args = parser.parse_args()
     manage(args.action, args.repo, args.environment, args.profile)
 

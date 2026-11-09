@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-profile=${1:?Usage: run_checks.sh cpu|appworld|gpu [--cpu-only]}
-case "$profile" in cpu|appworld|gpu) ;; *) exit 2 ;; esac
+profile=${1:?Usage: run_checks.sh cpu|appworld|gpu|hybrid [--cpu-only]}
+case "$profile" in cpu|appworld|gpu|hybrid) ;; *) exit 2 ;; esac
 cpu_only=false
 if [[ $# -gt 1 ]]; then
     if [[ $# != 2 || "$profile" != gpu || "$2" != --cpu-only ]]; then
@@ -19,7 +19,7 @@ if [[ "$cpu_only" == true ]]; then
     export CUDA_VISIBLE_DEVICES=''
     unset COMET_RUN_GPU_TESTS COMET_GPU_EVIDENCE COMET_GPU_MEMORY_EVIDENCE
     unset COMET_GPU_CAPACITY_EVIDENCE COMET_GPU_SAMPLING_EVIDENCE
-elif [[ "$profile" == gpu ]]; then
+elif [[ "$profile" == gpu || "$profile" == hybrid ]]; then
     : "${COMET_MODEL_PATH:?Set COMET_MODEL_PATH to the pinned model snapshot}"
     export COMET_RUN_GPU_TESTS=1
     export COMET_GPU_EVIDENCE="$COMET_CHECK_OUTPUT/gpu.json"
@@ -61,7 +61,7 @@ case "$profile" in
         selection='not gpu and not appworld'
         ;;
     appworld) selection='appworld and not gpu' ;;
-    gpu)
+    gpu|hybrid)
         if [[ "$cpu_only" == true ]]; then
             if command -v ruff >/dev/null 2>&1; then
                 ruff check .
@@ -73,7 +73,13 @@ case "$profile" in
             selection='not gpu and not appworld'
         else
             nvidia-smi -q > "$COMET_CHECK_OUTPUT/gpu-device.txt"
-            selection=''
+            if [[ "$profile" == hybrid ]]; then
+                export COMET_RUN_HYBRID_TESTS=1
+                unset COMET_RUN_GPU_TESTS
+                selection=''
+            else
+                selection=''
+            fi
         fi
         ;;
 esac

@@ -7,7 +7,7 @@ set -euo pipefail
 : "${COMET_RUN:?Set COMET_RUN to a unique output directory}"
 : "${COMET_MODEL:?Set COMET_MODEL to the pinned local model snapshot}"
 
-source "$COMET_REPO/scripts/activate_runtime.sh" gpu
+source "$COMET_REPO/scripts/activate_runtime.sh" "${COMET_RUNTIME_PROFILE:-gpu}"
 cd "$COMET_REPO"
 launch_dir="$COMET_RUN/launch/$(date -u +%Y%m%dT%H%M%SZ)-${SLURM_JOB_ID:-$$}"
 mkdir -p "$launch_dir"

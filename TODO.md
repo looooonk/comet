@@ -1,0 +1,140 @@
+# COMET: new Qwen implementation and compaction study
+
+The previous execution goal has been cleared. Old model runs are stopped and
+superseded plans are archived in Git. Do not resume the legacy 4B/8B/14B pilots.
+This is the starting plan for the next implementation run, not an instruction to
+launch infrastructure during cleanup. Insomnia retains only the protected
+AppWorld benchmark root; old environments, checkouts, model weights and generated
+caches are removed. Build a fresh runtime for the selected new model.
+
+## Central result
+
+Produce a clean, fine-grained **compaction aggressivity versus test-time task
+success rate** plot that tells the reader something about accuracy, memory and
+compute tradeoffs. A sweep that is entirely 0% or entirely 100% is insufficient
+as the intended deliverable. Find a useful intermediate regime on train/dev;
+retain and report flat outcomes rather than hiding or manufacturing differences.
+
+- X: percentage of eligible KV entries removed, increasing with aggressivity.
+  Candidate grid: **0, 10, 20, 30, 40, 50, 60, 70, 75%** removal. Refine or extend
+  around a transition on dev before freezing. Keep full-cache and the original
+  80%, 50% and 25% retention anchors.
+- Y: AppWorld task success, with separate single-attempt and budget-matched
+  oracle best-of-N views. Oracle is a perfect-selection upper bound.
+- Compare the required methods with readable recovery/budget panels, paired
+  task-bootstrap uncertainty, actual sample counts and all failures retained.
+- Support the main figure with runtime, actual attempts, occupied KV, total peak
+  VRAM, decoding throughput, estimated FLOPs and recovery overhead.
+
+Canonical committed plan: [research direction](documents/research-direction.md).
+
+## 1. Select the new model and infrastructure
+
+Candidate names supplied by the user:
+
+- Qwen3.5-9B
+- Qwen3.5-27B
+- Qwen3.5-35B-A3B
+- Qwen3.6-35B-A3B
+- Qwen3.8-27B
+
+The former 14B ceiling is superseded. These names have not been verified as
+available official releases during cleanup; no replacement is selected.
+
+- [x] Verify official repositories, revisions, licenses, weight formats, reasoning
+  modes and architecture. See `documents/hybrid-backend.md`; the user removed
+  the unavailable 14B candidate.
+- [x] Select a practical model and shared serving backend for the required
+  compaction/recovery comparisons. Do not masquerade a new architecture as Qwen3.
+- [x] Define hybrid/recurrent/expert state, checkpoint and full-history recovery
+  semantics. Specify exactly what the retention denominator includes and which
+  states remain fixed; distinguish active parameters from resident model memory.
+- [x] Review GPU fit, runtime and cost under the user's autonomous execution
+  authorization. Prioritize 9B on available 48 GB Insomnia GPUs, monitor queues,
+  and retain the $40 cumulative GCP ceiling. See `documents/hybrid-backend.md`.
+- [ ] Pin dependencies/assets and implement one shared integration rather than
+  method-specific runners. Preserve AppWorld and offline scoring unless an
+  explicit research decision changes them.
+
+The existing GCP ceiling remains **$40 total**. Two completed cloud jobs have a
+combined estimate of about **$3.54**, not a billing measurement; **$10 remains
+reserved pending reconciliation**, leaving $30 uncommitted under the prior ledger.
+No paid resource is currently active. Vast.ai still requires a separate spending
+decision and is a last resort. Cleanup does not authorize new compute.
+
+## 2. Validate the foundation once, at the intended settings
+
+- [ ] Validate model loading, chat/reasoning protocol, sampling and numerical
+  output with an appropriate independent reference; do not inherit legacy
+  numerical exceptions.
+- [ ] Validate persistent state across turns, saved checkpoints and independent
+  branches for all required methods, including every hybrid state type.
+- [ ] Validate one full-history recovery, reapplication of retention, unchanged
+  environment effects, RNG continuity, and transient memory-cap enforcement.
+- [ ] Validate fresh AppWorld attempts and isolated resets, correct saved-state
+  evaluation, interruption/resume accounting and offline-only scorer access.
+- [ ] Run the live check for the retained optional environment-initialization
+  path before enabling it experimentally. User approved one fixed train-world
+  initialization/close measured separately; every experimental reset/tool/
+  checkpoint/rebuild remains charged. CPU checks are not live qualification.
+- [ ] Establish context/output limits and resource headroom that do not obscure
+  the task comparison. Preserve and diagnose infrastructure failures.
+
+Use managed profiles and `scripts/run_checks.sh`. Avoid repeated environment
+copies, large all-in-one jobs and one-off launch frameworks. Use one owned environment per active profile, bound jobs, retain compact
+provenance, and stop when checks fail. Rebuild cleaned caches only as needed.
+
+## 3. Establish an informative baseline and aggressivity sweep
+
+- [ ] Declare a train/dev sample by task-family coverage or a reproducible rule,
+  not by which tasks happened to succeed. Record prior dev exposure.
+- [ ] Establish useful full-cache task success. Inspect ordinary trajectories for
+  task interpretation, API use, pagination and premature completion failures.
+  Larger parameter count alone is not qualification.
+- [ ] Measure reset, tool, inference, compaction and recovery costs to choose
+  granular runtime budgets and attempt limits. Keep one budget per task/seed/
+  condition; never give each attempt a fresh budget.
+- [ ] Run a small matched full-cache/compressed comparison, then the declared
+  fine-grained grid. Keep every measured point, including flat/failed outcomes.
+- [ ] Extend or refine dev settings only as a new declared experiment version.
+  Confirm an informative regime on separate dev coverage before final freezing.
+
+## 4. Recovery and test-time compute
+
+- [ ] Q1: branch from identical saved pre-compaction state and compare never,
+  fixed-tool-count and context/tool-threshold recovery within each method and
+  retention level. Tune thresholds only on train/dev.
+- [ ] Q2: compare full-cache and compressed oracle best-of-N, with/without
+  recovery, under identical wall-clock and peak total-VRAM caps.
+- [ ] Independently rerun granular runtime budgets; do not treat truncation of
+  one long trajectory as a rerun with a shorter budget.
+- [ ] Freeze model, backend, prompts, sampling, context limits, task/split IDs,
+  paired seeds, retention grid, thresholds, N, memory and timing definitions.
+- [ ] Execute fresh-start final evaluation without evaluator feedback online.
+  Preserve paired task structure; retain timeout/OOM/infeasibility outcomes.
+
+## 5. Deliver answers and figures
+
+- [ ] Central aggressivity-versus-task-success figure, single attempt and oracle
+  best-of-N distinguished, with useful dev-selected operating range and paired
+  uncertainty. No fitted or fabricated intermediate measurements.
+- [ ] Supporting memory, latency, throughput, FLOPs, attempts and recovery-cost
+  figures; clearly label occupied KV, reserved pools and total VRAM separately.
+- [ ] Answer Q1 and Q2 with effect sizes, task counts, uncertainty, trigger
+  admissions/refusals and limitations, including genuine negative results.
+- [ ] Export publication-ready PNG/SVG/PDF and machine-readable summaries with
+  versioned configurations and portable artifact identities.
+
+## What to reuse
+
+- Shared runner, AppWorld adapter, repaired offline scoring, budget/resume/state
+  invariants, paired analysis, plotting and managed setup/check launchers.
+- Existing native implementation as a reference, not as proof of support for
+  the new models. Keep unsupported-model checks strict until integration exists.
+- [Compact legacy evidence](documents/records/legacy-results.md): prior baseline
+  failures, verified state checks and the measured five-point inference-cost
+  figures. These are historical, not results for the new Qwen study.
+
+Obsolete configs, plans and run diaries are available at Git commit `55fca50`.
+The completed cleanup and resource records are indexed in
+[documents/records/README.md](documents/records/README.md).

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-profile=${1:?Usage: setup_runtime.sh cpu|appworld|gpu [environment-path]}
-case "$profile" in cpu|appworld|gpu) ;; *) exit 2 ;; esac
+profile=${1:?Usage: setup_runtime.sh cpu|appworld|gpu|hybrid [environment-path]}
+case "$profile" in cpu|appworld|gpu|hybrid) ;; *) exit 2 ;; esac
 repo=$(cd "$(dirname "$0")/.." && pwd)
 runtime_env=${2:-"$repo/.venv-$profile"}
 cd "$repo"
@@ -21,7 +21,7 @@ else
     uv pip install --python "$runtime_env/bin/python" --no-deps -e .
 fi
 
-if [[ "$profile" == gpu ]]; then
+if [[ "$profile" == gpu || "$profile" == hybrid ]]; then
     engine_revision=254c57bc84e4a7895159ba1062bd46c83626f511
     if [[ ! -d vendor/minisgl ]]; then
         mkdir -p vendor
@@ -37,7 +37,12 @@ if [[ "$profile" == gpu ]]; then
         git -C vendor/minisgl apply --check "$patch_file"
         git -C vendor/minisgl apply "$patch_file"
     fi
-    uv pip install --python "$runtime_env/bin/python" --no-deps -e vendor/minisgl
+    if [[ "$profile" == hybrid ]]; then
+        python3 scripts/prepare_selectors.py
+        uv pip install --python "$runtime_env/bin/python" --no-deps -e vendor/agentkv-selectors
+    else
+        uv pip install --python "$runtime_env/bin/python" --no-deps -e vendor/minisgl
+    fi
 fi
 if [[ "$profile" != cpu ]]; then
     "$runtime_env/bin/python" scripts/fetch_appworld_bundles.py

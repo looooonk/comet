@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Source this file before direct runtime commands; launchers use it automatically.
-comet_runtime_profile=${1:?Usage: source scripts/activate_runtime.sh cpu|appworld|gpu}
-case "$comet_runtime_profile" in cpu|appworld|gpu) ;; *) return 2 ;; esac
+comet_runtime_profile=${1:?Usage: source scripts/activate_runtime.sh cpu|appworld|gpu|hybrid}
+case "$comet_runtime_profile" in cpu|appworld|gpu|hybrid) ;; *) return 2 ;; esac
 : "${COMET_REPO:?Set COMET_REPO to the checkout directory}"
 : "${COMET_ENV:?Set COMET_ENV to the matching managed environment}"
 export PATH="$COMET_ENV/bin:$PATH"
