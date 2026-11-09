@@ -9,6 +9,7 @@ def plot_retention_matrix(analysis_path: Path, output: Path, *, title: str = "Re
 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
+    from matplotlib.ticker import MaxNLocator
 
     analysis = json.loads(analysis_path.read_text())
     rows = list(analysis["conditions"].values())
@@ -47,6 +48,10 @@ def plot_retention_matrix(analysis_path: Path, output: Path, *, title: str = "Re
                           and row["condition"]["max_attempts"] == attempts]
             controls = [row for row in rows if row["condition"]["method"] == "full"
                         and row["condition"]["max_attempts"] == attempts]
+            ticks = sorted({100 * row["condition"]["retention"] for row in compressed} | {100})
+            spacing = min(right - left for left, right in zip(ticks, ticks[1:]))
+            offset = min(1, spacing / 5)
+            margin = max(1, (100 - ticks[0]) / 12)
             for column, (metric, label, scale, interval) in enumerate(panels):
                 ax = axes[row_index, column]
                 missing = {}
@@ -60,14 +65,14 @@ def plot_retention_matrix(analysis_path: Path, output: Path, *, title: str = "Re
                     for row in series:
                         estimate = row[metric]
                         x = 100 * row["condition"]["retention"]
-                        plotted_x = x + ({"never": -1, "fixed": 0, "dynamic": 1}[policy]
+                        plotted_x = x + ({"never": -offset, "fixed": 0, "dynamic": offset}[policy]
                                          if multiple_policies else 0)
                         xs.append(plotted_x)
                         ys.append(estimate["value"] * scale if estimate["value"] is not None else float("nan"))
                         if estimate["task_count"] != analysis["task_count"]:
                             missing.setdefault(policy, []).append(f"{x:g}%: {estimate['task_count']}/{analysis['task_count']}")
                         if estimate["value"] is not None:
-                            _interval(ax, plotted_x, estimate, interval, scale, color)
+                            _interval(ax, plotted_x, estimate, interval, scale, color, offset)
                     line, = ax.plot(xs, ys, marker=marker, color=color, linewidth=1.3, label=policy)
                     handles.setdefault(policy, line)
                 for index, control in enumerate(controls):
@@ -78,9 +83,15 @@ def plot_retention_matrix(analysis_path: Path, output: Path, *, title: str = "Re
                     if estimate["value"] is not None:
                         point, = ax.plot([100], [estimate["value"] * scale],
                                          marker="D" if index == 0 else "x", color="#333333", linestyle="none")
-                        _interval(ax, 100, estimate, interval, scale, "#333333")
+                        _interval(ax, 100, estimate, interval, scale, "#333333", offset)
                         handles.setdefault(control_label, point)
-                ax.set(title=label, xlabel="KV retained (%)", xticks=[25, 50, 80, 100], xlim=(18, 107))
+                ax.set(title=label, xlabel="KV retained (%)", xticks=ticks,
+                       xlim=(ticks[0] - margin, 100 + margin))
+                if spacing < 5:
+                    ax.xaxis.set_major_locator(MaxNLocator(nbins=5))
+                    ax.set_xticks(ticks, minor=True)
+                elif len(ticks) > 7:
+                    ax.tick_params(axis="x", labelrotation=45)
                 ax.set_ylim(bottom=-2 if metric == "oracle_success_rate" else 0)
                 if metric == "oracle_success_rate":
                     ax.set_ylim(top=102)
@@ -116,9 +127,9 @@ def plot_retention_matrix(analysis_path: Path, output: Path, *, title: str = "Re
         plt.close(fig)
 
 
-def _interval(ax, x, estimate, interval, scale, color):
+def _interval(ax, x, estimate, interval, scale, color, cap_width):
     bounds = estimate[interval]
     if bounds is not None:
         lower, upper = [value * scale for value in bounds]
         ax.vlines(x, lower, upper, color=color, linewidth=1)
-        ax.hlines([lower, upper], x - 1, x + 1, color=color, linewidth=1)
+        ax.hlines([lower, upper], x - cap_width, x + cap_width, color=color, linewidth=1)

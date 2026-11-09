@@ -13,6 +13,11 @@ intermediate levels require an explicit condition list. The current history
 benchmark keeps its separately declared ten-condition workload. Do not change
 an active run's grid or relabel a sparse grid as a dense one.
 
+Task-retention figures cover every measured fraction. Policy offsets and
+error-bar caps shrink with the closest point spacing. Dense settings use minor
+ticks beneath a readable set of major labels; numerical data retain the exact
+fractions.
+
 Use corrected train/dev pilots to establish a feasible range, then declare the
 next grid before executing it. A candidate supplemental retention grid is
 25%, 30%, 40%, 50%, 60%, 70%, 80% and 90%, with the 100% full-cache control.
