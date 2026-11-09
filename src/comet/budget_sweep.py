@@ -10,7 +10,12 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from statistics import mean
 
-from comet.analysis import _estimate, read_scored_run, reserved_seconds
+from comet.analysis import (
+    _estimate,
+    environment_initialization_summary,
+    read_scored_run,
+    reserved_seconds,
+)
 from comet.artifacts import read_json, write_json
 from comet.comparison import _validated_cells
 from comet.config import digest
@@ -116,6 +121,7 @@ def analyze_budget_sweep(run_dirs, output, *, bootstrap_samples=2000, seed=0):
         sources.append({
             "run_directory": str(directory), "run_id": manifest["run_id"],
             "experiment_id": config["experiment_id"], "budget_seconds": budget,
+            "environment_initialization": environment_initialization_summary(manifest),
             "condition_ids": [condition["id"] for condition in config["conditions"]],
             "config_digest": manifest["config_digest"], "execution_digest": scores["execution_digest"],
             "manifest_sha256": hashlib.sha256((directory / "manifest.json").read_bytes()).hexdigest(),
@@ -155,7 +161,7 @@ def analyze_budget_sweep(run_dirs, output, *, bootstrap_samples=2000, seed=0):
 
 
 def plot_budget_sweep(analysis_path, output, *, title="Success versus independently rerun budget"):
-    from comet.policy_plots import COLORS, NAMES, _groups, _plotting, _save
+    from comet.policy_plots import COLORS, _curve_panels, _plotting, _save
 
     analysis = read_json(Path(analysis_path))
     if analysis.get("kind") != "independent_budget_sweep":
@@ -165,20 +171,8 @@ def plot_budget_sweep(analysis_path, output, *, title="Success versus independen
                   for row in rows]
     if len(set(signatures)) != len(signatures):
         raise ValueError("Ambiguous duplicate budget-sweep conditions")
-    full = {row["condition"]["max_attempts"]: row for row in rows if row["condition"]["method"] == "full"}
-    panels, used = [], set()
-    groups = sorted(_groups(rows), key=lambda item: (item[0][2], list(NAMES).index(item[0][0]), -item[0][1]))
-    for (method, retention, attempts), group in groups:
-        if attempts not in full:
-            raise ValueError("Each compressed budget panel needs a full-cache control with the same attempt limit")
-        panels.append((f"{NAMES[method]} {retention:.0%} | N={attempts}",
-                       [full[attempts]] + [group[policy] for policy in COLORS if policy in group]))
-        used.add(attempts)
-    if len(full) > 1:
-        panels.append(("Full KV attempt limits", [row for _, row in sorted(full.items())]))
-    elif full:
-        panels.extend((f"Full KV | N={attempts}", [row]) for attempts, row in sorted(full.items())
-                      if attempts not in used)
+    _, panels = _curve_panels(
+        rows, missing_control="Each compressed budget panel needs a full-cache control with the same attempt limit")
     if not panels:
         raise ValueError("No supported budget-sweep conditions to plot")
     columns = min(3, len(panels))

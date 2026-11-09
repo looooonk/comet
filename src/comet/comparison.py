@@ -13,7 +13,14 @@ from dataclasses import asdict
 from pathlib import Path
 from statistics import mean
 
-from comet.analysis import _bootstrap, _estimate, analyze_cells, read_scored_run, reserved_seconds
+from comet.analysis import (
+    _bootstrap,
+    _estimate,
+    analyze_cells,
+    environment_initialization_summary,
+    read_scored_run,
+    reserved_seconds,
+)
 from comet.artifacts import read_json, write_json
 from comet.config import Experiment, digest
 from comet.evaluation import _inside
@@ -161,6 +168,7 @@ def compare_protocol_runs(control_run: str | Path, candidate_run: str | Path,
             name: {"run_id": manifest["run_id"], "experiment_id": manifest["config"]["experiment_id"],
                    "run_directory": str(directory), "config_digest": manifest["config_digest"],
                    "execution_digest": scores["execution_digest"],
+                   "environment_initialization": environment_initialization_summary(manifest),
                    "protocol": {field: manifest["config"].get(field) for field in sorted(fields)}}
             for name, directory, (manifest, scores, _) in zip(
                 ("control", "candidate"), directories, loaded, strict=True)

@@ -20,7 +20,7 @@ from comet.runner import Runner
 
 
 def _config():
-    base = Experiment.load(Path(__file__).resolve().parents[1] / "configs/pilot-smoke.json")
+    base = Experiment.load(Path(__file__).resolve().parents[1] / "configs/examples/pilot-smoke.json")
     config = replace(
         base, experiment_id="runner-checkpoint-integration-v1", stage="diagnostic", split="dev",
         task_ids=["0d8a4ee_1"], seeds=[17], budget_seconds=120, max_attempts=1,

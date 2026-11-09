@@ -11,7 +11,7 @@ from comet.evaluation import execution_digest
 
 
 def scored_pair(tmp_path):
-    config = Experiment.load(Path("configs/pilot-sampling-control-qwen8b.json")).to_dict()
+    config = Experiment.load(Path("tests/fixtures/full-cache.json")).to_dict()
     config.update(task_ids=["task1", "task2"], seeds=[17, 18])
     provenance = {"source_hashes": {"runner.py": "same"}, "installed_packages": {"appworld": "same"}}
     paths = []

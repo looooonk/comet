@@ -16,7 +16,7 @@ from comet.evaluation import execution_digest
 
 
 def _run(path, budget, conditions):
-    config = Experiment.load(Path("configs/pilot-sampling-control-qwen8b.json")).to_dict()
+    config = Experiment.load(Path("tests/fixtures/full-cache.json")).to_dict()
     config.update(experiment_id=f"budget-{budget}", task_ids=["task1", "task2", "task3"],
                   seeds=[17, 18], budget_seconds=budget, max_attempts=2, conditions=conditions)
     provenance = {"source_hashes": {"runner.py": "same"}, "installed_packages": {"appworld": "same"}}

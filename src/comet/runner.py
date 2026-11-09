@@ -104,6 +104,7 @@ class Runner:
                     manifest.setdefault("engine", self.engine_metadata)
                     launch["engine"] = self.engine_metadata
                     write_json(self.output / "manifest.json", manifest)
+                    self._warmup_environment(manifest, launch)
                     if self.config.stage == "diagnostic":
                         from comet.diagnostic import prepare_checkpoints
 
@@ -133,6 +134,36 @@ class Runner:
                 except Exception as journal_error:
                     error.add_note(f"Could not preserve launch progress: {journal_error}")
                 raise
+
+    def _warmup_environment(self, manifest: dict, launch: dict) -> None:
+        settings = self.config.environment_warmup
+        if settings is None:
+            return
+        from comet.appworld import validate_tasks
+
+        directory = self.output / "initialization" / f"launch-{len(manifest['launches']) - 1:03d}"
+        record = {
+            "status": "running", "task_id": settings.task_id, "seed": settings.seed,
+            "split": "train", "charged_to_task_budget": False, "tool_calls": 0,
+            "model_observations": 0, "artifact_dir": str(directory.relative_to(self.output)),
+        }
+        launch["environment_initialization"] = record
+        write_json(self.output / "manifest.json", manifest)
+        started = self.clock()
+        try:
+            validate_tasks("train", [settings.task_id])
+            environment = self.environment_factory()
+            try:
+                environment.reset(settings.task_id, settings.seed, directory / "environment")
+            finally:
+                environment.close()
+            record["status"] = "completed"
+        except BaseException as error:
+            record.update(status="failed", failure_reason=f"{type(error).__name__}: {error}")
+            raise
+        finally:
+            record["seconds"] = self.clock() - started
+            write_json(self.output / "manifest.json", manifest)
 
     def _finish_launch(self, manifest: dict, launch: dict) -> dict:
         completed = all(self._done(reference) for reference in manifest["cells"])

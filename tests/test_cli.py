@@ -10,7 +10,7 @@ from comet.config import Experiment, digest
 
 @pytest.fixture
 def freeze_files(tmp_path):
-    pilot = Experiment.load(Path(__file__).parents[1] / "configs/pilot-smoke.json").to_dict()
+    pilot = Experiment.load(Path(__file__).parents[1] / "configs/examples/pilot-smoke.json").to_dict()
     candidate = deepcopy(pilot)
     candidate.update(experiment_id="fixture-final", stage="final", split="test_normal",
                      task_ids=["fixture_test_1"], notes="Unit test fixture; no experiment was run.")

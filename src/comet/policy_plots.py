@@ -61,6 +61,24 @@ def _groups(rows):
     return sorted(groups.items())
 
 
+def _curve_panels(rows, *, missing_control):
+    full = {row["condition"]["max_attempts"]: row for row in rows if row["condition"]["method"] == "full"}
+    groups = sorted(_groups(rows), key=lambda item: (item[0][2], list(NAMES).index(item[0][0]), -item[0][1]))
+    panels, used_full = [], set()
+    for (method, retention, attempts), group in groups:
+        if attempts not in full:
+            raise ValueError(missing_control)
+        panels.append((f"{NAMES[method]} {retention:.0%} | N={attempts}",
+                       [full[attempts]] + [group[policy] for policy in COLORS if policy in group]))
+        used_full.add(attempts)
+    if len(full) > 1:
+        panels.append(("Full KV attempt limits", [row for _, row in sorted(full.items())]))
+    else:
+        panels.extend((f"Full KV | N={attempts}", [row]) for attempts, row in sorted(full.items())
+                      if attempts not in used_full)
+    return full, panels
+
+
 def _save(fig, analysis, output, title, caption, *, top=0.9, bottom=0.16, left=0.07):
     mode = "Integration diagnostic" if analysis.get("integration_smoke") else analysis.get("stage", "Run")
     height = fig.get_figheight()
@@ -259,20 +277,8 @@ def plot_attained_oracle(analysis_path: Path, output: Path, *, title="Attained o
     budgets = {row["observations"]["attained_oracle_curve"]["budget_seconds"] for row in rows} - {None}
     if len(budgets) > 1:
         raise ValueError("Success-time curves require compatible declared budgets")
-    full = {row["condition"]["max_attempts"]: row for row in rows if row["condition"]["method"] == "full"}
-    groups = sorted(_groups(rows), key=lambda item: (item[0][2], list(NAMES).index(item[0][0]), -item[0][1]))
-    panels, used_full = [], set()
-    for (method, retention, attempts), group in groups:
-        if attempts not in full:
-            raise ValueError("Each compressed curve panel needs a full-cache control with the same attempt limit")
-        panels.append((f"{NAMES[method]} {retention:.0%} | N={attempts}",
-                       [full[attempts]] + [group[policy] for policy in COLORS if policy in group]))
-        used_full.add(attempts)
-    if len(full) > 1:
-        panels.append(("Full KV attempt limits", [row for _, row in sorted(full.items())]))
-    else:
-        panels.extend((f"Full KV | N={attempts}", [row]) for attempts, row in sorted(full.items())
-                      if attempts not in used_full)
+    full, panels = _curve_panels(
+        rows, missing_control="Each compressed curve panel needs a full-cache control with the same attempt limit")
     if not panels:
         raise ValueError("No supported conditions to plot")
     columns = min(3, len(panels))

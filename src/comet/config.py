@@ -64,6 +64,12 @@ class AgentProtocol:
 
 
 @dataclass(frozen=True)
+class EnvironmentWarmup:
+    task_id: str
+    seed: int
+
+
+@dataclass(frozen=True)
 class Experiment:
     schema_version: int
     experiment_id: str
@@ -83,6 +89,7 @@ class Experiment:
     frozen: dict | None
     notes: str
     agent: AgentProtocol = field(default_factory=AgentProtocol)
+    environment_warmup: EnvironmentWarmup | None = None
 
     @classmethod
     def load(cls, path: str | Path, *, allow_unfrozen: bool = False) -> Experiment:
@@ -94,6 +101,8 @@ class Experiment:
         for name, kind in (("engine", Engine), ("sampling", Sampling), ("triggers", Triggers)):
             data[name] = kind(**data[name])
         data["agent"] = AgentProtocol(**data.get("agent", {}))
+        if data.get("environment_warmup") is not None:
+            data["environment_warmup"] = EnvironmentWarmup(**data["environment_warmup"])
         data["conditions"] = [Condition(**c) for c in data["conditions"]]
         result = cls(**data)
         result.validate(allow_unfrozen=allow_unfrozen)
@@ -151,6 +160,14 @@ class Experiment:
             raise ValueError("max_consecutive_errors must be an integer")
         if not isinstance(self.agent.require_executable, bool):
             raise ValueError("require_executable must be boolean")
+        if self.environment_warmup is not None:
+            task_id = self.environment_warmup.task_id
+            if not isinstance(task_id, str) or not task_id or not task_id.replace("_", "").isalnum():
+                raise ValueError("Invalid environment_warmup task ID")
+            seed = self.environment_warmup.seed
+            _number(seed, "environment_warmup seed", 0, 2**32 - 1)
+            if not isinstance(seed, int):
+                raise ValueError("environment_warmup seed must be an integer")
         if self.triggers.dynamic_rule not in {"and", "or"}:
             raise ValueError("dynamic_rule must be and or or")
         if self.engine.dtype != "bfloat16":
@@ -204,6 +221,8 @@ class Experiment:
             del data["engine"]["device_name"]
         if not self.agent.require_executable:
             del data["agent"]["require_executable"]
+        if self.environment_warmup is None:
+            del data["environment_warmup"]
         return data
 
     @property

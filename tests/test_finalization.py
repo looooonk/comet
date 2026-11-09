@@ -10,7 +10,7 @@ from comet.runner import Runner
 
 @pytest.fixture
 def interrupted_run(tmp_path):
-    config = Experiment.load(Path(__file__).parents[1] / "configs/pilot-smoke.json")
+    config = Experiment.load(Path(__file__).parents[1] / "configs/examples/pilot-smoke.json")
     runner = Runner(config, tmp_path / "run", None, None, integration_smoke=True)
     manifest = runner._manifest(resume=False)
     for index, reference in enumerate(manifest["cells"]):

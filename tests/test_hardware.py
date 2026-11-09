@@ -11,7 +11,7 @@ from comet.errors import MemoryCapExceeded, UnsupportedPath
 
 
 def test_device_selection_preserves_legacy_config_and_fingerprints():
-    config = Experiment.load(Path(__file__).parents[1] / "configs/pilot-smoke.json")
+    config = Experiment.load(Path(__file__).parents[1] / "configs/examples/pilot-smoke.json")
     assert "device_name" not in config.to_dict()["engine"]
     selected = replace(config, engine=replace(config.engine, device_name="NVIDIA L40S"))
     selected.validate()
@@ -43,7 +43,7 @@ def test_explicit_device_requires_exact_match_and_sufficient_capacity():
 
 
 def test_freeze_requires_observed_selected_device(tmp_path):
-    base = Experiment.load(Path(__file__).parents[1] / "configs/pilot-smoke.json")
+    base = Experiment.load(Path(__file__).parents[1] / "configs/examples/pilot-smoke.json")
     pilot = replace(base, engine=replace(base.engine, device_name="NVIDIA L40S"))
     candidate = replace(pilot, experiment_id="fixture-final", stage="final", split="test_normal")
     candidate_path = tmp_path / "candidate.json"

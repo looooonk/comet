@@ -307,6 +307,8 @@ def main(argv: list[str] | None = None) -> None:
                 parser.error("--max-cells is unsupported for diagnostic checkpoint preparation")
         os.environ["APPWORLD_ROOT"] = str(args.appworld_root.resolve())
         validate_tasks(config.split, config.task_ids)
+        if config.environment_warmup is not None:
+            validate_tasks("train", [config.environment_warmup.task_id])
 
         def make_engine(condition):
             return MiniSGLangEngine(

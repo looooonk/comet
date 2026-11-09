@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "experiment_id": "pilot-smoke-v1",
+  "stage": "pilot",
+  "split": "dev",
+  "task_ids": [
+    "50e1ac9_1"
+  ],
+  "seeds": [
+    17
+  ],
+  "budget_seconds": 120,
+  "peak_vram_bytes": 42949672960,
+  "max_attempts": 1,
+  "engine": {
+    "model": "Qwen/Qwen3-8B",
+    "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "dtype": "bfloat16",
+    "max_context_tokens": 4096,
+    "workspace_reserve_bytes": 6442450944,
+    "prefill_chunk_tokens": 256
+  },
+  "sampling": {
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "max_new_tokens": 512,
+    "enable_thinking": false
+  },
+  "triggers": {
+    "fixed_tool_calls": 2,
+    "dynamic_context_tokens": 2048,
+    "dynamic_tool_calls": 2,
+    "dynamic_rule": "and"
+  },
+  "conditions": [
+    {
+      "id": "full_once",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "streamingllm_50_fixed",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "rkv_50_fixed",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_50_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 1
+    }
+  ],
+  "prompt": "You are an agent solving an AppWorld task. Use the persistent Python environment and its apis object. Discover available app APIs with apis.api_docs. Execute exactly one fenced Python code block per response. Print information needed for the next step. Tool output appears in <tool_response> tags. Complete the task using the supervisor API when finished. Do not invent API names or arguments.",
+  "checkpoint_after_tool_calls": null,
+  "frozen": null,
+  "notes": "Provisional integration and train/dev feasibility settings, not a frozen research experiment. The task is the first entry in AppWorld data 0.2.0 dev.txt. All numeric values must be measured and tuned before final evaluation."
+}

@@ -442,6 +442,24 @@ def analyze_cells(cells: list[dict[str, Any]], *, bootstrap_samples: int = 2000,
     return result
 
 
+def environment_initialization_summary(manifest: dict) -> dict:
+    records = [{"launch_index": index, **launch["environment_initialization"]}
+               for index, launch in enumerate(manifest.get("launches", []))
+               if "environment_initialization" in launch]
+    durations = [record["seconds"] for record in records if "seconds" in record]
+    if any(not _finite_number(value) or value < 0 for value in durations):
+        raise ValueError("Invalid environment initialization duration")
+    return {
+        "settings": manifest["config"].get("environment_warmup"),
+        "launches": records, "measured_seconds": sum(durations) if durations else None,
+        "measured_launches": len(durations), "recorded_launches": len(records),
+        "total_launches": len(manifest.get("launches", [])),
+        "status_counts": dict(Counter(record["status"] for record in records)),
+        "charged_to_task_budget": False,
+        "scope": "Separate process setup; never amortized into task latency. Missing durations are not zero.",
+    }
+
+
 def read_scored_run(directory: str | Path) -> tuple[dict, dict, dict]:
     directory = Path(directory).resolve()
     manifest = _read(directory / "manifest.json")
@@ -470,6 +488,7 @@ def analyze_runs(run_dirs: list[str | Path], output: str | Path, *, bootstrap_sa
     cells: list[dict[str, Any]] = []
     contract: str | None = None
     sources: list[str] = []
+    initialization = []
     stage: str | None = None
     integration_smoke: bool | None = None
     runtime_contract: dict[str, Any] | None = None
@@ -491,8 +510,11 @@ def analyze_runs(run_dirs: list[str | Path], output: str | Path, *, bootstrap_sa
         contract, stage = current, scores["stage"]
         cells.extend(scores["cells"])
         sources.append(str(directory))
+        initialization.append({"run_id": manifest["run_id"],
+                               **environment_initialization_summary(manifest)})
     result = analyze_cells(cells, bootstrap_samples=bootstrap_samples, seed=seed)
     result.update(stage=stage, source_runs=sources, integration_smoke=integration_smoke)
+    result["environment_initialization"] = initialization
     output = Path(output)
     output.parent.mkdir(parents=True, exist_ok=True)
     _write(output, result)
