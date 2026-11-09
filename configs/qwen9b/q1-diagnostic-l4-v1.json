@@ -1,0 +1,210 @@
+{
+  "extends": "train-compression-l4-v1.json",
+  "experiment_id": "qwen9b-q1-diagnostic-l4-v1",
+  "stage": "diagnostic",
+  "task_ids": [
+    "76f2c72_1"
+  ],
+  "budget_seconds": 90,
+  "max_attempts": 1,
+  "checkpoint_after_tool_calls": 2,
+  "conditions": [
+    {
+      "id": "full_reference",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "streamingllm_80_never",
+      "method": "streamingllm",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "streamingllm_80_fixed",
+      "method": "streamingllm",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "streamingllm_80_dynamic",
+      "method": "streamingllm",
+      "retention": 0.8,
+      "recovery": "dynamic",
+      "max_attempts": 1
+    },
+    {
+      "id": "streamingllm_50_never",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "streamingllm_50_fixed",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "streamingllm_50_dynamic",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 1
+    },
+    {
+      "id": "streamingllm_25_never",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "streamingllm_25_fixed",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "streamingllm_25_dynamic",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 1
+    },
+    {
+      "id": "rkv_80_never",
+      "method": "rkv",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "rkv_80_fixed",
+      "method": "rkv",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "rkv_80_dynamic",
+      "method": "rkv",
+      "retention": 0.8,
+      "recovery": "dynamic",
+      "max_attempts": 1
+    },
+    {
+      "id": "rkv_50_never",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "rkv_50_fixed",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "rkv_50_dynamic",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 1
+    },
+    {
+      "id": "rkv_25_never",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "rkv_25_fixed",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "rkv_25_dynamic",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_80_never",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_80_fixed",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_80_dynamic",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "dynamic",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_50_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_50_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_50_dynamic",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_25_never",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_25_fixed",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_25_dynamic",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 1
+    }
+  ],
+  "notes": "Complete 28-arm Q1 diagnostic on one functioning train fixture: arithmetic, selected after the predeclared four-task capability pilot. Branches share the identical full-cache agent/environment/RNG checkpoint after two cumulative tool executions, then evolve independently. Each branch pays the original preparation, restore, tools, inference and at most one rebuild within 90 seconds. The full-cache task completed near 57 seconds; the budget leaves room for checkpoint/recovery cost while remaining bounded. Thresholds remain the declared four tools or context>=6144 AND tools>=3. This single-task exploratory diagnostic cannot establish population effects; the broader predeclared train pilot and fresh held-out study retain separate identities. No test outcomes inform this choice."
+}
