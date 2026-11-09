@@ -30,6 +30,12 @@ fi
 mkdir -p "$(dirname "$COMET_CHECK_OUTPUT")"
 mkdir "$COMET_CHECK_OUTPUT"
 trap 'status=$?; printf "%s\n" "$status" > "$COMET_CHECK_OUTPUT/exit-status.txt"' EXIT
+if [[ "${COMET_LOCAL_MODEL:-0}" == 1 ]]; then
+    model_source=${COMET_MODEL_PATH:?Set COMET_MODEL_PATH before local staging}
+    model_destination="${SLURM_TMPDIR:-${TMPDIR:?Set a job-local TMPDIR}}/comet-model/$(basename "$model_source")"
+    python scripts/stage_model.py "$model_source" "$model_destination" > "$COMET_CHECK_OUTPUT/model-staging.json"
+    export COMET_MODEL_PATH="$model_destination"
+fi
 printf 'profile=%s\ncpu_only=%s\n' "$profile" "$cpu_only" > "$COMET_CHECK_OUTPUT/mode.txt"
 git rev-parse HEAD > "$COMET_CHECK_OUTPUT/commit.txt"
 git diff --binary HEAD > "$COMET_CHECK_OUTPUT/changes.patch"

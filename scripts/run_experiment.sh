@@ -11,6 +11,11 @@ source "$COMET_REPO/scripts/activate_runtime.sh" "${COMET_RUNTIME_PROFILE:-gpu}"
 cd "$COMET_REPO"
 launch_dir="$COMET_RUN/launch/$(date -u +%Y%m%dT%H%M%SZ)-${SLURM_JOB_ID:-$$}"
 mkdir -p "$launch_dir"
+if [[ "${COMET_LOCAL_MODEL:-0}" == 1 ]]; then
+    model_destination="${SLURM_TMPDIR:-${TMPDIR:?Set a job-local TMPDIR}}/comet-model/$(basename "$COMET_MODEL")"
+    python scripts/stage_model.py "$COMET_MODEL" "$model_destination" > "$launch_dir/model-staging.json"
+    export COMET_MODEL="$model_destination"
+fi
 for cache_name in XDG_CACHE_HOME APPWORLD_CACHE HF_HOME UV_CACHE_DIR TRITON_CACHE_DIR TORCH_HOME \
     TORCHINDUCTOR_CACHE_DIR TORCH_EXTENSIONS_DIR PYTORCH_KERNEL_CACHE_PATH \
     CUDA_CACHE_PATH FLASHINFER_WORKSPACE_BASE TVM_FFI_CACHE_DIR; do

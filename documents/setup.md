@@ -14,6 +14,7 @@ bash scripts/download_assets.sh "$COMET_ENV" "$COMET_APPWORLD_ROOT" --model-9b-h
 source scripts/activate_runtime.sh hybrid
 export COMET_MODEL_PATH="$HF_HOME/hub/models--Qwen--Qwen3.5-9B/snapshots/c202236235762e1c871ad0ccb60c8ee5ba337b9a"
 export COMET_TEST_RETENTION_GRID=1
+export COMET_LOCAL_MODEL=1
 bash scripts/run_checks.sh hybrid
 export COMET_RUNTIME_PROFILE=hybrid
 export COMET_MODEL="$COMET_MODEL_PATH"
@@ -25,6 +26,12 @@ As for other profiles, set `COMET_REPO`, `COMET_ENV`, `COMET_STORAGE`, a fresh
 The hybrid backend must be selected in the configuration. Its [state contract](hybrid-backend.md)
 and [current evidence](records/qwen9b-study-2026-11-09.md) distinguish implementation
 from qualification. The remainder of this guide documents the legacy backend.
+
+`COMET_LOCAL_MODEL=1` stages the pinned snapshot in `SLURM_TMPDIR` (or an explicit
+job-local `TMPDIR`) before loading. It reuses a complete staged copy within the
+same allocation, records bytes/time, and leaves the persistent snapshot intact.
+Allocate at least 21 GB of scratch space for 9B. Staging is model initialization,
+outside task timing; ordinary execution and rebuild allocations remain charged.
 
 This guide describes the retained legacy implementation. New Qwen support is
 not implemented yet; follow the [current direction](research-direction.md) before
