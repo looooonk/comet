@@ -525,3 +525,13 @@ Blackwell train/diagnostic jobs used four CPUs. This scheduling adjustment
 may affect host-side timings; dev and final use the same reduced CPU request,
 and their results stay separate from the earlier cohorts. A failed dev gate
 or the 10:40 ET cutoff stops the final job before any test attempt.
+
+The scheduler did not honor the in-place CPU-count reduction: it retained
+four CPUs per task. The still-pending jobs were canceled without execution
+and replaced by dev job `13842392` and dependent final job `13842393`. Even
+the fresh two-CPU request is resolved by the scheduler to a four-CPU minimum;
+record effective allocation separately from the request. The immutable model
+and experiment configurations are unchanged. The retrieved train and Q1 runs
+contain 130 and 84 attempts respectively; their complete results, paired
+uncertainty and 27 figure exports are in the
+[Blackwell findings](qwen9b-blackwell-findings.md).

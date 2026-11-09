@@ -10,8 +10,9 @@ two families and one seed, not evidence of a general recovery advantage.
 The shared Qwen3.5-9B hybrid backend supports all three required methods at
 16,384 tokens. The completed study includes capability checks, independent
 runtime budgets, a train aggressivity grid, a common-checkpoint diagnostic,
-separate dev confirmation and fresh-start frozen test evaluation. Supplemental
-Blackwell runs remain separate and are not counted below before retrieval.
+separate dev confirmation and fresh-start frozen test evaluation. The completed
+[three-family Blackwell comparisons](qwen9b-blackwell-findings.md) add a fuller
+train grid and checkpoint diagnostic, analyzed separately below.
 
 ## Q2: frozen fresh-start evaluation
 
@@ -185,7 +186,7 @@ full-cache attempt solved one task: oracle success was 1/2 versus 0/2 first
 attempts. All compressed 25% dev arms failed. These are small, paired results
 with wide uncertainty, not evidence that a second attempt generally helps.
 
-## Q1: recovery from a common checkpoint
+## Q1: L4 recovery from a common checkpoint
 
 The [28-arm diagnostic](qwen9b-q1-diagnostic-analysis.json) restores the same
 saved full-cache arithmetic state after two tools. Each branch receives a
@@ -224,15 +225,19 @@ substituted for fresh-start final evaluation.
 
 ## Additional hardware coverage
 
-After access was restored and the user extended the stop time to 14:00 ET, a
-separate three-task Blackwell train grid was declared and submitted. It retains
-the full eight-level grid for every method and includes single/oracle views.
-It passed fresh 16K qualification at a separately declared 24 GiB cap. A
-three-family Q1 diagnostic runs alongside it. Access is again awaiting an SSH
-agent unlock; their results will be analyzed separately after retrieval. An
-optional held-out Blackwell replication is declared with a 10:20 ET launch
-cutoff and fresh dev gates, but has not been submitted. These are not additional
-completed test observations.
+The completed [Blackwell study](qwen9b-blackwell-findings.md) adds 78 fresh-start
+train cells and 84 common-checkpoint branches across three declared families,
+using a separately qualified 24 GiB cap. AgentKV no-recovery success varies from
+3/3 at 90% retention to 0/3 at 50% and below. R-KV 80% gains one task from its
+second attempt. In Q1, R-KV 80% dynamic recovery raises success from 1/3 to 3/3,
+while AgentKV 50% fixed recovery lowers it from 2/3 to 0/3. All 52 requested
+rebuilds are admitted. Wide paired uncertainty and differences from L4 reinforce
+the conditional nature of these effects. These are train observations, not
+additional test samples or a controlled hardware comparison.
+
+The optional held-out Blackwell replication is queued behind a fresh dev check,
+with a revised 10:40 ET launch cutoff. Its experimental settings are unchanged;
+it is not counted as completed evidence.
 
 ## Reproduction and exports
 

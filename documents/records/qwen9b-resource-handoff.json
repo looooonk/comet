@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "cloud_cleanup_complete_cluster_retrieval_pending",
+  "status": "cloud_cleanup_complete_blackwell_train_retrieved_replication_queued",
   "cloud": {
     "run_id": "gpu-20261109-074439-b5e235",
     "worker_status": "completed",
@@ -126,13 +126,40 @@
       13841503,
       13841504
     ],
-    "last_verified_state": "running",
-    "retrieval_status": "awaiting SSH-agent unlock",
+    "last_verified_state": "supplemental train and diagnostic jobs completed with exit zero",
+    "retrieval_status": "both complete output directories retrieved and scored-run execution verified",
     "maximum_allocation_end_et": [
       "2026-11-09T10:39:38-05:00",
       "2026-11-09T10:32:20-05:00"
     ],
-    "new_allocations_submitted": false
+    "new_allocations_submitted": true,
+    "completed_jobs": [
+      {
+        "job_id": 13841503,
+        "elapsed_seconds": 7716,
+        "cells": 78,
+        "attempts": 130,
+        "exit_code": "0:0"
+      },
+      {
+        "job_id": 13841504,
+        "elapsed_seconds": 4525,
+        "cells": 84,
+        "attempts": 84,
+        "exit_code": "0:0"
+      }
+    ],
+    "optional_dev_job": 13842392,
+    "conditional_final_job": 13842393,
+    "final_launch_cutoff_et": "2026-11-09T10:40:00-05:00",
+    "storage_audit": {
+      "managed_hybrid_environment_gib_approx": 7,
+      "runtime_archive_gib_approx": 7,
+      "shared_model_cache_gib_approx": 19,
+      "finegrid_results_mib_approx": 34,
+      "diagnostic_results_mib_approx": 582,
+      "additional_model_or_environment_copies": false
+    }
   },
   "local_storage": {
     "free_gib_at_audit": 157,

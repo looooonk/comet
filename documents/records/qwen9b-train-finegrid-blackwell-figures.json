@@ -1,0 +1,54 @@
+{
+  "artifact_id": "comet-run:d4dcbbba-3768-45fa-b490-1d6219eb6efa",
+  "analysis": "documents/records/qwen9b-train-finegrid-blackwell-analysis.json",
+  "exports": [
+    {
+      "path": "documents/figures/qwen9b/train-finegrid-blackwell-aggressivity.png",
+      "sha256": "f0af72b3f480f2c89ce0a141ff790eb7d5bcacbce8f410c3180c64903376852e"
+    },
+    {
+      "path": "documents/figures/qwen9b/train-finegrid-blackwell-aggressivity.svg",
+      "sha256": "3ac1453171dc011569ac80c7000d8565279fa498bade49206a9c9a0b3ea150ae"
+    },
+    {
+      "path": "documents/figures/qwen9b/train-finegrid-blackwell-aggressivity.pdf",
+      "sha256": "d84e9ef04b3b6b51e4af52a18350b92518b5a9f506daccb54eb2b8ed528dfd73"
+    },
+    {
+      "path": "documents/figures/qwen9b/train-finegrid-blackwell-resources.png",
+      "sha256": "81eb0b50ba408cec9855fa5995f707e994a832d06cf895ce6337111183f69c63"
+    },
+    {
+      "path": "documents/figures/qwen9b/train-finegrid-blackwell-resources.svg",
+      "sha256": "5787d2a1d2668a55117e0051d69ddb287b47169438e7c3f7a9a992c53cd669ab"
+    },
+    {
+      "path": "documents/figures/qwen9b/train-finegrid-blackwell-resources.pdf",
+      "sha256": "5cf242927221f6af706f8f6ddda146aa96cdd5a6ba29a213467beefc6aee0bd3"
+    },
+    {
+      "path": "documents/figures/qwen9b/train-finegrid-blackwell-attempts.png",
+      "sha256": "2d0502babb0d0c07b33e4c0c540dca83cba15ad94800fe6f31bac1fa8441f0e2"
+    },
+    {
+      "path": "documents/figures/qwen9b/train-finegrid-blackwell-attempts.svg",
+      "sha256": "29951ffca26fc1bdc9e5b71a92714726c36102bbc8425dc8b1bbea326eb8a3a4"
+    },
+    {
+      "path": "documents/figures/qwen9b/train-finegrid-blackwell-attempts.pdf",
+      "sha256": "316a856c79197c98f8b1cee1ffdd5396d1066efd110dd471f94fe3f76907a633"
+    },
+    {
+      "path": "documents/figures/qwen9b/train-finegrid-blackwell-success-time.png",
+      "sha256": "f67b464f82b933f137451ab5dcb4119a5e1b66e5fa301f66428d810b30354b92"
+    },
+    {
+      "path": "documents/figures/qwen9b/train-finegrid-blackwell-success-time.svg",
+      "sha256": "8ba8ac01545f48fff945d69ebae320242f82470c7533978c753a529ace82572d"
+    },
+    {
+      "path": "documents/figures/qwen9b/train-finegrid-blackwell-success-time.pdf",
+      "sha256": "e254c13f66c94be4e342582dcc38dde66b78e99821c9f2d48d2e763293b9bf29"
+    }
+  ]
+}

@@ -15,6 +15,9 @@
   environment restores, preserved tool effects/RNG and all three methods.
 - [Blackwell qualification](qwen9b-blackwell-cap24.json): 16K generation and
   recovery at 24 GiB, preserving the [failed 21 GiB check](qwen9b-blackwell-cap21-failure.json).
+- [Three-family Blackwell findings](qwen9b-blackwell-findings.md): 78 train
+  fine-grid cells, 84 common-checkpoint branches, paired uncertainty and
+  27 figure exports; analyzed separately from L4.
 - [Qwen3.5-9B study](qwen9b-study-2026-11-09.md): declared samples and current
   implementation/validation progress for the new hybrid backend.
 - [A6000 state check](qwen9b-a6000-state-check.json) and

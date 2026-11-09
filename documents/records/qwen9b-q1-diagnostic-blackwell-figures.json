@@ -1,0 +1,66 @@
+{
+  "artifact_id": "comet-run:65d3bf00-8c5d-4bf8-b3d9-8e1466743bf9",
+  "analysis": "documents/records/qwen9b-q1-diagnostic-blackwell-analysis.json",
+  "exports": [
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-recovery.png",
+      "sha256": "dccaf03b29f1d8360178c8611db3676c07e043bcf71228a9dd010bc047ec5db2"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-recovery.svg",
+      "sha256": "ade7e51b61189c6fcd4888d22b185ae3602387fe9e9af28619715e6768196978"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-recovery.pdf",
+      "sha256": "61b31ef4c21ac6411fc17d323bbeef4a66df1e9224cd5fb2f1ac9ce30fa47826"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-triggers.png",
+      "sha256": "860fce217a18f52f9bc723880d78a0a5971275063fa2da5b539fb71e1c86f0aa"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-triggers.svg",
+      "sha256": "b44928f3aa103f7cdbd0eda9385e42f065ab0ca29a24f00ab4de5d9e713282c6"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-triggers.pdf",
+      "sha256": "fa13cfd76097f5d7bd88aff27807543a475c1fa7427a92b9c7365c8fbb5d4c8b"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-resources.png",
+      "sha256": "bac0cfea6374601327e8aae9a70c13f954e343bc6ee9fb6915ad04f7f4dc0bbe"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-resources.svg",
+      "sha256": "d365cf6bbb752bdd5a1ab7aa60756f87d46134e38deb26d45be53aa120c6f950"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-resources.pdf",
+      "sha256": "6215f27225bde97c2accc813a83631ec8ed98966e81146ac2ca4a86823da47c0"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-resources-fixed.png",
+      "sha256": "7270705a826942c8a30c394674eff48f26f05c7446cfef8a6c1e353edd8ebf68"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-resources-fixed.svg",
+      "sha256": "f6ca4eb47b868cca212f01cd64bcc2a9e0fc274d9bc11977c5a7567ca74a80aa"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-resources-fixed.pdf",
+      "sha256": "7e0d3f6be0e8ac62ee68c3ff16b4acd83a8c84ccfacf4598bdbd1df2f31989d0"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-resources-dynamic.png",
+      "sha256": "dd236e37853cd56c48e27735762bcd48d8096a3082d849c6b38dff890ad4d49b"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-resources-dynamic.svg",
+      "sha256": "8997a90f1dcd3d07275e93aa16b317d6cb7cb3d63e6d7e0798f73d2d71ed939d"
+    },
+    {
+      "path": "documents/figures/qwen9b/q1-diagnostic-blackwell-resources-dynamic.pdf",
+      "sha256": "f2acd828733f44175fc438ffc7183721f2a4b3bbc54b8c79c67e4ed2e18b193a"
+    }
+  ]
+}

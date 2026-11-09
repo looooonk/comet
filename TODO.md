@@ -118,8 +118,8 @@ provenance, and stop when checks fail. Rebuild cleaned caches only as needed.
   endpoints are declared; 16K recovery costs 21.6-22.8 seconds on the L4.
 - [x] Run a small matched full-cache/compressed comparison, then the declared
   fine-grained grid. Keep every measured point, including flat/failed outcomes.
-  The L4 grid measures all 25 conditions; a separate three-task Blackwell grid
-  is running to strengthen coverage. No cross-hardware pooling.
+  The L4 grid measures all 25 conditions; the separate three-task Blackwell
+  grid completed all 78 cells and shows intermediate outcomes. No pooling.
 - [x] Extend or refine dev settings only as a new declared experiment version.
   Confirm an informative regime on separate dev coverage before final freezing.
   The two-family confirmation found full-cache oracle success on one family
@@ -130,8 +130,8 @@ provenance, and stop when checks fail. Rebuild cleaned caches only as needed.
 - [x] Q1: branch from identical saved pre-compaction state and compare never,
   fixed-tool-count and context/tool-threshold recovery within each method and
   retention level. Tune thresholds only on train/dev.
-  All 28 arms completed on one arithmetic fixture. Dynamic recovery rescued
-  R-KV and AgentKV at 25%; benefits did not generalize across all settings.
+  All 28 L4 arms and 84 three-family Blackwell branches completed. Recovery
+  produces both benefits and harms; effects do not generalize across settings.
 - [x] Q2: compare full-cache and compressed oracle best-of-N, with/without
   recovery, under identical wall-clock and peak total-VRAM caps.
   The frozen L4 study completed 68 cells and 101 attempts; AgentKV 50%
@@ -164,8 +164,10 @@ provenance, and stop when checks fail. Rebuild cleaned caches only as needed.
 
 ## 6. Finish supplemental runs and resource handoff
 
-- [ ] Retrieve and analyze the already launched three-family Blackwell fine
+- [x] Retrieve and analyze the already launched three-family Blackwell fine
   grid and Q1 diagnostic, keeping their hardware cohort separate from L4.
+  Both complete runs passed local scored-run verification; 27 figure exports
+  and full summaries are linked from `documents/records/qwen9b-blackwell-findings.md`.
 - [ ] Verify cloud and cluster jobs have ended, preserve useful artifacts and
   record cleanup. The optional Blackwell test replication is not required if
   its predeclared access, dev-confirmation or launch-time gates cannot be met.
