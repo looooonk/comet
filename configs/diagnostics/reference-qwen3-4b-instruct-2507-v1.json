@@ -1,0 +1,40 @@
+[
+  {
+    "id": "python_no_thinking",
+    "thinking": false,
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return exactly this statement in a fenced python block: print(7)"
+      }
+    ]
+  },
+  {
+    "id": "arithmetic_no_thinking",
+    "thinking": false,
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is 17 times 19?"
+      }
+    ]
+  },
+  {
+    "id": "tool_history_chunked",
+    "thinking": false,
+    "messages": [
+      {
+        "role": "user",
+        "content": "Remember that the project color is cobalt. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. Notes: one two three four. "
+      },
+      {
+        "role": "assistant",
+        "content": "The project color is cobalt."
+      },
+      {
+        "role": "user",
+        "content": "<tool_response>\n{\"project\": \"COMET\", \"color\": \"cobalt\"}\n</tool_response>\nReturn the color."
+      }
+    ]
+  }
+]

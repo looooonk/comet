@@ -102,6 +102,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Nonthinking 4B pilot plan (2026-11-08)](execution-qwen4b-instruct-2026-11-08-plan.md) | Pinned exploratory model, verified assets/template, 264 CPU checks and required live qualification before six targeted dev cells |
 | [32,600-token capacity result (2026-11-08)](history-feasibility-32600-2026-11-08.md) | Seven completed conditions and three R-KV cap failures, with verified partial measurements and all-condition coverage |
 | [Repeated history timing plan (2026-11-08)](history-timing-2026-11-08-plan.md) | Five declared lengths, 64 decode forwards and three repetitions; all repetitions retained with first-use effects visible |
 | [Corrected pilot scoring (2026-11-08)](appworld-corrected-pilot-scoring-2026-11-08.md) | Five live checks; 14 completed snapshots exhaustively scored; all three arms remain 0/6 with original bytes preserved |

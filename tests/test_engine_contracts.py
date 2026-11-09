@@ -58,41 +58,50 @@ def test_exploratory_model_requires_its_own_matching_model_and_tokenizer_pin():
             replace(exploratory, **changes)
 
 
-def test_model_storage_validates_architecture_precision_and_parameter_count(tmp_path):
-    revision = MODEL_PROFILES["Qwen/Qwen3-14B"]["revision"]
+@pytest.mark.parametrize("model,hidden,layers,heads,intermediate,tied,theta,positions,count", [
+    ("Qwen/Qwen3-8B", 4096, 36, 32, 12288, False, 1000000, 40960, 8190735360),
+    ("Qwen/Qwen3-14B", 5120, 40, 40, 17408, False, 1000000, 40960, 14768307200),
+    ("Qwen/Qwen3-4B-Instruct-2507", 2560, 36, 32, 9728, True, 5000000, 262144, 4022468096),
+])
+def test_model_storage_validates_architecture_precision_and_parameter_count(
+    tmp_path, model, hidden, layers, heads, intermediate, tied, theta, positions, count,
+):
+    revision = MODEL_PROFILES[model]["revision"]
     snapshot = tmp_path / revision
     snapshot.mkdir()
     config = {
         "architectures": ["Qwen3ForCausalLM"], "model_type": "qwen3",
-        "hidden_size": 5120, "num_hidden_layers": 40, "num_attention_heads": 40,
-        "intermediate_size": 17408, "num_key_value_heads": 8, "head_dim": 128,
+        "hidden_size": hidden, "num_hidden_layers": layers, "num_attention_heads": heads,
+        "intermediate_size": intermediate, "num_key_value_heads": 8, "head_dim": 128,
         "vocab_size": 151936, "hidden_act": "silu", "attention_bias": False,
-        "tie_word_embeddings": False, "rope_scaling": None, "rope_theta": 1000000,
-        "max_position_embeddings": 40960, "sliding_window": None,
+        "tie_word_embeddings": tied, "rope_scaling": None, "rope_theta": theta,
+        "max_position_embeddings": positions, "sliding_window": None,
         "use_sliding_window": False, "rms_norm_eps": 1e-6, "torch_dtype": "bfloat16",
     }
     config_path = snapshot / "config.json"
     config_path.write_text(json.dumps(config))
 
-    def weights(dtype="BF16", count=14768307200):
-        header = json.dumps({"weight": {"dtype": dtype, "shape": [count]}}).encode()
+    def weights(dtype="BF16", parameters=count):
+        header = json.dumps({"weight": {"dtype": dtype, "shape": [parameters]}}).encode()
         (snapshot / "model.safetensors").write_bytes(len(header).to_bytes(8, "little") + header)
 
     weights()
-    assert model_storage(str(snapshot), revision, "Qwen/Qwen3-14B") == (config, 14768307200)
-    for key, value in (("hidden_size", 4096), ("num_attention_heads", 32),
+    assert model_storage(str(snapshot), revision, model) == (config, count)
+    for key, value in (("hidden_size", hidden + 1), ("num_attention_heads", heads + 1),
+                       ("tie_word_embeddings", not tied), ("rope_theta", theta + 1),
+                       ("max_position_embeddings", positions + 1),
                        ("architectures", ["Qwen3_5ForConditionalGeneration"]),
                        ("rope_scaling", {"factor": 4.0})):
         config_path.write_text(json.dumps({**config, key: value}))
         with pytest.raises(ValueError, match="architecture"):
-            model_storage(str(snapshot), revision, "Qwen/Qwen3-14B")
+            model_storage(str(snapshot), revision, model)
     config_path.write_text(json.dumps(config))
     weights(dtype="F16")
     with pytest.raises(ValueError, match="BF16"):
-        model_storage(str(snapshot), revision, "Qwen/Qwen3-14B")
-    weights(count=8190735360)
+        model_storage(str(snapshot), revision, model)
+    weights(parameters=count + 1)
     with pytest.raises(ValueError, match="parameter count"):
-        model_storage(str(snapshot), revision, "Qwen/Qwen3-14B")
+        model_storage(str(snapshot), revision, model)
 
 
 def test_branch_fingerprint_only_excludes_policy_and_local_snapshot_location():

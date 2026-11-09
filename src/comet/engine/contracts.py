@@ -12,14 +12,23 @@ MINISGL_REVISION = "254c57bc84e4a7895159ba1062bd46c83626f511"
 MODEL_REVISION = "b968826d9c46dd6066d109eabc6255188de91218"
 MODEL_PROFILES = {
     "Qwen/Qwen3-8B": {
-        "revision": MODEL_REVISION, "parameters": 8190735360,
+        "revision": MODEL_REVISION, "parameters": 8190735360, "supports_thinking": True,
         "dimensions": {"hidden_size": 4096, "num_hidden_layers": 36,
                        "num_attention_heads": 32, "intermediate_size": 12288},
     },
     "Qwen/Qwen3-14B": {
         "revision": "40c069824f4251a91eefaf281ebe4c544efd3e18", "parameters": 14768307200,
+        "supports_thinking": True,
         "dimensions": {"hidden_size": 5120, "num_hidden_layers": 40,
                        "num_attention_heads": 40, "intermediate_size": 17408},
+    },
+    "Qwen/Qwen3-4B-Instruct-2507": {
+        "revision": "cdbee75f17c01a7cc42f958dc650907174af0554", "parameters": 4022468096,
+        "supports_thinking": False,
+        "dimensions": {"hidden_size": 2560, "num_hidden_layers": 36,
+                       "num_attention_heads": 32, "intermediate_size": 9728},
+        "architecture": {"tie_word_embeddings": True, "rope_theta": 5000000,
+                         "max_position_embeddings": 262144},
     },
 }
 METHODS = {"full", "streamingllm", "rkv", "agentkv"}
@@ -134,7 +143,7 @@ def model_storage(model_path: str, revision: str, model: str = "Qwen/Qwen3-8B") 
         "hidden_act": "silu", "attention_bias": False, "tie_word_embeddings": False,
         "rope_scaling": None, "rope_theta": 1000000, "max_position_embeddings": 40960,
         "sliding_window": None, "use_sliding_window": False, "rms_norm_eps": 1e-6,
-        "torch_dtype": "bfloat16", **profile["dimensions"],
+        "torch_dtype": "bfloat16", **profile["dimensions"], **profile.get("architecture", {}),
     }
     if any(key not in config or config[key] != value for key, value in expected.items()):
         raise ValueError(f"expected the pinned {model} architecture and BF16 configuration")

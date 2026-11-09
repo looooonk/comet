@@ -12,6 +12,7 @@ from comet.engine.contracts import MODEL_REVISION
 
 
 def test_reference_case_corpus_schema_hash_and_continuations(tmp_path, monkeypatch):
+    monkeypatch.setenv("COMET_TEST_MODEL", "Qwen/Qwen3-8B")
     monkeypatch.delenv("COMET_REFERENCE_CASES", raising=False)
     defaults, _ = reference._cases()
     assert defaults == reference.CASES
@@ -33,6 +34,27 @@ def test_reference_case_corpus_schema_hash_and_continuations(tmp_path, monkeypat
     invalid.write_text('[{"id":"a", "id":"b"}]')
     with pytest.raises(ValueError, match="Duplicate"):
         reference._cases()
+
+
+def test_nonthinking_model_requires_declared_supported_reference_corpus(monkeypatch):
+    monkeypatch.setenv("COMET_TEST_MODEL", "Qwen/Qwen3-4B-Instruct-2507")
+    monkeypatch.delenv("COMET_REFERENCE_CASES", raising=False)
+    with pytest.raises(ValueError, match="explicit nonthinking"):
+        reference._cases()
+    corpus = (Path(__file__).resolve().parents[1]
+              / "configs/diagnostics/reference-qwen3-4b-instruct-2507-v1.json")
+    monkeypatch.setenv("COMET_REFERENCE_CASES", str(corpus))
+    cases, digest = reference._cases()
+    assert digest == "92ea783b568306c5809bab456cc2c3e87a9369e9be9c231e5d97355648c238af"
+    expected = [{**case, "thinking": False,
+                 "id": "arithmetic_no_thinking" if case["id"] == "arithmetic_thinking" else case["id"]}
+                for case in reference.CASES]
+    assert cases == expected
+    assert reference.TOLERANCES == {
+        "centered_rmse": 0.20, "centered_relative_rmse": 0.05,
+        "jensen_shannon_nats": 0.002, "greedy_regret": 0.125,
+        "minimum_exact_greedy_agreement": 0.90,
+    }
 
 
 @pytest.mark.parametrize("phase", ["native", "reference"])
@@ -97,6 +119,7 @@ def test_success_keeps_complete_output_schema_and_supersedes_partial_journal(tmp
 
 @pytest.mark.parametrize("generation_raises", [False, True])
 def test_first_native_case_saves_actual_capture_before_assertion(tmp_path, monkeypatch, generation_raises):
+    monkeypatch.setenv("COMET_TEST_MODEL", "Qwen/Qwen3-8B")
     monkeypatch.delenv("COMET_REFERENCE_CASES", raising=False)
     class Tensor(list):
         @property

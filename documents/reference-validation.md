@@ -102,6 +102,20 @@ of the recorded identity. Each case specifies an ID, thinking mode, messages
 and a continuation. Omit this variable for the original three synthetic cases.
 Use a fresh evidence directory for every corpus and screen version.
 
+The exploratory `Qwen/Qwen3-4B-Instruct-2507` profile is nonthinking-only. Select
+`COMET_REFERENCE_CASES=configs/diagnostics/reference-qwen3-4b-instruct-2507-v1.json`
+explicitly for its initial screen. This corpus retains the three original prompts,
+cached continuations, chunk boundary check, and four-token generation counts;
+the arithmetic case changes to `thinking: false` and `arithmetic_no_thinking`.
+Its SHA-256 is `92ea783b568306c5809bab456cc2c3e87a9369e9be9c231e5d97355648c238af`.
+Token positions may differ because the model has its own native template; each
+reference still conditions on the exact saved native token IDs. The reference
+loader rejects thinking-enabled cases for this model. The existing heldout
+corpus is already nonthinking and remains a separate screen. Numerical gates
+are unchanged, and previous models' qualifications do not qualify this model.
+The shared GPU suite also verifies that runner observation suffixes match the
+selected pinned tokenizer, without injecting a legacy empty thinking block.
+
 ## Run and preserve evidence
 
 Use an exclusively allocated GPU and the existing managed GPU environment:
@@ -147,7 +161,7 @@ test is implemented but not numerically validated.
 ## Diagnose a BF16 disagreement
 
 `scripts/calibrate_reference_cpu.py` compares six-case evidence for either
-registered, pinned Qwen3-8B or Qwen3-14B against FP32 CPU Transformers inference
+registered, pinned Qwen3 model against FP32 CPU Transformers inference
 on the same exact token histories. It checks the saved artifact hashes and pinned model/runtime identity,
 loads the original BF16 weights as FP32, and uses eager attention without a KV
 cache. It reports both native and Transformers BF16 errors relative to FP32,

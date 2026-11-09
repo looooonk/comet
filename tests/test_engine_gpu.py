@@ -1,3 +1,4 @@
+import hashlib
 import json
 import os
 import subprocess
@@ -162,11 +163,154 @@ def _persistence_check(tmp_path):
             assert next_output.token_ids == same_output.token_ids
             records.append({"method": method, "memory": memory, "recovered": recovered.admitted})
         records.extend(_failure_accounting_check(engine, compressed_checkpoint, suffix))
+        if model == "Qwen/Qwen3-4B-Instruct-2507":
+            records.append(_nonthinking_phase_check(engine, tmp_path))
         evidence = Path(os.environ.get("COMET_GPU_EVIDENCE", tmp_path / "gpu-evidence.json"))
         evidence.parent.mkdir(parents=True, exist_ok=True)
         evidence.write_text(json.dumps({"device": engine.device_name, "integration_only": True, "checks": records}, indent=2) + "\n")
     finally:
         engine.close()
+
+
+def _phase_state(engine, name):
+    state = engine._state()
+    ring = engine.scheduler.engine.query_ring
+    slot = state.req.table_idx
+    sizes = ring.size[slot].cpu().tolist()
+    return {
+        "name": name, "method": engine.settings.method,
+        "raw_token_ids": engine.raw_token_ids, "phase_ids": list(engine._phase),
+        "semantic_phase_ids": list(engine._semantic),
+        "session_phase_ids": state.full_phase_ids.cpu().tolist(),
+        "occupied_queries_per_phase": sizes,
+        "query_positions_per_phase": [
+            sorted(ring.positions[slot, phase, :size].cpu().tolist())
+            for phase, size in enumerate(sizes)
+        ],
+        "memory": engine.memory_stats(),
+    }
+
+
+def _nonthinking_phase_check(engine, tmp_path):
+    from minisgl.phase import SemanticPhase
+
+    from comet.artifacts import write_json
+    from comet.history_benchmark import force_recorded_tokens
+
+    evidence = Path(os.environ.get("COMET_GPU_EVIDENCE", tmp_path / "gpu-evidence.json"))
+    path = evidence.with_name("phase-occupancy.json")
+    record = {
+        "status": "running", "model": engine.settings.model,
+        "model_revision": engine.settings.model_revision,
+        "tokenizer_revision": engine.settings.tokenizer_revision,
+        "chat_template_sha256": hashlib.sha256(engine.tokenizer.chat_template.encode()).hexdigest(),
+        "kind": "synthetic_nonthinking_phase_qualification", "tools_executed": False,
+        "continuation": "forced tokens; not a model capability or sampling check",
+        "ring_capacity_per_phase": 8, "nominal_query_capacity": 32,
+        "states": [], "checkpoint_sha256": {},
+    }
+    write_json(path, record)
+    try:
+        action = "```python\nmarker = [2, 3, 5, 7]\nprint({'marker': marker})\n```"
+        observation = json.dumps({"marker": [2, 3, 5, 7], "note": "synthetic observation " * 20})
+        messages = [
+            {"role": "system", "content": "Return one fenced Python block using the given tool state."},
+            {"role": "user", "content": "Store the four prime numbers in a marker and print its value."},
+            {"role": "assistant", "content": action},
+            {"role": "user", "content": f"<tool_response>\n{observation}\n</tool_response>"},
+        ]
+        text = engine.tokenizer.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True, enable_thinking=False,
+        )
+        encoded = engine.tokenizer(text, add_special_tokens=False, return_offsets_mapping=True)
+        prompt = engine.tokenizer.apply_chat_template(
+            messages, tokenize=True, add_generation_prompt=True, enable_thinking=False,
+        )
+        continuation = engine.tokenizer.encode("```python\nprint(marker)\n```", add_special_tokens=False)
+        assert encoded["input_ids"] == prompt
+        assert engine.settings.prefill_chunk_tokens < len(prompt)
+        assert len(prompt) + len(continuation) < engine.settings.max_context_tokens
+        assert "<think>" not in text and "</think>" not in text
+        expected_raw = prompt + continuation
+        spans = {}
+        for name, content in (("python_action", action), ("tool_observation", observation)):
+            start = text.index(content)
+            spans[name] = [i for i, (left, right) in enumerate(encoded["offset_mapping"])
+                           if start <= left < right <= start + len(content)]
+            assert spans[name]
+        record.update(messages=messages, rendered_prompt=text, prompt_token_ids=prompt,
+                      continuation_token_ids=continuation, content_token_indices=spans)
+
+        def capture(name):
+            current = _phase_state(engine, name)
+            record["states"].append(current)
+            write_json(path, record)
+            phases = current["phase_ids"]
+            semantics = current["semantic_phase_ids"]
+            assert current["raw_token_ids"] == expected_raw
+            assert len(phases) == len(semantics) == len(expected_raw)
+            assert current["session_phase_ids"] == phases
+            assert all(phases[i] == 1 and semantics[i] == int(SemanticPhase.ASSISTANT_TEXT)
+                       for i in spans["python_action"] + list(range(len(prompt), len(expected_raw))))
+            assert all(phases[i] == 3 and semantics[i] == int(SemanticPhase.TOOL_RESPONSE)
+                       for i in spans["tool_observation"])
+            assert 2 not in phases
+            forwarded = current["memory"]["logical_cached_tokens"]
+            expected_positions = [[i for i, phase in enumerate(phases[:forwarded]) if phase == stage][-8:]
+                                  for stage in range(4)]
+            assert current["query_positions_per_phase"] == expected_positions
+            assert current["occupied_queries_per_phase"] == [len(indices) for indices in expected_positions]
+            assert current["occupied_queries_per_phase"] == [8, 8, 0, 8]
+            return current
+
+        engine.set_policy("full", 1.0)
+        engine.start(23)
+        with force_recorded_tokens(engine, continuation):
+            generated = engine.generate(prompt, len(continuation), 0.0, 1.0,
+                                        time.monotonic() + 600, ignore_eos=True)
+        assert generated.token_ids == continuation
+        initial = capture("full")
+        assert initial["memory"]["logical_cached_tokens"] == len(expected_raw) - 1
+        full = tmp_path / "nonthinking-phase-full.pt"
+        record["checkpoint_sha256"]["full"] = engine.checkpoint(full)["sha256"]
+        engine.start(23)
+        engine.restore(full)
+        restored = capture("full_restored")
+        for field in ("phase_ids", "semantic_phase_ids", "query_positions_per_phase"):
+            assert restored[field] == initial[field]
+        engine.set_policy("agentkv", 0.5)
+        engine.restore(full, branch=True)
+        capture("agentkv_branch")
+        compressed = tmp_path / "nonthinking-phase-compressed.pt"
+        record["checkpoint_sha256"]["compressed"] = engine.checkpoint(compressed)["sha256"]
+        engine.start(23)
+        engine.restore(compressed)
+        capture("agentkv_restored")
+        recovered = engine.recover(expected_raw, time.monotonic() + 600)
+        assert recovered.admitted, recovered.reason
+        after = capture("agentkv_recovered")
+        assert after["phase_ids"] == initial["phase_ids"]
+        assert after["semantic_phase_ids"] == initial["semantic_phase_ids"]
+        assert after["memory"]["logical_cached_tokens"] == len(expected_raw)
+        assert after["memory"]["physical_cached_tokens"] == retention_target(len(expected_raw), 0.5, "agentkv")
+        checkpoint = tmp_path / "nonthinking-phase-recovered.pt"
+        record["checkpoint_sha256"]["recovered"] = engine.checkpoint(checkpoint)["sha256"]
+        engine.start(23)
+        engine.restore(checkpoint)
+        restored = capture("agentkv_recovered_restored")
+        assert restored["query_positions_per_phase"] == after["query_positions_per_phase"]
+        record["status"] = "passed"
+    except BaseException as error:
+        record.update(status="failed", error=f"{type(error).__name__}: {error}",
+                      partial_raw_token_ids=engine.raw_token_ids,
+                      partial_phase_ids=list(engine._phase),
+                      partial_semantic_phase_ids=list(engine._semantic),
+                      last_generation=engine.last_generation)
+        raise
+    finally:
+        write_json(path, record)
+    return {"check": "nonthinking_phase_occupancy", "status": record["status"],
+            "evidence": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
 def _failure_accounting_check(engine, checkpoint, suffix):

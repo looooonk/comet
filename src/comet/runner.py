@@ -334,6 +334,12 @@ class Runner:
 
     def _observation_tokens(self, engine, observation: str, *, finished: bool) -> list[int]:
         prefix = "" if finished else "<|im_end|>"
+        if self.config.engine.model == "Qwen/Qwen3-4B-Instruct-2507":
+            turn = engine.tokenizer.apply_chat_template(
+                [{"role": "user", "content": f"<tool_response>\n{observation}\n</tool_response>"}],
+                tokenize=False, add_generation_prompt=True,
+            )
+            return engine.tokenizer.encode(prefix + "\n" + turn, add_special_tokens=False)
         suffix = "" if self.config.sampling.enable_thinking else "<think>\n\n</think>\n\n"
         text = (
             f"{prefix}\n<|im_start|>user\n<tool_response>\n{observation}\n"

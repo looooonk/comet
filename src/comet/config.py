@@ -156,9 +156,13 @@ class Experiment:
             not isinstance(self.engine.device_name, str) or not self.engine.device_name.strip()
         ):
             raise ValueError("device_name must be an explicit GPU model name")
-        validate_model(self.engine.model, self.engine.model_revision, self.engine.tokenizer_revision)
+        profile = validate_model(self.engine.model, self.engine.model_revision,
+                                 self.engine.tokenizer_revision)
         if self.engine.model != "Qwen/Qwen3-8B" and self.stage != "pilot":
-            raise ValueError("Qwen3-14B is an exploratory pilot model; the research contract uses Qwen3-8B")
+            raise ValueError(f"{self.engine.model} is an exploratory pilot model; "
+                             "the research contract uses Qwen3-8B")
+        if self.sampling.enable_thinking and not profile["supports_thinking"]:
+            raise ValueError(f"{self.engine.model} requires enable_thinking=false")
         if self.engine.workspace_reserve_bytes >= self.peak_vram_bytes:
             raise ValueError("Workspace reserve must fit inside the total VRAM cap")
         if self.sampling.max_new_tokens > self.engine.max_context_tokens:

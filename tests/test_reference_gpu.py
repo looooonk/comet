@@ -85,6 +85,8 @@ def _unique_fields(pairs):
 
 def _cases():
     path = os.environ.get("COMET_REFERENCE_CASES")
+    model = os.environ.get("COMET_TEST_MODEL", "Qwen/Qwen3-8B")
+    profile = MODEL_PROFILES[model]
     raw = Path(path).read_bytes() if path else json.dumps(CASES, sort_keys=True).encode()
     cases = json.loads(raw, object_pairs_hook=_unique_fields)
     if not isinstance(cases, list) or not cases:
@@ -101,6 +103,8 @@ def _cases():
         identifiers.add(identifier)
         if type(case["thinking"]) is not bool:
             raise ValueError("Case thinking must be a JSON boolean")
+        if case["thinking"] and not profile["supports_thinking"]:
+            raise ValueError(f"{model} requires explicit nonthinking COMET_REFERENCE_CASES")
         if "continuation" in case and (not isinstance(case["continuation"], str)
                                        or not case["continuation"].strip()):
             raise ValueError("Case continuation must be a nonempty string")

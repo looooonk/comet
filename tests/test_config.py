@@ -7,12 +7,13 @@ from comet.config import Experiment
 from comet.engine.contracts import MODEL_PROFILES, MODEL_REVISION
 
 
-def test_qwen14b_is_explicit_pinned_pilot_only():
+@pytest.mark.parametrize("model", ["Qwen/Qwen3-14B", "Qwen/Qwen3-4B-Instruct-2507"])
+def test_exploratory_models_are_explicit_pinned_pilot_only(model):
     base = Experiment.load(Path(__file__).resolve().parents[1] / "configs/pilot-smoke.json")
     assert base.engine.model == "Qwen/Qwen3-8B"
-    revision = MODEL_PROFILES["Qwen/Qwen3-14B"]["revision"]
+    revision = MODEL_PROFILES[model]["revision"]
     exploratory = replace(base, engine=replace(
-        base.engine, model="Qwen/Qwen3-14B", model_revision=revision, tokenizer_revision=revision,
+        base.engine, model=model, model_revision=revision, tokenizer_revision=revision,
     ))
     exploratory.validate()
     for stage, split in (("final", "test_normal"), ("diagnostic", "dev")):
@@ -24,6 +25,12 @@ def test_qwen14b_is_explicit_pinned_pilot_only():
             replace(exploratory, engine=replace(exploratory.engine, **changes)).validate()
     with pytest.raises(ValueError, match="BF16"):
         replace(exploratory, engine=replace(exploratory.engine, dtype="float16")).validate()
+    thinking = replace(exploratory, sampling=replace(exploratory.sampling, enable_thinking=True))
+    if MODEL_PROFILES[model]["supports_thinking"]:
+        thinking.validate()
+    else:
+        with pytest.raises(ValueError, match="requires enable_thinking=false"):
+            thinking.validate()
 
 
 @pytest.mark.parametrize("suffix", ["", "-qwen14b"])

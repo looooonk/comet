@@ -17,6 +17,56 @@ model/tokenizer revisions, establish implementation and state-accounting support
 and document any required serving-engine departure and affected comparisons.
 Do not bypass the model registry checks or mix these results into the 8B study.
 
+## Nonthinking 4B instruction-model exploration
+
+The corrected 8B and 14B pilots remained unsuccessful on their declared dev
+subset; see the [scoring follow-up](records/appworld-corrected-pilot-scoring-2026-11-08.md).
+The next authorized exploratory candidate is `Qwen/Qwen3-4B-Instruct-2507`, pinned
+with its tokenizer to `cdbee75f17c01a7cc42f958dc650907174af0554`. Its
+[official model card](https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/blob/cdbee75f17c01a7cc42f958dc650907174af0554/README.md)
+describes improved instruction/tool capability and nonthinking-only behavior.
+Those claims motivate a pilot; they do not establish AppWorld success.
+
+Its [configuration](https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/blob/cdbee75f17c01a7cc42f958dc650907174af0554/config.json)
+has 36 layers, 32 query heads, 8 KV heads, head dimension 128, hidden size 2560,
+tied embeddings and RoPE theta 5,000,000. Stored BF16 parameters total
+4,022,468,096. COMET verifies these model-specific fields, including the native
+262,144-position limit; experiment context limits remain separately configured.
+The pinned Qwen3 implementation accepts these dimensions and tied embeddings.
+Actual GPU loading and numerical/state checks must establish live support.
+
+The native chat template ends at the assistant header without an empty thinking
+block. Initial prompts and appended observations use that template for this
+profile. Configurations reject `enable_thinking=true`; legacy 8B/14B transcript
+serialization is preserved. The explicit
+`configs/diagnostics/reference-qwen3-4b-instruct-2507-v1.json` numerical corpus
+keeps all three default prompts and fresh/cached observations while changing the
+arithmetic case to the supported nonthinking mode. Numerical gates are unchanged;
+previous model exceptions do not transfer. The separate heldout corpus is already
+nonthinking and must be measured independently on the new model.
+
+AgentKV's pinned parser assigns Python actions without thinking delimiters to
+its assistant-text phase. Its second assistant phase can therefore be empty,
+leaving up to 24 occupied query slots across the other three eight-slot rings.
+This is a model/template-dependent occupancy pattern, not a reason to alter
+the eviction method. The 4B persistence check records labels, query positions
+and occupied counts through branching, restoration and recovery in
+`phase-occupancy.json`; live validation is required before task execution.
+
+The [first bounded pilot plan](records/execution-qwen4b-instruct-2026-11-08-plan.md)
+declares model, mode, prompt, inherited sampling and task/budget settings before
+execution. It remains a pilot-only profile. No final-model substitution or
+serving-engine departure is implied.
+
+Fetch the pinned assets in its managed GPU profile with
+`bash scripts/download_assets.sh "$COMET_ENV" "$COMET_APPWORLD_ROOT" --model-4b-instruct`.
+Set `COMET_TEST_MODEL=Qwen/Qwen3-4B-Instruct-2507`, `COMET_MODEL_PATH` to the pinned
+snapshot, and `COMET_REFERENCE_CASES` to the explicit nonthinking corpus before
+running the shared GPU checks with `COMET_TEST_REFERENCE=1` and
+`COMET_TEST_CAPACITY=1`. Use a separately owned environment if an existing
+checkout is serving a pinned run. These are required checks, not a claim that
+they have already passed.
+
 ## Pinned implementation
 
 Model and tokenizer use `Qwen/Qwen3-14B` revision

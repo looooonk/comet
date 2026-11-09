@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "status": "implemented_cpu_validated_gpu_pending",
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "pilot_config": "configs/pilot-execution-candidate-qwen4b-instruct-v1.json",
+  "pilot_config_sha256": "d342228e83ddd750a61e3086108d6f5a3c6e1e4cd629c1d8e81575b3af3ebf1b",
+  "numerical_corpus": "configs/diagnostics/reference-qwen3-4b-instruct-2507-v1.json",
+  "numerical_corpus_sha256": "92ea783b568306c5809bab456cc2c3e87a9369e9be9c231e5d97355648c238af",
+  "checks": {
+    "managed_cpu_passed": 264,
+    "torch_unavailable_module_skipped": 1,
+    "live_tests_deselected": 12,
+    "actual_tokenizer_serialization": "passed on CPU with CUDA uninitialized and no weights loaded",
+    "gpu_loading_numerics_phase_state_capacity": "pending"
+  },
+  "artifacts": [
+    {
+      "artifact_group": "qwen4b-integration-20261108-root",
+      "file": "pytest.xml",
+      "sha256": "5facd4e1b102a212b2a3b46eebafaaaeb29c05f60ea23bed683df7692d50c060"
+    },
+    {
+      "artifact_group": "qwen4b-integration-20261108-root",
+      "file": "source.json",
+      "sha256": "42aa526722f04c31443cafa1bc1ffd92a4f33aa6b05c1877f6bb5888a1b7e3ca"
+    },
+    {
+      "artifact_group": "qwen4b-tokenizer-check-20261108",
+      "file": "result.json",
+      "sha256": "c6d913677c600fbadc73f7b51dd743714c5648eb46b19385ff5458f6cfad4080"
+    }
+  ]
+}

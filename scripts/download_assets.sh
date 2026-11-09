@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-runtime_env=${1:?Usage: download_assets.sh environment-path appworld-root [--model|--model-14b]}
+runtime_env=${1:?Usage: download_assets.sh environment-path appworld-root [--model|--model-14b|--model-4b-instruct]}
 appworld_root=${2:?AppWorld data directory required}
 export COMET_REPO=$(cd "$(dirname "$0")/.." && pwd)
 export COMET_ENV="$runtime_env"
@@ -25,6 +25,9 @@ if [[ "${3:-}" == --model ]]; then
 elif [[ "${3:-}" == --model-14b ]]; then
     "$runtime_env/bin/hf" download Qwen/Qwen3-14B \
         --revision 40c069824f4251a91eefaf281ebe4c544efd3e18
+elif [[ "${3:-}" == --model-4b-instruct ]]; then
+    "$runtime_env/bin/hf" download Qwen/Qwen3-4B-Instruct-2507 \
+        --revision cdbee75f17c01a7cc42f958dc650907174af0554
 elif [[ -n "${3:-}" ]]; then
     printf 'Unknown asset option: %s\n' "$3" >&2
     exit 1
