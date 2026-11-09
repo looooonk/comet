@@ -57,9 +57,13 @@ def comparable_cells(output, manifest):
     return cells
 
 
-def test_segmented_run_matches_uninterrupted_order_outcomes_and_budgets(config, tmp_path):
+@pytest.mark.parametrize("diagnostic", [False, True])
+def test_segmented_run_matches_uninterrupted_order_outcomes_and_budgets(config, tmp_path, diagnostic):
     config = replace(config, task_ids=["fixture_1", "timeout_1"], seeds=[7, 8],
                      conditions=[Condition("full", "full", 1.0, "never", 2), *config.conditions])
+    if diagnostic:
+        config = replace(config, stage="diagnostic", checkpoint_after_tool_calls=1, max_attempts=1,
+                         conditions=[replace(c, max_attempts=1) for c in config.conditions])
     whole, _, _, whole_schedule = make_runner(config, tmp_path / "whole")
     expected = whole.run()
     runner, clock, engines, schedule = make_runner(config, tmp_path / "segments")
@@ -72,11 +76,14 @@ def test_segmented_run_matches_uninterrupted_order_outcomes_and_budgets(config, 
     with pytest.raises(ValueError, match="completed.*manifest"):
         evaluate_run(runner.output, scorer=lambda _: pytest.fail("Incomplete run was scored"))
     assert not (runner.output / "scores.json").exists()
+    checkpoints = {path: path.read_bytes() for path in (runner.output / "checkpoints").rglob("*")
+                   if path.is_file()}
     for limit in (3, 3):
         preserved = cell_snapshot(runner.output, manifest)
         clock.advance(10_000)
         manifest = runner.run(resume=True, max_cells=limit)
         assert all((runner.output / path).read_bytes() == content for path, content in preserved.items())
+        assert all(path.read_bytes() == content for path, content in checkpoints.items())
     assert manifest["status"] == "completed"
     assert [launch["completed_cells"] for launch in manifest["launches"]] == [2, 3, 3]
     assert [launch["max_cells"] for launch in manifest["launches"]] == [2, 3, 3]
@@ -87,7 +94,8 @@ def test_segmented_run_matches_uninterrupted_order_outcomes_and_budgets(config, 
         scores = evaluate_run(run.output, scorer=lambda path: {
             "success": read_json(path / "fixture.json")["count"] == 2})
         assert [cell["oracle_success"] for cell in scores["cells"]] == [True, True, False, False] * 2
-        assert [cell["actual_attempts"] for cell in scores["cells"]] == [2, 2, 1, 1] * 2
+        assert [cell["actual_attempts"] for cell in scores["cells"]] == (
+            [1] * 8 if diagnostic else [2, 2, 1, 1] * 2)
     saved_manifest = (runner.output / "manifest.json").read_bytes()
     runner.run(resume=True, max_cells=1)
     assert len(engines) == 3
@@ -172,16 +180,11 @@ def test_invalid_cell_limits_fail_before_artifacts_or_engine(config, tmp_path, l
     assert not runner.output.exists()
 
 
-def test_diagnostic_cell_limit_fails_before_checkpoint_preparation(config, tmp_path):
-    config = replace(config, stage="diagnostic", checkpoint_after_tool_calls=1, max_attempts=1,
-                     conditions=[replace(condition, max_attempts=1) for condition in config.conditions])
-    runner = Runner(config, tmp_path / "run", lambda _: pytest.fail("Engine created"), lambda: None)
-    with pytest.raises(ValueError, match="diagnostic"):
-        runner.run(max_cells=1)
-    assert not runner.output.exists()
-
-
-def test_run_cli_passes_operational_limit_and_resume(config, tmp_path, monkeypatch, capsys):
+@pytest.mark.parametrize("diagnostic", [False, True])
+def test_run_cli_passes_operational_limit_and_resume(config, tmp_path, monkeypatch, capsys, diagnostic):
+    if diagnostic:
+        config = replace(config, stage="diagnostic", checkpoint_after_tool_calls=1, max_attempts=1,
+                         conditions=[replace(c, max_attempts=1) for c in config.conditions])
     path = tmp_path / "config.json"
     write_json(path, config.to_dict())
     calls = []
@@ -210,5 +213,5 @@ def test_run_cli_rejects_invalid_limit_before_appworld(config, tmp_path, monkeyp
     monkeypatch.setattr("comet.appworld.validate_tasks", lambda *args: pytest.fail("AppWorld accessed"))
     with pytest.raises(SystemExit) as error:
         main(["run", str(path), "--output", str(tmp_path / "run"), "--model-path", "fixture",
-              "--appworld-root", "fixture", "--max-cells", "1" if diagnostic else "0"])
+              "--appworld-root", "fixture", "--max-cells", "0"])
     assert error.value.code == 2

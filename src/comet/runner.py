@@ -47,8 +47,6 @@ class Runner:
         if max_cells is not None:
             if type(max_cells) is not int or max_cells <= 0:
                 raise ValueError("max_cells must be a positive integer")
-            if self.config.stage == "diagnostic":
-                raise ValueError("max_cells is unsupported for diagnostic checkpoint preparation")
         with run_lock(self.output):
             manifest = self._manifest(resume)
             if manifest["status"] == "completed":

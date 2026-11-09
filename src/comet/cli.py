@@ -319,8 +319,6 @@ def main(argv: list[str] | None = None) -> None:
         if args.max_cells is not None:
             if args.max_cells <= 0:
                 parser.error("--max-cells must be a positive integer")
-            if config.stage == "diagnostic":
-                parser.error("--max-cells is unsupported for diagnostic checkpoint preparation")
         os.environ["APPWORLD_ROOT"] = str(args.appworld_root.resolve())
         validate_tasks(config.split, config.task_ids)
         if config.environment_warmup is not None:

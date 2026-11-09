@@ -70,11 +70,16 @@ time for complete cell budgets plus model loading and shutdown. Clean launch rec
 include `max_cells`, `completed_cells`, `finished_at_unix` and `stop_reason`
 (`max_cells` or `all_cells_completed`). Counts are persisted at clean stops and
 caught exceptions; after an abrupt process kill, cell journals remain authoritative.
+Checkpoint diagnostics prepare their declared source checkpoints before the
+first branch segment. Later segments reuse those saved sources, including failed
+preparations, and each branch retains the original preparation charge. The cell
+limit counts continuations, not checkpoint preparation; reserve enough time for
+all source preparations on the first launch. Copy the entire run directory when
+moving a segmented run between otherwise identical workers.
 A clean limited launch exits successfully
 while its manifest remains `running`; score only after all cells finish and the
 manifest becomes `completed`. Omitting the option retains the complete-run
-behavior. Diagnostic runs reject it because they prepare all checkpoint sources
-before branching.
+behavior.
 
 The retained schema examples are `configs/examples/pilot-smoke.json` (full KV
 and three eviction methods) and `configs/examples/checkpoint-diagnostic.json`
