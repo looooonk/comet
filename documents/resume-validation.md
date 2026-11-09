@@ -1,6 +1,6 @@
 # Process interruption validation
 
-`tests/test_resume_integration.py` runs the actual model/AppWorld CLI twice inside
+`tests/test_resume_integration.py` runs the actual model/AppWorld CLI three times inside
 one existing GPU allocation. It kills only its child process group; it does not
 submit or cancel scheduler jobs. The test needs a fresh artifact directory outside
 tracked source, the installed pinned runtime, model weights, and AppWorld data.
@@ -26,14 +26,17 @@ COMET_APPWORLD_ROOT=/path/to/appworld \
 python -m pytest -q tests/test_resume_integration.py
 ```
 
-The overall timeout defaults to twice the configured cell budget plus 600 seconds
+The overall timeout defaults to three times the configured cell budget plus 600 seconds
 for initialization and interruption. Override `COMET_RESUME_TIMEOUT_SECONDS` when
 needed, up to one hour. This harness deadline never increases the runner's cell
 budgets. Keep source, installed packages, hardware, and the original resolved
 configuration unchanged for the entire test.
 
-The harness waits for the first cell to finish and a real model-generated action
-and observation to be saved in the second cell. It pauses and kills that CLI
+The first launch uses `--max-cells 1` and stops cleanly after the first cell.
+The manifest must remain running, neither later cell may start, and offline
+scoring must reject the incomplete run without changing its artifacts. A second
+launch resumes the identical configuration and waits for a real model-generated
+action and observation to be saved in the second cell. It pauses and kills that CLI
 process group, checks that a changed-budget resume is rejected without modifying
 run artifacts, and resumes the original configuration. It verifies:
 
@@ -44,13 +47,22 @@ run artifacts, and resumes the original configuration. It verifies:
 - The remaining cell starts at attempt zero with the paired seed, its own
   AppWorld experiment/output directory, and the same initial generated turn and
   raw-token prefix as the original fresh attempt.
-- Both successful launches are recorded, and execution never creates scores.
+- All three launches are recorded, including the clean segment's stop reason and
+  count. The last launch handles the interrupted cell and remaining cell in their
+  original order. Execution never creates scores.
 
 `report.json`, the resolved and intentionally incompatible configurations, CLI
 logs, and all run artifacts remain in the requested directory, including on test
 failure. Run offline evaluation and analysis separately after a passing resume
 check. Report GPU model and source revision with the result; CPU regression tests
 alone do not validate this process-kill path.
+
+Use the same model and hardware across all three launches. This pilot-stage
+check can use an explicitly qualified exploratory model without claiming that
+model is selected for final evaluation. The independent combined checkpoint
+check in [checkpoint-validation.md](checkpoint-validation.md) currently uses
+Qwen3-8B. Real elapsed durations need not match across launches; compare preserved
+accounting, seeds, actions, and state rather than demanding identical wall times.
 
 On resume, `reserved_budget_seconds` records the unobserved remainder consumed
 conservatively after interruption; it is not a measured component duration.

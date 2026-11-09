@@ -57,9 +57,10 @@ authentication and pagination probes use isolated dev environments, perform only
 read operations, and never consult evaluator feedback. The GPU checks cover
 seeded sampling and RNG advancement/replay across all four sampler paths, greedy
 RNG preservation, persistent compressed KV, checkpoint replay, recovery, and live cap refusal. [engine.md](engine.md) defines their
-accounting and evidence scope. Follow [resume-validation.md](resume-validation.md)
-for the separate process interruption check; it needs a dedicated configuration
-and artifact directory.
+accounting and evidence scope. [checkpoint-validation.md](checkpoint-validation.md)
+describes the opt-in combined Runner/AppWorld/GPU branching fixture. Follow
+[resume-validation.md](resume-validation.md) for clean segmentation followed by
+process interruption; it needs a dedicated configuration and artifact directory.
 
 Then run small train/dev tasks through the execution, scoring, and analysis
 commands in [experiments.md](experiments.md). Distinguish an agent reaching
