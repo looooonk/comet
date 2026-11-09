@@ -96,6 +96,24 @@ not evidence of a model-quality or GPU-throughput effect.
 
 ![Paired recovery effects and costs](../figures/qwen9b/q1-diagnostic-blackwell-recovery.png)
 
+## Separate dev confirmation
+
+The [two-family dev confirmation](qwen9b-dev-confirmation-blackwell-summary.json)
+completed all 14 cells and 20 attempts at the same 120-second/24 GiB settings.
+Full-cache first attempts score 0/2, while N=2 oracle success is 1/2; the second
+attempt solves `396c5a2_1` within a total cell time of 64.63 seconds. Every 25%
+compressed condition fails, including AgentKV fixed and dynamic recovery.
+All five requested rebuilds are admitted. The maximum 5.55-second budget
+overshoot belongs to a timeout, and the observed GPU peak stays below 24 GiB.
+The [analysis](qwen9b-dev-confirmation-blackwell-analysis.json) and
+[six figure exports](qwen9b-dev-confirmation-blackwell-figures.json) retain all
+outcomes. This repeats the direction of the L4 dev result on the same families;
+it is not an independent larger task sample.
+
+This gate permitted freezing the unchanged three-task test matrix in
+[`final-blackwell-v1.json`](../../configs/qwen9b/final-blackwell-v1.json).
+Its three condition partitions remain queued and are not test evidence yet.
+
 ## Artifacts and limits
 
 The fresh-start run is `comet-run:d4dcbbba-3768-45fa-b490-1d6219eb6efa`; the

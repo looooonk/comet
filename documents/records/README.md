@@ -18,6 +18,9 @@
 - [Three-family Blackwell findings](qwen9b-blackwell-findings.md): 78 train
   fine-grid cells, 84 common-checkpoint branches, paired uncertainty and
   27 figure exports; analyzed separately from L4.
+- [Blackwell dev confirmation](qwen9b-dev-confirmation-blackwell-summary.json):
+  14 cells, a second-attempt full-cache success and
+  [six figure exports](qwen9b-dev-confirmation-blackwell-figures.json).
 - [Qwen3.5-9B study](qwen9b-study-2026-11-09.md): declared samples and current
   implementation/validation progress for the new hybrid backend.
 - [A6000 state check](qwen9b-a6000-state-check.json) and

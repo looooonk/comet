@@ -561,3 +561,25 @@ all depending on dev job `13842392`. They use distinct run directories and a
 locked, shared parent-freeze record. Parent/partition configurations will be
 retrieved and committed after the dev gate succeeds; submission alone is not
 final-evaluation evidence.
+
+Measured host-memory peaks are 6.72 GiB for the completed train grid, 3.31 GiB
+for Q1 and 2.94 GiB so far for dev. The scheduler's 6,400 MiB-per-CPU maximum
+explains why 24 GiB requests required four CPUs. Before any final partition
+started, its request was replaced with **12 GiB host RAM and two CPUs**,
+retaining substantial measured host-memory headroom and the same two-thread
+execution setting. This allows more identical GPUs to start despite host-CPU
+contention. The experimental 24 GiB GPU cap and all frozen scientific settings
+are unchanged. Host limits and concurrency remain explicit cohort limitations.
+
+Dev job `13842392` completed with exit zero in 33m01s, covering 14 cells and
+20 attempts. Full-cache first attempts score 0/2; its second attempt raises
+oracle success to 1/2. All compressed 25% conditions fail, and all five
+requested rebuilds are admitted. The complete output was retrieved and
+validated. The parent test configuration and its three condition subsets were
+frozen at 10:53 ET and committed before test execution. Their replacement
+requests are `13842925`, `13842926` and `13842927`; the earlier unstarted
+24 GiB host-memory requests were canceled. Current queue estimates do not yet
+guarantee all partitions can start by noon. A fresh audit also found only one
+free A6000 and one free L40S, insufficient to qualify and finish a comparable
+alternative cohort within the remaining window. No additional cloud spending
+is planned; incomplete partitions will never be reported as a completed study.

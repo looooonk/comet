@@ -147,11 +147,16 @@
         "cells": 84,
         "attempts": 84,
         "exit_code": "0:0"
+      },
+      {
+        "job_id": 13842392,
+        "elapsed_seconds": 1981,
+        "cells": 14,
+        "attempts": 20,
+        "exit_code": "0:0"
       }
     ],
     "optional_dev_job": 13842392,
-    "conditional_final_job": 13842393,
-    "final_launch_cutoff_et": "2026-11-09T10:40:00-05:00",
     "storage_audit": {
       "managed_hybrid_environment_gib_approx": 7,
       "runtime_archive_gib_approx": 7,
@@ -159,6 +164,32 @@
       "finegrid_results_mib_approx": 34,
       "diagnostic_results_mib_approx": 582,
       "additional_model_or_environment_copies": false
+    },
+    "conditional_final_jobs": [
+      13842925,
+      13842926,
+      13842927
+    ],
+    "canceled_unstarted_jobs": [
+      13842376,
+      13842384,
+      13842393,
+      13842780,
+      13842781,
+      13842782
+    ],
+    "final_initialization_cutoff_et": "2026-11-09T12:00:00-05:00",
+    "final_allocation_limit_seconds": 5100,
+    "final_cells_by_partition": [
+      33,
+      27,
+      27
+    ],
+    "optional_dev_job_status": "completed and retrieved",
+    "final_host_request": {
+      "cpus": 2,
+      "memory_gib": 12,
+      "threads": 2
     }
   },
   "local_storage": {
