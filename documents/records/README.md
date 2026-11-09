@@ -102,6 +102,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Repeated 2k history timing (2026-11-08)](history-timing-2k-2026-11-08.md) | Ninety verified passes; stable full/R-KV/AgentKV rates and preserved StreamingLLM first-use differences |
 | [Nonthinking 4B pilot plan (2026-11-08)](execution-qwen4b-instruct-2026-11-08-plan.md) | Pinned exploratory model, verified assets/template, 264 CPU checks and required live qualification before six targeted dev cells |
 | [32,600-token capacity result (2026-11-08)](history-feasibility-32600-2026-11-08.md) | Seven completed conditions and three R-KV cap failures, with verified partial measurements and all-condition coverage |
 | [Repeated history timing plan (2026-11-08)](history-timing-2026-11-08-plan.md) | Five declared lengths, 64 decode forwards and three repetitions; all repetitions retained with first-use effects visible |
