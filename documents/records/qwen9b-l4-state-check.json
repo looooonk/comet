@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "scope": "Synthetic state/reference qualification, not AppWorld task success",
+  "cloud_run": "gpu-20261109-063527-7c75c0",
+  "upstream_commit": "f87541f2073c57248ce1a3a96b48088cff1bd9a3",
+  "device": "NVIDIA L4",
+  "peak_vram_cap_bytes": 22548578304,
+  "model": "Qwen/Qwen3.5-9B",
+  "model_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+  "reference": {
+    "greedy_text": "7391",
+    "logit_cosine": 0.9989193081855774,
+    "prompt_tokens": 263,
+    "top10_overlap": 1.0
+  },
+  "passed_branches": 24,
+  "cap_refusal": true,
+  "capacity_status": "failed: full-cache long-context peak exceeded the declared cap; no task attempts ran",
+  "raw_evidence_sha256": "6c857e6029fd8dfdbaca917e62f7e0bb3797ba626638d5eee75aa864f1883da6",
+  "branches": [
+    {
+      "method": "streamingllm",
+      "retention": 0.25,
+      "rebuild_seconds": 0.3309500459999981,
+      "occupied_kv_bytes": 2260992,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "streamingllm",
+      "retention": 0.3,
+      "rebuild_seconds": 0.30931184199994277,
+      "occupied_kv_bytes": 2719744,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "streamingllm",
+      "retention": 0.4,
+      "rebuild_seconds": 0.31235884199998054,
+      "occupied_kv_bytes": 3637248,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "streamingllm",
+      "retention": 0.5,
+      "rebuild_seconds": 0.3111257330000399,
+      "occupied_kv_bytes": 4521984,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "streamingllm",
+      "retention": 0.6,
+      "rebuild_seconds": 0.30817103000003954,
+      "occupied_kv_bytes": 5439488,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "streamingllm",
+      "retention": 0.7,
+      "rebuild_seconds": 0.3068081919999486,
+      "occupied_kv_bytes": 6356992,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "streamingllm",
+      "retention": 0.8,
+      "rebuild_seconds": 0.30507488299997476,
+      "occupied_kv_bytes": 7241728,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "streamingllm",
+      "retention": 0.9,
+      "rebuild_seconds": 0.31064617499998803,
+      "occupied_kv_bytes": 8159232,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "rkv",
+      "retention": 0.25,
+      "rebuild_seconds": 0.3245897360000072,
+      "occupied_kv_bytes": 2260992,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "rkv",
+      "retention": 0.3,
+      "rebuild_seconds": 0.31500087099993834,
+      "occupied_kv_bytes": 2719744,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "rkv",
+      "retention": 0.4,
+      "rebuild_seconds": 0.3163069940000014,
+      "occupied_kv_bytes": 3637248,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "rkv",
+      "retention": 0.5,
+      "rebuild_seconds": 0.31465965100005633,
+      "occupied_kv_bytes": 4521984,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "rkv",
+      "retention": 0.6,
+      "rebuild_seconds": 0.3163143219999256,
+      "occupied_kv_bytes": 5439488,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "rkv",
+      "retention": 0.7,
+      "rebuild_seconds": 0.32007275800003754,
+      "occupied_kv_bytes": 6356992,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "rkv",
+      "retention": 0.8,
+      "rebuild_seconds": 0.3241503830000738,
+      "occupied_kv_bytes": 7241728,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "rkv",
+      "retention": 0.9,
+      "rebuild_seconds": 0.350947996000059,
+      "occupied_kv_bytes": 8159232,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "agentkv",
+      "retention": 0.25,
+      "rebuild_seconds": 0.3127559629999723,
+      "occupied_kv_bytes": 2260992,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "agentkv",
+      "retention": 0.3,
+      "rebuild_seconds": 0.3141227359999448,
+      "occupied_kv_bytes": 2719744,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "agentkv",
+      "retention": 0.4,
+      "rebuild_seconds": 0.3103613300000916,
+      "occupied_kv_bytes": 3637248,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "agentkv",
+      "retention": 0.5,
+      "rebuild_seconds": 0.3095716469999843,
+      "occupied_kv_bytes": 4521984,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "agentkv",
+      "retention": 0.6,
+      "rebuild_seconds": 0.3155187950000027,
+      "occupied_kv_bytes": 5439488,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "agentkv",
+      "retention": 0.7,
+      "rebuild_seconds": 0.3132129680000162,
+      "occupied_kv_bytes": 6356992,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "agentkv",
+      "retention": 0.8,
+      "rebuild_seconds": 0.31404059600004075,
+      "occupied_kv_bytes": 7241728,
+      "recurrent_state_bytes": 51904512
+    },
+    {
+      "method": "agentkv",
+      "retention": 0.9,
+      "rebuild_seconds": 0.3099919269999418,
+      "occupied_kv_bytes": 8159232,
+      "recurrent_state_bytes": 51904512
+    }
+  ]
+}

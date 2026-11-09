@@ -2,6 +2,9 @@
 
 - [Qwen3.5-9B study](qwen9b-study-2026-11-09.md): declared samples and current
   implementation/validation progress for the new hybrid backend.
+- [A6000 state check](qwen9b-a6000-state-check.json) and
+  [L4 state check](qwen9b-l4-state-check.json): compact reference, state and
+  capacity evidence, including the L4 capacity failure.
 
 - [Legacy results](legacy-results.md): useful findings, two retained cost figures,
   limitations, and links to archived evidence.

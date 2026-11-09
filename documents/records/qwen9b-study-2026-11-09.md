@@ -177,3 +177,11 @@ its reserved pool consume the full initial free allowance. The experimental
 cap remains 21 GiB, and failed capacity evidence is retained. The next focused
 rerun keeps three method branches and all four capacity checks; it need not
 repeat all 24 already-passed short-history retention branches.
+The [portable L4 state record](qwen9b-l4-state-check.json) preserves the measured
+reference and branch results and identifies the raw evidence.
+
+The capacity repair runs as `gpu-20261109-065347-42f701`, source `3cc4f27`.
+The prior launch was fetched and its VM, disk, job and live cloud prefix were
+removed. The new launch retains the one-hour limit and zero retries. At the
+unchanged conservative $5 reservation per launch, $30 is reserved including
+the historical $10, leaving $10 uncommitted pending reconciliation.
