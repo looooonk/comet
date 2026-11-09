@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "study_id": "qwen9b-test50-finegrid-blackwell-v1",
+  "status": "submitted_not_completed",
+  "recorded_at_utc": "2026-11-09T20:55:42.755585+00:00",
+  "execution_source_commit": "068f9b75487cd5d6c997f63b8450e91a47684e66",
+  "configuration_commit": "f3b75b21a00b8821c7c3ad054d0e66ea9e0bb2ec",
+  "source_checkout_policy": "Execution checkout stays pinned to execution_source_commit throughout qualification, inference and scoring. Configuration files are staged verbatim from configuration_commit; later documentation-only commits are not deployed to the running checkout.",
+  "study_config_digest": "c90f3b78e107c74429bd9940a4905c1b1d86b5679ba6bec9e3d83456704a09b7",
+  "task_count": 50,
+  "family_count": 50,
+  "condition_count": 26,
+  "seed": 17,
+  "cells": 1300,
+  "partition_cells": [
+    200,
+    200,
+    150,
+    150,
+    150,
+    150,
+    150,
+    150
+  ],
+  "partition_count": 8,
+  "jobs": {
+    "cpu_setup_and_checks": {
+      "job_id": 13844476,
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "passed": 349,
+      "skipped": 2,
+      "deselected": 17
+    },
+    "gpu_array": {
+      "job_id": 13844484,
+      "indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "concurrency_limit": 8,
+      "state_at_audit": "PENDING",
+      "per_worker": {
+        "gpus": 1,
+        "gpu_model": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+        "gres": "gpu:R6000:1",
+        "constraint": "R6000",
+        "cpus": 4,
+        "host_memory_gib": 24,
+        "cpu_threads": 4,
+        "allocation_limit_seconds": 30600,
+        "experimental_cell_budget_seconds": 120,
+        "experimental_peak_vram_gib": 24
+      }
+    },
+    "offline_scoring_and_plots": {
+      "job_id": 13844488,
+      "state_at_audit": "PENDING",
+      "dependencies_afterok": [
+        13844484,
+        13844476
+      ],
+      "kill_on_invalid_dependency": true,
+      "cpus": 4,
+      "host_memory_gib": 24,
+      "allocation_limit_seconds": 7200
+    }
+  },
+  "scheduler": {
+    "account": "edu",
+    "partition": "short",
+    "qos": "free",
+    "automatic_requeue": false,
+    "initial_array_partition": "burst",
+    "initial_array_qos": "burst",
+    "pending_request_adjustment": "Moved the unstarted array to the previously used short/free queue and added the explicit R6000 feature constraint. No experiment settings or budgets changed. The queue can preempt jobs; interruptions remain failures without replacement budgets."
+  },
+  "validation_gate": "Each worker must pass the live 24 GiB/16K state, numerical, retention-grid, AppWorld and process-resume checks, then execute and separately score its four-cell dev smoke before entering final test execution. No success-rate gate changes the frozen test design.",
+  "submission_artifacts": {
+    "worker.sh": {
+      "bytes": 2340,
+      "sha256": "936ebcac6353501b2fde09758db55c63685e618499db4deb55ed92c645b73dc1"
+    },
+    "score.sh": {
+      "bytes": 794,
+      "sha256": "074314faf6c0ccae663c90dc6a9d6e6856072b1a83e8c8f56762d5dab2809fff"
+    },
+    "dev-smoke.json": {
+      "bytes": 5373,
+      "sha256": "a1248829eda4d98f0563e83ba320e27e2ca882032c040fdcf0f4148015711d46"
+    },
+    "resume-check.json": {
+      "bytes": 5138,
+      "sha256": "15616b080a03a4e4c67aad9f858276ee5fe46c221e622b127a06fbae7e51dda4"
+    }
+  },
+  "storage_audit": {
+    "shared_filesystem_free_tib_approx": 7.5,
+    "project_user_usage_gib_approx": 70.8,
+    "project_user_block_quota": "none reported",
+    "project_user_inode_quota": "none reported",
+    "persistent_model_and_hybrid_runtime_reused": true,
+    "new_cpu_plot_runtime": true,
+    "job_local_model_and_runtime_staging": true
+  },
+  "eta": {
+    "timezone": "America/New_York",
+    "forecast_basis": "Scheduler test-only forecasts for the same one-GPU request and an aggregate eight-GPU request; these are estimates, not reservations or actual start timestamps. Submitted array start times were still unknown at the audit.",
+    "one_gpu_forecast": "2026-11-09T16:16:42-05:00",
+    "eight_gpu_forecast": "2026-11-09T16:28:20-05:00",
+    "target_completed_plots": "2026-11-10T00:30:00-05:00",
+    "conditional_on": "All workers starting around 16:15-16:30 ET, live checks passing, and no scheduler preemption. Queue delays or failed checks shift or invalidate this estimate.",
+    "longest_partition_nominal_cell_seconds": 24000,
+    "qualification_staging_allowance_seconds": 1800,
+    "offline_scoring_plot_allowance_seconds": 2700
+  },
+  "outputs": [
+    "analysis.json",
+    "aggressivity.png",
+    "aggressivity.pdf",
+    "resources.png",
+    "resources.pdf"
+  ],
+  "results_claim": "No new final-task results are claimed by this submission record."
+}

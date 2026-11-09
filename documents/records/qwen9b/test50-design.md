@@ -68,3 +68,27 @@ Local managed CPU checks at execution source `068f9b7` passed 349 tests, with tw
 optional Torch modules skipped and 17 live tests deselected. This establishes
 CPU regression coverage only; submitted live checks are separate evidence.
 Job IDs, actual starts and completion estimates belong in the submission record.
+
+## Submission
+
+The [submission record](test50-submission.json) identifies GPU array `13844484`
+(eight one-GPU workers) and dependent offline scoring/plotting job `13844488`.
+CPU setup/check job `13844476` completed successfully on Insomnia, repeating
+the 349-pass CPU suite. The GPU requests were moved, while still unstarted, to
+the previously used `short` partition and `free` QoS with an explicit `R6000`
+constraint. These allocations can be preempted; interrupted cells retain their
+failure and budget charges, and automatic requeue is disabled.
+
+Execution source remains pinned to `068f9b7`; the frozen configurations are
+committed in `f3b75b2` and staged separately without changing their resolved
+digests. Do not update the remote execution checkout while any study job remains
+queued or running. Each worker has its own live-check, dev-smoke and final-run
+directories. Shared source, immutable runtime archive and model caches are reused.
+
+At submission, the scheduler's matching-request forecasts were approximately
+16:17 ET for one GPU and 16:28 ET for eight GPUs on November 9. The array itself
+was still pending without committed start timestamps. The planning target for
+completed plots is **00:30 ET on November 10**, conditional on roughly those
+starts, passing validation and no preemption. This includes the longest 6h40m
+nominal cell budget, 30 minutes of setup/qualification and 45 minutes of scoring
+and plotting. Scheduler forecasts are not capacity reservations.
