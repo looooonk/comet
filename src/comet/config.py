@@ -60,6 +60,7 @@ class Condition:
 @dataclass(frozen=True)
 class AgentProtocol:
     max_consecutive_errors: int = 0
+    require_executable: bool = False
 
 
 @dataclass(frozen=True)
@@ -148,6 +149,8 @@ class Experiment:
         _number(self.agent.max_consecutive_errors, "max_consecutive_errors", 0)
         if not isinstance(self.agent.max_consecutive_errors, int):
             raise ValueError("max_consecutive_errors must be an integer")
+        if not isinstance(self.agent.require_executable, bool):
+            raise ValueError("require_executable must be boolean")
         if self.triggers.dynamic_rule not in {"and", "or"}:
             raise ValueError("dynamic_rule must be and or or")
         if self.engine.dtype != "bfloat16":
@@ -199,6 +202,8 @@ class Experiment:
         data = asdict(self)
         if self.engine.device_name is None:
             del data["engine"]["device_name"]
+        if not self.agent.require_executable:
+            del data["agent"]["require_executable"]
         return data
 
     @property

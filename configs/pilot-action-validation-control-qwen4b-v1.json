@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "experiment_id": "pilot-action-validation-control-qwen4b-v1",
+  "stage": "pilot",
+  "split": "dev",
+  "task_ids": [
+    "23cf851_1"
+  ],
+  "seeds": [
+    17,
+    18
+  ],
+  "budget_seconds": 600,
+  "peak_vram_bytes": 42949672960,
+  "max_attempts": 1,
+  "engine": {
+    "model": "Qwen/Qwen3-4B-Instruct-2507",
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "tokenizer_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "dtype": "bfloat16",
+    "max_context_tokens": 32768,
+    "workspace_reserve_bytes": 6442450944,
+    "prefill_chunk_tokens": 256,
+    "device_name": "NVIDIA RTX A6000"
+  },
+  "sampling": {
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "max_new_tokens": 4096,
+    "enable_thinking": false
+  },
+  "triggers": {
+    "fixed_tool_calls": 2,
+    "dynamic_context_tokens": 2048,
+    "dynamic_tool_calls": 2,
+    "dynamic_rule": "and"
+  },
+  "conditions": [
+    {
+      "id": "full_once",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    }
+  ],
+  "prompt": "You are operating a live AppWorld environment to carry out the user's task. Each response is executed immediately. Return exactly one fenced python code block. The persistent Python variable apis is ready to use. Variables survive between turns. Tool observations contain stdout, so print anything you need to inspect.\n\nWork in short steps using actual observations. Your first action should inspect the available APIs for a relevant app with print(apis.api_docs.show_api_descriptions(app_name=\"APP\")), replacing APP with an app from the task. Before using an unfamiliar endpoint, inspect its complete signature with print(apis.api_docs.show_api_doc(app_name=\"APP\", api_name=\"ENDPOINT\")). End the code block after the documentation query and wait for its result. API descriptions list names; the full API doc supplies arguments, return shapes, authentication requirements and pagination. Use those documented details before executing the endpoint.\n\nExecute working Python that advances the task. Never substitute sample recipients, invented IDs, placeholder data, hypothetical authentication, or comments describing work for real operations. Save returned objects in variables and inspect their actual values. Select account passwords by the exact app name. Authenticate with that app's documented login endpoint and username type. Store the returned access_token and pass it explicitly wherever the signature requires it. Login does not establish an implicit session. Do not invent response fields or assume that a missing status field means login failed.\n\nKeep the user's requested entities, source collections, relationship filters and required effects in view. Traverse documented pagination until all relevant records have been inspected. Use the documented operation that performs the requested effect; writing a URL to a file or printing a confirmation does not perform a different operation. After an error, read the error, inspect the relevant signature or response, and fix that specific assumption. Earlier calls in a failed block may already have taken effect. Avoid repeating an unchanged failing block.\n\nBefore calling apis.supervisor.complete_task, verify each requested effect against ordinary API observations. Only claim success when the requested work has been performed. If necessary information is missing, use another documentation or inspection call. Do not end the task merely because code executed without an error.",
+  "checkpoint_after_tool_calls": null,
+  "frozen": null,
+  "notes": "Predeclared targeted dev protocol diagnostic following ordinary observations of comment-only loops in the independent broader 4B baseline. Task 23cf851_1 and seeds 17/18 remain paired across two fresh arms on the same new source/runtime and A6000. Only require_executable changes; prompt, model, sampling, context, cap, N=1 and 600-second cell budgets are unchanged. No bounded correction guidance or error-streak cutoff is enabled. All four cells must execute before either arm is scored. Preserve loops, failures and budget charges; do not splice cells from the ongoing broader run. This targeted regression does not establish broad capability or qualify a final model. Numerical evidence must be explicitly reviewed for the new source, with unchanged engine/dependency identities and actual runtime checks.",
+  "agent": {
+    "max_consecutive_errors": 0
+  }
+}

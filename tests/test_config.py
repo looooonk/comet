@@ -57,6 +57,38 @@ def test_agent_failure_limit_is_explicit_nonnegative_integer(limit):
         Experiment.from_dict(raw)
 
 
+@pytest.mark.parametrize("value", [0, 1, None, "true"])
+def test_executable_action_requirement_rejects_nonboolean_values(value):
+    base = Experiment.load(Path(__file__).resolve().parents[1] / "configs/pilot-smoke.json")
+    assert base.agent.require_executable is False
+    raw = base.to_dict()
+    raw["agent"] = {"require_executable": value}
+    with pytest.raises(ValueError, match="require_executable"):
+        Experiment.from_dict(raw)
+
+
+def test_executable_action_option_preserves_historical_identity_until_enabled():
+    base = Experiment.load(Path(__file__).resolve().parents[1] /
+                           "configs/pilot-execution-candidate-qwen4b-instruct-v1.json")
+    assert base.digest == "31986e7f626c07ba42da89ded3d716b826a3bea8c9f043a377e19f510d420855"
+    candidate = replace(base, agent=replace(base.agent, require_executable=True))
+    assert candidate.agent.max_consecutive_errors == 0
+    assert candidate.digest != base.digest
+    assert candidate.settings_digest != base.settings_digest
+    assert Experiment.from_dict(candidate.to_dict()) == candidate
+
+
+def test_action_validation_diagnostic_changes_only_executable_requirement():
+    root = Path(__file__).resolve().parents[1] / "configs"
+    control = Experiment.load(root / "pilot-action-validation-control-qwen4b-v1.json")
+    candidate = Experiment.load(root / "pilot-action-validation-candidate-qwen4b-v1.json")
+    assert replace(candidate, experiment_id=control.experiment_id, agent=control.agent) == control
+    assert control.agent.require_executable is False
+    assert candidate.agent.require_executable is True
+    assert candidate.agent.max_consecutive_errors == 0
+    assert control.task_ids == ["23cf851_1"] and control.seeds == [17, 18]
+
+
 def test_corrected_sampler_protocol_comparison_changes_only_agent_policy():
     root = Path(__file__).resolve().parents[1] / "configs"
     control = Experiment.load(root / "pilot-sampling-control-qwen8b.json")

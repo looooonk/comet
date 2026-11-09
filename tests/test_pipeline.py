@@ -262,6 +262,51 @@ def test_agent_failure_limit_preserves_budget_history_and_checkpoint_state(
         assert attempt["timings"]["shared_checkpoint_preparation"] > 0
 
 
+@pytest.mark.parametrize("require_executable", [False, True])
+def test_comment_validation_can_continue_without_an_error_cutoff(config, tmp_path, require_executable):
+    config = replace(config, agent=AgentProtocol(require_executable=require_executable),
+                     max_attempts=1, conditions=[Condition("full_once", "full", 1.0, "never", 1)])
+    clock, environments, actions, observations = Clock(), [], [], []
+    engine = FakeEngine(clock)
+    responses = iter(["```python\n# unable to authenticate\n```"] * 6 + ["```python\nvalue = 1\n```"])
+    engine.tokenizer.decode = lambda *a, **kw: next(responses)
+
+    def encode(text, **kwargs):
+        observations.append(text)
+        return [20]
+
+    engine.tokenizer.encode = encode
+
+    class ObservedEnvironment(FakeEnvironment):
+        def execute(self, action, **kwargs):
+            super().execute(action, **kwargs)
+            actions.append(action)
+            return "Execution successful."
+
+        def completed(self):
+            return bool(actions and actions[-1] == "value = 1")
+
+    manifest = Runner(config, tmp_path, lambda _: engine,
+                      lambda: ObservedEnvironment(clock, environments), clock=clock).run()
+    cell = read_json(tmp_path / manifest["cells"][0]["path"])
+    assert len(cell["attempts"]) == 1
+    attempt = cell["attempts"][0]
+    assert attempt["status"] == "completed"
+    assert attempt["tool_calls"] == len(actions) == (1 if require_executable else 7)
+    trajectory = read_json(tmp_path / attempt["artifact_dir"] / "trajectory.json")
+    assert len(trajectory["turns"]) == 7
+    assert attempt["timings"]["inference"] == 14
+    assert attempt["timings"]["tool"] == 3 * len(actions)
+    assert all("agent_feedback" not in turn for turn in trajectory["turns"])
+    if require_executable:
+        assert actions == ["value = 1"]
+        assert all(turn["action"] is None for turn in trajectory["turns"][:6])
+        assert all("Invalid action:" in text and "comment-only" in text for text in observations[:6])
+    else:
+        assert actions[:6] == ["# unable to authenticate"] * 6
+        assert all("Execution successful." in text for text in observations)
+
+
 def test_agent_successful_execution_resets_error_streak(config, tmp_path):
     bounded = replace(config, agent=AgentProtocol(3), max_attempts=1,
                       conditions=[Condition("full_once", "full", 1.0, "never", 1)])

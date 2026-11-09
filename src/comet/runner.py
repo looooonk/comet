@@ -569,7 +569,8 @@ class Runner:
             response = engine.tokenizer.decode(result["token_ids"], skip_special_tokens=True)
             try:
                 action = parse_action(
-                    response, require_executable=bool(self.config.agent.max_consecutive_errors)
+                    response, require_executable=(self.config.agent.require_executable
+                                                  or bool(self.config.agent.max_consecutive_errors))
                 )
             except ValueError as error:
                 action, observation = (

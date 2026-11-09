@@ -1,7 +1,8 @@
 # Agent execution protocol
 
 The shared runner supports a versioned, opt-in correction policy through
-`agent.max_consecutive_errors`. Omitted or zero preserves the legacy protocol.
+`agent.max_consecutive_errors`. Omitted or zero preserves the legacy protocol
+unless the independent action-validation option below is enabled.
 A positive integer enables all of the following for every inference method:
 
 - Reject a Python block containing only comments before executing it.
@@ -27,7 +28,22 @@ unproductive successful action: repeatedly printing an unchanged value can still
 use up the task budget. Correction messages explicitly warn that earlier actions
 in a failed block may already have taken effect.
 
-The agent setting participates in configuration hashes, checkpoint/run
+`agent.require_executable: true` independently rejects empty/comment-only
+Python bodies with an ordinary `Invalid action:` observation. It leaves
+`max_consecutive_errors: 0` available: invalid responses consume generation,
+context and bookkeeping budget, but do not execute tools, increment tool counts,
+add bounded-correction guidance, or terminate an attempt early. A subsequent
+valid block can continue normally. This checks for a Python statement, not
+whether that statement will accomplish useful work; `pass`, docstrings and
+unchanged inspection calls are not semantic progress checks.
+
+The new option defaults to false and is omitted from canonical serialization
+when false, preserving historical configuration and freeze digests. A positive
+error limit still rejects comment-only blocks regardless of this option, so the
+earlier bounded policy keeps its meaning. Enabling the new option defines a
+separate protocol version and must not mutate a running or completed baseline.
+
+Both agent settings participate in configuration hashes, checkpoint/run
 compatibility, and the final-settings freeze. It must be shared across compared
 retention conditions. Changing it defines a new experiment version.
 

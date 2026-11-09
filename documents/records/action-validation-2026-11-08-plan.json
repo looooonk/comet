@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "status": "cpu_validated_pilot_not_launched",
+  "classification": "independent_action_validation_protocol",
+  "ordinary_observation_source": {
+    "job_id": "13840259",
+    "split": "dev",
+    "task_id": "23cf851_1",
+    "seed": 17,
+    "online_evaluator_used": false,
+    "snapshot": {
+      "file": "trajectory-prefix-23cf851_1-seed17.json",
+      "bytes": 510915,
+      "sha256": "632f5525da797a538735101f17874a621da58e442ae82aae021484a3f7caacdd",
+      "tool_calls": 194,
+      "raw_tokens": 28288
+    },
+    "audit_sha256": "e6600fb37d3b7b5ddcb14644cb7eed48e5ba35ead61a35a778f594ee0fc0add6",
+    "artifact_group": "qwen4b-broad-13840259"
+  },
+  "observed_mechanism": {
+    "snapshot_tool_blocks": 194,
+    "snapshot_raw_tokens": 28288,
+    "continuous_comment_only_suffix_blocks": 184,
+    "completion_call_before_loop": false,
+    "comment_only_observation": "Execution successful.",
+    "cause": "Legacy executable-body validation is enabled only with a positive error-streak limit; the no-cutoff baseline accepts valid comment-only Python."
+  },
+  "implementation": {
+    "new_setting": "agent.require_executable",
+    "default": false,
+    "default_serialization": "omit false to preserve historical digests",
+    "enabled_behavior": "Reject comment-only Python with an ordinary Invalid action observation, without invoking AppWorld or incrementing tool calls. Retain generation/context/bookkeeping charges.",
+    "max_consecutive_errors": 0,
+    "bounded_correction_guidance": false,
+    "early_error_cutoff": false,
+    "semantic_progress_detection": false,
+    "legacy_positive_limit_behavior": "unchanged"
+  },
+  "diagnostic": {
+    "arms": [
+      "control",
+      "candidate"
+    ],
+    "tasks": [
+      "23cf851_1"
+    ],
+    "seeds": [
+      17,
+      18
+    ],
+    "cells": 4,
+    "changed_protocol_fields": [
+      "agent.require_executable"
+    ],
+    "model": "Qwen/Qwen3-4B-Instruct-2507",
+    "device": "NVIDIA RTX A6000",
+    "cap_bytes": 42949672960,
+    "cell_budget_seconds": 600,
+    "max_attempts": 1,
+    "all_four_cells_before_scoring": true,
+    "source_runtime_requirement": "same validated new source/runtime for both arms; no cells spliced from the ongoing broader baseline",
+    "claim_limit": "Targeted regression, not broad capability or final qualification."
+  },
+  "validation": {
+    "managed_cpu_tests_passed": 323,
+    "torch_module_skipped": 1,
+    "live_tests_deselected": 14,
+    "final_config_checks_passed": 16,
+    "historical_4b_config_digest_preserved": "31986e7f626c07ba42da89ded3d716b826a3bea8c9f043a377e19f510d420855",
+    "artifact_group": "checks/independent-action-validation-20261108",
+    "pytest_xml_sha256": "b56b70e41ac2e46235e78d7bf96478d4630babab658dedca197ce2599ff27314",
+    "live_protocol_validation": "pending"
+  }
+}
