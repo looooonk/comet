@@ -30,7 +30,7 @@ def test_retention_uses_full_logical_denominator_and_includes_mandatory_entries(
 
 
 @pytest.mark.parametrize("method", ["streamingllm", "rkv", "agentkv"])
-@pytest.mark.parametrize("retention", [0.8, 0.5, 0.25])
+@pytest.mark.parametrize("retention", [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25])
 def test_retention_growth_never_requires_inventing_previously_evicted_entries(method, retention):
     previous = 0
     for tokens in range(1, 1001):
@@ -38,6 +38,19 @@ def test_retention_growth_never_requires_inventing_previously_evicted_entries(me
         assert previous <= current <= previous + 1
         assert current <= tokens
         previous = current
+
+
+@pytest.mark.parametrize("retention", [True, False, "0.5", 0, 1, -0.1, 1.1, float("nan"), float("inf")])
+def test_compressed_retention_rejects_invalid_fractions(retention):
+    with pytest.raises(ValueError, match="retention"):
+        retention_target(100, retention, "agentkv")
+
+
+def test_intermediate_retention_uses_exact_decimal_rounding():
+    assert retention_target(100, 0.7, "rkv") == 70
+    assert retention_target(101, 0.7, "rkv") == 71
+    assert retention_target(101, 0.3, "streamingllm") == 31
+    assert retention_target(20, 0.3, "agentkv") == 20
 
 
 def test_settings_reject_unpinned_model_or_invalid_control():

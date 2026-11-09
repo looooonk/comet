@@ -6,7 +6,7 @@ import math
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
-from comet.engine.contracts import validate_model
+from comet.engine.contracts import retention_target, validate_model
 
 
 def digest(value: object) -> str:
@@ -176,11 +176,10 @@ class Experiment:
                 raise ValueError(f"Unknown eviction method: {c.method}")
             if c.recovery not in {"never", "fixed", "dynamic"}:
                 raise ValueError(f"Unknown recovery policy: {c.recovery}")
+            retention_target(0, c.retention, c.method)
             if c.method == "full":
                 if c.retention != 1 or c.recovery != "never":
                     raise ValueError("Full-cache controls disable eviction and recovery")
-            elif c.retention not in {0.8, 0.5, 0.25}:
-                raise ValueError("Compressed retention must be 0.8, 0.5, or 0.25")
             if (
                 isinstance(c.max_attempts, bool)
                 or not isinstance(c.max_attempts, int)

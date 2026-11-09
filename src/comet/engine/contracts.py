@@ -45,12 +45,14 @@ def retention_target(logical_tokens: int, retention: float, method: str) -> int:
     """Count per layer/head; mandatory entries are included in the denominator."""
     if method not in METHODS or logical_tokens < 0:
         raise ValueError("invalid method or logical token count")
+    if isinstance(retention, bool) or not isinstance(retention, (int, float)):
+        raise ValueError("retention must be numeric")
     if method == "full":
         if retention != 1:
             raise ValueError("full cache requires retention=1")
         return logical_tokens
-    if retention not in (0.8, 0.5, 0.25):
-        raise ValueError("compressed retention must be 0.8, 0.5, or 0.25")
+    if not 0 < retention < 1:
+        raise ValueError("compressed retention must be strictly between 0 and 1")
     fraction = Fraction(str(retention))
     requested = (logical_tokens * fraction.numerator + fraction.denominator - 1) // fraction.denominator
     mandatory = {"streamingllm": 16, "rkv": 8, "agentkv": 24}[method]

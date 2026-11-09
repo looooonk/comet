@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from comet.config import Experiment
+from comet.config import Condition, Experiment, comparison_matrix
 from comet.engine.contracts import MODEL_PROFILES, MODEL_REVISION
 
 
@@ -66,3 +66,15 @@ def test_corrected_sampler_protocol_comparison_changes_only_agent_policy():
     assert control.agent.max_consecutive_errors == 0
     assert candidate.agent.max_consecutive_errors == 5
     assert candidate.seeds == [17, 18] and len(candidate.task_ids) == 3
+
+
+def test_declared_intermediate_retention_keeps_core_matrix_unchanged():
+    base = Experiment.load(Path(__file__).resolve().parents[1] / "configs/pilot-smoke.json")
+    conditions = [Condition(f"agentkv_{percent}", "agentkv", percent / 100, "never", 1)
+                  for percent in (25, 30, 40, 50, 60, 70, 80, 90)]
+    granular = replace(base, experiment_id="declared-granularity-fixture", conditions=conditions)
+    granular.validate()
+    assert Experiment.from_dict(granular.to_dict()) == granular
+    core = comparison_matrix(3)
+    assert len(core) == 29
+    assert {condition.retention for condition in core if condition.method != "full"} == {0.8, 0.5, 0.25}

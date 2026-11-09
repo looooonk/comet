@@ -5,6 +5,10 @@ proposal remains the research contract. The sample configurations are explicitly
 provisional train/dev settings; they are runnable examples, not measured or
 frozen research choices.
 
+The [experiment resolution guide](experimental-resolution.md) describes
+authorized supplemental retention, runtime-budget and trigger sweeps. Keep the
+required core comparisons and declare each added grid before execution.
+
 ## Start small
 
 Follow [setup.md](setup.md) to install the pinned engine and AppWorld data, then:

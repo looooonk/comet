@@ -40,6 +40,8 @@ The user authorized adequately sized alternative GPUs for pilots and final evalu
 
 Retention is the fraction of KV entries that full-cache inference would store at the same step, not a fraction of GPU capacity or a shortened text prompt. Record the rounding and accounting conventions, including any mandatory retained entries, so all methods use the same denominator. Keep the full-cache control separate from compressed conditions.
 
+The user also authorized finer experiment settings. Follow [documents/experimental-resolution.md](documents/experimental-resolution.md): retain the required retention anchors and core matrices, add explicitly declared supplemental retention/runtime/trigger points on train/dev, and freeze any final additions before test evaluation. Do not modify active configurations or select favorable test outcomes.
+
 The proposal cites these implementation revisions as starting points:
 
 - [AgentKV](https://github.com/LiuTaowen-Tony/agentkv/tree/b5280b7c42bd90962712c19f8e0047c89ca40d6d): `b5280b7c42bd90962712c19f8e0047c89ca40d6d`.
