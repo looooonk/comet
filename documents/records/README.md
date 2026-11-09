@@ -10,6 +10,12 @@ and validated; previously missing mutations are now recognized. Originals remain
 unchanged. These are useful failure diagnostics, but a stronger execution baseline
 is still needed before expanding task-success comparisons.
 
+The [nonthinking 4B targeted pilot](execution-qwen4b-instruct-2026-11-08-results.md)
+also scored 0/6, with all attempts completing normally. Exact transcript and
+observation checks found no missing documentation or transport mismatch. Its
+broader predeclared dev sample remains outstanding; the targeted result does
+not establish population-level capability.
+
 The [five-point matched-history cost study](history-timing-grid-2026-11-08.md)
 completed 150 cells and 450 passes over 2,048 through 16,384 tokens, with all raw
 repetitions retained. Main throughput and total-memory figures have PNG, SVG and
@@ -103,11 +109,14 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Combined checkpoint/branch validation (2026-11-08)](checkpoint-branch-validation-2026-11-08.json) | Live full/AgentKV50 branches restored identical state, consumed pending observations once and recovered without replay; forced-output integration only |
+| [4B targeted pilot results (2026-11-08)](execution-qwen4b-instruct-2026-11-08-results.md) | Six normal completions, corrected 0/6 scores and complete 69-turn transcript audit; broader capability remains open |
+| [Live segmentation and interruption validation (2026-11-08)](resume-validation-2026-11-08.md) | Real 8B CLI clean stop, process kill, unchanged completed artifacts, conservative interruption charging and isolated fresh continuation; no task scores |
 | [4B L40 numerical diagnosis (2026-11-08)](qwen4b-l40-numerical-diagnosis-2026-11-08.md) | All structural checks passed; two native-versus-FP32 JS exceedances remain, with no task-pilot qualification or threshold change |
 | [Eight-level native CPU retention validation (2026-11-08)](native-retention-grid-2026-11-08.json) | 26 native selector/accounting checks passed in a separate current-source runtime; 333 total passes, nine rendering skips, no new-level GPU qualification |
 | [Five-point inference cost study (2026-11-08)](history-timing-grid-2026-11-08.md) | 150 cells, 450 passes, verified repetitions and clean main/supplemental figures in PNG/SVG/PDF |
 | [Repeated 16k history timing (2026-11-08)](history-timing-16k-2026-11-08.md) | Final ninety passes; verified throughput, transient memory and complete five-length coverage |
-| [Checkpoint fixture repair (2026-11-08)](checkpoint-integration-2026-11-08.json) | Preserved prohibited-import failure, supported action repair and passed real AppWorld syntax check; live branching retry pending |
+| [Checkpoint fixture repair (2026-11-08)](checkpoint-integration-2026-11-08.json) | Preserved prohibited-import failure, supported action repair and passed real AppWorld syntax check; successful live retry is recorded separately |
 | [4B bounded pilot qualification (2026-11-08)](qwen4b-pilot-numerical-qualification-2026-11-08.md) | 278 integration checks, preserved failed screens and both FP32 calibrations support the six-cell exploratory pilot |
 | [Repeated 12k history timing (2026-11-08)](history-timing-12k-2026-11-08.md) | Ninety verified passes, retained variation and non-monotone memory; final 16k point submitted |
 | [Repeated 8k history timing (2026-11-08)](history-timing-8k-2026-11-08.md) | Ninety verified passes, three-length curves, retained timing variation and non-monotone reservation peaks |

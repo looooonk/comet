@@ -1,0 +1,409 @@
+{
+  "schema_version": 1,
+  "record_date": "2026-11-08",
+  "status": "passed",
+  "kind": "combined_checkpoint_branch_integration",
+  "artifact_group": "checkpoint-launch-dd2d3df-fd6ee15/completed-13839712",
+  "integration_only": true,
+  "forced_outputs": true,
+  "task_success_claim": false,
+  "job": {
+    "id": "13839712",
+    "scheduler_state": "COMPLETED",
+    "scheduler_exit_code": "0:0",
+    "elapsed_seconds": 216,
+    "pytest_passed": 1,
+    "pytest_skipped": 0,
+    "pytest_seconds": 207.18,
+    "gpu": "NVIDIA RTX A6000",
+    "gpu_count": 1,
+    "cpus": 6,
+    "host_memory_gib": 32,
+    "allocation_limit_seconds": 1500,
+    "child_limit_seconds": 900,
+    "checks_limit_seconds": 990
+  },
+  "source": {
+    "validation_commit": "dd2d3df166270249c989319bef1289068f47d168",
+    "engine_commit": "fd6ee15be5b98db00ef687d43cc66cc6a8a2cb5c",
+    "fixture_sha256": "a1538d1f509a7a1fba8e6edff8290220884c6d240f969810ebd9c6522e4074f9",
+    "runtime_marker_sha256": "1501cb06b05fcc086ef5e404df0807c318907a3974b8c8fd94ba99c1de4eaa23",
+    "engine_file_sha256": {
+      "src/comet/runner.py": "720112d6bfa9f8f93e24eda82620ef76f1ab2e261d6f5f3d301e51472f60648e",
+      "src/comet/appworld.py": "b83b1a66a7e747aa432728aa4f259b2cc7b9a75b42e121e98074bbb9bae29295",
+      "src/comet/diagnostic.py": "df80d9daea22b44c9170a54ce3a00d81bd2bf7cd5cd07f47ba1e345b29c99753",
+      "src/comet/budget.py": "1a8f1b57db3f55bef29e713e39ebc589be1a1d7488466e79100946b90c4daeac",
+      "src/comet/config.py": "ce42b8da6d4e509e7f39cd04125d92dd968ee75bab58a1af01e1379e05177643",
+      "src/comet/history_benchmark.py": "93946a00b2998359b04df27b10eae6135ea5ad6f2235d48ef54c6d73d4b81741",
+      "src/comet/engine/native.py": "b6cb86e1d59685ba9cba4444e2b96afaf5bd9caefb7022ad08b8a73348a95613",
+      "src/comet/engine/snapshot.py": "c2cb2c7c6e2ba927a69f98cbfbf00f919a63105605d1d295f30833a4b392c182",
+      "src/comet/engine/contracts.py": "e65dbe0fe5ffcf99e5605e82a6f6f2872b2f7ab8d87d9e33cd3c0b1eddc0910f",
+      "src/comet/engine/_pins.py": "3664ee99b389f5a805864c39f90099e9b5b8af22a656a4d86613c895a233e75f",
+      "scripts/run_checks.sh": "815e3f07691184e776020b2167d8f6754c6813661a205c44538314f2c9aa00b7",
+      "scripts/activate_runtime.sh": "18cc95b98b662e408972abd62778f2f8e1c3a8c8e9c9fa03797dfb85ebdaf2eb",
+      "pyproject.toml": "bdad942853420e902c85a7780a9da56f76e239a4bdde3131e3bda445d01629e0",
+      "configs/pilot-smoke.json": "f92bec70e266b2a5531c3517b9f73bbfe5d3e91767905f49791442e6b9ee9996"
+    },
+    "minisgl_revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
+    "patch_file_sha256": {
+      "engine/engine.py": "1871c222c7b28d39ce73623358efa232f97b431fd76aa8bcfedec7c5793822e9",
+      "engine/sample.py": "ccfb29c95a1ede76128348dde1a2f4a645ece5c4105aa89610a9ae6579b1c860",
+      "eviction/manager.py": "763c71a879e9e26e5043e071ab831195807a14226de407f0bd80b470c9d2cf53",
+      "eviction/relative.py": "079ab13bb5b23569c8518259f1924b49589d4f0c70d6167cb4b42ff090a55919",
+      "scheduler/cache.py": "c23a271091e2a6e86a2580eb6d796c47c396cf425ac462d13546ba2e5a796996",
+      "scheduler/config.py": "266e318bd330d5157555b4e80cfe7aa3936bd9381edf4359ec8cefdb7086cc4a"
+    },
+    "packages": {
+      "flashinfer-python": "0.5.3",
+      "safetensors": "0.8.0",
+      "sgl-kernel": "0.3.17.post1",
+      "torch": "2.9.1",
+      "transformers": "4.57.3",
+      "triton": "3.5.1"
+    },
+    "appworld_revision": "42b5bcf3cd334fee33f0c37c02070a9f5807add5"
+  },
+  "fixture": {
+    "model": "Qwen/Qwen3-8B",
+    "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "dtype": "bfloat16",
+    "config_digest": "59d0e7fa0f6ae422ca91b35e1e4ff65edd84646cdf500bb2f841f41ab0d4e08d",
+    "split": "dev",
+    "task_id": "0d8a4ee_1",
+    "seed": 17,
+    "budget_seconds": 120,
+    "peak_vram_bytes": 42949672960,
+    "max_context_tokens": 8192,
+    "prefill_chunk_tokens": 256,
+    "workspace_reserve_bytes": 6442450944,
+    "configured_sampling": {
+      "enable_thinking": false,
+      "max_new_tokens": 512,
+      "temperature": 0.6,
+      "top_p": 0.95
+    },
+    "action_generation": "Test-only forced token sequences; native forwards and cache operations execute normally.",
+    "checkpoint_after_tool_calls": 1,
+    "fixed_recovery_tool_calls": 1,
+    "conditions": [
+      {
+        "id": "full",
+        "max_attempts": 1,
+        "method": "full",
+        "recovery": "never",
+        "retention": 1.0
+      },
+      {
+        "id": "agentkv_never",
+        "max_attempts": 1,
+        "method": "agentkv",
+        "recovery": "never",
+        "retention": 0.5
+      },
+      {
+        "id": "agentkv_fixed",
+        "max_attempts": 1,
+        "method": "agentkv",
+        "recovery": "fixed",
+        "retention": 0.5
+      }
+    ]
+  },
+  "verified_state": {
+    "engine_instances": 1,
+    "shared_source_files_unchanged": true,
+    "source_raw_tokens": 2529,
+    "source_cached_tokens": 2528,
+    "pending_observation_tokens": 36,
+    "source_mutations": 1,
+    "independent_branch_mutations": [
+      1,
+      1,
+      1
+    ],
+    "pending_observation_consumed_once_per_branch": true,
+    "python_numpy_torch_cuda_rng_restored": true,
+    "full_kv_sha256": "0515afa255342a74a486b66887f00ec47e1e8a69bac1a40f539ebde3a5206db9",
+    "recovery_preserved_environment_and_rng": true,
+    "recovery_input_tokens": 2565,
+    "post_recovery_retained_tokens": 1283,
+    "source_preparation_seconds": 24.677557388320565
+  },
+  "source_eligibility": {
+    "status": "completed",
+    "checkpoint_eligible": true,
+    "source_task_completed": false,
+    "tool_calls": 1
+  },
+  "branch_outcomes": [
+    {
+      "condition": {
+        "id": "full",
+        "max_attempts": 1,
+        "method": "full",
+        "recovery": "never",
+        "retention": 1.0
+      },
+      "status": "completed",
+      "starting_logical_tokens": 2528,
+      "starting_physical_tokens": 2528,
+      "shared_preparation_seconds": 24.677557388320565,
+      "budget_accounted_seconds": 32.73326134355739,
+      "cell_accounted_seconds": 32.73495134944096,
+      "tool_calls_including_source": 3,
+      "rebuilds": 0,
+      "peak_total_vram_bytes": 18913230848,
+      "peak_kv_bytes": 393412608,
+      "estimated_flops": 45805800382464
+    },
+    {
+      "condition": {
+        "id": "agentkv_never",
+        "max_attempts": 1,
+        "method": "agentkv",
+        "recovery": "never",
+        "retention": 0.5
+      },
+      "status": "completed",
+      "starting_logical_tokens": 2528,
+      "starting_physical_tokens": 1264,
+      "shared_preparation_seconds": 24.677557388320565,
+      "budget_accounted_seconds": 35.67771521722898,
+      "cell_accounted_seconds": 35.679268553387374,
+      "tool_calls_including_source": 3,
+      "rebuilds": 0,
+      "peak_total_vram_bytes": 18913230848,
+      "peak_kv_bytes": 559153152,
+      "estimated_flops": 45801977106432
+    },
+    {
+      "condition": {
+        "id": "agentkv_fixed",
+        "max_attempts": 1,
+        "method": "agentkv",
+        "recovery": "fixed",
+        "retention": 0.5
+      },
+      "status": "completed",
+      "starting_logical_tokens": 2528,
+      "starting_physical_tokens": 1264,
+      "shared_preparation_seconds": 24.677557388320565,
+      "budget_accounted_seconds": 39.25050624134019,
+      "cell_accounted_seconds": 39.25218513654545,
+      "tool_calls_including_source": 3,
+      "rebuilds": 1,
+      "peak_total_vram_bytes": 18913230848,
+      "peak_kv_bytes": 567410688,
+      "estimated_flops": 89093043683328
+    }
+  ],
+  "recovery": {
+    "condition": "agentkv_fixed",
+    "count": 1,
+    "admitted": true,
+    "allowance_consumed": true,
+    "status": "completed",
+    "engine_seconds": 0.5599678880535066,
+    "runner_budget_component_seconds": 2.210325576364994,
+    "historical_tool_actions_replayed": 0
+  },
+  "preservation": {
+    "remote_files_verified": 168,
+    "remote_bytes_verified": 383350948,
+    "batch_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "protected_source_and_runtime_identities_unchanged": true,
+    "protected_identities": [
+      {
+        "commit": "fd6ee15be5b98db00ef687d43cc66cc6a8a2cb5c",
+        "status": "",
+        "runtime_sha256": "1501cb06b05fcc086ef5e404df0807c318907a3974b8c8fd94ba99c1de4eaa23"
+      },
+      {
+        "commit": "312691d00fe84ce52a504071ccd5ed0bdd40a0f9",
+        "status": "",
+        "runtime_sha256": "48633e2943a09abe6431eaea9d7f546ac29c1ee117508398de9434751d34b6cb"
+      },
+      {
+        "commit": "178e6f3f10b388c5baceb0fb1da17cb92106a4da",
+        "status": "",
+        "runtime_sha256": "397a12a11491f10cd2788a338d8de8055de7af0b94ee979d5dbe446407274b64"
+      }
+    ],
+    "source_checkpoint_files_sha256": {
+      "agent.json": "e822aa4dedcec5d94f56ad332025be37f43fae6c8f5e74741c53f5b7179bbde1",
+      "engine": "a2d07c197ef16420e21293e55a31e2b8c3cb99abf4e7c01e40204d3feebcd2e0",
+      "engine.json": "951bef4b2fe9a2d4e1cd7f34665eebf8f00119a6f26018369f7f1afb5d56a2c4",
+      "environment/checkpoint.json": "5345a182be92bac37df94b484d503f46a88d5190a1b1ef2ed1f9fe8ad67eba9d",
+      "environment/dbs/admin.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment/dbs/amazon.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment/dbs/api_docs.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment/dbs/file_system.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment/dbs/gmail.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment/dbs/model_hashes.json": "d519c3f09257c86016b1542c1e6dcc158e2ef1ab645dfecfdeaa4e32634a538b",
+      "environment/dbs/phone.jsonl": "bcf0a526a01831b86b026ad745951f9052b28446b95ef446735052c20a755ce4",
+      "environment/dbs/simple_note.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment/dbs/splitwise.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment/dbs/spotify.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment/dbs/supervisor.jsonl": "a2263b79e15f9fa16333acc9b34120fe1c92c57bcf308bb230209643d3e2d80e",
+      "environment/dbs/todoist.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment/dbs/venmo.jsonl": "84cea04346a84fc27526286a036384e0aaa430fe4a12e84634233414bd4e52e5",
+      "environment/execution.pkl": "4a502821aa633534eb8237a11efbc3bb732b9464d24285d87bba72607be1fa6b",
+      "preparation.json": "d54b5d6d684cb7dbc578e8442e958ab6ba1cf61ba93ec76e7276e1e4e953ef92",
+      "source-environment/live.json": "b2722f56b7425fc0cf63ad3315cd4e21a7af2d89a4aa1dd008e51f3905cedb7c",
+      "trajectory.json": "07b9bae85c9d678db560a8e1fde97192bf07a84caa10a0bbe0e3d79bbbf30a27"
+    },
+    "prior_failed_record": "checkpoint-integration-2026-11-08.json",
+    "prior_failed_record_sha256": "4ce70c2bf4f9fbf83726fe95a360463f8ab2dfb4d457d4b9935baf72f9d4034d",
+    "original_failure_and_repair_artifacts_preserved": true
+  },
+  "interpretation": [
+    "The repaired fixture demonstrates shared Runner/AppWorld/native-KV checkpoint restoration and independent branches for full cache and AgentKV at 50% retention.",
+    "One real benchmark self-message and Python marker were preserved; each branch added only its own message. The pending observation was consumed exactly once, including the immediate-recovery branch.",
+    "The same 24.677557388320565-second source-preparation cost was charged once per branch, with reset/restore/rebuild and continuation accounting within the shared 120-second budget.",
+    "Forced outputs, short synthetic actions and validation instrumentation make this state-integration evidence, not task capability, policy advantage, numerical equivalence, or performance-comparison evidence.",
+    "This does not select meaningful research checkpoints, validate every method/retention, qualify a replacement final model, or replace separately declared Q1/Q2 experiments.",
+    "No offline evaluator or scores were used; branch completion is the forced supervisor completion action, not task success."
+  ],
+  "artifacts": [
+    {
+      "path": "checkpoint/report.json",
+      "bytes": 680999,
+      "sha256": "9623a813c2afc80f74918e608ab81b3e97a1430e04137f4fb60491a7a52825d7"
+    },
+    {
+      "path": "checkpoint/config.json",
+      "bytes": 1895,
+      "sha256": "2da61d9aa64a2198dd31e078bdda8053d7a518e3bc08da279774ab0c5135b73d"
+    },
+    {
+      "path": "checkpoint/run/manifest.json",
+      "bytes": 20326,
+      "sha256": "5e73a3c1fdd933745077d85a4575670e1613ab5e47159d7c9ce856cb3765e627"
+    },
+    {
+      "path": "checkpoint/run/checkpoints/0d8a4ee_1-17/preparation.json",
+      "bytes": 1882,
+      "sha256": "d54b5d6d684cb7dbc578e8442e958ab6ba1cf61ba93ec76e7276e1e4e953ef92"
+    },
+    {
+      "path": "checkpoint/run/checkpoints/0d8a4ee_1-17/engine",
+      "bytes": 382322343,
+      "sha256": "a2d07c197ef16420e21293e55a31e2b8c3cb99abf4e7c01e40204d3feebcd2e0"
+    },
+    {
+      "path": "checkpoint/run/checkpoints/0d8a4ee_1-17/engine.json",
+      "bytes": 1706,
+      "sha256": "951bef4b2fe9a2d4e1cd7f34665eebf8f00119a6f26018369f7f1afb5d56a2c4"
+    },
+    {
+      "path": "checkpoint/run/checkpoints/0d8a4ee_1-17/agent.json",
+      "bytes": 1563,
+      "sha256": "e822aa4dedcec5d94f56ad332025be37f43fae6c8f5e74741c53f5b7179bbde1"
+    },
+    {
+      "path": "checkpoint/run/checkpoints/0d8a4ee_1-17/environment/checkpoint.json",
+      "bytes": 308,
+      "sha256": "5345a182be92bac37df94b484d503f46a88d5190a1b1ef2ed1f9fe8ad67eba9d"
+    },
+    {
+      "path": "checkpoint/run/checkpoints/0d8a4ee_1-17/environment/execution.pkl",
+      "bytes": 7822,
+      "sha256": "4a502821aa633534eb8237a11efbc3bb732b9464d24285d87bba72607be1fa6b"
+    },
+    {
+      "path": "checks/pytest.xml",
+      "bytes": 328,
+      "sha256": "e03cd9ab35fa4d9fdb81d63f5f5141c7b122781887dd1a2128bf87d7af42f86a"
+    },
+    {
+      "path": "checks/source.json",
+      "bytes": 11106,
+      "sha256": "700935cd54f63e6076b2c44ed33efd2013608a0c242dc00ed25e7865620eabbe"
+    },
+    {
+      "path": "checks.log",
+      "bytes": 635,
+      "sha256": "c8cc361f54b41386870f553d0d8ab79005e46a157906b66afdbb16e6c7890a70"
+    },
+    {
+      "path": "checkpoint/process.log",
+      "bytes": 20687,
+      "sha256": "68cdc243a8835a3a0cc6d7af8c0b5e01df30e910025d2704d35ba8b3518430f8"
+    },
+    {
+      "path": "identities-before.json",
+      "bytes": 2788,
+      "sha256": "4571c16722ed12e9ec05cb35a268c2b4f8fac18c634bee39af669443a32c7f27"
+    },
+    {
+      "path": "identities-after.json",
+      "bytes": 2788,
+      "sha256": "4571c16722ed12e9ec05cb35a268c2b4f8fac18c634bee39af669443a32c7f27"
+    },
+    {
+      "path": "validation-identity.json",
+      "bytes": 577,
+      "sha256": "35a214352e25573fbdbba763e84cd9771401cb48fc7fe04f2bde20307ad231a8"
+    },
+    {
+      "path": "cuda-preflight.json",
+      "bytes": 222,
+      "sha256": "2761857f4d71dc9676dd15a81fee43a66aeda28fee1f5f7c0368353900297bfe"
+    },
+    {
+      "path": "review-plan.json",
+      "bytes": 4389,
+      "sha256": "7e77ffb2360dd3b17cf5bed885d8d02f62e60a87bd3cdcaa5976bc25c1763aec"
+    },
+    {
+      "path": "runtime.json",
+      "bytes": 578,
+      "sha256": "1501cb06b05fcc086ef5e404df0807c318907a3974b8c8fd94ba99c1de4eaa23"
+    },
+    {
+      "path": "checkpoint/run/cells/0d8a4ee_1-full-17/cell.json",
+      "bytes": 3745,
+      "sha256": "0b8962a9a905ad0aa566290d01dd1b70cc571965ba065c233ce58d515203e061"
+    },
+    {
+      "path": "checkpoint/run/cells/0d8a4ee_1-agentkv_never-17/cell.json",
+      "bytes": 3762,
+      "sha256": "b21dde8bb9aa8bd22b9e5b9496deaacf303812ccfe71fe9988d6414bd71c261f"
+    },
+    {
+      "path": "checkpoint/run/cells/0d8a4ee_1-agentkv_fixed-17/cell.json",
+      "bytes": 5348,
+      "sha256": "1a2f619acb79431177231a5bf37db0c8e715fe6395fff2f4d42d6de053494c4a"
+    },
+    {
+      "path": "remote-manifest.json",
+      "bytes": 33961,
+      "sha256": "60860e8a0d91c7d56fc7ad3588e72089379dc05420eeed3c7b5f3bc604af5da1"
+    },
+    {
+      "path": "local-verification.json",
+      "bytes": 469,
+      "sha256": "e0a2c9b5abcf3ef5caa2a02a4e0d3c32f5d5779172d5c1ae33c1a226b07805ca"
+    },
+    {
+      "path": "local-assertion-audit.json",
+      "bytes": 2729,
+      "sha256": "8e808ca1dd8b08df5b834c183f8b8c979e8b35cd02206fe3984ccabb158611c9"
+    },
+    {
+      "path": "terminal-accounting.txt",
+      "bytes": 281,
+      "sha256": "f88e5973b88a8ca0f5951357aea031778d092982d61fa70578108d7de7c09f7f"
+    },
+    {
+      "path": "slurm_script",
+      "bytes": 4627,
+      "sha256": "a16e50c15ce2ccca0d17465fa865e180f3a5f88426b08d8c809ad14b8e6e81aa"
+    }
+  ],
+  "offline_audit": {
+    "path": "audit_checkpoint_result.py",
+    "sha256": "a9455de94b10ce132d8ee123d728896b6d2b6930b687f106be6a30c26f24ce97"
+  }
+}
