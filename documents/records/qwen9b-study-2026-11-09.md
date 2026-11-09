@@ -361,3 +361,29 @@ compression screen are declared alongside the 150-second run. The measured
 124-second file attempt and 57-second arithmetic attempt motivate these endpoints
 around one longer attempt or two shorter attempts. They execute fresh task
 states with unchanged settings, and will be scored separately after completion.
+
+
+The first closed compression segment confirms the budget boundary: full-cache
+arithmetic completed two attempts in 114.5 seconds; the file task completed one
+and timed out its second under the shared 150-second limit. Correctness of this
+new run still awaits its separate scorer. StreamingLLM at 25% retention reached
+83 tool executions and the context limit on the file task, then exhausted the
+remaining budget; arithmetic timed out after 27 tool executions. Its ordinary
+saved traces ask for an already supplied task or execute no-progress print/pass
+blocks. The R-KV file attempt timed out after eight tools, with 15.6 seconds of
+recorded compaction within 150 seconds and more generated tokens than full cache.
+These are observed failure symptoms and costs, not an isolated causal attribution.
+
+The next declared diagnostic uses one functioning arithmetic train fixture and
+all 28 common-checkpoint arms at 80/50/25% retention, with 90 seconds per branch
+including preparation and restore. It is a one-task mechanistic check with no
+population-precision claim. The fine-grid pilot measures all eight candidate
+retentions for all methods, one attempt on that train fixture within 120 seconds.
+Separate confirmation uses the first two predeclared dev-confirmation families,
+all seven initial pilot conditions and the 120-second/N=2 setting. No held-out
+test task has run or informed these declarations.
+
+Cloud CLI credential renewal required interactive sign-in during the compression
+pilot. The already authenticated browser console still exposes the running job
+and its result store; queued plans run independently of the local CLI session.
+The sign-in handoff is pending while browser-based monitoring continues.

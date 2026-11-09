@@ -107,9 +107,12 @@ provenance, and stop when checks fail. Rebuild cleaned caches only as needed.
   The v4 train protocol solved 3/4 tasks at 16,384 tokens; earlier 0/4 and
   1/4 outcomes remain recorded. The remaining failure confuses Spotify review
   IDs with song IDs, rather than exceeding context or memory.
-- [ ] Measure reset, tool, inference, compaction and recovery costs to choose
+- [x] Measure reset, tool, inference, compaction and recovery costs to choose
   granular runtime budgets and attempt limits. Keep one budget per task/seed/
   condition; never give each attempt a fresh budget.
+  Full-cache arithmetic fit two completed attempts in 114.5 seconds, while the
+  file task took about 125 seconds for one. Independent 90/120/150-second
+  endpoints are declared; 16K recovery costs 21.6-22.8 seconds on the L4.
 - [ ] Run a small matched full-cache/compressed comparison, then the declared
   fine-grained grid. Keep every measured point, including flat/failed outcomes.
 - [ ] Extend or refine dev settings only as a new declared experiment version.
