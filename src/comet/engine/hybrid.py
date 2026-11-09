@@ -52,10 +52,14 @@ class HybridEngine:
         # FLA suppresses driver setup errors and otherwise caches an unusable CPU backend.
         if driver.active.get_current_target().backend != "cuda":
             raise UnsupportedPath("the hybrid runtime requires Triton's CUDA backend")
+        from comet_agentkv import r1kv
         from transformers import AutoTokenizer, Qwen3_5ForConditionalGeneration
         from transformers.modeling_utils import ALL_ATTENTION_FUNCTIONS
 
+        from .rkv_memory import redundancy_scores
+
         self._install_recurrent_kernels()
+        r1kv.r1kv_redundancy_scores_by_head = redundancy_scores
         self.settings, self.torch = settings, torch
         device = torch.cuda.get_device_properties(0)
         self.device_name, self.device_total_bytes = device.name, device.total_memory
@@ -458,6 +462,7 @@ class HybridEngine:
                              ("torch", "transformers", "flash-linear-attention", "comet-agentkv-selectors")},
                 "attention_backend": "torch_sdpa", "cuda_graphs": False,
                 "selector_revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
+                "rkv_redundancy_backend": "query_row_tiles_256mib_v1",
                 "retention_state": "full_attention_kv_only; recurrent_and_conv_state_uncompressed",
                 "sampling_rng": "torch_cuda_default_generator_v1",
                 "estimated_flops_method": "2P_text_per_token_plus_4LHD_per_full_attention_pair",

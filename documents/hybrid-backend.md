@@ -34,6 +34,12 @@ AgentKV selectors. This implements the user-authorized new backend phase; it
 does not claim Mini-SGLang supports Qwen3.5. The selector packaging step changes
 imports and removes unused factory entries only; selection algorithms and their
 defaults remain upstream code at `254c57bc84e4a7895159ba1062bd46c83626f511`.
+The hybrid integration evaluates R-KV redundancy in query-row tiles with a
+256 MiB workspace target. Its original full quadratic integer temporary exceeded
+the L4 allocator cap during a 16,384-token rebuild. Row tiling preserves the
+similarity, threshold and retained-index rules; FP32 accumulation can change
+BF16 rounding slightly. This local implementation is recorded in engine
+provenance and checked against the pinned selector on repeated and random keys.
 AppWorld, the shared runner, recovery policies, budgets and offline evaluator
 remain shared. Model registration and live qualification are separate steps.
 
