@@ -109,6 +109,9 @@ separates single-attempt success from oracle best-of-N, with a column for each
 measured recovery policy. Compressed conditions must share one attempt ceiling;
 the matching full-cache control is shown at zero removal. Only measured points
 are connected. Output extensions select PNG, SVG or PDF.
+`comet plot-resources ANALYSIS --policy never --output COSTS.svg` supplies the
+corresponding latency, attempts, memory, throughput, estimated FLOPs, compaction
+and recovery panels. Repeat with `fixed` or `dynamic` for those measured policies.
 
 Configurations are JSON. `extends` resolves relative to the child file; top-level
 objects merge one level and lists replace in full. The run records the fully

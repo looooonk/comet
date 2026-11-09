@@ -179,6 +179,11 @@ def main(argv: list[str] | None = None) -> None:
     retention.add_argument("analysis", type=Path)
     retention.add_argument("--output", type=Path, required=True)
     retention.add_argument("--title", default="Retention comparison")
+    resources = commands.add_parser("plot-resources", help="Plot resource costs against measured KV removal")
+    resources.add_argument("analysis", type=Path)
+    resources.add_argument("--output", type=Path, required=True)
+    resources.add_argument("--policy", choices=("never", "fixed", "dynamic"), default="never")
+    resources.add_argument("--title", default="Compaction resource costs")
     for command, help_text, title in (
         ("plot-aggressivity", "Plot measured KV removal against single/oracle task success", "Compaction and task success"),
         ("plot-recovery", "Plot paired recovery effects, cost and admission", "Recovery comparison"),
@@ -282,6 +287,11 @@ def main(argv: list[str] | None = None) -> None:
         from comet.study_plots import plot_retention_matrix
 
         plot_retention_matrix(args.analysis, args.output, title=args.title)
+        _print({"figure": str(args.output)})
+    elif args.command == "plot-resources":
+        from comet.resource_plots import plot_resources
+
+        plot_resources(args.analysis, args.output, policy=args.policy, title=args.title)
         _print({"figure": str(args.output)})
     elif args.command == "plot-aggressivity":
         from comet.aggressivity_plots import plot_aggressivity
