@@ -78,6 +78,19 @@ def test_analysis_pairs_lengths_preserves_repetitions_and_measured_phase_roles(h
     assert read_json(output) == result
 
 
+def test_decode_memory_peak_is_distinct_from_prefill_and_preserves_missing_coverage(history_runs):
+    first, _, output = history_runs
+    _change_pass(first, "decode", lambda value: value["memory"].update(peak_total_vram_bytes=700))
+    _change_pass(first, "decode", lambda value: value.pop("metric_coverage"), repetition=1)
+    result = analyze_histories([first], output)
+    point = next(point for point in result["points"] if point["method"] == "full")
+    assert point["metrics"]["peak_total_vram_bytes"]["observed"] == 2
+    assert point["metrics"]["peak_total_vram_bytes"]["maximum"] < 700
+    assert point["metrics"]["decode_peak_total_vram_bytes"] == {
+        "median": 700, "minimum": 700, "maximum": 700, "values": [700], "observed": 1, "expected": 2,
+    }
+
+
 @pytest.mark.parametrize("change,match", [
     (lambda value: value["provenance"].update(code_commit="other"), "Incompatible source"),
     (lambda value: value["provenance"]["installed_packages"].update(torch="other"), "Incompatible source"),

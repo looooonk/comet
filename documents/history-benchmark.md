@@ -160,6 +160,14 @@ Coverage counts in the focused view refer only to its four selected conditions;
 missing measurements and failures within them remain explicit. This changes
 presentation, not analysis, repetition inclusion or the underlying results.
 
+Memory views distinguish the measured pass: `--metric peak-vram` is the
+prefill-only total-VRAM peak, while `--metric decode-peak-vram` covers the
+ordinary prefix-plus-continuation pass. The latter can expose transient or
+allocator-reserved use that is absent from the shorter prefill pass. Neither
+is occupied KV, and neither includes the separate instrumented replay. Re-run
+analysis to add this metric to older saved analysis files; raw results stay
+unchanged.
+
 The analyzer requires the same historical source manifest, source trajectories,
 model/tokenizer, engine settings, code and dependency provenance, GPU model and
 capacity, driver, CUDA runtime, and measurement contract across supplied runs.

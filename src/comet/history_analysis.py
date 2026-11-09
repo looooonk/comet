@@ -20,7 +20,8 @@ METRICS = {
     "peak_occupied_kv_bytes": ("prefill", "Peak occupied KV (GiB)", 2**-30),
     "reserved_kv_pool_bytes": ("prefill", "Reserved KV pool (GiB)", 2**-30),
     "total_vram_bytes": ("prefill", "Total VRAM after prefill (GiB)", 2**-30),
-    "peak_total_vram_bytes": ("prefill", "Peak total VRAM (GiB)", 2**-30),
+    "peak_total_vram_bytes": ("prefill", "Prefill peak total VRAM (GiB)", 2**-30),
+    "decode_peak_total_vram_bytes": ("decode", "Decode-pass peak total VRAM (GiB)", 2**-30),
     "prefill_tokens_per_second": ("prefill", "Prefill loop (tokens/s)", 1),
     "decode_tokens_per_second": ("decode", "Decode loop (tokens/s)", 1),
     "prefill_pass_seconds": ("prefill", "Whole prefill pass (s)", 1),
@@ -200,8 +201,10 @@ def _metric(record: dict, key: str) -> dict:
     eligible = (record["status"] == "completed" and record.get("metric_coverage") == "complete"
                 and record["journaled"])
     memory = record.get("memory", {})
-    if key in {"peak_occupied_kv_bytes", "reserved_kv_pool_bytes", "peak_total_vram_bytes"}:
-        source = {"peak_occupied_kv_bytes": "peak_kv_cache_bytes"}.get(key, key)
+    if key in {"peak_occupied_kv_bytes", "reserved_kv_pool_bytes", "peak_total_vram_bytes",
+               "decode_peak_total_vram_bytes"}:
+        source = {"peak_occupied_kv_bytes": "peak_kv_cache_bytes",
+                  "decode_peak_total_vram_bytes": "peak_total_vram_bytes"}.get(key, key)
         value = memory.get(source)
     elif key.endswith("_pass_seconds"):
         value = record.get("elapsed_seconds")
@@ -330,7 +333,7 @@ def analyze_histories(run_dirs: list[Path], output: Path) -> dict:
                   "overhead": "Selection and compaction sum synchronized calls over the whole instrumented prefix-plus-continuation replay, not per-token rates. They are disjoint nested costs, not additions to loop or whole-pass durations.",
                   "summary": "Medians and observed ranges over retained run/repetition identities; no fitted trend or confidence interval.",
                   "coverage": "Only completed, journaled passes with complete metric coverage enter summaries. All other cells and partial values remain explicit.",
-                  "memory": "Memory curves use the prefill pass at the declared prefix; decode and instrumented memory remain in raw pass records.",
+                  "memory": "Prefill memory uses the declared prefix. Decode-pass peak total VRAM covers ordinary prefix-plus-continuation execution; it is distinct from prefill-only memory. Instrumented memory remains in raw pass records.",
               }}
     write_json(output, result)
     return result

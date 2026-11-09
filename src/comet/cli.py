@@ -147,7 +147,7 @@ def main(argv: list[str] | None = None) -> None:
     history_plot.add_argument("analysis", type=Path)
     history_plot.add_argument("--output", type=Path, required=True)
     history_plot.add_argument("--metric", required=True, choices=(
-        "occupied-kv", "peak-kv", "reserved-pool", "total-vram", "peak-vram",
+        "occupied-kv", "peak-kv", "reserved-pool", "total-vram", "peak-vram", "decode-peak-vram",
         "prefill-throughput", "decode-throughput", "prefill-time", "decode-time",
         "selection", "compaction", "instrumented-time",
     ))

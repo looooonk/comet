@@ -9,7 +9,8 @@ from comet.history_analysis import METRICS
 PLOT_METRICS = {
     "occupied-kv": "occupied_kv_bytes", "peak-kv": "peak_occupied_kv_bytes",
     "reserved-pool": "reserved_kv_pool_bytes", "total-vram": "total_vram_bytes",
-    "peak-vram": "peak_total_vram_bytes", "prefill-throughput": "prefill_tokens_per_second",
+    "peak-vram": "peak_total_vram_bytes", "decode-peak-vram": "decode_peak_total_vram_bytes",
+    "prefill-throughput": "prefill_tokens_per_second",
     "decode-throughput": "decode_tokens_per_second", "prefill-time": "prefill_pass_seconds",
     "decode-time": "decode_pass_seconds", "selection": "selection_seconds",
     "compaction": "compaction_seconds", "instrumented-time": "instrumented_pass_seconds",
@@ -45,6 +46,8 @@ def plot_histories(analysis_path: Path, output: Path, *, metric: str,
     key = PLOT_METRICS[metric]
     phase, label, scale = METRICS[key]
     points = [point for point in analysis["points"] if point["history_id"] == history_id]
+    if any(key not in point["metrics"] for point in points):
+        raise ValueError("Re-run analyze-histories to include the requested metric")
     lengths = sorted({point["logical_length"] for point in points})
     if not lengths:
         raise ValueError("History contains no declared measurements")
@@ -141,6 +144,8 @@ def plot_histories(analysis_path: Path, output: Path, *, metric: str,
             caption += "\nNative loop timing includes eviction/output processing; excludes surrounding scheduling, reset and verification."
         elif metric in {"prefill-time", "decode-time"}:
             caption += "\nWhole-pass elapsed includes reset, inference, verification and cleanup; model setup is recorded separately."
+        elif metric == "decode-peak-vram":
+            caption += "\nPeak covers the ordinary prefix-plus-continuation pass, including transient and allocator-reserved use; it is not KV occupancy."
         else:
             caption += "\nMemory is measured at the prefill prefix; occupied KV, transient peaks, reserved pool and total VRAM are distinct metrics."
         fig.text(0.07, 0.045, caption, fontsize=8, color="#555555", linespacing=1.5)
