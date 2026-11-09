@@ -185,3 +185,13 @@ The prior launch was fetched and its VM, disk, job and live cloud prefix were
 removed. The new launch retains the one-hour limit and zero retries. At the
 unchanged conservative $5 reservation per launch, $30 is reserved including
 the historical $10, leaving $10 uncommitted pending reconciliation.
+
+The [cloud ledger](qwen9b-cloud-ledger.json) subsequently reconciles those three
+short completed failures to a conservative $3 allowance each, using observed
+creation-to-cleanup lifetimes below 20 minutes, a $1/hour compute allowance,
+50 GiB of network processing per launch and $0.40 for other charges. The displayed
+[Spot price](https://cloud.google.com/spot-vms/pricing) was $0.423016/hour in the
+default table; the larger planning rate avoids asserting an exact regional bill.
+[Public NAT processing](https://cloud.google.com/nat/pricing) is $0.045/GiB.
+The historical $10 and active $5 reservations remain, leaving $16 uncommitted.
+Neither the transfer allowance nor these totals are measured billed usage.

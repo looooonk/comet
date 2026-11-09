@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "ceiling_usd": 40,
+  "historical_reserve_usd": 10,
+  "failed_launch_allowances_usd": 9,
+  "active_reservation_usd": 5,
+  "uncommitted_usd": 16,
+  "cost_kind": "planning allowances and reservations, not billed charges",
+  "short_failed_launch_assumptions": {
+    "compute_usd_per_hour": 1,
+    "maximum_lifetime_hours": 0.3333333333333333,
+    "nat_processed_gib": 50,
+    "nat_usd_per_gib": 0.045,
+    "storage_network_other_allowance_usd": 0.4
+  },
+  "observed_public_spot_price": {
+    "machine": "g2-standard-4",
+    "usd_per_hour": 0.423016,
+    "caveat": "Displayed default-region table; use the larger $1/hour planning allowance, not an exact regional billing claim"
+  },
+  "pricing_sources": [
+    "https://cloud.google.com/spot-vms/pricing",
+    "https://cloud.google.com/nat/pricing"
+  ],
+  "runs": [
+    {
+      "run_id": "gpu-20261109-060734-d05896",
+      "status": "failed_before_task_attempts",
+      "lifetime_upper_seconds": 649.5,
+      "allowance_usd": 3,
+      "compute_cleanup_verified": true,
+      "live_artifacts_purged": true
+    },
+    {
+      "run_id": "gpu-20261109-061851-5d856b",
+      "status": "failed_before_task_attempts",
+      "lifetime_upper_seconds": 795.4,
+      "allowance_usd": 3,
+      "compute_cleanup_verified": true,
+      "live_artifacts_purged": true
+    },
+    {
+      "run_id": "gpu-20261109-063527-7c75c0",
+      "status": "failed_before_task_attempts",
+      "lifetime_upper_seconds": 929.7,
+      "allowance_usd": 3,
+      "compute_cleanup_verified": true,
+      "live_artifacts_purged": true
+    },
+    {
+      "run_id": "gpu-20261109-065347-42f701",
+      "status": "active",
+      "reservation_usd": 5
+    }
+  ]
+}
