@@ -4,7 +4,10 @@
   limitations, and links to archived evidence.
 - [Compact verified summary](legacy-results.json): figure hashes and the completed
   eight-level GPU persistence check, which postdates the archive.
+- [Repository reset](cleanup-repository-2026-11-08.md): removals, retained evidence
+  and verification.
 - [Insomnia cleanup](cleanup-insomnia-2026-11-08.md).
+- [Runtime and cloud cleanup](cleanup-resources-2026-11-08.md).
 
 Older plans, diagnostics, interim charts and per-run inventories are archived at
 [commit 55fca50](https://github.com/looooonk/comet/tree/55fca50bfe3c69dfaa4420585e78850da1b3aaf4/documents/records).
