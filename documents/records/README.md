@@ -10,12 +10,13 @@ and validated; previously missing mutations are now recognized. Originals remain
 unchanged. These are useful failure diagnostics, but a stronger execution baseline
 is still needed before expanding task-success comparisons.
 
-The [2k](history-feasibility-2k-2026-11-08.md) and
-[8k](history-feasibility-8k-2026-11-08.md) and
-[16k matched-history measurements](history-feasibility-16k-2026-11-08.md) each
-completed all ten conditions and thirty passes, with verified retention and
-resource accounting. Longer histories and repeated timings remain in progress;
-these cost diagnostics do not depend on task scoring.
+Repeated matched-history timing now covers 2,048, 4,096, 8,192 and
+[12,288 tokens](history-timing-12k-2026-11-08.md), with all ninety passes
+verified at each length. The final declared 16,384-token point is underway.
+Separate [32,600-token feasibility measurements](history-feasibility-32600-2026-11-08.md)
+retain seven completed conditions and three R-KV memory-cap failures. These
+cost measurements show method differences without depending on task scoring;
+they do not establish task success or recovery quality.
 
 The [November 8 numerical calibration](reference-calibration-2026-11-08.md)
 records 165 passed L40S checks and a failed relative-error screening gate. A
@@ -102,6 +103,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Repeated 12k history timing (2026-11-08)](history-timing-12k-2026-11-08.md) | Ninety verified passes, retained variation and non-monotone memory; final 16k point submitted |
 | [Repeated 8k history timing (2026-11-08)](history-timing-8k-2026-11-08.md) | Ninety verified passes, three-length curves, retained timing variation and non-monotone reservation peaks |
 | [4B managed runtime readiness (2026-11-08)](qwen4b-managed-runtime-2026-11-08.md) | Separate environment, preserved namespace-helper failure and successful CPU follow-up without reinstalling |
 | [Repeated 4k history timing (2026-11-08)](history-timing-4k-2026-11-08.md) | Ninety verified passes, paired 2k/4k curves and distinct decode-pass reservation peaks |
