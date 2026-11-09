@@ -72,6 +72,15 @@ reference-check cap. These overrides are recorded in the check settings and
 still require actual CUDA allocations to fit; they do not change the calculated
 tight cap used by the dedicated admission-refusal check.
 
+Set `COMET_TEST_RETENTION_GRID=1` for the persistence check to exercise all
+three eviction methods at 25/30/40/50/60/70/80/90% retention. The default remains
+50% only. Each branch starts from the same full-cache checkpoint and validates
+retained counts after branching and continuation, compressed checkpoint replay,
+full-history recovery, unchanged recovery RNG, the one-rebuild limit, and
+recovered checkpoint replay. `gpu.json` records every method/fraction pair and
+its measured memory. This optional grid validates state semantics on a short
+synthetic history; it is not task-success evidence or long-context qualification.
+
 The AppWorld fixtures check execution, fresh resets, checkpoint restore, offline
 evaluation, explicit authentication, parsed response types, and pagination. The
 authentication and pagination probes use isolated dev environments, perform only

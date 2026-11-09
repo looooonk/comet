@@ -84,6 +84,19 @@ def _persistence_check(tmp_path):
         prefill_chunk_tokens=128, require_a100=False,
     ))
     records = []
+    retentions = (0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9) if os.environ.get(
+        "COMET_TEST_RETENTION_GRID"
+    ) else (0.5,)
+    evidence = Path(os.environ.get("COMET_GPU_EVIDENCE", tmp_path / "gpu-evidence.json"))
+    evidence.parent.mkdir(parents=True, exist_ok=True)
+
+    def save_evidence(status):
+        evidence.write_text(json.dumps({
+            "status": status, "device": engine.device_name, "integration_only": True,
+            "settings": asdict(engine.settings), "retentions_tested": retentions,
+            "checks": records,
+        }, indent=2) + "\n")
+
     try:
         engine.start(21)
         prompt = engine.tokenizer.apply_chat_template(
@@ -130,48 +143,55 @@ def _persistence_check(tmp_path):
         sampled_again = engine.generate(suffix, 8, 0.6, 0.9, time.monotonic() + 600)
         assert sampled.token_ids == sampled_again.token_ids
         assert torch.equal(sampled_rng, torch.cuda.get_rng_state())
-        for method in ("streamingllm", "rkv", "agentkv"):
-            engine.set_policy(method, 0.5)
-            engine.restore(checkpoint, branch=True)
-            raw = engine.raw_token_ids
-            before = engine.memory_stats()
-            assert before["physical_cached_tokens"] == retention_target(before["logical_cached_tokens"], 0.5, method)
-            compressed_checkpoint = tmp_path / f"{method}.pt"
-            engine.checkpoint(compressed_checkpoint)
-            continuation = engine.generate(suffix, 4, 0.0, 1.0, time.monotonic() + 600)
-            engine.restore(compressed_checkpoint)
-            repeat = engine.generate(suffix, 4, 0.0, 1.0, time.monotonic() + 600)
-            assert continuation.token_ids == repeat.token_ids
-            assert engine.raw_token_ids[:len(raw)] == raw
-            raw = engine.raw_token_ids
-            rng = torch.cuda.get_rng_state().clone()
-            recovered = engine.recover(raw + suffix, time.monotonic() + 600)
-            assert recovered.admitted, recovered.reason
-            assert torch.equal(rng, torch.cuda.get_rng_state())
-            raw = raw + suffix
-            assert engine.raw_token_ids == raw
-            assert not engine.recover(raw, time.monotonic() + 600).admitted
-            memory = engine.memory_stats()
-            assert memory["physical_cached_tokens"] == retention_target(len(raw), 0.5, method)
-            assert memory["peak_total_vram_bytes"] <= engine.settings.peak_vram_bytes
-            after_recovery = tmp_path / f"{method}-recovered.pt"
-            engine.checkpoint(after_recovery)
-            next_output = engine.generate([], 4, 0.0, 1.0, time.monotonic() + 600)
-            assert next_output.prompt_tokens == 0
-            assert engine.raw_token_ids == raw + next_output.token_ids
-            engine.restore(after_recovery)
-            same_output = engine.generate([], 4, 0.0, 1.0, time.monotonic() + 600)
-            assert next_output.token_ids == same_output.token_ids
-            records.append({"method": method, "memory": memory, "recovered": recovered.admitted})
+        for retention in retentions:
+            for method in ("streamingllm", "rkv", "agentkv"):
+                engine.set_policy(method, retention)
+                engine.restore(checkpoint, branch=True)
+                raw = engine.raw_token_ids
+                before = engine.memory_stats()
+                assert before["physical_cached_tokens"] == retention_target(before["logical_cached_tokens"], retention, method)
+                compressed_checkpoint = tmp_path / f"{method}-{retention:g}.pt"
+                engine.checkpoint(compressed_checkpoint)
+                continuation = engine.generate(suffix, 4, 0.0, 1.0, time.monotonic() + 600)
+                engine.restore(compressed_checkpoint)
+                repeat = engine.generate(suffix, 4, 0.0, 1.0, time.monotonic() + 600)
+                assert continuation.token_ids == repeat.token_ids
+                logical = continuation.memory["logical_cached_tokens"]
+                assert continuation.memory["physical_cached_tokens"] == retention_target(logical, retention, method)
+                assert engine.raw_token_ids[:len(raw)] == raw
+                raw = engine.raw_token_ids
+                rng = torch.cuda.get_rng_state().clone()
+                recovered = engine.recover(raw + suffix, time.monotonic() + 600)
+                assert recovered.admitted, recovered.reason
+                assert torch.equal(rng, torch.cuda.get_rng_state())
+                raw = raw + suffix
+                assert engine.raw_token_ids == raw
+                assert not engine.recover(raw, time.monotonic() + 600).admitted
+                memory = engine.memory_stats()
+                assert memory["physical_cached_tokens"] == retention_target(len(raw), retention, method)
+                assert memory["peak_total_vram_bytes"] <= engine.settings.peak_vram_bytes
+                after_recovery = tmp_path / f"{method}-{retention:g}-recovered.pt"
+                engine.checkpoint(after_recovery)
+                next_output = engine.generate([], 4, 0.0, 1.0, time.monotonic() + 600)
+                assert next_output.prompt_tokens == 0
+                assert engine.raw_token_ids == raw + next_output.token_ids
+                engine.restore(after_recovery)
+                same_output = engine.generate([], 4, 0.0, 1.0, time.monotonic() + 600)
+                assert next_output.token_ids == same_output.token_ids
+                records.append({
+                    "method": method, "retention": retention, "branched_memory": before,
+                    "continuation_memory": continuation.memory, "memory": memory,
+                    "checkpoint_continuation_equal": True, "recovered_continuation_equal": True,
+                    "recovery_preserves_rng": True, "recovered": recovered.admitted,
+                })
+                save_evidence("running")
         records.extend(_failure_accounting_check(engine, compressed_checkpoint, suffix))
         if model == "Qwen/Qwen3-4B-Instruct-2507":
             records.append(_nonthinking_phase_check(engine, tmp_path))
-        evidence = Path(os.environ.get("COMET_GPU_EVIDENCE", tmp_path / "gpu-evidence.json"))
-        evidence.parent.mkdir(parents=True, exist_ok=True)
-        evidence.write_text(json.dumps({
-            "device": engine.device_name, "integration_only": True,
-            "settings": asdict(engine.settings), "checks": records,
-        }, indent=2) + "\n")
+        save_evidence("passed")
+    except BaseException:
+        save_evidence("failed")
+        raise
     finally:
         engine.close()
 
