@@ -506,3 +506,22 @@ disk were absent. Its backup objects remain because final transfer did not
 complete. The $10 session planning allowance is now recorded as completed;
 actual billing has not been reconciled. The cumulative $40 ceiling retains
 $4.25 uncommitted and no cloud job remains active.
+
+SSH access returned at 10:08 ET. Both supplemental jobs completed with exit zero:
+78 fine-grid cells in 2h08m36s and 84 Q1 branches in 1h15m25s. At 10:09 ET the
+optional replication's operational launch cutoff is revised from 10:20 to
+**10:40 ET**, following the delayed access restoration. Its 174-minute maximum
+experimental execution plus a bounded setup/scoring allowance fits a 3h10
+allocation ending by 13:50 ET. This changes only scheduling, not any model,
+task, seed, retention, trigger, timing or scoring setting; no test outcome
+selects an arm. The same two-family dev success gate remains mandatory. If
+the gate or queue misses the new cutoff, the optional replication is skipped.
+
+The dev check is submitted as job `13842376`, with conditional final job
+`13842384` depending on its successful completion. A queue audit found free
+Blackwell GPUs but only two host CPUs available; both requests use two CPUs
+and two CPU threads, 24 GiB host RAM and one unchanged GPU. The earlier
+Blackwell train/diagnostic jobs used four CPUs. This scheduling adjustment
+may affect host-side timings; dev and final use the same reduced CPU request,
+and their results stay separate from the earlier cohorts. A failed dev gate
+or the 10:40 ET cutoff stops the final job before any test attempt.
