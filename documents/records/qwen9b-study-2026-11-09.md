@@ -101,3 +101,15 @@ baseline/resume configurations retain 9B and the 40 GiB experimental cap; they
 require live qualification before use. Several independent single-GPU jobs can
 run concurrently when scheduler resources permit. No attempts share model or
 environment state, and comparisons remain on the same GPU model.
+
+The first long Blackwell request could not start because of host CPU contention;
+it was replaced with a smaller qualification allocation. Subsequent Insomnia
+monitoring was interrupted when the SSH credential agent stopped responding.
+GCP still has one Spot L4 quota and no A100 quota. The declared L4 fallback
+pilot uses a 22 GiB cap and 2 GiB recovery workspace, which must pass its own
+capacity/state checks. It is a separate hardware cohort and cannot be pooled
+with the 40 GiB Insomnia results. One bounded one-hour cloud run is reserved
+at a conservative $5 including staging/network/storage overhead, within the
+existing $40 total ceiling and separate $10 historical reserve. No cloud task
+result is claimed from this declaration. Current [official Spot pricing](https://cloud.google.com/spot-vms/pricing)
+informed the estimate; final billed charges remain distinct from estimates.

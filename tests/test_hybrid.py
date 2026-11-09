@@ -57,7 +57,8 @@ def test_live_hybrid_reference_persistence_recovery_and_branches(tmp_path):
         model=MODEL, model_path=os.environ["COMET_MODEL_PATH"], model_revision=REVISION,
         tokenizer_revision=REVISION, backend="transformers_hybrid", method="full", retention=1.0,
         max_context_tokens=8192, peak_vram_bytes=int(os.environ.get("COMET_GPU_CAP_BYTES", 40 * 2**30)),
-        workspace_reserve_bytes=4 * 2**30, prefill_chunk_tokens=128, require_a100=False,
+        workspace_reserve_bytes=int(os.environ.get("COMET_GPU_WORKSPACE_BYTES", 4 * 2**30)),
+        prefill_chunk_tokens=128, require_a100=False,
     )
     engine = create_engine(settings)
     evidence = {"reference": {}, "conditions": []}
