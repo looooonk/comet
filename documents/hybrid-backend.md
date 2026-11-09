@@ -68,8 +68,12 @@ allocations. This is separate from the rebuild workspace estimate and does not
 raise the experimental cap. Device-wide peak use remains measured and enforced.
 External usage samples are accepted only when the PyTorch pool is unchanged
 across the device-memory query; otherwise a concurrent pool release could be
-miscounted as non-PyTorch memory. Retain the sampled device peak separately from
-the conservative allocator-plus-external peak estimate.
+miscounted as non-PyTorch memory. The enforced total-VRAM metric is the measured
+device-wide peak, sampled every 10 ms and at forward boundaries. Retain exact
+PyTorch allocation/pool peaks and the conservative allocator-plus-external upper
+estimate separately; noncoincident maxima are not a measured device peak. Very
+short external allocations can fall between samples, so the sampling interval
+and allocator headroom remain explicit limitations rather than an exact bound.
 
 AgentKV retains the upstream four phase rings with eight queries per phase;
 R-KV uses recent queries. Eviction takes place after each prefill chunk and each

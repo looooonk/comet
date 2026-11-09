@@ -58,6 +58,24 @@ def test_external_memory_does_not_count_a_concurrent_allocator_release():
     assert engine._peak_total == 90 and engine._peak_external == 15
 
 
+def test_device_peak_is_distinct_from_noncoincident_upper_bound():
+    from comet.engine.hybrid import HybridEngine
+
+    engine = HybridEngine.__new__(HybridEngine)
+    engine._peak_total, engine._peak_external = 90, 15
+    engine._peak_kv = engine._peak_recurrent = 0
+    engine._raw = []
+    engine._state_bytes = lambda: (0, 0)
+    engine.cache = SimpleNamespace(get_seq_length=lambda: 0)
+    engine.settings = SimpleNamespace(retention=1.0, method="full")
+    engine.torch = SimpleNamespace(cuda=SimpleNamespace(
+        memory_reserved=lambda: 20, mem_get_info=lambda: (65, 100),
+        max_memory_reserved=lambda: 80, max_memory_allocated=lambda: 70))
+    memory = engine.memory_stats()
+    assert memory["peak_total_vram_bytes"] == 90
+    assert memory["estimated_peak_total_vram_upper_bytes"] == 95
+
+
 @pytest.mark.gpu
 @pytest.mark.skipif(os.environ.get("COMET_RUN_HYBRID_TESTS") != "1", reason="opt-in hybrid GPU check")
 def test_live_hybrid_reference_persistence_recovery_and_branches(tmp_path):

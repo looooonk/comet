@@ -207,3 +207,10 @@ pool size across the device query. A focused regression reproduces this race;
 17 CPU checks passed. The 21 GiB cap, precision and inference logic are unchanged.
 No task attempt ran under the faulty estimator, and the original failure remains
 preserved. The fetched outputs and completed cloud cleanup identify that launch.
+
+The final accounting correction enforces the cap against device-wide samples
+at 10 ms and forward boundaries. The sum of independently observed allocator
+and external-memory maxima remains a separately labeled conservative estimate,
+not a measured peak. Exact PyTorch allocation/reservation peaks are also saved.
+Sub-10-ms external transients remain a measurement limitation; the separate
+1 GiB allocator headroom remains in place. Eighteen focused CPU checks passed.

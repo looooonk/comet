@@ -180,8 +180,10 @@ class HybridEngine:
         kv, recurrent = self._state_bytes()
         self._peak_kv, self._peak_recurrent = max(self._peak_kv, kv), max(self._peak_recurrent, recurrent)
         return {
-            "peak_total_vram_bytes": max(self._peak_total, self.torch.cuda.max_memory_reserved() + self._peak_external),
+            "peak_total_vram_bytes": self._peak_total,
             "peak_total_vram_sampled_bytes": self._peak_total,
+            "estimated_peak_total_vram_upper_bytes": max(
+                self._peak_total, self.torch.cuda.max_memory_reserved() + self._peak_external),
             "peak_torch_allocated_bytes": self.torch.cuda.max_memory_allocated(),
             "peak_torch_reserved_bytes": self.torch.cuda.max_memory_reserved(),
             "peak_kv_cache_bytes": self._peak_kv, "peak_kv_bytes": self._peak_kv,
@@ -192,7 +194,7 @@ class HybridEngine:
             "logical_cached_tokens": len(self._raw),
             "retention_target_tokens": retention_target(len(self._raw), self.settings.retention, self.settings.method),
             "memory_sample_interval_seconds": 0.01,
-            "total_peak_kind": "max(sampled device use, allocator peak plus stable-sample external use)",
+            "total_peak_kind": "device-wide samples every 10ms and at forward boundaries",
         }
 
     def _check_memory(self):
@@ -451,6 +453,7 @@ class HybridEngine:
                 "model_parameter_count": self.parameter_count,
                 "text_parameter_count": self._text_parameters,
                 "allocator_headroom_bytes": self._allocator_headroom,
+                "memory_accounting": "device_peak_10ms_and_forward_boundaries_v1",
                 "packages": {name: importlib.metadata.version(name) for name in
                              ("torch", "transformers", "flash-linear-attention", "comet-agentkv-selectors")},
                 "attention_backend": "torch_sdpa", "cuda_graphs": False,
