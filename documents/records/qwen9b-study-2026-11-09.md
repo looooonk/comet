@@ -452,3 +452,13 @@ Both supplemental configurations now have explicitly declared v2 variants with
 a **24 GiB** cap, adding 3 GiB headroom. Model, precision, recovery workspace,
 budgets, task sample and all policies are unchanged. Fresh 16K qualification
 must pass before either task run. The frozen 21 GiB L4 study is unaffected.
+
+Allocation `13841501` passed all 12 focused checks and the complete 16K
+generation/recovery check at 24 GiB. Peak total VRAM was 23.11 GiB across the
+full/recovery paths; see [the qualification record](qwen9b-blackwell-cap24.json).
+A launcher error then attempted to stage already local model files onto the
+same directory. It stopped before any task attempt. Qualified execution now
+uses the launcher's normal shared-source staging path, retaining the successful
+qualification rather than repeating it. Fine-grid job `13841503` started;
+diagnostic job `13841504` is queued with an estimated 07:58 ET start, within
+the extended deadline. Both use source `47596b5` and separate output roots.
