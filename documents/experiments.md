@@ -2,9 +2,9 @@
 
 COMET uses the same runner for full KV, StreamingLLM, R-KV and AgentKV. The
 [current research direction](research-direction.md) supersedes the original
-model assumptions. The sample configurations are explicitly provisional train/dev
-settings; they are runnable examples, not measured or
-frozen research choices.
+model assumptions. Versioned Qwen3.5-9B studies live in `configs/qwen9b/`, including
+the frozen `final-l4-v1.json` test configuration. Legacy schema examples remain
+separate from those studies; see the [configuration guide](../configs/README.md).
 
 The [experiment resolution guide](experimental-resolution.md) describes
 authorized supplemental retention, runtime-budget and trigger sweeps. Keep the
@@ -12,16 +12,18 @@ required core comparisons and declare each added grid before execution.
 
 ## Start small
 
-The commands below describe the existing pipeline using a legacy schema example.
-They are not instructions to restart canceled pilots. New Qwen support and its
-experiment configuration must first be implemented and validated.
+The commands below use the qualified L4 train protocol. Run it only on the
+matching device/runtime and preserve its explicit memory cap. Use a separately
+qualified configuration for another GPU; do not override hardware metadata to
+make an incompatible allocation appear valid.
 
 Follow [setup.md](setup.md) to install the pinned engine and AppWorld data, then:
 
 ```sh
-source "$COMET_REPO/scripts/activate_runtime.sh" gpu
-export COMET_CONFIG="$COMET_REPO/configs/examples/pilot-smoke.json"
-export COMET_RUN="$COMET_STORAGE/runs/pilot-smoke-unique-id"
+source "$COMET_REPO/scripts/activate_runtime.sh" hybrid
+export COMET_RUNTIME_PROFILE=hybrid
+export COMET_CONFIG="$COMET_REPO/configs/qwen9b/train-protocol-l4-v4.json"
+export COMET_RUN="$COMET_STORAGE/runs/qwen9b-train-unique-id"
 export COMET_MODEL=/path/to/pinned/model/snapshot
 comet validate "$COMET_CONFIG"
 bash "$COMET_REPO/scripts/run_experiment.sh"
@@ -48,8 +50,9 @@ failures and elapsed time. Every experimental reset, tool, checkpoint, rebuild
 and cleanup remains charged. Resume records another setup without granting extra
 task time or attempts; an already completed run does not repeat it. Omission
 preserves historical behavior and config hashes. Analysis reports setup separately,
-without amortizing it into task latency. The new path has CPU regression coverage;
-its live AppWorld isolation check is still required before experimental use.
+without amortizing it into task latency. CPU and live AppWorld isolation checks
+passed for the qualified hybrid runtime; the linked validation records preserve
+their scope and runtime revisions.
 
 Evaluation is a separate command and is never called by execution.
 

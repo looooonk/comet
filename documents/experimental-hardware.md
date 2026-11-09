@@ -5,9 +5,11 @@ authorized other adequately sized GPUs for pilots and final evaluation, provided
 the workload finishes in a reasonable time. A100 availability is not a prerequisite
 for progressing the study.
 
-The newer-model pivot may require model parallelism; select that configuration
-in the next infrastructure plan, before provisioning. Record device count and
-topology along with per-device and aggregate memory accounting.
+The selected Qwen3.5-9B study uses one GPU: L4 with a 21 GiB cap or, for separate
+supplemental train studies, RTX PRO 6000 Blackwell Server Edition with a 24 GiB
+cap. See the [qualification records](records/README.md). Larger candidates remain
+unqualified; any future model-parallel configuration needs its own device-count,
+topology and memory-accounting qualification before use.
 
 Each controlled comparison must use the same GPU model/count, engine/runtime,
 precision, task configuration, and experimental peak total VRAM cap. Keep measurements from

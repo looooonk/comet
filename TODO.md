@@ -39,7 +39,7 @@ Candidate names supplied by the user:
 - Qwen3.8-27B
 
 The former 14B ceiling is superseded. Official identities are now verified;
-Qwen3.5-9B is selected, with live qualification in progress.
+Qwen3.5-9B is selected and qualified on the recorded L4 and Blackwell setups.
 
 - [x] Verify official repositories, revisions, licenses, weight formats, reasoning
   modes and architecture. See `documents/hybrid-backend.md`; the user removed
