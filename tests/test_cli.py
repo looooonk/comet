@@ -46,7 +46,7 @@ def test_freeze_accepts_matching_pilot_and_preserves_evidence(freeze_files):
     assert frozen.frozen == record
     assert record["settings_digest"] == frozen.settings_digest
     assert record["pilot_evidence"] == [{
-        "run_id": "fixture-pilot", "path": str(run.resolve()),
+        "run_id": "fixture-pilot", "artifact_id": "comet-run:fixture-pilot",
         "manifest_digest": digest(read_json(run / "manifest.json")),
         "config_digest": read_json(run / "manifest.json")["config_digest"],
     }]

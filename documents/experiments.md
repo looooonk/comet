@@ -247,7 +247,9 @@ comet run configs/final-v1.json --output runs/final-v1 \
 
 Freeze requires completed, non-smoke train/dev pilot evidence on the selected device with matching
 numerical settings and a completed attempt. It records the settings and evidence
-digests. The command does not make scientific judgments about task sample size or
+digests and portable run identifiers, without embedding private workspace paths.
+Keep the corresponding artifact inventory with the execution record.
+The command does not make scientific judgments about task sample size or
 trigger quality: contributors must review those before the test run. Editing a
 frozen setting invalidates its digest and requires a new experiment version.
 

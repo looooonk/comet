@@ -61,7 +61,7 @@ def freeze(config_path: Path, output: Path, pilot_runs: list[Path]) -> dict:
         evidence.append(
             {
                 "run_id": manifest["run_id"],
-                "path": str(run.resolve()),
+                "artifact_id": f"comet-run:{manifest['run_id']}",
                 "manifest_digest": digest(manifest),
                 "config_digest": manifest["config_digest"],
             }
