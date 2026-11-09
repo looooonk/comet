@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "decision": "qualified_for_declared_exploratory_pilot_scope_extension",
+  "launch_requires_separate_review": true,
+  "final_study_qualification": false,
+  "numerical_gates_changed": false,
+  "serving_precision_changed": false,
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "runtime_source_commit": "fd6ee15be5b98db00ef687d43cc66cc6a8a2cb5c",
+  "device_name": "NVIDIA RTX A6000",
+  "peak_vram_bytes": 42949672960,
+  "base_qualification": "documents/records/qwen4b-pilot-numerical-qualification-2026-11-08.json",
+  "base_qualification_sha256": "d2710ef1bd892ecc464b3128cc55f83ab756f801166fdd40ad74371ba6e7a974",
+  "base_qualification_commit": "2a1c85b4b588c4e271ae7cf0aaf20382255ee3b2",
+  "pilot_config": "configs/pilot-baseline-broad-qwen4b-instruct-v1.json",
+  "pilot_config_sha256": "436ee4c3f56518691dd02ae1d4265e0c515bf803b981da35400e8362bd434dbf",
+  "pilot_config_commit": "f01bfbb490ad9188413abe166ce032d5e3fb5977",
+  "scope": "All 19 previously identifier-selected AppWorld dev families, variant _1, seeds 17/18; 38 new independent full-cache N=1 cells with the unchanged 600-second budget and model/prompt/sampling/context/cap. No earlier outcomes are spliced into this run.",
+  "task_ids": [
+    "0d8a4ee_1",
+    "23cf851_1",
+    "37a8675_1",
+    "383cbac_1",
+    "396c5a2_1",
+    "3ab5b8b_1",
+    "4ec8de5_1",
+    "4fab96f_1",
+    "50e1ac9_1",
+    "530b157_1",
+    "57c3486_1",
+    "6171bbc_1",
+    "68ee2c9_1",
+    "6bdbc26_1",
+    "6c2c621_1",
+    "b119b1f_1",
+    "d4e9306_1",
+    "df61dc5_1",
+    "fac291d_1"
+  ],
+  "seeds": [
+    17,
+    18
+  ],
+  "cells": 38,
+  "changed_config_fields_from_targeted_pilot": [
+    "experiment_id",
+    "notes",
+    "task_ids"
+  ],
+  "reused_model_specific_evidence": {
+    "gpu_integration_job": "13839303",
+    "passed_checks": 278,
+    "original_numerical_screens": {
+      "default": "failed",
+      "heldout": "failed"
+    },
+    "cpu_fp32_job": "13839610",
+    "native_fp32_existing_bounds_satisfied": true,
+    "scope_limit": "Fixed numerical vectors and integration checks support an exploratory capability pilot, not broad equivalence or final qualification."
+  },
+  "targeted_pilot": {
+    "job_id": "13839708",
+    "successes": 0,
+    "cells": 6,
+    "scores_sha256": "88733323be68d593a64804423ddcd9a6af2826b77c9ff47a4f934e2f9205ec49",
+    "interpretation": "All attempts completed normally; three targeted families do not establish capability across the other predeclared dev families."
+  },
+  "execution_requirements": [
+    "Verify the base qualification and every pinned underlying artifact.",
+    "Require a fresh exact A6000 CUDA/BF16 check, at least 40 GiB free device memory, and unchanged CUDA runtime, driver, packages, engine revision and installed patches.",
+    "Keep the complete identifier-selected task list and paired seeds regardless of prior outcomes.",
+    "Do not copy targeted-pilot cells, scores or environment effects into this new run.",
+    "Run all 38 cells before offline scoring; evaluator feedback cannot affect actions or stopping.",
+    "Preserve failures and elapsed budgets. A clean segmented fallback may resume only the same configuration and source."
+  ],
+  "segmentation_evidence": {
+    "job_id": "13839778",
+    "runtime_source_commit": "fd6ee15be5b98db00ef687d43cc66cc6a8a2cb5c",
+    "validation_model": "Qwen/Qwen3-8B",
+    "status": "passed",
+    "claim": "Shared-runner control flow only; no model numerical qualification is inherited."
+  }
+}

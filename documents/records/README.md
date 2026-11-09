@@ -123,6 +123,7 @@ runtime artifacts are not included in this directory.
 | [4B managed runtime readiness (2026-11-08)](qwen4b-managed-runtime-2026-11-08.md) | Separate environment, preserved namespace-helper failure and successful CPU follow-up without reinstalling |
 | [Repeated 4k history timing (2026-11-08)](history-timing-4k-2026-11-08.md) | Ninety verified passes, paired 2k/4k curves and distinct decode-pass reservation peaks |
 | [Final-model flexibility (2026-11-08)](final-model-flexibility-2026-11-08.md) | User authorization for a qualified stronger model after useful corrected dev evidence; no replacement selected yet |
+| [Broader 4B pilot scope extension (2026-11-08)](qwen4b-broad-pilot-qualification-2026-11-08.json) | Unchanged A6000 numerical evidence for 38 predeclared full-cache dev cells; original failures/gates retained, no final qualification |
 | [Broader nonthinking 4B dev plan (2026-11-08)](baseline-qwen4b-instruct-2026-11-08-plan.md) | All 19 previously declared dev families, two seeds and explicit corrected settings; no outcome-based task selection |
 | [Repeated 2k history timing (2026-11-08)](history-timing-2k-2026-11-08.md) | Ninety verified passes; stable full/R-KV/AgentKV rates and preserved StreamingLLM first-use differences |
 | [Nonthinking 4B pilot plan (2026-11-08)](execution-qwen4b-instruct-2026-11-08-plan.md) | Pinned exploratory model, verified assets/template, 264 CPU checks and required live qualification before six targeted dev cells |
