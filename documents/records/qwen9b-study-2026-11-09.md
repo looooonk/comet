@@ -248,7 +248,7 @@ pilot version, not a relabeling of the failed baseline.
 
 The baseline's 47 output files were fetched and verified, and its compute and
 live cloud prefix were removed. A bounded seven-hour session replaces repeated
-cold-start jobs. Plans are copied once, source remains immutable, closed cell
+cold-start jobs. Plans are copied once, source is fixed within each experiment, closed cell
 segments are backed up, and scoring remains outside execution. The helper's
 submission timeout was explicitly extended for this job and restored to its
 one-hour default immediately afterward; concurrency remains one GPU with no
@@ -319,3 +319,21 @@ incompatible configuration resume was rejected, incomplete scoring was rejected,
 and all three environments were distinct. The paired initial 3,161-token prefix
 was preserved. This is integration evidence, separate from task-quality evidence;
 see the [portable check record](qwen9b-l4-resume.json).
+
+
+The 16,384-token check passed full-cache generation and StreamingLLM recovery,
+then R-KV recovery exhausted allocator headroom during its final redundancy
+calculation. The pinned selector created a full quadratic integer temporary;
+the failed plan and its partial measurements remain preserved. Source `0d438bf`
+replaces that calculation with bounded query-row tiles, preserving the selector
+rules while allowing small BF16 reduction-order differences. This explicit
+source release occurs between closed experiments on the existing worker; earlier
+outputs retain their original source. New source and patch identities are saved
+with plan `05-tiled-context-pilot`. Its live numerical check and 16K qualification
+gate the v4 baseline and the replacement compression plan `06-compression-pilot`.
+The earlier plans `03` and `04` contain no v4 or compression task attempts.
+
+A separate live fixture checks all three methods against a real AppWorld phone
+mutation, saved Python state and restored hybrid checkpoints. It checks unchanged
+tool effects, RNG continuity, retention, the one-rebuild limit and measured cap.
+Forced fixture actions are integration evidence only, never task-success data.
