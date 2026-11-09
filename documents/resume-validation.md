@@ -6,6 +6,11 @@ submit or cancel scheduler jobs. The test needs a fresh artifact directory outsi
 tracked source, the installed pinned runtime, model weights, and AppWorld data.
 It always uses `--integration-smoke` and cannot freeze experiment settings.
 
+For the current hybrid backend, `configs/qwen9b/resume-check-v1.json` declares
+the three validation conditions on the first train family. Activate profile
+`hybrid`, use the pinned 9B snapshot and provide that config to the same harness.
+This configuration is not evidence that the live interruption check has passed.
+
 Prepare a provisional pilot configuration with one train/dev task and one seed,
 three full-cache conditions in order, and the ordinary agent prompt. Give the
 first and third conditions `max_attempts: 1`, and the middle condition the shared

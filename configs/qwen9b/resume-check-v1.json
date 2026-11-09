@@ -1,0 +1,13 @@
+{
+  "extends": "train-baseline-v1.json",
+  "experiment_id": "qwen9b-resume-check-v1",
+  "task_ids": ["34d9492_1"],
+  "budget_seconds": 120,
+  "max_attempts": 2,
+  "conditions": [
+    {"id": "preserved", "method": "full", "retention": 1.0, "recovery": "never", "max_attempts": 1},
+    {"id": "interrupted", "method": "full", "retention": 1.0, "recovery": "never", "max_attempts": 2},
+    {"id": "fresh", "method": "full", "retention": 1.0, "recovery": "never", "max_attempts": 1}
+  ],
+  "notes": "Process interruption validation only, using the first declared train family. Three repeated full-cache conditions test preserved work, consumed interruption budgets and isolated continuation; they are not research comparisons or freeze evidence. Uses the existing real-process harness and integration-smoke labeling."
+}
