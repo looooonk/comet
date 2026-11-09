@@ -1,0 +1,68 @@
+{
+  "extends": "train-protocol-l4-v4.json",
+  "experiment_id": "qwen9b-train-compression-l4-v1",
+  "task_ids": [
+    "34d9492_1",
+    "76f2c72_1"
+  ],
+  "budget_seconds": 150,
+  "max_attempts": 2,
+  "triggers": {
+    "fixed_tool_calls": 4,
+    "dynamic_context_tokens": 6144,
+    "dynamic_tool_calls": 3,
+    "dynamic_rule": "and"
+  },
+  "conditions": [
+    {
+      "id": "full_once",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "full_best_of_n",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_25_never",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_25_never",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_never",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_fixed",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_dynamic",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "First matched compressed pilot on the first two predeclared train families, keeping the first failed family as well as arithmetic. N=2 shares 150 seconds; observed full-cache arithmetic completion near 67 seconds motivates a budget where two attempts can fit. Fixed trigger at four cumulative Python tool executions; dynamic trigger requires both 6144 raw-context tokens (including pending observation) and three cumulative tool executions. V3 observed histories crossed 6144 after roughly 2-6 tools, making this distinguishable from a fixed trigger. At most one recovery. Must follow passed 16384-token qualification and a completed v4 capability pilot. This initial 25% screen is followed by the required retention anchors and declared fine-grid work; no optimal-trigger claim."
+}

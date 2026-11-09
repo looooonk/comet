@@ -294,3 +294,18 @@ by a four-method capacity/recovery check. The raw transcript is never truncated
 or summarized by the engine. The metadata-only plan initially failed because a
 helper named `inspect.py` shadowed Python's standard module; the corrected plan
 renames it and reads only the predeclared train/dev task metadata.
+
+
+The next matched compression screen is declared as `train-compression-l4-v1`:
+first two original train families, 150 seconds shared by at most two attempts,
+full single/oracle controls and all three methods at 25% retention, plus fixed
+and dynamic AgentKV arms. It keeps the first family's earlier failure instead
+of selecting only the successful task. The budget is motivated by the measured
+67-second full-cache arithmetic attempt. Fixed recovery checks four cumulative
+Python executions. Dynamic recovery requires both 6,144 raw-context tokens and
+three executions. The observed v3 histories reached that length after about
+2-6 tools, so it can differ from the fixed trigger. These are pilot choices,
+not an optimal-policy claim or frozen final settings. The queued plan is gated
+on the 16,384-token qualification and a completed v4 pilot with at least one
+success. This train-stage capability gate operates between experiments; no
+scorer is consulted by the online runner or within an attempt schedule.
