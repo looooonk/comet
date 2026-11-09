@@ -1,0 +1,6 @@
+{
+  "extends": "resume-check-v1.json",
+  "experiment_id": "qwen9b-resume-check-blackwell-v1",
+  "engine": {"device_name": "NVIDIA RTX PRO 6000 Blackwell Server Edition"},
+  "notes": "The declared process interruption check on the qualified Blackwell configuration; integration-smoke only, with the same 40 GiB cap. Not a research comparison or freeze evidence."
+}

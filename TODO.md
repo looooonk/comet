@@ -68,16 +68,18 @@ new experiments within the existing GCP ceiling.
 - [ ] Validate model loading, chat/reasoning protocol, sampling and numerical
   output with an appropriate independent reference; do not inherit legacy
   numerical exceptions.
-- [ ] Validate persistent state across turns, saved checkpoints and independent
+- [x] Validate persistent state across turns, saved checkpoints and independent
   branches for all required methods, including every hybrid state type.
+  A6000 check `hybrid-third` passed all 24 method/retention branches.
 - [ ] Validate one full-history recovery, reapplication of retention, unchanged
   environment effects, RNG continuity, and transient memory-cap enforcement.
 - [ ] Validate fresh AppWorld attempts and isolated resets, correct saved-state
   evaluation, interruption/resume accounting and offline-only scorer access.
-- [ ] Run the live check for the retained optional environment-initialization
+- [x] Run the live check for the retained optional environment-initialization
   path before enabling it experimentally. User approved one fixed train-world
   initialization/close measured separately; every experimental reset/tool/
   checkpoint/rebuild remains charged. CPU checks are not live qualification.
+  Passed in `hybrid-second` and `hybrid-third`.
 - [ ] Establish context/output limits and resource headroom that do not obscure
   the task comparison. Preserve and diagnose infrastructure failures.
 

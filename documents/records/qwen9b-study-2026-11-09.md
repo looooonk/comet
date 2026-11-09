@@ -76,3 +76,28 @@ The local suite after staging/plot additions passed 336 tests, with one optional
 numerical module skipped and 16 live checks deselected. A managed-runtime
 archive now allows identical pinned packages to be staged on local scratch;
 packing, activation and configuration validation were exercised locally.
+
+The A6000 `hybrid-third` check at `ae801bc` passed the independent full-sequence
+reference comparison (logit cosine 0.99876, top-10 overlap 1.0; greedy answer
+`7391`). All 24 method/retention branches passed persistent suffix generation,
+checkpoint replay, full-history rebuild, RNG continuity and the one-rebuild
+limit. A deliberately insufficient cap refused recovery. All four methods
+completed the 8,192-token capacity check. Peak total VRAM was 29.95 GiB for full
+cache, 18.66 for StreamingLLM/AgentKV and 24.13 for R-KV; peak occupied KV was
+256 MiB full and 66.9 MiB compressed, including transient pre-eviction entries.
+Recurrent/convolution state occupied about 49 MiB separately. These are synthetic
+qualification measurements, not task-success results.
+
+That run had 335 passes, 17 skips and one chat-template failure. The pinned 3.5
+template rejects an isolated tool response without a preceding user query.
+Observation serialization now emits its verified append-only suffix, and the
+live test compares it with a complete official-template dialogue in both thinking
+modes. This correction still needs its live rerun.
+
+A queue audit found available **NVIDIA RTX PRO 6000 Blackwell Server Edition**
+devices (97,887 MiB reported capacity, compute capability 12.0, driver 575.57.08).
+The A6000 pool was occupied after the validation allocation. The Blackwell
+baseline/resume configurations retain 9B and the 40 GiB experimental cap; they
+require live qualification before use. Several independent single-GPU jobs can
+run concurrently when scheduler resources permit. No attempts share model or
+environment state, and comparisons remain on the same GPU model.

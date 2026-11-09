@@ -1,0 +1,6 @@
+{
+  "extends": "train-baseline-v1.json",
+  "experiment_id": "qwen9b-train-baseline-blackwell-v1",
+  "engine": {"device_name": "NVIDIA RTX PRO 6000 Blackwell Server Edition"},
+  "notes": "Unfrozen train capability/cost pilot on an available Blackwell GPU. Same outcome-independent four-family sample, seed, prompt, sampling, 300-second budget and 40 GiB cap as train-baseline-v1. Hardware substitution is authorized and must pass live checks before execution. Physical 96 GB capacity does not increase the experimental cap."
+}

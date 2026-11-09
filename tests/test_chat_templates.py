@@ -68,10 +68,17 @@ def test_live_runner_observation_matches_pinned_model_template():
             [{"role": "system", "content": current.config.prompt}, {"role": "user", "content": "A task"}],
             tokenize=True, return_dict=False, add_generation_prompt=True, enable_thinking=thinking,
         )
-        turn = tokenizer.apply_chat_template(
-            [{"role": "user", "content": f"<tool_response>\n{observation}\n</tool_response>"}],
+        history = ([{"role": "user", "content": "A task"},
+                    {"role": "assistant", "content": "```python\nprint('observation')\n```"}]
+                   if model == "Qwen/Qwen3.5-9B" else [])
+        previous = (tokenizer.apply_chat_template(history, tokenize=False,
+                    add_generation_prompt=False, enable_thinking=thinking) if history else "")
+        rendered = tokenizer.apply_chat_template(
+            [*history, {"role": "user", "content": f"<tool_response>\n{observation}\n</tool_response>"}],
             tokenize=False, add_generation_prompt=True, enable_thinking=thinking,
         )
+        assert rendered.startswith(previous)
+        turn = rendered[len(previous):]
         for finished in (False, True):
             actual = current._observation_tokens(engine, observation, finished=finished)
             expected = tokenizer.encode(("" if finished else "<|im_end|>") + "\n" + turn,
