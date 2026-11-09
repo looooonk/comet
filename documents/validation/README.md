@@ -123,6 +123,13 @@ Both phases must pass; their reports and the qualification exit status are saved
 separately. Parallel AppWorld checks verify cleanup of their own scoring namespace,
 since other workers may legitimately create or remove neighboring namespaces.
 
+Identical workers may reuse a completed qualification and dev smoke for the same
+execution source, managed runtime, GPU model and cap. Record that evidence and
+check the allocated device before execution. A normal agent protocol failure is
+a task outcome, not a broken resume mechanism; keep it in the results while still
+checking fresh state, paired initial actions and interruption budget accounting.
+Unexpected infrastructure errors remain validation failures.
+
 Then run small train/dev tasks through the execution, scoring, and analysis
 commands in [experiments.md](../experiments.md). Distinguish an agent reaching
 completion from passing the AppWorld evaluator. Retain failed attempts and their

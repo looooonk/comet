@@ -175,7 +175,11 @@ def test_live_process_interruption_and_resume():
         assert after_cell["completed"] and len(after_cell["attempts"]) == 1
         later = after_cell["attempts"][0]
         assert later["attempt_index"] == 0 and later["seed"] == attempt_seed(seed, 0)
-        assert later["status"] in {"completed", "context_limit", "timeout"}
+        protocol_failure = (
+            later["status"] == "error"
+            and later.get("failure_reason", "").startswith("AgentProtocolError:")
+        )
+        assert later["status"] in {"completed", "context_limit", "timeout"} or protocol_failure
         original = read_json(before_dir / "attempt-000" / "trajectory.json")
         fresh = read_json(after_dir / "attempt-000" / "trajectory.json")
         assert original["turns"][0] == trajectory["turns"][0] == fresh["turns"][0]
