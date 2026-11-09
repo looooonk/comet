@@ -433,3 +433,12 @@ single-GPU allocation must first pass fresh live qualification at this cap.
 The additional cohort improves sample coverage and exposes the single/oracle
 distinction; it cannot retune the frozen L4 test study, and its hardware-specific
 results remain separate.
+
+A second available Blackwell GPU is allocated to the 28-arm Q1 diagnostic on
+the same three train families (`q1-diagnostic-blackwell-v1.json`), preserving
+the 90-second branch budget and 21 GiB cap. This raises the diagnostic from one
+to three task families without delaying the parallel fine grid or changing
+the frozen L4 evaluation. Both supplemental runs use immutable source `47596b5`;
+the later diagnostic configuration is staged externally and saved in its run
+manifest. Fresh Blackwell 16K qualification gates both runs. Attempts remain
+sequential within each task/configuration.
