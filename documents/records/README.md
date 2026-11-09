@@ -2,12 +2,13 @@
 
 ## Latest results
 
-The recent [8B prompt diagnostic](execution-prompt-2026-11-08-results.md) and
-separate 14B pilot completed execution, but their original zero-success scores
-are provisional. A [reproduced AppWorld scoring defect](appworld-scoring-repair-2026-11-08.md)
-caused saved mutations to be overlooked. The path repair passed live persistence
-checks; corrected offline scoring of immutable outcomes is pending. Do not infer
-model capability or prompt effects from the original scores.
+The recent 8B prompt diagnostic and separate 14B pilot now have
+[corrected offline scores](appworld-corrected-pilot-scoring-2026-11-08.md).
+All three arms remain at 0/6 on their declared six-cell dev schedules. A
+[reproduced AppWorld defect](appworld-scoring-repair-2026-11-08.md) was repaired
+and validated; previously missing mutations are now recognized. Originals remain
+unchanged. These are useful failure diagnostics, but a stronger execution baseline
+is still needed before expanding task-success comparisons.
 
 The [2k](history-feasibility-2k-2026-11-08.md) and
 [8k](history-feasibility-8k-2026-11-08.md) and
@@ -101,6 +102,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Corrected pilot scoring (2026-11-08)](appworld-corrected-pilot-scoring-2026-11-08.md) | Five live checks; 14 completed snapshots exhaustively scored; all three arms remain 0/6 with original bytes preserved |
 | [AppWorld scoring repair (2026-11-08)](appworld-scoring-repair-2026-11-08.md) | Reproduced counter-path defect, validated state-preservation fix, and separate rescoring; original recent task scores provisional |
 | [16k matched-history result (2026-11-08)](history-feasibility-16k-2026-11-08.md) | Thirty verified passes, 27.786 GiB peak total VRAM, and actual three-length cost figures |
 | [8k matched-history result (2026-11-08)](history-feasibility-8k-2026-11-08.md) | Thirty verified passes and actual two-length cost figures; first-use timing caveats |

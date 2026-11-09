@@ -1,10 +1,12 @@
 # Executable-action prompt results
 
-The original **0/6 scores in each arm are provisional** after the
+The original **0/6 scores in each arm were provisional** after the
 [AppWorld scoring defect](appworld-scoring-repair-2026-11-08.md) was reproduced.
 All eight completed snapshots have empty change-counter maps, which can hide
-real saved mutations. Preserve these original results while corrected offline
-scoring is prepared; they cannot yet establish the prompt's effect on task success.
+real saved mutations. The [corrected scoring follow-up](appworld-corrected-pilot-scoring-2026-11-08.md)
+now confirms 0/6 for both arms using exhaustive saved-state comparisons.
+This page preserves the original artifacts; use the corrected scores for current
+interpretation.
 Each arm had four normal completions, one context-limit failure, and one
 600-second timeout. Those execution outcomes and their budgets remain unchanged.
 

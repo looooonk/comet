@@ -2,8 +2,9 @@
 
 The recent 8B and 14B pilots' original zero-success scores are provisional.
 A reproduced AppWorld bookkeeping defect makes offline evaluation overlook
-real saved mutations. Corrected pilot scoring is pending; retain the original
-scores and execution failures. The [evidence inventory](appworld-scoring-repair-2026-11-08.json)
+real saved mutations. The [corrected scoring follow-up](appworld-corrected-pilot-scoring-2026-11-08.md)
+now confirms 0/6 in all three recent pilot arms; retain the original scores and
+execution failures. The [evidence inventory](appworld-scoring-repair-2026-11-08.json)
 pins the reproduction, patch checks and affected snapshot audit.
 
 With pinned AppWorld `42b5bcf` and SQLAlchemy 2.1.5, rendering a named-memory
@@ -47,8 +48,8 @@ unchanged and deliberately mutated legacy snapshots with empty counter files.
 The unmodified task evaluator observed the expected change sets; original bytes,
 audit metadata, cache cleanup and temporary-directory cleanup all verified.
 After error-path review, 22 focused CPU checks passed, including interrupted
-copy preparation and cleanup errors. Revised pilot outcomes remain pending in a
-separate managed AppWorld environment.
+copy preparation and cleanup errors. The subsequent managed AppWorld job and corrected pilot outcomes are recorded
+in the linked follow-up.
 
 The read-only snapshot audit found empty maps in all 17 available completed
 snapshots: eight paired 8B, three earlier sampling runs, and six recent 14B.
