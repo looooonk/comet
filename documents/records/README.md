@@ -103,6 +103,7 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [4B L40 numerical diagnosis (2026-11-08)](qwen4b-l40-numerical-diagnosis-2026-11-08.md) | All structural checks passed; two native-versus-FP32 JS exceedances remain, with no task-pilot qualification or threshold change |
 | [Eight-level native CPU retention validation (2026-11-08)](native-retention-grid-2026-11-08.json) | 26 native selector/accounting checks passed in a separate current-source runtime; 333 total passes, nine rendering skips, no new-level GPU qualification |
 | [Five-point inference cost study (2026-11-08)](history-timing-grid-2026-11-08.md) | 150 cells, 450 passes, verified repetitions and clean main/supplemental figures in PNG/SVG/PDF |
 | [Repeated 16k history timing (2026-11-08)](history-timing-16k-2026-11-08.md) | Final ninety passes; verified throughput, transient memory and complete five-length coverage |
