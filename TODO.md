@@ -67,9 +67,11 @@ new experiments within the existing GCP ceiling.
 
 ## 2. Validate the foundation once, at the intended settings
 
-- [ ] Validate model loading, chat/reasoning protocol, sampling and numerical
+- [x] Validate model loading, chat/reasoning protocol, sampling and numerical
   output with an appropriate independent reference; do not inherit legacy
   numerical exceptions.
+  A6000 reference/state checks and the corrected official-template checks passed;
+  qualification of each alternate GPU/cap remains separate.
 - [x] Validate persistent state across turns, saved checkpoints and independent
   branches for all required methods, including every hybrid state type.
   A6000 check `hybrid-third` passed all 24 method/retention branches.

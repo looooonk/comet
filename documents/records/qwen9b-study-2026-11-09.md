@@ -155,3 +155,13 @@ failures before loading weights. This cause still requires the fresh live probe.
 The failed launch's 16 output files were fetched, and compute/live cloud artifacts
 were removed. No task attempts ran. Three focused CPU checks passed after the
 early driver check; the model's inference mathematics are unchanged.
+
+Cloud launch `gpu-20261109-063527-7c75c0` stages `f87541f`, retains the declared
+21 GiB L4 configuration and adds the missing system headers. Its early probe
+passed: Triton CUDA target 8.9, FLA CUDA device and `Python.h` present. This
+confirms the repaired toolchain. The focused shared check invocation covers
+hybrid state/reference/capacity and the chat protocol (15 tests); unchanged
+AppWorld isolation/scoring checks already passed in both earlier cloud launches.
+The run remains bounded to 3,600 seconds with zero retries. Three cloud launch
+reservations of $5 plus the historical $10 reserve leave $15 uncommitted pending
+cost reconciliation; these are not billed charges.

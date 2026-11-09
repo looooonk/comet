@@ -8,11 +8,10 @@ is superseded. The first implementation candidate is Qwen3.5-9B with a shared Tr
 
 ## Candidate list
 
-These are the candidate names supplied by the user, not verified release or
-support claims. Resolve the exact official repositories, revisions, architecture,
-license, reasoning modes and weight sizes before selecting or downloading one.
-If a name has no official release, record that fact rather than inventing a
-repository or substituting another model silently.
+The [backend decision](hybrid-backend.md) records verified official repositories,
+revisions, architecture, license, reasoning modes and weight sizes for these
+user-supplied candidates. Only the 9B model is implemented. Verify identities
+again before selecting a different release; never substitute silently.
 
 - Qwen3.5-9B
 - Qwen3.5-27B
@@ -22,19 +21,20 @@ repository or substituting another model silently.
 
 Do not equate an MoE model's active parameter count with its resident weight
 memory. Measure the complete serving footprint, including all model state,
-workspace and transient recovery allocations. GPU selection and any additional
-spending remain part of the next infrastructure discussion; this cleanup starts
-no new jobs or downloads.
+workspace and transient recovery allocations. The subsequent execution request
+authorizes adequately sized Insomnia/GCP resources within the recorded spending
+ceiling. Prefer the smaller qualified model when it supports the experiment.
 
 ## Implementation boundary
 
-The current model registry and pinned AgentKV Mini-SGLang adapter implement the
-legacy Qwen3 profiles only. Keeping their checks strict prevents unsupported
-models from being silently treated as Qwen3. The
+The registry requires the shared Transformers hybrid backend for Qwen3.5-9B.
+The pinned Mini-SGLang adapter retains only its legacy Qwen3 profiles. Other new
+architectures remain unsupported; strict checks prevent them from being silently
+treated as Qwen3 or as the dense 9B hybrid. The
 [historical integration guide](https://github.com/looooonk/comet/blob/55fca50bfe3c69dfaa4420585e78850da1b3aaf4/documents/experimental-models.md) retains exact old pins and
 reproduction commands; historical results do not qualify a newer architecture.
 
-Before implementing a new backend, document the selected model's attention,
+Before extending to another backend or model, document its attention,
 recurrent and expert state and how each required method can operate on it.
 For hybrid architectures, define the retention denominator and the handling of
 non-KV state. A KV-only x-axis must not imply that every kind of model memory is

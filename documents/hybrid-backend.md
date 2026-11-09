@@ -77,12 +77,12 @@ Check queue delays during setup and execution and switch pending requests when
 an adequate alternative is available. Initial context/output limits and caps
 remain provisional until live checks and dev costs establish useful headroom.
 
-GCP currently has one global GPU quota and one Spot L4 quota, with no active
-jobs observed. L4's 24 GB leaves less headroom for 9B; it is a fallback needing
-qualification. No larger-device quota is assumed. The prior $10 reserve remains
-against the $40 cumulative ceiling, leaving $30 uncommitted. No new paid job
-has been submitted. Runtime and cost estimates must be revised from pilot
-measurements; the overnight deadline does not relax task-budget accounting.
+An L4 leaves less headroom for 9B and requires its own measured memory cap and
+qualification. Check current quota and availability before provisioning; do not
+assume access to a larger GPU. Keep comparisons on the same device model and
+cap. Run IDs, available quota and the spending ledger belong in the
+[execution record](records/qwen9b-study-2026-11-09.md). Revise runtime and cost
+estimates from pilot measurements; deadlines do not relax task-budget accounting.
 
 Judge validation by meaningful output agreement, state correctness and task
 behavior, not bitwise equality. Preserve material discrepancies and failures.
