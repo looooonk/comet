@@ -32,6 +32,10 @@ def main(argv: list[str] | None = None) -> None:
         _print(doctor(args.gpu))
     elif args.command == "freeze":
         _print(freeze(args.config, args.output, args.pilot_run))
+    elif args.command == "partition":
+        from comet.partitions import partition_study
+
+        _print(partition_study(args.config, args.output, args.count))
     elif args.command == "evaluate":
         from comet.evaluation import evaluate_run
 

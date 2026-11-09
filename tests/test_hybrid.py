@@ -89,7 +89,8 @@ def test_live_hybrid_reference_persistence_recovery_and_branches(tmp_path):
     settings = EngineSettings(
         model=MODEL, model_path=os.environ["COMET_MODEL_PATH"], model_revision=REVISION,
         tokenizer_revision=REVISION, backend="transformers_hybrid", method="full", retention=1.0,
-        max_context_tokens=8192, peak_vram_bytes=int(os.environ.get("COMET_GPU_CAP_BYTES", 40 * 2**30)),
+        max_context_tokens=int(os.environ.get("COMET_TEST_CONTEXT_TOKENS", 8192)),
+        peak_vram_bytes=int(os.environ.get("COMET_GPU_CAP_BYTES", 40 * 2**30)),
         workspace_reserve_bytes=int(os.environ.get("COMET_GPU_WORKSPACE_BYTES", 4 * 2**30)),
         prefill_chunk_tokens=128, require_a100=False,
     )
@@ -165,14 +166,22 @@ def test_live_hybrid_reference_persistence_recovery_and_branches(tmp_path):
         engine.settings = original
         evidence["cap_refusal"] = True
         if os.environ.get("COMET_TEST_CAPACITY") == "1":
-            capacity_tokens = engine.tokenizer.encode("Archive entry: completed routine item. " * 1500)
-            capacity_tokens = capacity_tokens[:settings.max_context_tokens - 2]
+            unit = engine.tokenizer.encode("Archive entry: completed routine item. ")
+            capacity_tokens = (unit * (settings.max_context_tokens // len(unit) + 1))[
+                :settings.max_context_tokens - 2
+            ]
             evidence["capacity"] = []
             for method in ("full", "streamingllm", "rkv", "agentkv"):
                 engine.set_policy(method, 1.0 if method == "full" else 0.25)
                 engine.start(17)
                 engine.generate(capacity_tokens, 2, 0.0, 1.0, deadline)
-                evidence["capacity"].append({"method": method, "memory": engine.memory_stats()})
+                record = {"method": method, "memory": engine.memory_stats()}
+                if method != "full":
+                    recovery = engine.recover(engine.raw_token_ids, deadline)
+                    assert recovery.admitted
+                    record["recovery_seconds"] = recovery.seconds
+                    record["post_recovery_memory"] = engine.memory_stats()
+                evidence["capacity"].append(record)
     finally:
         evidence["engine"] = engine.provenance()
         destination = os.environ.get("COMET_GPU_EVIDENCE")

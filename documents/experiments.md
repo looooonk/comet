@@ -308,3 +308,26 @@ changed budgets and unrelated freeze records are refused. Ordinary analysis
 without `--study-config` retains its existing compatibility rules. The managed
 CPU suite covers positive aggregation and these rejection cases; inference,
 budget enforcement and offline evaluation are unchanged.
+
+Generate balanced, disjoint condition groups from the frozen parent with:
+
+```sh
+comet partition configs/study-v1.json --count 8 --output configs/study-v1-parts
+```
+
+This refuses an existing output directory and writes an index with configuration
+digests, cell counts and total cell budgets. Each partition inherits the complete
+task and seed lists. `infra/slurm/partition.sh` maps an array index to its partition
+and uses the shared experiment launcher. Set `COMET_PARTITIONS`, `COMET_STUDY_RUN`
+and `COMET_EXPECTED_COMMIT` alongside the normal runtime variables. Pin one source
+checkout for the entire submitted study; do not update it while jobs are queued
+or running. Submit the array with an `afterok` dependency on its live qualification
+and train/dev smoke job, with `--kill-on-invalid-dep=yes`.
+
+Submit `infra/slurm/score_study.sh` as a separate CPU job depending on successful
+completion of the entire array. It verifies every partition is complete before
+offline scoring, enforces exact parent coverage through the shared analysis, and
+generates PNG/PDF aggressivity and resource plots. Scoring uses the managed
+AppWorld runtime; `COMET_PLOT_ENV` selects a separate managed CPU runtime with
+the plotting extra. Failed or interrupted execution blocks this downstream job;
+resume only through the existing compatible-run accounting rules.

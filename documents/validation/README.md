@@ -97,6 +97,12 @@ recovered checkpoint replay. `gpu.json` records every method/fraction pair and
 its measured memory. This optional grid validates state semantics on a short
 synthetic history; it is not task-success evidence or long-context qualification.
 
+For the hybrid check, `COMET_TEST_CONTEXT_TOKENS` sets the capacity-test context
+(default 8,192); combine `16384` with `COMET_TEST_CAPACITY=1` to check full-length
+prefill and compressed recovery at the study's 16K limit. Set the same explicit
+cap and workspace reserve as the study. These synthetic checks are independent
+of task-success measurements.
+
 The AppWorld fixtures check execution, fresh resets, checkpoint restore, offline
 evaluation, explicit authentication, parsed response types, and pagination. The
 authentication and pagination probes use isolated dev environments, perform only
