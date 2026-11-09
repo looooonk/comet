@@ -103,6 +103,13 @@ points without imposing a monotone or smooth fit. See [evaluation.md](evaluation
 for definitions and coverage rules. Keep figures with their analysis, source
 configuration, hardware description, and limitations in `records/`.
 
+For a multi-method aggressivity figure, use `comet plot-aggressivity ANALYSIS
+--output FIGURE.svg`. It uses percentage removed on the horizontal axis and
+separates single-attempt success from oracle best-of-N, with a column for each
+measured recovery policy. Compressed conditions must share one attempt ceiling;
+the matching full-cache control is shown at zero removal. Only measured points
+are connected. Output extensions select PNG, SVG or PDF.
+
 Configurations are JSON. `extends` resolves relative to the child file; top-level
 objects merge one level and lists replace in full. The run records the fully
 resolved configuration and its SHA-256 digest, so later edits to a parent file

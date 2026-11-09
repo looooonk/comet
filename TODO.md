@@ -38,8 +38,8 @@ Candidate names supplied by the user:
 - Qwen3.6-35B-A3B
 - Qwen3.8-27B
 
-The former 14B ceiling is superseded. These names have not been verified as
-available official releases during cleanup; no replacement is selected.
+The former 14B ceiling is superseded. Official identities are now verified;
+Qwen3.5-9B is selected, with live qualification in progress.
 
 - [x] Verify official repositories, revisions, licenses, weight formats, reasoning
   modes and architecture. See `documents/hybrid-backend.md`; the user removed
@@ -60,7 +60,8 @@ The existing GCP ceiling remains **$40 total**. Two completed cloud jobs have a
 combined estimate of about **$3.54**, not a billing measurement; **$10 remains
 reserved pending reconciliation**, leaving $30 uncommitted under the prior ledger.
 No paid resource is currently active. Vast.ai still requires a separate spending
-decision and is a last resort. Cleanup does not authorize new compute.
+decision and is a last resort. The November 8 execution request authorizes the
+new experiments within the existing GCP ceiling.
 
 ## 2. Validate the foundation once, at the intended settings
 
@@ -86,8 +87,9 @@ provenance, and stop when checks fail. Rebuild cleaned caches only as needed.
 
 ## 3. Establish an informative baseline and aggressivity sweep
 
-- [ ] Declare a train/dev sample by task-family coverage or a reproducible rule,
+- [x] Declare a train/dev sample by task-family coverage or a reproducible rule,
   not by which tasks happened to succeed. Record prior dev exposure.
+  See `documents/records/qwen9b-study-2026-11-09.md` and the baseline config.
 - [ ] Establish useful full-cache task success. Inspect ordinary trajectories for
   task interpretation, API use, pagination and premature completion failures.
   Larger parameter count alone is not qualification.

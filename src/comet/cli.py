@@ -180,6 +180,7 @@ def main(argv: list[str] | None = None) -> None:
     retention.add_argument("--output", type=Path, required=True)
     retention.add_argument("--title", default="Retention comparison")
     for command, help_text, title in (
+        ("plot-aggressivity", "Plot measured KV removal against single/oracle task success", "Compaction and task success"),
         ("plot-recovery", "Plot paired recovery effects, cost and admission", "Recovery comparison"),
         ("plot-triggers", "Plot observed trigger decisions and paired effects", "Recovery trigger observations"),
         ("plot-attempts", "Plot first/oracle success, attempts and observed cost", "Attempt allocation comparison"),
@@ -281,6 +282,11 @@ def main(argv: list[str] | None = None) -> None:
         from comet.study_plots import plot_retention_matrix
 
         plot_retention_matrix(args.analysis, args.output, title=args.title)
+        _print({"figure": str(args.output)})
+    elif args.command == "plot-aggressivity":
+        from comet.aggressivity_plots import plot_aggressivity
+
+        plot_aggressivity(args.analysis, args.output, title=args.title)
         _print({"figure": str(args.output)})
     elif args.command in {"plot-recovery", "plot-triggers", "plot-attempts", "plot-success-time"}:
         from comet.policy_plots import (
