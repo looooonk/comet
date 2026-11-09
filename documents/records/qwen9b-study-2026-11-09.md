@@ -145,3 +145,13 @@ The CPU check compares uninterrupted and segmented trajectories, budgets, failed
 source preparation, scoring and checkpoint preservation; 70 focused tests passed.
 A matching L4 process-interruption configuration is prepared; its live execution
 is still pending.
+
+The corrected-cap cloud launch loaded the weights, then failed its first warmup
+because FLA had cached its CPU backend. Its device discovery suppresses Triton
+initialization errors. The minimal image lacked Python development headers,
+which Triton's driver extension requires; the next launch adds them and probes
+Triton before asset download. The engine now surfaces driver initialization
+failures before loading weights. This cause still requires the fresh live probe.
+The failed launch's 16 output files were fetched, and compute/live cloud artifacts
+were removed. No task attempts ran. Three focused CPU checks passed after the
+early driver check; the model's inference mathematics are unchanged.

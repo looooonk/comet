@@ -37,6 +37,14 @@ defaults remain upstream code at `254c57bc84e4a7895159ba1062bd46c83626f511`.
 AppWorld, the shared runner, recovery policies, budgets and offline evaluator
 remain shared. Model registration and live qualification are separate steps.
 
+Linux runtime setup needs a C compiler and the matching Python development
+headers for Triton's driver extension (for system Python on Ubuntu, install
+`gcc`, `g++` and `python3-dev`). Probe
+`triton.runtime.driver.active.get_current_target()` in the activated hybrid
+runtime before downloading weights or launching checks. The engine also checks
+this before importing the model so FLA cannot hide a driver setup failure behind
+its CPU fallback. The required target is CUDA.
+
 ## State and compaction contract
 
 Retention applies to KV entries in the eight full-attention layers, separately

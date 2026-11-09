@@ -40,8 +40,6 @@ class HybridEngine:
 
     def __init__(self, settings):
         import torch
-        from transformers import AutoTokenizer, Qwen3_5ForConditionalGeneration
-        from transformers.modeling_utils import ALL_ATTENTION_FUNCTIONS
 
         if settings.backend != "transformers_hybrid":
             raise UnsupportedPath("hybrid engine requires an explicit hybrid backend")
@@ -49,6 +47,15 @@ class HybridEngine:
             raise UnsupportedPath("install the pinned hybrid runtime")
         if not torch.cuda.is_available() or torch.cuda.device_count() != 1:
             raise UnsupportedPath("expose exactly one CUDA GPU")
+        from triton.runtime import driver
+
+        # FLA suppresses driver setup errors and otherwise caches an unusable CPU backend.
+        if driver.active.get_current_target().backend != "cuda":
+            raise UnsupportedPath("the hybrid runtime requires Triton's CUDA backend")
+        from transformers import AutoTokenizer, Qwen3_5ForConditionalGeneration
+        from transformers.modeling_utils import ALL_ATTENTION_FUNCTIONS
+
+        self._install_recurrent_kernels()
         self.settings, self.torch = settings, torch
         device = torch.cuda.get_device_properties(0)
         self.device_name, self.device_total_bytes = device.name, device.total_memory
@@ -79,7 +86,6 @@ class HybridEngine:
         self.text_config._attn_implementation = "comet_hybrid"
         for index in self.attention_layers:
             self.text_model.layers[index].self_attn.comet_session = self
-        self._install_recurrent_kernels()
         self._warmup_record = None
         self._peak_kv = self._peak_total = self._peak_recurrent = 0
         self._peak_external = self._external
@@ -92,12 +98,15 @@ class HybridEngine:
 
     @staticmethod
     def _install_recurrent_kernels():
+        from fla import utils
         from fla.ops.gated_delta_rule import (
             chunk_gated_delta_rule,
             fused_recurrent_gated_delta_rule,
         )
         from transformers.models.qwen3_5 import modeling_qwen3_5
 
+        if utils.device_platform != "cuda":
+            raise UnsupportedPath("FLA initialized without CUDA; check Triton in a fresh process")
         # Keep the upstream hybrid forward and replace only its equivalent recurrent kernels.
         modeling_qwen3_5.torch_chunk_gated_delta_rule = partial(delta_kernel, chunk_gated_delta_rule)
         modeling_qwen3_5.torch_recurrent_gated_delta_rule = partial(delta_kernel, fused_recurrent_gated_delta_rule)
