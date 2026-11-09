@@ -295,3 +295,39 @@ all-one samples. These intervals are not simultaneous across time or conditions.
 Legend counts report cells with complete curve information over all cells.
 When several full-cache attempt limits are available, an additional panel compares
 those controls directly; compressed panels retain only their matching control.
+
+## Independently executed budget sweeps
+
+Use a separate report for train/dev pilot runs that actually executed under
+different declared wall-clock budgets:
+
+```sh
+comet analyze-budget-sweep "$SHORT_RUN" "$LONG_RUN" --output budget-sweep.json
+comet plot-budget-sweep budget-sweep.json --output budget-sweep.svg
+```
+
+Only the budget, experiment identifier and notes may differ across budget points.
+The prompt, sampling, model, hardware, execution/evaluator sources and packages,
+dependencies, memory cap, context limit, thresholds, attempt ceilings, exact tasks
+and paired seeds must match. Each budget must contain the same condition
+definitions. Disjoint condition shards at one budget may be supplied separately,
+but must share an experiment identifier; overlapping shards, missing conditions,
+duplicate executions or scoring revisions, and incomplete execution/scoring are
+rejected. This path does not enable diagnostic or frozen final-evaluation shards.
+It verifies scored cells against saved terminal records and preserves source
+config/execution digests and score-file hashes in a new external report.
+
+Each point is oracle task success at the end of an independently executed budget,
+with seeds averaged within task. One task-bootstrap draw table is reused across
+every budget and condition; bounded task-mean intervals remain nondegenerate for
+all-failure samples. All intervals are pointwise, not simultaneous. Failed and
+zero-attempt cells remain in the denominator, with attempt statuses, coverage and
+unobserved budget reservations retained. `budget_accounted_seconds` reports mean
+cell accounting, including these reservations; it is not measured latency.
+`reserved_budget_seconds` separately identifies the unobserved charge.
+The horizontal axis is the declared
+budget: no success timestamp, inferred truncation or interruption reservation is
+used to fabricate another budget point. These curves differ from attained-success
+steps above, which describe one executed schedule. Connected endpoints only guide
+the eye; neither monotonic improvement nor interpolation is imposed. The report
+does not choose budgets or authorize new experiments.

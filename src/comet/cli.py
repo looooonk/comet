@@ -140,6 +140,15 @@ def main(argv: list[str] | None = None) -> None:
     analyze.add_argument("--output", type=Path, required=True)
     analyze.add_argument("--bootstrap-samples", type=int, default=2000)
     analyze.add_argument("--seed", type=int, default=0)
+    budget_sweep = commands.add_parser("analyze-budget-sweep", help="Compare independently rerun pilot budgets")
+    budget_sweep.add_argument("runs", type=Path, nargs="+")
+    budget_sweep.add_argument("--output", type=Path, required=True)
+    budget_sweep.add_argument("--bootstrap-samples", type=int, default=2000)
+    budget_sweep.add_argument("--seed", type=int, default=0)
+    budget_plot = commands.add_parser("plot-budget-sweep", help="Plot independently rerun budget endpoints")
+    budget_plot.add_argument("analysis", type=Path)
+    budget_plot.add_argument("--output", type=Path, required=True)
+    budget_plot.add_argument("--title", default="Success versus independently rerun budget")
     histories = commands.add_parser("analyze-histories", help="Validate and summarize matched-history measurements")
     histories.add_argument("runs", type=Path, nargs="+")
     histories.add_argument("--output", type=Path, required=True)
@@ -230,6 +239,16 @@ def main(argv: list[str] | None = None) -> None:
             args.runs, args.output, bootstrap_samples=args.bootstrap_samples, seed=args.seed
         )
         _print({"analysis": str(args.output)})
+    elif args.command == "analyze-budget-sweep":
+        from comet.budget_sweep import analyze_budget_sweep
+
+        analyze_budget_sweep(args.runs, args.output, bootstrap_samples=args.bootstrap_samples, seed=args.seed)
+        _print({"analysis": str(args.output)})
+    elif args.command == "plot-budget-sweep":
+        from comet.budget_sweep import plot_budget_sweep
+
+        plot_budget_sweep(args.analysis, args.output, title=args.title)
+        _print({"figure": str(args.output)})
     elif args.command == "plot":
         from comet.plotting import plot_retention
 
