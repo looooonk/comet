@@ -66,6 +66,10 @@ Admission includes full-cache rebuild and workspace peaks under the same cap.
 The PyTorch pool leaves 1 GiB of additional headroom for lazy CUDA runtime/kernel
 allocations. This is separate from the rebuild workspace estimate and does not
 raise the experimental cap. Device-wide peak use remains measured and enforced.
+External usage samples are accepted only when the PyTorch pool is unchanged
+across the device-memory query; otherwise a concurrent pool release could be
+miscounted as non-PyTorch memory. Retain the sampled device peak separately from
+the conservative allocator-plus-external peak estimate.
 
 AgentKV retains the upstream four phase rings with eight queries per phase;
 R-KV uses recent queries. Eviction takes place after each prefill chunk and each

@@ -195,3 +195,15 @@ default table; the larger planning rate avoids asserting an exact regional bill.
 [Public NAT processing](https://cloud.google.com/nat/pricing) is $0.045/GiB.
 The historical $10 and active $5 reservations remain, leaving $16 uncommitted.
 Neither the transfer allowance nor these totals are measured billed usage.
+
+The headroom rerun passed its three method branches and reference comparison
+(cosine 0.99902, top-10 overlap 0.8, answer `7391`) but reported another cap
+failure during full-cache prefill at 3,584 tokens. Its expanded failure record
+isolated an estimator race: the sampled device peak was 21,351,301,120 bytes
+(19.89 GiB), while the conservative estimate was 23,270,195,200 bytes (21.67 GiB).
+Reading device use before a PyTorch pool release and pool size after it falsely
+inflated the external-memory component. External samples now require unchanged
+pool size across the device query. A focused regression reproduces this race;
+17 CPU checks passed. The 21 GiB cap, precision and inference logic are unchanged.
+No task attempt ran under the faulty estimator, and the original failure remains
+preserved. The fetched outputs and completed cloud cleanup identify that launch.

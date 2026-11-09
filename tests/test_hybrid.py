@@ -43,6 +43,21 @@ def test_delta_kernel_forwards_state_without_transformer_only_keywords():
     assert "use_cache" not in kwargs and "output_attentions" not in kwargs
 
 
+def test_external_memory_does_not_count_a_concurrent_allocator_release():
+    from comet.engine.hybrid import HybridEngine
+
+    engine = HybridEngine.__new__(HybridEngine)
+    engine._peak_total, engine._peak_external = 0, 10
+    reserved = iter([80, 20, 20, 20])
+    free = iter([10, 65])
+    engine.torch = SimpleNamespace(cuda=SimpleNamespace(
+        memory_reserved=lambda: next(reserved), mem_get_info=lambda: (next(free), 100)))
+    engine._sample_memory()
+    assert engine._peak_total == 90 and engine._peak_external == 10
+    engine._sample_memory()
+    assert engine._peak_total == 90 and engine._peak_external == 15
+
+
 @pytest.mark.gpu
 @pytest.mark.skipif(os.environ.get("COMET_RUN_HYBRID_TESTS") != "1", reason="opt-in hybrid GPU check")
 def test_live_hybrid_reference_persistence_recovery_and_branches(tmp_path):

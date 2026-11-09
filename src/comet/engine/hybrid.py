@@ -160,9 +160,12 @@ class HybridEngine:
         return kv, recurrent
 
     def _sample_memory(self):
+        reserved_before = self.torch.cuda.memory_reserved()
         free, total = self.torch.cuda.mem_get_info()
+        reserved_after = self.torch.cuda.memory_reserved()
         self._peak_total = max(self._peak_total, total - free)
-        self._peak_external = max(self._peak_external, total - free - self.torch.cuda.memory_reserved())
+        if reserved_before == reserved_after:
+            self._peak_external = max(self._peak_external, total - free - reserved_after)
 
     def _monitor_memory(self):
         while not self._monitor_stop.wait(0.01):
@@ -189,7 +192,7 @@ class HybridEngine:
             "logical_cached_tokens": len(self._raw),
             "retention_target_tokens": retention_target(len(self._raw), self.settings.retention, self.settings.method),
             "memory_sample_interval_seconds": 0.01,
-            "total_peak_kind": "max(sampled device use, allocator peak plus maximum external use)",
+            "total_peak_kind": "max(sampled device use, allocator peak plus stable-sample external use)",
         }
 
     def _check_memory(self):
