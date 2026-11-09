@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "record_date": "2026-11-08",
+  "kind": "native_cpu_retention_grid_validation",
+  "status": "completed",
+  "artifact_group": "finer-grid-cpu-2c93d94-13840121",
+  "source": {
+    "commit": "2c93d9439bd9d1afca8c2397ab91baaba7221348",
+    "selector_fixture_last_change_commit": "0ec0c7604c4aca7d9171700ca33ee1b79b52fa1d",
+    "source_sha256": {
+      "tests/test_engine_numerical.py": "bb8a69490febb268c37a2e786f54e16eda37bcd1333ca5f371f2ae89c01ddf0f",
+      "tests/test_engine_gpu.py": "001aed35bc8a07a8795436738d726ebc1a59698b06a15686fdf9561ebab8ac43",
+      "src/comet/engine/contracts.py": "96d42e37e96a16194fcb033ecd08171e9c66067aeddca3552f738fdf6dd17d7d",
+      "scripts/run_checks.sh": "8e45567d1cb1bc030d893e59b79644de64f5881961ab450ffe6fc855acfa64f6",
+      "infra/slurm/check.sh": "77aa5403366a60175962b45011d574967bc1536a4200e44b813505be73c5232f",
+      "patches/minisgl-comet.patch": "7997786346ee813e00f21e6b23fa0b1a7a289ac512f1f5142c5baf64423676b4",
+      "infra/requirements/gpu.lock": "eed44fd078937aecc9ff728a712e89c52563fd13a3e56ab63053611b2be47db3",
+      "dependencies.lock.json": "bb32125cb3fbd6c6f3fa0c1adddfa4b5d2308ba9c19d3545cb9736d60693a2d7",
+      "pyproject.toml": "bdad942853420e902c85a7780a9da56f76e239a4bdde3131e3bda445d01629e0"
+    },
+    "source_bundle_sha256": "983f1f76cbc5c5dea117cc336a2cf931fbd36d10e62bf2cc10991542db0e0d62"
+  },
+  "execution": {
+    "job_id": "13840121",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed_seconds": 673,
+    "setup_seconds": 514,
+    "check_step_seconds": 73,
+    "pytest_seconds": 70.13,
+    "allocated_cpus": 4,
+    "allocated_ram_gib": 16,
+    "allocated_gpus": 0,
+    "allocation_limit_seconds": 1200,
+    "worker_limit_seconds": 1080,
+    "model_downloaded": false,
+    "model_loaded": false,
+    "task_execution": false
+  },
+  "checks": {
+    "command": "bash scripts/run_checks.sh gpu --cpu-only",
+    "runtime_profile": "gpu",
+    "selected_markers": "not gpu and not appworld",
+    "passed": 333,
+    "skipped": 9,
+    "deselected_live": 14,
+    "native_cpu_passed": 26,
+    "native_cpu_skipped": 0,
+    "lint": "skipped: ruff is not installed in the pinned GPU runtime",
+    "shell_syntax": "passed",
+    "skip_details": [
+      {
+        "case": "tests.test_budget_sweep.test_budget_sweep_cli_plot_and_immutable_output",
+        "reason": "could not import 'matplotlib': No module named 'matplotlib'"
+      },
+      {
+        "case": "tests.test_history_analysis.test_cli_single_point_plot_and_missing_metric_are_explicit",
+        "reason": "could not import 'matplotlib': No module named 'matplotlib'"
+      },
+      {
+        "case": "tests.test_history_analysis.test_shared_axis_includes_larger_later_method_values",
+        "reason": "could not import 'matplotlib': No module named 'matplotlib'"
+      },
+      {
+        "case": "tests.test_history_analysis.test_cross_method_plot_preserves_selected_failures_and_all_repetitions",
+        "reason": "could not import 'matplotlib': No module named 'matplotlib'"
+      },
+      {
+        "case": "tests.test_plotting.test_baseline_plot_labels_failure_reservations_and_nonzero_uncertainty",
+        "reason": "could not import 'matplotlib': No module named 'matplotlib'"
+      },
+      {
+        "case": "tests.test_plotting.test_baseline_plot_requires_the_paired_comparison_artifact",
+        "reason": "could not import 'matplotlib': No module named 'matplotlib'"
+      },
+      {
+        "case": "tests.test_success_time.test_success_time_plot_uses_compact_grid_and_at_most_four_curves[False]",
+        "reason": "could not import 'matplotlib': No module named 'matplotlib'"
+      },
+      {
+        "case": "tests.test_success_time.test_success_time_plot_uses_compact_grid_and_at_most_four_curves[True]",
+        "reason": "could not import 'matplotlib': No module named 'matplotlib'"
+      },
+      {
+        "case": "tests.test_success_time.test_success_time_cli_renders_explicit_missing_coverage",
+        "reason": "could not import 'matplotlib': No module named 'matplotlib'"
+      }
+    ],
+    "local_style_validation": "Full local managed CPU suite at source 2c93d94 passed 316 checks, including lint/shell checks; one Torch-dependent module skipped and 14 live checks deselected."
+  },
+  "native_grid": {
+    "methods": [
+      "streamingllm",
+      "rkv",
+      "agentkv"
+    ],
+    "retentions": [
+      0.9,
+      0.8,
+      0.7,
+      0.6,
+      0.5,
+      0.4,
+      0.3,
+      0.25
+    ],
+    "new_supplemental_retentions": [
+      0.9,
+      0.7,
+      0.6,
+      0.4,
+      0.3
+    ],
+    "logical_tokens": 101,
+    "kv_heads": 2,
+    "head_dimension": 16,
+    "query_observations": 32,
+    "query_heads": 4,
+    "tensor_device": "cpu",
+    "fixture_seed": 21,
+    "verified_retained_tokens_per_head": {
+      "0.9": 91,
+      "0.8": 81,
+      "0.7": 71,
+      "0.6": 61,
+      "0.5": 51,
+      "0.4": 41,
+      "0.3": 31,
+      "0.25": 26
+    },
+    "selector_cases": 24,
+    "additional_checks": [
+      "Missing attention observations raise instead of falling back to full cache.",
+      "Page high-water mark includes transient old/new compaction ownership."
+    ],
+    "assertions": [
+      "Each head selects the exact relative count with unique in-range indices.",
+      "The first StreamingLLM head preserves sink and recent-token ordering.",
+      "The first R-KV and AgentKV heads preserve the checked recent entries."
+    ]
+  },
+  "runtime": {
+    "identity": "finer-grid-2c93d94-gpu",
+    "marker_sha256": "38b4dca90ce01773d7c053b71484b9773da93a98c777b7f0b1f2779a37a27fe3",
+    "python": "3.12.15",
+    "packages": {
+      "torch": "2.9.1",
+      "transformers": "4.57.3",
+      "flashinfer-python": "0.5.3",
+      "appworld": "0.2.0.dev0",
+      "pytest": "9.1.1"
+    },
+    "minisgl_revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
+    "installed_patch_sha256": {
+      "engine/engine.py": "1871c222c7b28d39ce73623358efa232f97b431fd76aa8bcfedec7c5793822e9",
+      "engine/sample.py": "ccfb29c95a1ede76128348dde1a2f4a645ece5c4105aa89610a9ae6579b1c860",
+      "eviction/manager.py": "763c71a879e9e26e5043e071ab831195807a14226de407f0bd80b470c9d2cf53",
+      "eviction/relative.py": "079ab13bb5b23569c8518259f1924b49589d4f0c70d6167cb4b42ff090a55919",
+      "scheduler/cache.py": "c23a271091e2a6e86a2580eb6d796c47c396cf425ac462d13546ba2e5a796996",
+      "scheduler/config.py": "266e318bd330d5157555b4e80cfe7aa3936bd9381edf4359ec8cefdb7086cc4a"
+    },
+    "retention_target_function_sha256": "6f8605127564e4119a5e4fee306ebed59518dbe55a89574ce163c95a213d4bba",
+    "native_namespace_matches_owned_checkout": true,
+    "cuda_initialized_at_readiness": false,
+    "independent_package_files": {
+      "appworld": {
+        "different_inode": true,
+        "sha256": "20d2b0c9a92945a40700270e1d4bf8a99f4376a61f5a95574a9c78f69ce79651",
+        "active_sha256": "20d2b0c9a92945a40700270e1d4bf8a99f4376a61f5a95574a9c78f69ce79651"
+      },
+      "torch": {
+        "different_inode": true,
+        "sha256": "3caf7f40140ede2465bde40b9003af10cbbc8f7bcf436fa1de026471daa1b288",
+        "active_sha256": "3caf7f40140ede2465bde40b9003af10cbbc8f7bcf436fa1de026471daa1b288"
+      },
+      "transformers": {
+        "different_inode": true,
+        "sha256": "7eb0743ed843f24c1d4e8b8daf4b18249cb81403b4571a70c00be0a4c0a67bd4",
+        "active_sha256": "7eb0743ed843f24c1d4e8b8daf4b18249cb81403b4571a70c00be0a4c0a67bd4"
+      }
+    },
+    "checkout_bytes": 6977536,
+    "environment_bytes": 9273930240
+  },
+  "preservation": {
+    "prior_source_and_runtime_identities_unchanged": true,
+    "protected": [
+      {
+        "source_commit": "312691d00fe84ce52a504071ccd5ed0bdd40a0f9",
+        "runtime_sha256": "48633e2943a09abe6431eaea9d7f546ac29c1ee117508398de9434751d34b6cb"
+      },
+      {
+        "source_commit": "178e6f3f10b388c5baceb0fb1da17cb92106a4da",
+        "runtime_sha256": "397a12a11491f10cd2788a338d8de8055de7af0b94ee979d5dbe446407274b64"
+      },
+      {
+        "source_commit": "fd6ee15be5b98db00ef687d43cc66cc6a8a2cb5c",
+        "runtime_sha256": "1501cb06b05fcc086ef5e404df0807c318907a3974b8c8fd94ba99c1de4eaa23"
+      }
+    ],
+    "transport_files_verified": 6,
+    "output_files_verified": 36,
+    "output_bytes_verified": 102321,
+    "batch_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "scope_and_limits": [
+    "The old fd6 retention_target rejected the new fractions. A separate current-source environment was created; no selective code replacement or changes to old environments were used.",
+    "These are synthetic CPU selector/accounting checks at 101 logical tokens, not model inference, persistent GPU KV, phase occupancy, checkpoint/recovery, speed, memory-cap feasibility, or task-success evidence at the new retention levels.",
+    "The supplemental grid is not a frozen final experiment choice. Persistent GPU validation and declared train/dev experiments remain necessary.",
+    "Nine rendering checks skipped because matplotlib is absent from the pinned GPU runtime; their local CPU validation is separate."
+  ],
+  "artifact_sha256": {
+    "review-plan.json": "c0889af43c3dcd0d55cf832ce51b347cb18ba815c8e9ae3a3a9aa6058bdfa6e8",
+    "grid_runtime_identity.py": "c8e7ca2c89678bd651cdc6fc762e4a87fe7098852c0abcadd610cd230bbf2cac",
+    "setup-grid-cpu.sh": "23034e7b062335bb1df12e914a5b011f3a731d026ea34710fbb49dbc8a698941",
+    "runtime-readiness.json": "9c49909b2b2ccef5d76dee4a3476149da876d8ee92588ac053fad67d91c7153c",
+    "runtime.json": "38b4dca90ce01773d7c053b71484b9773da93a98c777b7f0b1f2779a37a27fe3",
+    "protected-before.json": "66ee31eb5c02e174546cc566d826b26e6b29ea02715424fb764b4588a5a86095",
+    "protected-after.json": "66ee31eb5c02e174546cc566d826b26e6b29ea02715424fb764b4588a5a86095",
+    "validation-summary.json": "594ee63389ad6fadb0d19383a4e54d9875fd1673d6b723e917e288c51d6bbd52",
+    "checks/source.json": "62a8d82ad9605f224c71e6636cc72e6bbf3dbabea9297b86ee4410edbb6ad736",
+    "checks/pytest.xml": "5f02afaa85fb1ad9d4648bd4841b49792204988d58e67616393709dc947d2c1c",
+    "checks/mode.txt": "61a14d2ca07638c0de03ec18a17fd8b6cc625d6b6ff626ea68cca003e289acd4",
+    "checks/lint-status.txt": "4a0549e61fb4846bfbdbdaef9fe7ce2bdcd56bcd5337e85628aa6c694d2ec6ac",
+    "checks.log": "e695e2ad9433689338eb0c056e051e3b87d5d991452a4766d137e3ae745e9b34",
+    "setup.log": "bc561c2ab4e8ebb943498411e9fd4c3357c606fb79422214abe07b81953f6dcb",
+    "remote-manifest.json": "72047cb3b90c9f3a8c0f8754e2c8f9a104a29a8da4f867ea18bb1333f45cafec",
+    "local-verification.json": "2dc2b0b03331a5282d6621cc92240c4ea4b37a438d3b3dd8bdbd5704ecf1fc24",
+    "terminal-accounting.txt": "f2a073d4ad98d1011c809455e3398499a0890eaac239ce6db227d2ac017ee779",
+    "new-storage-bytes.txt": "a8995c005cc8db3a580c4641402227f09746ac558be8b96c2417c54c719b192e"
+  }
+}
