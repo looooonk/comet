@@ -110,7 +110,8 @@ def plot_histories(analysis_path: Path, output: Path, *, metric: str,
                         linewidth=1.4, linestyle="-" if len(lengths) > 1 else "none", zorder=4)
             ax.set_title(panel_label, fontsize=11, pad=10)
             ax.set_xlabel("Logical history length (tokens)")
-            ax.set_xticks(lengths, [f"{length:,}" for length in lengths], rotation=30 if len(lengths) > 3 else 0)
+            rotation = 30 if len(panels) > 1 and len(lengths) > 3 else 0
+            ax.set_xticks(lengths, [f"{length:,}" for length in lengths], rotation=rotation)
             ax.grid(axis="y", alpha=0.18)
             ax.set_axisbelow(True)
             if len(lengths) == 1:

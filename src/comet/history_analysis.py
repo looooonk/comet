@@ -21,7 +21,7 @@ METRICS = {
     "reserved_kv_pool_bytes": ("prefill", "Reserved KV pool (GiB)", 2**-30),
     "total_vram_bytes": ("prefill", "Total VRAM after prefill (GiB)", 2**-30),
     "peak_total_vram_bytes": ("prefill", "Prefill peak total VRAM (GiB)", 2**-30),
-    "decode_peak_total_vram_bytes": ("decode", "Decode-pass peak total VRAM (GiB)", 2**-30),
+    "decode_peak_total_vram_bytes": ("decode", "Peak total VRAM (GiB)", 2**-30),
     "prefill_tokens_per_second": ("prefill", "Prefill loop (tokens/s)", 1),
     "decode_tokens_per_second": ("decode", "Decode loop (tokens/s)", 1),
     "prefill_pass_seconds": ("prefill", "Whole prefill pass (s)", 1),

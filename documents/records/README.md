@@ -10,13 +10,13 @@ and validated; previously missing mutations are now recognized. Originals remain
 unchanged. These are useful failure diagnostics, but a stronger execution baseline
 is still needed before expanding task-success comparisons.
 
-Repeated matched-history timing now covers 2,048, 4,096, 8,192 and
-[12,288 tokens](history-timing-12k-2026-11-08.md), with all ninety passes
-verified at each length. The final declared 16,384-token point is underway.
-Separate [32,600-token feasibility measurements](history-feasibility-32600-2026-11-08.md)
-retain seven completed conditions and three R-KV memory-cap failures. These
-cost measurements show method differences without depending on task scoring;
-they do not establish task success or recovery quality.
+The [five-point matched-history cost study](history-timing-grid-2026-11-08.md)
+completed 150 cells and 450 passes over 2,048 through 16,384 tokens, with all raw
+repetitions retained. Main throughput and total-memory figures have PNG, SVG and
+PDF exports. They show clear method costs on a fixed history, without establishing
+task success or recovery quality. Separate
+[32,600-token feasibility measurements](history-feasibility-32600-2026-11-08.md)
+retain seven completed conditions and three R-KV memory-cap failures.
 
 The [November 8 numerical calibration](reference-calibration-2026-11-08.md)
 records 165 passed L40S checks and a failed relative-error screening gate. A
@@ -103,6 +103,8 @@ runtime artifacts are not included in this directory.
 
 | Record | Contents |
 | --- | --- |
+| [Five-point inference cost study (2026-11-08)](history-timing-grid-2026-11-08.md) | 150 cells, 450 passes, verified repetitions and clean main/supplemental figures in PNG/SVG/PDF |
+| [Repeated 16k history timing (2026-11-08)](history-timing-16k-2026-11-08.md) | Final ninety passes; verified throughput, transient memory and complete five-length coverage |
 | [Checkpoint fixture repair (2026-11-08)](checkpoint-integration-2026-11-08.json) | Preserved prohibited-import failure, supported action repair and passed real AppWorld syntax check; live branching retry pending |
 | [4B bounded pilot qualification (2026-11-08)](qwen4b-pilot-numerical-qualification-2026-11-08.md) | 278 integration checks, preserved failed screens and both FP32 calibrations support the six-cell exploratory pilot |
 | [Repeated 12k history timing (2026-11-08)](history-timing-12k-2026-11-08.md) | Ninety verified passes, retained variation and non-monotone memory; final 16k point submitted |

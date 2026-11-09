@@ -1,0 +1,4283 @@
+{
+  "schema_version": 1,
+  "kind": "matched_history_repeated_timing_grid",
+  "artifact_group": "history-timing-five-point-20261108",
+  "status": "completed",
+  "engine_source_commit": "312691d00fe84ce52a504071ccd5ed0bdd40a0f9",
+  "configuration_commit": "94bd8b0e1b66dd05c7dc12eee4731f07565c9b6c",
+  "analysis_plot_base_commit": "0d05807f3dd659cfe9c75138e372a48a10f1fb1d",
+  "analysis_plot_local_changes": "Shortened decode-memory y label to Peak total VRAM (GiB); horizontal ticks for single panels, angled ticks retained for narrow facets. Exact source hashes identify these rendering changes.",
+  "analysis_source_sha256": {
+    "src/comet/history_analysis.py": "899eb3a8aa825fda23f61f5907dc122ce4965b0eaaeeac4887580cabc3f7a9e3",
+    "src/comet/history_plots.py": "87def7f2a1476ac4f02d3822c4fd5270b0e65ecbba5604394f87f193c3d960d7"
+  },
+  "model": "Qwen/Qwen3-8B",
+  "dtype": "bfloat16",
+  "device": "NVIDIA RTX A6000",
+  "runtime_marker_sha256": "48633e2943a09abe6431eaea9d7f546ac29c1ee117508398de9434751d34b6cb",
+  "source_manifest_sha256": "fa1e864e6b491aaa74bdcc6606885ed4b6a6b6fde3675b318cb980a93837d38e",
+  "source_trajectory_sha256": "ea8dbed01ba6628dcac268ff71820965de2f3ebc9785f25574004e02798d9f67",
+  "logical_lengths": [
+    2048,
+    4096,
+    8192,
+    12288,
+    16384
+  ],
+  "decode_forwards": 64,
+  "repetitions": 3,
+  "seed": 17,
+  "peak_vram_cap_bytes": 42949672960,
+  "workspace_reserve_bytes": 6442450944,
+  "max_context_tokens": 32768,
+  "prefill_chunk_tokens": 256,
+  "host_thread_policy": {
+    "OMP_NUM_THREADS": 6,
+    "MKL_NUM_THREADS": 6,
+    "torch_intraop": 6,
+    "torch_interop": 64
+  },
+  "expected_cells": 150,
+  "completed_cells": 150,
+  "completed_passes": 450,
+  "all_ordinary_instrumented_pairs_match_outputs_and_retention": true,
+  "failed_cells_in_this_declared_grid": 0,
+  "verified_remote_file_count": 790,
+  "verified_remote_bytes": 6811767,
+  "total_allocation_elapsed_seconds": 3119,
+  "source_runs": [
+    {
+      "job_id": "13839253",
+      "artifact_id": "history-timing-qwen8b-a6000-20261108-13839253",
+      "logical_length": 2048,
+      "manifest_sha256": "88c5b7318827e2dff0b5da38f51c3ad55c799d32298bb5d2392af541f945ccfc",
+      "config_sha256": "1f60aa9c0054c24f8f1d9fef9167d47f1f75e2e7f11e951ab298ed50f998f4c9",
+      "allocation_elapsed_seconds": 207,
+      "verified_remote_file_count": 158,
+      "record": "history-timing-2k-2026-11-08.json"
+    },
+    {
+      "job_id": "13839257",
+      "artifact_id": "history-timing-qwen8b-a6000-20261108-13839257",
+      "logical_length": 4096,
+      "manifest_sha256": "1ac54fdc4c8c5962bf1e8e66840b777b5efdc08d302563b116e3627a1578eab0",
+      "config_sha256": "5c2217c235b99aa12dd423bc6d36d45e0e896c23d57a0f381481eb96c59b438d",
+      "allocation_elapsed_seconds": 281,
+      "verified_remote_file_count": 158,
+      "record": "history-timing-4k-2026-11-08.json"
+    },
+    {
+      "job_id": "13839267",
+      "artifact_id": "history-timing-qwen8b-a6000-20261108-13839267",
+      "logical_length": 8192,
+      "manifest_sha256": "d3fce83359c6f02f98d7e8cd865be2b9592cf79bece00b50ce258dc832852c0a",
+      "config_sha256": "49e002cace7e1383a16668c14214e030a43e58c649f0d55f06150ead615fe07c",
+      "allocation_elapsed_seconds": 514,
+      "verified_remote_file_count": 158,
+      "record": "history-timing-8k-2026-11-08.json"
+    },
+    {
+      "job_id": "13839324",
+      "artifact_id": "history-timing-qwen8b-a6000-20261108-13839324",
+      "logical_length": 12288,
+      "manifest_sha256": "f7643b6c90a09cd84b458ec613db72c8983ccca4b7380308a1f114589f9b244b",
+      "config_sha256": "a0803bc148179aadb7551710397e50cea009ef9249f730538bb9b816611dc3f8",
+      "allocation_elapsed_seconds": 880,
+      "verified_remote_file_count": 158,
+      "record": "history-timing-12k-2026-11-08.json"
+    },
+    {
+      "job_id": "13839624",
+      "artifact_id": "history-timing-qwen8b-a6000-20261108-13839624",
+      "logical_length": 16384,
+      "manifest_sha256": "9cd26450e8156b642d34e4ba4e94dbf046db9417e7df2d635e88350f47cdd54f",
+      "config_sha256": "d8245546b7e48ff5d8c29478e282ebc92b186cf509fe64dc28de2c2f4711c8e1",
+      "allocation_elapsed_seconds": 1237,
+      "verified_remote_file_count": 158,
+      "record": "history-timing-16k-2026-11-08.json"
+    }
+  ],
+  "main_retention": 0.5,
+  "main_figures": [
+    "main-decode-throughput",
+    "main-decode-peak-vram"
+  ],
+  "main_measured_points": [
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 2048,
+      "method": "agentkv",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.06940128654241562,
+          "median": 0.06886808015406132,
+          "minimum": 0.06864841608330607,
+          "observed": 3,
+          "values": [
+            0.06864841608330607,
+            0.06886808015406132,
+            0.06940128654241562
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 2.708698977716267,
+          "median": 2.7032815660350025,
+          "minimum": 2.7031079973094165,
+          "observed": 3,
+          "values": [
+            2.708698977716267,
+            2.7031079973094165,
+            2.7032815660350025
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 2.7101634251885116,
+          "median": 2.704695127904415,
+          "minimum": 2.7045837650075555,
+          "observed": 3,
+          "values": [
+            2.7101634251885116,
+            2.7045837650075555,
+            2.704695127904415
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22516137984,
+          "median": 22516137984,
+          "minimum": 22516137984,
+          "observed": 3,
+          "values": [
+            22516137984,
+            22516137984,
+            22516137984
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 29.598533867670877,
+          "median": 29.589876404638243,
+          "minimum": 29.535934354108385,
+          "observed": 3,
+          "values": [
+            29.535934354108385,
+            29.598533867670877,
+            29.589876404638243
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 2.7110669538378716,
+          "median": 2.7098989519290626,
+          "minimum": 2.709392156917602,
+          "observed": 3,
+          "values": [
+            2.7098989519290626,
+            2.709392156917602,
+            2.7110669538378716
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 150994944,
+          "median": 150994944,
+          "minimum": 150994944,
+          "observed": 3,
+          "values": [
+            150994944,
+            150994944,
+            150994944
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 452984832,
+          "median": 452984832,
+          "minimum": 452984832,
+          "observed": 3,
+          "values": [
+            452984832,
+            452984832,
+            452984832
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22516137984,
+          "median": 22516137984,
+          "minimum": 22516137984,
+          "observed": 3,
+          "values": [
+            22516137984,
+            22516137984,
+            22516137984
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 0.4444307587109506,
+          "median": 0.44327800534665585,
+          "minimum": 0.4432649598456919,
+          "observed": 3,
+          "values": [
+            0.4444307587109506,
+            0.44327800534665585,
+            0.4432649598456919
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 0.44596007000654936,
+          "median": 0.4450401091016829,
+          "minimum": 0.4447316718287766,
+          "observed": 3,
+          "values": [
+            0.44596007000654936,
+            0.4447316718287766,
+            0.4450401091016829
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 4956.018897571241,
+          "median": 4950.169174130073,
+          "minimum": 4946.624418708888,
+          "observed": 3,
+          "values": [
+            4950.169174130073,
+            4946.624418708888,
+            4956.018897571241
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.5061594848521054,
+          "median": 0.5059990980662405,
+          "minimum": 0.5057282680645585,
+          "observed": 3,
+          "values": [
+            0.5059990980662405,
+            0.5061594848521054,
+            0.5057282680645585
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22516137984,
+          "median": 22516137984,
+          "minimum": 22516137984,
+          "observed": 3,
+          "values": [
+            22516137984,
+            22516137984,
+            22516137984
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 2048,
+      "method": "full",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "observed": 3,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 2.159123261924833,
+          "median": 2.1537138670682907,
+          "minimum": 2.1485516619868577,
+          "observed": 3,
+          "values": [
+            2.1485516619868577,
+            2.1537138670682907,
+            2.159123261924833
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 2.160648143850267,
+          "median": 2.155304564163089,
+          "minimum": 2.1498496821150184,
+          "observed": 3,
+          "values": [
+            2.1498496821150184,
+            2.155304564163089,
+            2.160648143850267
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 39.40211179146952,
+          "median": 39.360836140590074,
+          "minimum": 39.35642707273143,
+          "observed": 3,
+          "values": [
+            39.40211179146952,
+            39.35642707273143,
+            39.360836140590074
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 2.160092326812446,
+          "median": 2.158763507846743,
+          "minimum": 2.1552738160826266,
+          "observed": 3,
+          "values": [
+            2.1552738160826266,
+            2.158763507846743,
+            2.160092326812446
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 301989888,
+          "median": 301989888,
+          "minimum": 301989888,
+          "observed": 3,
+          "values": [
+            301989888,
+            301989888,
+            301989888
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 301989888,
+          "median": 301989888,
+          "minimum": 301989888,
+          "observed": 3,
+          "values": [
+            301989888,
+            301989888,
+            301989888
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 0.4217456732876599,
+          "median": 0.4201071350835264,
+          "minimum": 0.4194853720255196,
+          "observed": 3,
+          "values": [
+            0.4217456732876599,
+            0.4194853720255196,
+            0.4201071350835264
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 0.4241957957856357,
+          "median": 0.42200488736853004,
+          "minimum": 0.42101236805319786,
+          "observed": 3,
+          "values": [
+            0.4241957957856357,
+            0.42101236805319786,
+            0.42200488736853004
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 5293.620636291864,
+          "median": 5276.425361483352,
+          "minimum": 5266.248766710687,
+          "observed": 3,
+          "values": [
+            5276.425361483352,
+            5293.620636291864,
+            5266.248766710687
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "observed": 3,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        }
+      },
+      "retention": 1.0
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 2048,
+      "method": "rkv",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.0707794539630413,
+          "median": 0.06983887078240514,
+          "minimum": 0.06948554515838623,
+          "observed": 3,
+          "values": [
+            0.0707794539630413,
+            0.06948554515838623,
+            0.06983887078240514
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 3.3921716012991965,
+          "median": 3.3907029246911407,
+          "minimum": 3.38851473107934,
+          "observed": 3,
+          "values": [
+            3.38851473107934,
+            3.3921716012991965,
+            3.3907029246911407
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 3.4004772887565196,
+          "median": 3.3991290726698935,
+          "minimum": 3.3974665887653828,
+          "observed": 3,
+          "values": [
+            3.3974665887653828,
+            3.4004772887565196,
+            3.3991290726698935
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 23122214912,
+          "median": 23122214912,
+          "minimum": 23122214912,
+          "observed": 3,
+          "values": [
+            23122214912,
+            23122214912,
+            23122214912
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 23.039662910052762,
+          "median": 23.02255178367124,
+          "minimum": 23.007632517120385,
+          "observed": 3,
+          "values": [
+            23.039662910052762,
+            23.007632517120385,
+            23.02255178367124
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 3.4092907030135393,
+          "median": 3.4076214958913624,
+          "minimum": 3.4037758060730994,
+          "observed": 3,
+          "values": [
+            3.4076214958913624,
+            3.4092907030135393,
+            3.4037758060730994
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 150994944,
+          "median": 150994944,
+          "minimum": 150994944,
+          "observed": 3,
+          "values": [
+            150994944,
+            150994944,
+            150994944
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 452984832,
+          "median": 452984832,
+          "minimum": 452984832,
+          "observed": 3,
+          "values": [
+            452984832,
+            452984832,
+            452984832
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 23122214912,
+          "median": 23122214912,
+          "minimum": 23122214912,
+          "observed": 3,
+          "values": [
+            23122214912,
+            23122214912,
+            23122214912
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 0.5152836591005325,
+          "median": 0.5136283691972494,
+          "minimum": 0.5121921449899673,
+          "observed": 3,
+          "values": [
+            0.5136283691972494,
+            0.5121921449899673,
+            0.5152836591005325
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 0.5236695189960301,
+          "median": 0.5232708500698209,
+          "minimum": 0.5207513752393425,
+          "observed": 3,
+          "values": [
+            0.5232708500698209,
+            0.5207513752393425,
+            0.5236695189960301
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 4244.898822173102,
+          "median": 4232.269081381276,
+          "minimum": 4223.11102479591,
+          "observed": 3,
+          "values": [
+            4232.269081381276,
+            4244.898822173102,
+            4223.11102479591
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 1.1989150624722242,
+          "median": 1.1975716021843255,
+          "minimum": 1.1949218409135938,
+          "observed": 3,
+          "values": [
+            1.1975716021843255,
+            1.1989150624722242,
+            1.1949218409135938
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 23122214912,
+          "median": 23122214912,
+          "minimum": 23122214912,
+          "observed": 3,
+          "values": [
+            23122214912,
+            23122214912,
+            23122214912
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 2048,
+      "method": "streamingllm",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.08556030178442597,
+          "median": 0.08446437958627939,
+          "minimum": 0.08445517905056477,
+          "observed": 3,
+          "values": [
+            0.08446437958627939,
+            0.08445517905056477,
+            0.08556030178442597
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 4.029256255831569,
+          "median": 2.305619480088353,
+          "minimum": 2.305440930183977,
+          "observed": 3,
+          "values": [
+            4.029256255831569,
+            2.305440930183977,
+            2.305619480088353
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 4.036888704169542,
+          "median": 2.3071879763156176,
+          "minimum": 2.3071274398826063,
+          "observed": 3,
+          "values": [
+            4.036888704169542,
+            2.3071274398826063,
+            2.3071879763156176
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22514040832,
+          "median": 22514040832,
+          "minimum": 22514040832,
+          "observed": 3,
+          "values": [
+            22514040832,
+            22514040832,
+            22514040832
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 35.90658310648603,
+          "median": 35.90636053980311,
+          "minimum": 18.27085373881681,
+          "observed": 3,
+          "values": [
+            18.27085373881681,
+            35.90658310648603,
+            35.90636053980311
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 2.3140934677794576,
+          "median": 2.308385224081576,
+          "minimum": 2.308343273587525,
+          "observed": 3,
+          "values": [
+            2.308343273587525,
+            2.308385224081576,
+            2.3140934677794576
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 150994944,
+          "median": 150994944,
+          "minimum": 150994944,
+          "observed": 3,
+          "values": [
+            150994944,
+            150994944,
+            150994944
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 452984832,
+          "median": 452984832,
+          "minimum": 452984832,
+          "observed": 3,
+          "values": [
+            452984832,
+            452984832,
+            452984832
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22514040832,
+          "median": 22514040832,
+          "minimum": 22514040832,
+          "observed": 3,
+          "values": [
+            22514040832,
+            22514040832,
+            22514040832
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 0.42861264292150736,
+          "median": 0.4277160973288119,
+          "minimum": 0.42490157997235656,
+          "observed": 3,
+          "values": [
+            0.42861264292150736,
+            0.42490157997235656,
+            0.4277160973288119
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 0.4304788149893284,
+          "median": 0.4292092779651284,
+          "minimum": 0.426306274253875,
+          "observed": 3,
+          "values": [
+            0.4304788149893284,
+            0.426306274253875,
+            0.4292092779651284
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 5175.934643874913,
+          "median": 5148.927591992934,
+          "minimum": 5139.944514013913,
+          "observed": 3,
+          "values": [
+            5148.927591992934,
+            5175.934643874913,
+            5139.944514013913
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.0980452885851264,
+          "median": 0.09788103541359305,
+          "minimum": 0.09755596099421382,
+          "observed": 3,
+          "values": [
+            0.09788103541359305,
+            0.09755596099421382,
+            0.0980452885851264
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22514040832,
+          "median": 22514040832,
+          "minimum": 22514040832,
+          "observed": 3,
+          "values": [
+            22514040832,
+            22514040832,
+            22514040832
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 4096,
+      "method": "agentkv",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.10051123099401593,
+          "median": 0.09874261077493429,
+          "minimum": 0.09716358920559287,
+          "observed": 3,
+          "values": [
+            0.09716358920559287,
+            0.10051123099401593,
+            0.09874261077493429
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 3.19454915355891,
+          "median": 3.1877629780210555,
+          "minimum": 3.186498471070081,
+          "observed": 3,
+          "values": [
+            3.19454915355891,
+            3.186498471070081,
+            3.1877629780210555
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 3.1966115292161703,
+          "median": 3.1894704368896782,
+          "minimum": 3.188205220270902,
+          "observed": 3,
+          "values": [
+            3.1966115292161703,
+            3.188205220270902,
+            3.1894704368896782
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22518235136,
+          "median": 22518235136,
+          "minimum": 22518235136,
+          "observed": 3,
+          "values": [
+            22518235136,
+            22518235136,
+            22518235136
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 29.289106550243844,
+          "median": 29.289073906225507,
+          "minimum": 29.237687214201546,
+          "observed": 3,
+          "values": [
+            29.237687214201546,
+            29.289073906225507,
+            29.289106550243844
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 3.2005525077693164,
+          "median": 3.199803572613746,
+          "minimum": 3.1987583241425455,
+          "observed": 3,
+          "values": [
+            3.1987583241425455,
+            3.2005525077693164,
+            3.199803572613746
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 301989888,
+          "median": 301989888,
+          "minimum": 301989888,
+          "observed": 3,
+          "values": [
+            301989888,
+            301989888,
+            301989888
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 905969664,
+          "median": 905969664,
+          "minimum": 905969664,
+          "observed": 3,
+          "values": [
+            905969664,
+            905969664,
+            905969664
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22518235136,
+          "median": 22518235136,
+          "minimum": 22518235136,
+          "observed": 3,
+          "values": [
+            22518235136,
+            22518235136,
+            22518235136
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 0.9064711481332779,
+          "median": 0.9048225996084511,
+          "minimum": 0.9035698459483683,
+          "observed": 3,
+          "values": [
+            0.9035698459483683,
+            0.9048225996084511,
+            0.9064711481332779
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 0.9082132028415799,
+          "median": 0.9065398788079619,
+          "minimum": 0.905553201213479,
+          "observed": 3,
+          "values": [
+            0.905553201213479,
+            0.9065398788079619,
+            0.9082132028415799
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 4846.25179586096,
+          "median": 4837.488685317218,
+          "minimum": 4834.337147805212,
+          "observed": 3,
+          "values": [
+            4846.25179586096,
+            4837.488685317218,
+            4834.337147805212
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.4866795213893056,
+          "median": 0.4860470532439649,
+          "minimum": 0.4853602796792984,
+          "observed": 3,
+          "values": [
+            0.4866795213893056,
+            0.4853602796792984,
+            0.4860470532439649
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22518235136,
+          "median": 22518235136,
+          "minimum": 22518235136,
+          "observed": 3,
+          "values": [
+            22518235136,
+            22518235136,
+            22518235136
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 4096,
+      "method": "full",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "observed": 3,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 2.639910122845322,
+          "median": 2.6362260510213673,
+          "minimum": 2.6250263061374426,
+          "observed": 3,
+          "values": [
+            2.6250263061374426,
+            2.6362260510213673,
+            2.639910122845322
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 2.641273368149996,
+          "median": 2.6378510841168463,
+          "minimum": 2.626478950958699,
+          "observed": 3,
+          "values": [
+            2.626478950958699,
+            2.6378510841168463,
+            2.641273368149996
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 38.69475882651935,
+          "median": 38.65612048042559,
+          "minimum": 38.63591177407187,
+          "observed": 3,
+          "values": [
+            38.69475882651935,
+            38.63591177407187,
+            38.65612048042559
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 2.6379643296822906,
+          "median": 2.6349804708734155,
+          "minimum": 2.6335853752680123,
+          "observed": 3,
+          "values": [
+            2.6349804708734155,
+            2.6379643296822906,
+            2.6335853752680123
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 603979776,
+          "median": 603979776,
+          "minimum": 603979776,
+          "observed": 3,
+          "values": [
+            603979776,
+            603979776,
+            603979776
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 603979776,
+          "median": 603979776,
+          "minimum": 603979776,
+          "observed": 3,
+          "values": [
+            603979776,
+            603979776,
+            603979776
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 0.8724892730824649,
+          "median": 0.8663061959668994,
+          "minimum": 0.8650088072754443,
+          "observed": 3,
+          "values": [
+            0.8650088072754443,
+            0.8663061959668994,
+            0.8724892730824649
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 0.8739014212042093,
+          "median": 0.8677313183434308,
+          "minimum": 0.8668904579244554,
+          "observed": 3,
+          "values": [
+            0.8668904579244554,
+            0.8677313183434308,
+            0.8739014212042093
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 5104.939177871507,
+          "median": 5096.761980530117,
+          "minimum": 5048.3812910832075,
+          "observed": 3,
+          "values": [
+            5104.939177871507,
+            5096.761980530117,
+            5048.3812910832075
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "observed": 3,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        }
+      },
+      "retention": 1.0
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 4096,
+      "method": "rkv",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.10851317783817649,
+          "median": 0.10602364083752036,
+          "minimum": 0.10481183836236596,
+          "observed": 3,
+          "values": [
+            0.10481183836236596,
+            0.10851317783817649,
+            0.10602364083752036
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 5.983316752128303,
+          "median": 5.9591935612261295,
+          "minimum": 5.953521484974772,
+          "observed": 3,
+          "values": [
+            5.9591935612261295,
+            5.983316752128303,
+            5.953521484974772
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 5.995270231738687,
+          "median": 5.970810290426016,
+          "minimum": 5.964727743063122,
+          "observed": 3,
+          "values": [
+            5.970810290426016,
+            5.995270231738687,
+            5.964727743063122
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 24114167808,
+          "median": 24114167808,
+          "minimum": 24114167808,
+          "observed": 3,
+          "values": [
+            24114167808,
+            24114167808,
+            24114167808
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 13.727205752791493,
+          "median": 13.699625981254945,
+          "minimum": 13.683179532932245,
+          "observed": 3,
+          "values": [
+            13.699625981254945,
+            13.683179532932245,
+            13.727205752791493
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 5.9825556627474725,
+          "median": 5.977320178877562,
+          "minimum": 5.973860053811222,
+          "observed": 3,
+          "values": [
+            5.973860053811222,
+            5.9825556627474725,
+            5.977320178877562
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 301989888,
+          "median": 301989888,
+          "minimum": 301989888,
+          "observed": 3,
+          "values": [
+            301989888,
+            301989888,
+            301989888
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 905969664,
+          "median": 905969664,
+          "minimum": 905969664,
+          "observed": 3,
+          "values": [
+            905969664,
+            905969664,
+            905969664
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 24112070656,
+          "median": 24112070656,
+          "minimum": 24112070656,
+          "observed": 3,
+          "values": [
+            24112070656,
+            24112070656,
+            24112070656
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 1.1965249083004892,
+          "median": 1.190660557243973,
+          "minimum": 1.1892787478864193,
+          "observed": 3,
+          "values": [
+            1.1965249083004892,
+            1.1892787478864193,
+            1.190660557243973
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 1.250627787783742,
+          "median": 1.2030555377714336,
+          "minimum": 1.201614955905825,
+          "observed": 3,
+          "values": [
+            1.250627787783742,
+            1.201614955905825,
+            1.2030555377714336
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 3624.1717036505447,
+          "median": 3618.6237578979044,
+          "minimum": 3597.464968094457,
+          "observed": 3,
+          "values": [
+            3597.464968094457,
+            3624.1717036505447,
+            3618.6237578979044
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 3.2486605322919786,
+          "median": 3.248334126546979,
+          "minimum": 3.244837010279298,
+          "observed": 3,
+          "values": [
+            3.244837010279298,
+            3.2486605322919786,
+            3.248334126546979
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 24112070656,
+          "median": 24112070656,
+          "minimum": 24112070656,
+          "observed": 3,
+          "values": [
+            24112070656,
+            24112070656,
+            24112070656
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 4096,
+      "method": "streamingllm",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.11913884757086635,
+          "median": 0.11612152913585305,
+          "minimum": 0.11575628677383065,
+          "observed": 3,
+          "values": [
+            0.11612152913585305,
+            0.11913884757086635,
+            0.11575628677383065
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 6.1068021496757865,
+          "median": 2.8271721000783145,
+          "minimum": 2.8257289840839803,
+          "observed": 3,
+          "values": [
+            6.1068021496757865,
+            2.8271721000783145,
+            2.8257289840839803
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 6.108975745737553,
+          "median": 2.8287871940992773,
+          "minimum": 2.8278128700330853,
+          "observed": 3,
+          "values": [
+            6.108975745737553,
+            2.8287871940992773,
+            2.8278128700330853
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22514040832,
+          "median": 22514040832,
+          "minimum": 22514040832,
+          "observed": 3,
+          "values": [
+            22514040832,
+            22514040832,
+            22514040832
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 34.89632241996147,
+          "median": 34.85744148372081,
+          "minimum": 12.484447471021094,
+          "observed": 3,
+          "values": [
+            12.484447471021094,
+            34.85744148372081,
+            34.89632241996147
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 2.832607023883611,
+          "median": 2.8169879373162985,
+          "minimum": 2.8107374222017825,
+          "observed": 3,
+          "values": [
+            2.8107374222017825,
+            2.832607023883611,
+            2.8169879373162985
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 301989888,
+          "median": 301989888,
+          "minimum": 301989888,
+          "observed": 3,
+          "values": [
+            301989888,
+            301989888,
+            301989888
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 905969664,
+          "median": 905969664,
+          "minimum": 905969664,
+          "observed": 3,
+          "values": [
+            905969664,
+            905969664,
+            905969664
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22514040832,
+          "median": 22514040832,
+          "minimum": 22514040832,
+          "observed": 3,
+          "values": [
+            22514040832,
+            22514040832,
+            22514040832
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 0.8818262638524175,
+          "median": 0.8762335292994976,
+          "minimum": 0.8757643871940672,
+          "observed": 3,
+          "values": [
+            0.8757643871940672,
+            0.8762335292994976,
+            0.8818262638524175
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 0.8834502846002579,
+          "median": 0.8783826287835836,
+          "minimum": 0.8773169820196927,
+          "observed": 3,
+          "values": [
+            0.8773169820196927,
+            0.8783826287835836,
+            0.8834502846002579
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 5009.3850070276585,
+          "median": 5009.28930428121,
+          "minimum": 4992.696571116113,
+          "observed": 3,
+          "values": [
+            5009.28930428121,
+            5009.3850070276585,
+            4992.696571116113
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.0995152723044157,
+          "median": 0.09820860391482711,
+          "minimum": 0.09818908292800188,
+          "observed": 3,
+          "values": [
+            0.09820860391482711,
+            0.0995152723044157,
+            0.09818908292800188
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22514040832,
+          "median": 22514040832,
+          "minimum": 22514040832,
+          "observed": 3,
+          "values": [
+            22514040832,
+            22514040832,
+            22514040832
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 8192,
+      "method": "agentkv",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.23147898446768522,
+          "median": 0.2059900350868702,
+          "minimum": 0.20446981629356742,
+          "observed": 3,
+          "values": [
+            0.23147898446768522,
+            0.2059900350868702,
+            0.20446981629356742
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 4.497142544016242,
+          "median": 4.478484644088894,
+          "minimum": 4.451657808385789,
+          "observed": 3,
+          "values": [
+            4.451657808385789,
+            4.497142544016242,
+            4.478484644088894
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 4.499420118983835,
+          "median": 4.4811655269004405,
+          "minimum": 4.454197251237929,
+          "observed": 3,
+          "values": [
+            4.454197251237929,
+            4.499420118983835,
+            4.4811655269004405
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22526623744,
+          "median": 22526623744,
+          "minimum": 22526623744,
+          "observed": 3,
+          "values": [
+            22526623744,
+            22526623744,
+            22526623744
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 26.394512462257037,
+          "median": 26.323616972403396,
+          "minimum": 26.29092947232898,
+          "observed": 3,
+          "values": [
+            26.394512462257037,
+            26.29092947232898,
+            26.323616972403396
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 4.494815735612065,
+          "median": 4.489096159581095,
+          "minimum": 4.484107725787908,
+          "observed": 3,
+          "values": [
+            4.484107725787908,
+            4.494815735612065,
+            4.489096159581095
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 603979776,
+          "median": 603979776,
+          "minimum": 603979776,
+          "observed": 3,
+          "values": [
+            603979776,
+            603979776,
+            603979776
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 1811939328,
+          "median": 1811939328,
+          "minimum": 1811939328,
+          "observed": 3,
+          "values": [
+            1811939328,
+            1811939328,
+            1811939328
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22522429440,
+          "median": 22522429440,
+          "minimum": 22522429440,
+          "observed": 3,
+          "values": [
+            22522429440,
+            22522429440,
+            22522429440
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 1.9311340409331024,
+          "median": 1.9215890150517225,
+          "minimum": 1.920124378055334,
+          "observed": 3,
+          "values": [
+            1.920124378055334,
+            1.9215890150517225,
+            1.9311340409331024
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 1.9335628938861191,
+          "median": 1.9243333279155195,
+          "minimum": 1.9228213811293244,
+          "observed": 3,
+          "values": [
+            1.9228213811293244,
+            1.9243333279155195,
+            1.9335628938861191
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 4548.125398362916,
+          "median": 4541.841461578867,
+          "minimum": 4538.279582799328,
+          "observed": 3,
+          "values": [
+            4548.125398362916,
+            4541.841461578867,
+            4538.279582799328
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.6060247840359807,
+          "median": 0.6041059135459363,
+          "minimum": 0.5971963601186872,
+          "observed": 3,
+          "values": [
+            0.5971963601186872,
+            0.6041059135459363,
+            0.6060247840359807
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22522429440,
+          "median": 22522429440,
+          "minimum": 22522429440,
+          "observed": 3,
+          "values": [
+            22522429440,
+            22522429440,
+            22522429440
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 8192,
+      "method": "full",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "observed": 3,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 3.689330121036619,
+          "median": 3.6751867830753326,
+          "minimum": 3.65910702990368,
+          "observed": 3,
+          "values": [
+            3.65910702990368,
+            3.6751867830753326,
+            3.689330121036619
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 3.69154718099162,
+          "median": 3.677106646820903,
+          "minimum": 3.6630020029842854,
+          "observed": 3,
+          "values": [
+            3.6630020029842854,
+            3.677106646820903,
+            3.69154718099162
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 37.460325399402954,
+          "median": 37.45150589399592,
+          "minimum": 37.38026823076067,
+          "observed": 3,
+          "values": [
+            37.45150589399592,
+            37.460325399402954,
+            37.38026823076067
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 3.6896695280447602,
+          "median": 3.6792485038749874,
+          "minimum": 3.6751205078326166,
+          "observed": 3,
+          "values": [
+            3.6751205078326166,
+            3.6896695280447602,
+            3.6792485038749874
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 1207959552,
+          "median": 1207959552,
+          "minimum": 1207959552,
+          "observed": 3,
+          "values": [
+            1207959552,
+            1207959552,
+            1207959552
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 1207959552,
+          "median": 1207959552,
+          "minimum": 1207959552,
+          "observed": 3,
+          "values": [
+            1207959552,
+            1207959552,
+            1207959552
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 1.866847719065845,
+          "median": 1.860399535857141,
+          "minimum": 1.8431920469738543,
+          "observed": 3,
+          "values": [
+            1.8431920469738543,
+            1.860399535857141,
+            1.866847719065845
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 1.868626182898879,
+          "median": 1.8620474031195045,
+          "minimum": 1.8454354661516845,
+          "observed": 3,
+          "values": [
+            1.8454354661516845,
+            1.8620474031195045,
+            1.868626182898879
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 4773.098207319649,
+          "median": 4732.506989396916,
+          "minimum": 4701.973432744958,
+          "observed": 3,
+          "values": [
+            4773.098207319649,
+            4732.506989396916,
+            4701.973432744958
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "observed": 3,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        }
+      },
+      "retention": 1.0
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 8192,
+      "method": "rkv",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.242439485155046,
+          "median": 0.23658446734771132,
+          "minimum": 0.2353312843479216,
+          "observed": 3,
+          "values": [
+            0.23658446734771132,
+            0.2353312843479216,
+            0.242439485155046
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 15.63232637802139,
+          "median": 15.626113795209676,
+          "minimum": 15.623932529240847,
+          "observed": 3,
+          "values": [
+            15.63232637802139,
+            15.626113795209676,
+            15.623932529240847
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 15.646737486124039,
+          "median": 15.640012617222965,
+          "minimum": 15.637713978998363,
+          "observed": 3,
+          "values": [
+            15.646737486124039,
+            15.640012617222965,
+            15.637713978998363
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 31940739072,
+          "median": 31940739072,
+          "minimum": 31940739072,
+          "observed": 3,
+          "values": [
+            31940739072,
+            31940739072,
+            31940739072
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 5.143104852770351,
+          "median": 5.142903163937265,
+          "minimum": 5.141900890268515,
+          "observed": 3,
+          "values": [
+            5.141900890268515,
+            5.142903163937265,
+            5.143104852770351
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 15.67732550483197,
+          "median": 15.667714057955891,
+          "minimum": 15.666779830120504,
+          "observed": 3,
+          "values": [
+            15.667714057955891,
+            15.666779830120504,
+            15.67732550483197
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 603979776,
+          "median": 603979776,
+          "minimum": 603979776,
+          "observed": 3,
+          "values": [
+            603979776,
+            603979776,
+            603979776
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 1811939328,
+          "median": 1811939328,
+          "minimum": 1811939328,
+          "observed": 3,
+          "values": [
+            1811939328,
+            1811939328,
+            1811939328
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 23799595008,
+          "median": 23799595008,
+          "minimum": 23799595008,
+          "observed": 3,
+          "values": [
+            23799595008,
+            23799595008,
+            23799595008
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 3.0678121158853173,
+          "median": 3.066972609143704,
+          "minimum": 3.0663585299625993,
+          "observed": 3,
+          "values": [
+            3.066972609143704,
+            3.0663585299625993,
+            3.0678121158853173
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 3.1032585077919066,
+          "median": 3.1030934853479266,
+          "minimum": 3.1012123939581215,
+          "observed": 3,
+          "values": [
+            3.1030934853479266,
+            3.1012123939581215,
+            3.1032585077919066
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 2789.127101123981,
+          "median": 2788.742451621989,
+          "minimum": 2787.994488934234,
+          "observed": 3,
+          "values": [
+            2788.742451621989,
+            2789.127101123981,
+            2787.994488934234
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 11.719133242964745,
+          "median": 11.719039843417704,
+          "minimum": 11.714082337915897,
+          "observed": 3,
+          "values": [
+            11.714082337915897,
+            11.719133242964745,
+            11.719039843417704
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 23799595008,
+          "median": 23799595008,
+          "minimum": 23799595008,
+          "observed": 3,
+          "values": [
+            23799595008,
+            23799595008,
+            23799595008
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 8192,
+      "method": "streamingllm",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.26537955179810524,
+          "median": 0.25017221085727215,
+          "minimum": 0.209696885664016,
+          "observed": 3,
+          "values": [
+            0.26537955179810524,
+            0.25017221085727215,
+            0.209696885664016
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 5.774792257230729,
+          "median": 4.003617394249886,
+          "minimum": 3.9473746521398425,
+          "observed": 3,
+          "values": [
+            5.774792257230729,
+            4.003617394249886,
+            3.9473746521398425
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 5.777208716142923,
+          "median": 4.005754842422903,
+          "minimum": 3.9493740568868816,
+          "observed": 3,
+          "values": [
+            5.777208716142923,
+            4.005754842422903,
+            3.9493740568868816
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22514040832,
+          "median": 22514040832,
+          "minimum": 22514040832,
+          "observed": 3,
+          "values": [
+            22514040832,
+            22514040832,
+            22514040832
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 32.939614268557236,
+          "median": 31.784421287044687,
+          "minimum": 16.89368363896523,
+          "observed": 3,
+          "values": [
+            16.89368363896523,
+            31.784421287044687,
+            32.939614268557236
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 3.991343182977289,
+          "median": 3.984115658327937,
+          "minimum": 3.955035822931677,
+          "observed": 3,
+          "values": [
+            3.991343182977289,
+            3.984115658327937,
+            3.955035822931677
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 603979776,
+          "median": 603979776,
+          "minimum": 603979776,
+          "observed": 3,
+          "values": [
+            603979776,
+            603979776,
+            603979776
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 1811939328,
+          "median": 1811939328,
+          "minimum": 1811939328,
+          "observed": 3,
+          "values": [
+            1811939328,
+            1811939328,
+            1811939328
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22514040832,
+          "median": 22514040832,
+          "minimum": 22514040832,
+          "observed": 3,
+          "values": [
+            22514040832,
+            22514040832,
+            22514040832
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 1.8847098643891513,
+          "median": 1.880276006180793,
+          "minimum": 1.8761004391126335,
+          "observed": 3,
+          "values": [
+            1.880276006180793,
+            1.8761004391126335,
+            1.8847098643891513
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 1.8867444656789303,
+          "median": 1.8829882168211043,
+          "minimum": 1.8785703489556909,
+          "observed": 3,
+          "values": [
+            1.8829882168211043,
+            1.8785703489556909,
+            1.8867444656789303
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 4659.801603669496,
+          "median": 4655.466129966891,
+          "minimum": 4650.408790524018,
+          "observed": 3,
+          "values": [
+            4655.466129966891,
+            4659.801603669496,
+            4650.408790524018
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.09811877738684416,
+          "median": 0.0973459011875093,
+          "minimum": 0.09591457527130842,
+          "observed": 3,
+          "values": [
+            0.09811877738684416,
+            0.0973459011875093,
+            0.09591457527130842
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22514040832,
+          "median": 22514040832,
+          "minimum": 22514040832,
+          "observed": 3,
+          "values": [
+            22514040832,
+            22514040832,
+            22514040832
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 12288,
+      "method": "agentkv",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.40765849594026804,
+          "median": 0.3352409200742841,
+          "minimum": 0.254185744561255,
+          "observed": 3,
+          "values": [
+            0.40765849594026804,
+            0.254185744561255,
+            0.3352409200742841
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 5.875613414216787,
+          "median": 5.858342945110053,
+          "minimum": 5.856815438251942,
+          "observed": 3,
+          "values": [
+            5.856815438251942,
+            5.858342945110053,
+            5.875613414216787
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 5.882001772057265,
+          "median": 5.864240468945354,
+          "minimum": 5.863629918079823,
+          "observed": 3,
+          "values": [
+            5.863629918079823,
+            5.864240468945354,
+            5.882001772057265
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22631481344,
+          "median": 22631481344,
+          "minimum": 22631481344,
+          "observed": 3,
+          "values": [
+            22631481344,
+            22631481344,
+            22631481344
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 23.93943998352713,
+          "median": 23.93660970554804,
+          "minimum": 23.820012855670786,
+          "observed": 3,
+          "values": [
+            23.93943998352713,
+            23.93660970554804,
+            23.820012855670786
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 5.96464473567903,
+          "median": 5.888330527115613,
+          "minimum": 5.810697989072651,
+          "observed": 3,
+          "values": [
+            5.96464473567903,
+            5.810697989072651,
+            5.888330527115613
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 905969664,
+          "median": 905969664,
+          "minimum": 905969664,
+          "observed": 3,
+          "values": [
+            905969664,
+            905969664,
+            905969664
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 2717908992,
+          "median": 2717908992,
+          "minimum": 2717908992,
+          "observed": 3,
+          "values": [
+            2717908992,
+            2717908992,
+            2717908992
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22631481344,
+          "median": 22631481344,
+          "minimum": 22631481344,
+          "observed": 3,
+          "values": [
+            22631481344,
+            22631481344,
+            22631481344
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 3.1215447611175478,
+          "median": 3.064147845841944,
+          "minimum": 3.062563600949943,
+          "observed": 3,
+          "values": [
+            3.1215447611175478,
+            3.064147845841944,
+            3.062563600949943
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 3.1280724736861885,
+          "median": 3.070731535088271,
+          "minimum": 3.0685332622379065,
+          "observed": 3,
+          "values": [
+            3.1280724736861885,
+            3.070731535088271,
+            3.0685332622379065
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 4291.970407404706,
+          "median": 4281.679106982145,
+          "minimum": 4188.555394371722,
+          "observed": 3,
+          "values": [
+            4188.555394371722,
+            4281.679106982145,
+            4291.970407404706
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.725880233105272,
+          "median": 0.7249627048149705,
+          "minimum": 0.7234822856262326,
+          "observed": 3,
+          "values": [
+            0.7249627048149705,
+            0.725880233105272,
+            0.7234822856262326
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22631481344,
+          "median": 22631481344,
+          "minimum": 22631481344,
+          "observed": 3,
+          "values": [
+            22631481344,
+            22631481344,
+            22631481344
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 12288,
+      "method": "full",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "observed": 3,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 4.840932609047741,
+          "median": 4.831453287974,
+          "minimum": 4.821551774162799,
+          "observed": 3,
+          "values": [
+            4.821551774162799,
+            4.840932609047741,
+            4.831453287974
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 4.843135101255029,
+          "median": 4.833448886871338,
+          "minimum": 4.823749735951424,
+          "observed": 3,
+          "values": [
+            4.823749735951424,
+            4.843135101255029,
+            4.833448886871338
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 36.33842026803197,
+          "median": 36.31669593186023,
+          "minimum": 36.2954852946693,
+          "observed": 3,
+          "values": [
+            36.2954852946693,
+            36.33842026803197,
+            36.31669593186023
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 4.846700715832412,
+          "median": 4.838095829822123,
+          "minimum": 4.8294245772995055,
+          "observed": 3,
+          "values": [
+            4.838095829822123,
+            4.8294245772995055,
+            4.846700715832412
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 1811939328,
+          "median": 1811939328,
+          "minimum": 1811939328,
+          "observed": 3,
+          "values": [
+            1811939328,
+            1811939328,
+            1811939328
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 1811939328,
+          "median": 1811939328,
+          "minimum": 1811939328,
+          "observed": 3,
+          "values": [
+            1811939328,
+            1811939328,
+            1811939328
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 2.968307601287961,
+          "median": 2.953825057949871,
+          "minimum": 2.9346541329286993,
+          "observed": 3,
+          "values": [
+            2.9346541329286993,
+            2.968307601287961,
+            2.953825057949871
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 2.970680837985128,
+          "median": 2.9562607747502625,
+          "minimum": 2.937626670114696,
+          "observed": 3,
+          "values": [
+            2.937626670114696,
+            2.970680837985128,
+            2.9562607747502625
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 4479.469614526121,
+          "median": 4459.19124316894,
+          "minimum": 4434.784809509725,
+          "observed": 3,
+          "values": [
+            4479.469614526121,
+            4434.784809509725,
+            4459.19124316894
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "observed": 3,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        }
+      },
+      "retention": 1.0
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 12288,
+      "method": "rkv",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.3585030119866133,
+          "median": 0.3511241730302572,
+          "minimum": 0.2838153503835201,
+          "observed": 3,
+          "values": [
+            0.2838153503835201,
+            0.3585030119866133,
+            0.3511241730302572
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 30.47841873439029,
+          "median": 30.458744671195745,
+          "minimum": 30.450949895661324,
+          "observed": 3,
+          "values": [
+            30.458744671195745,
+            30.47841873439029,
+            30.450949895661324
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 30.500620698090643,
+          "median": 30.48031363962218,
+          "minimum": 30.472627432085574,
+          "observed": 3,
+          "values": [
+            30.48031363962218,
+            30.500620698090643,
+            30.472627432085574
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 26632847360,
+          "median": 26632847360,
+          "minimum": 26632847360,
+          "observed": 3,
+          "values": [
+            26632847360,
+            26632847360,
+            26632847360
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 2.5915993944911127,
+          "median": 2.5909730290093074,
+          "minimum": 2.5887191644962386,
+          "observed": 3,
+          "values": [
+            2.5915993944911127,
+            2.5887191644962386,
+            2.5909730290093074
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 30.527643366716802,
+          "median": 30.522350081708282,
+          "minimum": 30.447529275901616,
+          "observed": 3,
+          "values": [
+            30.447529275901616,
+            30.527643366716802,
+            30.522350081708282
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 905969664,
+          "median": 905969664,
+          "minimum": 905969664,
+          "observed": 3,
+          "values": [
+            905969664,
+            905969664,
+            905969664
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 2717908992,
+          "median": 2717908992,
+          "minimum": 2717908992,
+          "observed": 3,
+          "values": [
+            2717908992,
+            2717908992,
+            2717908992
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 26632847360,
+          "median": 26632847360,
+          "minimum": 26632847360,
+          "observed": 3,
+          "values": [
+            26632847360,
+            26632847360,
+            26632847360
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 5.646610873751342,
+          "median": 5.635161824058741,
+          "minimum": 5.627716074232012,
+          "observed": 3,
+          "values": [
+            5.627716074232012,
+            5.635161824058741,
+            5.646610873751342
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 5.6675616768188775,
+          "median": 5.656487931031734,
+          "minimum": 5.654242988675833,
+          "observed": 3,
+          "values": [
+            5.654242988675833,
+            5.656487931031734,
+            5.6675616768188775
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 2259.2878593267246,
+          "median": 2258.466968908042,
+          "minimum": 2250.609212172094,
+          "observed": 3,
+          "values": [
+            2258.466968908042,
+            2259.2878593267246,
+            2250.609212172094
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 25.321423633489758,
+          "median": 25.31793911382556,
+          "minimum": 25.314031679183245,
+          "observed": 3,
+          "values": [
+            25.31793911382556,
+            25.321423633489758,
+            25.314031679183245
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 26632847360,
+          "median": 26632847360,
+          "minimum": 26632847360,
+          "observed": 3,
+          "values": [
+            26632847360,
+            26632847360,
+            26632847360
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 12288,
+      "method": "streamingllm",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.29560916451737285,
+          "median": 0.2878465368412435,
+          "minimum": 0.25827765790745616,
+          "observed": 3,
+          "values": [
+            0.29560916451737285,
+            0.2878465368412435,
+            0.25827765790745616
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 7.554040953051299,
+          "median": 5.167193742934614,
+          "minimum": 5.165080751758069,
+          "observed": 3,
+          "values": [
+            7.554040953051299,
+            5.165080751758069,
+            5.167193742934614
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 7.5569705087691545,
+          "median": 5.1694859359413385,
+          "minimum": 5.1677027316764,
+          "observed": 3,
+          "values": [
+            7.5569705087691545,
+            5.1677027316764,
+            5.1694859359413385
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22514040832,
+          "median": 22514040832,
+          "minimum": 22514040832,
+          "observed": 3,
+          "values": [
+            22514040832,
+            22514040832,
+            22514040832
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 31.526282588182998,
+          "median": 31.247837251235673,
+          "minimum": 14.451226057852491,
+          "observed": 3,
+          "values": [
+            14.451226057852491,
+            31.247837251235673,
+            31.526282588182998
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 5.1966180531308055,
+          "median": 5.181410300079733,
+          "minimum": 5.170343057252467,
+          "observed": 3,
+          "values": [
+            5.181410300079733,
+            5.1966180531308055,
+            5.170343057252467
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 905969664,
+          "median": 905969664,
+          "minimum": 905969664,
+          "observed": 3,
+          "values": [
+            905969664,
+            905969664,
+            905969664
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 2717908992,
+          "median": 2717908992,
+          "minimum": 2717908992,
+          "observed": 3,
+          "values": [
+            2717908992,
+            2717908992,
+            2717908992
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22514040832,
+          "median": 22514040832,
+          "minimum": 22514040832,
+          "observed": 3,
+          "values": [
+            22514040832,
+            22514040832,
+            22514040832
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 3.071208231151104,
+          "median": 3.024433091748506,
+          "minimum": 3.0229696659371257,
+          "observed": 3,
+          "values": [
+            3.071208231151104,
+            3.024433091748506,
+            3.0229696659371257
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 3.0744491680525243,
+          "median": 3.0266001960262656,
+          "minimum": 3.0257553779520094,
+          "observed": 3,
+          "values": [
+            3.0744491680525243,
+            3.0266001960262656,
+            3.0257553779520094
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 4356.764373676493,
+          "median": 4342.974399291822,
+          "minimum": 4278.640877083126,
+          "observed": 3,
+          "values": [
+            4278.640877083126,
+            4342.974399291822,
+            4356.764373676493
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.10157598555088043,
+          "median": 0.0994684062898159,
+          "minimum": 0.09905856428667903,
+          "observed": 3,
+          "values": [
+            0.0994684062898159,
+            0.10157598555088043,
+            0.09905856428667903
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22514040832,
+          "median": 22514040832,
+          "minimum": 22514040832,
+          "observed": 3,
+          "values": [
+            22514040832,
+            22514040832,
+            22514040832
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 16384,
+      "method": "agentkv",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.3322318736463785,
+          "median": 0.32606334891170263,
+          "minimum": 0.31177118327468634,
+          "observed": 3,
+          "values": [
+            0.3322318736463785,
+            0.32606334891170263,
+            0.31177118327468634
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 7.29455700609833,
+          "median": 7.275292651727796,
+          "minimum": 7.2409782349132,
+          "observed": 3,
+          "values": [
+            7.29455700609833,
+            7.275292651727796,
+            7.2409782349132
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 7.301100610289723,
+          "median": 7.282089147716761,
+          "minimum": 7.24787908885628,
+          "observed": 3,
+          "values": [
+            7.301100610289723,
+            7.282089147716761,
+            7.24787908885628
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22675521536,
+          "median": 22675521536,
+          "minimum": 22675521536,
+          "observed": 3,
+          "values": [
+            22675521536,
+            22675521536,
+            22675521536
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 22.885343239784717,
+          "median": 22.573759366433897,
+          "minimum": 22.4456436763255,
+          "observed": 3,
+          "values": [
+            22.4456436763255,
+            22.573759366433897,
+            22.885343239784717
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 7.280314188916236,
+          "median": 7.280292336829007,
+          "minimum": 7.266199906822294,
+          "observed": 3,
+          "values": [
+            7.280292336829007,
+            7.280314188916236,
+            7.266199906822294
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 1207959552,
+          "median": 1207959552,
+          "minimum": 1207959552,
+          "observed": 3,
+          "values": [
+            1207959552,
+            1207959552,
+            1207959552
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 3623878656,
+          "median": 3623878656,
+          "minimum": 3623878656,
+          "observed": 3,
+          "values": [
+            3623878656,
+            3623878656,
+            3623878656
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22669230080,
+          "median": 22669230080,
+          "minimum": 22669230080,
+          "observed": 3,
+          "values": [
+            22669230080,
+            22669230080,
+            22669230080
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 4.319607621990144,
+          "median": 4.31786099774763,
+          "minimum": 4.3149561900645494,
+          "observed": 3,
+          "values": [
+            4.3149561900645494,
+            4.319607621990144,
+            4.31786099774763
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 4.327143173199147,
+          "median": 4.3248630641028285,
+          "minimum": 4.323036016896367,
+          "observed": 3,
+          "values": [
+            4.323036016896367,
+            4.327143173199147,
+            4.3248630641028285
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 4053.002625637365,
+          "median": 4052.9275599524353,
+          "minimum": 4047.3874598371185,
+          "observed": 3,
+          "values": [
+            4052.9275599524353,
+            4047.3874598371185,
+            4053.002625637365
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.8373205219395459,
+          "median": 0.8356050006113946,
+          "minimum": 0.8340961555950344,
+          "observed": 3,
+          "values": [
+            0.8340961555950344,
+            0.8373205219395459,
+            0.8356050006113946
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22669230080,
+          "median": 22669230080,
+          "minimum": 22669230080,
+          "observed": 3,
+          "values": [
+            22669230080,
+            22669230080,
+            22669230080
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 16384,
+      "method": "full",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "observed": 3,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 6.1155571159906685,
+          "median": 6.10217908071354,
+          "minimum": 6.079607057850808,
+          "observed": 3,
+          "values": [
+            6.079607057850808,
+            6.10217908071354,
+            6.1155571159906685
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 6.118761204183102,
+          "median": 6.104526378214359,
+          "minimum": 6.081772840116173,
+          "observed": 3,
+          "values": [
+            6.081772840116173,
+            6.104526378214359,
+            6.118761204183102
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 35.2122747866546,
+          "median": 35.20823308131681,
+          "minimum": 35.18232910445804,
+          "observed": 3,
+          "values": [
+            35.20823308131681,
+            35.2122747866546,
+            35.18232910445804
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 6.124483454972506,
+          "median": 6.101922848261893,
+          "minimum": 6.093392071779817,
+          "observed": 3,
+          "values": [
+            6.101922848261893,
+            6.093392071779817,
+            6.124483454972506
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 2415919104,
+          "median": 2415919104,
+          "minimum": 2415919104,
+          "observed": 3,
+          "values": [
+            2415919104,
+            2415919104,
+            2415919104
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 2415919104,
+          "median": 2415919104,
+          "minimum": 2415919104,
+          "observed": 3,
+          "values": [
+            2415919104,
+            2415919104,
+            2415919104
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 4.183829647023231,
+          "median": 4.168688820209354,
+          "minimum": 4.128495036158711,
+          "observed": 3,
+          "values": [
+            4.128495036158711,
+            4.183829647023231,
+            4.168688820209354
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 4.186163547914475,
+          "median": 4.171139785088599,
+          "minimum": 4.1313819396309555,
+          "observed": 3,
+          "values": [
+            4.1313819396309555,
+            4.186163547914475,
+            4.171139785088599
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 4243.102989388155,
+          "median": 4204.574200755713,
+          "minimum": 4184.621015397801,
+          "observed": 3,
+          "values": [
+            4243.102989388155,
+            4184.621015397801,
+            4204.574200755713
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.0,
+          "median": 0.0,
+          "minimum": 0.0,
+          "observed": 3,
+          "values": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22511943680,
+          "median": 22511943680,
+          "minimum": 22511943680,
+          "observed": 3,
+          "values": [
+            22511943680,
+            22511943680,
+            22511943680
+          ]
+        }
+      },
+      "retention": 1.0
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 16384,
+      "method": "rkv",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.37721715960651636,
+          "median": 0.3748441548086703,
+          "minimum": 0.3582298820838332,
+          "observed": 3,
+          "values": [
+            0.37721715960651636,
+            0.3748441548086703,
+            0.3582298820838332
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 49.79907215805724,
+          "median": 49.72044131718576,
+          "minimum": 49.70503999572247,
+          "observed": 3,
+          "values": [
+            49.72044131718576,
+            49.70503999572247,
+            49.79907215805724
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 49.8226802079007,
+          "median": 49.74474553298205,
+          "minimum": 49.72864391794428,
+          "observed": 3,
+          "values": [
+            49.74474553298205,
+            49.72864391794428,
+            49.8226802079007
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 29820518400,
+          "median": 29820518400,
+          "minimum": 29820518400,
+          "observed": 3,
+          "values": [
+            29820518400,
+            29820518400,
+            29820518400
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 1.5714158665289577,
+          "median": 1.5705369846675457,
+          "minimum": 1.5675197299879131,
+          "observed": 3,
+          "values": [
+            1.5705369846675457,
+            1.5714158665289577,
+            1.5675197299879131
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 49.766843180172145,
+          "median": 49.765050497837365,
+          "minimum": 49.743343395181,
+          "observed": 3,
+          "values": [
+            49.766843180172145,
+            49.765050497837365,
+            49.743343395181
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 1207959552,
+          "median": 1207959552,
+          "minimum": 1207959552,
+          "observed": 3,
+          "values": [
+            1207959552,
+            1207959552,
+            1207959552
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 3623878656,
+          "median": 3623878656,
+          "minimum": 3623878656,
+          "observed": 3,
+          "values": [
+            3623878656,
+            3623878656,
+            3623878656
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 29816324096,
+          "median": 29816324096,
+          "minimum": 29816324096,
+          "observed": 3,
+          "values": [
+            29816324096,
+            29816324096,
+            29816324096
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 8.854301281739026,
+          "median": 8.844182393979281,
+          "minimum": 8.841823403723538,
+          "observed": 3,
+          "values": [
+            8.854301281739026,
+            8.841823403723538,
+            8.844182393979281
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 8.887979047838598,
+          "median": 8.87060145381838,
+          "minimum": 8.867596836294979,
+          "observed": 3,
+          "values": [
+            8.887979047838598,
+            8.867596836294979,
+            8.87060145381838
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 1911.1428753939358,
+          "median": 1910.839074740851,
+          "minimum": 1908.8080330545754,
+          "observed": 3,
+          "values": [
+            1908.8080330545754,
+            1910.839074740851,
+            1911.1428753939358
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 43.27488694433123,
+          "median": 43.27311888663098,
+          "minimum": 43.27172725275159,
+          "observed": 3,
+          "values": [
+            43.27311888663098,
+            43.27172725275159,
+            43.27488694433123
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 29816324096,
+          "median": 29816324096,
+          "minimum": 29816324096,
+          "observed": 3,
+          "values": [
+            29816324096,
+            29816324096,
+            29816324096
+          ]
+        }
+      },
+      "retention": 0.5
+    },
+    {
+      "cell_status_counts": {
+        "completed": 3
+      },
+      "history_id": "history-000",
+      "logical_length": 16384,
+      "method": "streamingllm",
+      "metrics": {
+        "compaction_seconds": {
+          "expected": 3,
+          "maximum": 0.4043093272484839,
+          "median": 0.355929484590888,
+          "minimum": 0.34687353391200304,
+          "observed": 3,
+          "values": [
+            0.4043093272484839,
+            0.34687353391200304,
+            0.355929484590888
+          ]
+        },
+        "decode_inference_seconds": {
+          "expected": 3,
+          "maximum": 8.307222770061344,
+          "median": 6.53033372014761,
+          "minimum": 6.5085076107643545,
+          "observed": 3,
+          "values": [
+            8.307222770061344,
+            6.5085076107643545,
+            6.53033372014761
+          ]
+        },
+        "decode_pass_seconds": {
+          "expected": 3,
+          "maximum": 8.310348718892783,
+          "median": 6.532715212088078,
+          "minimum": 6.510959016159177,
+          "observed": 3,
+          "values": [
+            8.310348718892783,
+            6.510959016159177,
+            6.532715212088078
+          ]
+        },
+        "decode_peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22516137984,
+          "median": 22516137984,
+          "minimum": 22516137984,
+          "observed": 3,
+          "values": [
+            22516137984,
+            22516137984,
+            22516137984
+          ]
+        },
+        "decode_tokens_per_second": {
+          "expected": 3,
+          "maximum": 29.973177350660624,
+          "median": 29.702086570872456,
+          "minimum": 16.21594830276107,
+          "observed": 3,
+          "values": [
+            16.21594830276107,
+            29.973177350660624,
+            29.702086570872456
+          ]
+        },
+        "instrumented_pass_seconds": {
+          "expected": 3,
+          "maximum": 6.562551436945796,
+          "median": 6.536547685973346,
+          "minimum": 6.520123599097133,
+          "observed": 3,
+          "values": [
+            6.562551436945796,
+            6.520123599097133,
+            6.536547685973346
+          ]
+        },
+        "occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 1207959552,
+          "median": 1207959552,
+          "minimum": 1207959552,
+          "observed": 3,
+          "values": [
+            1207959552,
+            1207959552,
+            1207959552
+          ]
+        },
+        "peak_occupied_kv_bytes": {
+          "expected": 3,
+          "maximum": 3623878656,
+          "median": 3623878656,
+          "minimum": 3623878656,
+          "observed": 3,
+          "values": [
+            3623878656,
+            3623878656,
+            3623878656
+          ]
+        },
+        "peak_total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22516137984,
+          "median": 22516137984,
+          "minimum": 22516137984,
+          "observed": 3,
+          "values": [
+            22516137984,
+            22516137984,
+            22516137984
+          ]
+        },
+        "prefill_inference_seconds": {
+          "expected": 3,
+          "maximum": 4.260219863150269,
+          "median": 4.256102055776864,
+          "minimum": 4.250538648106158,
+          "observed": 3,
+          "values": [
+            4.256102055776864,
+            4.250538648106158,
+            4.260219863150269
+          ]
+        },
+        "prefill_pass_seconds": {
+          "expected": 3,
+          "maximum": 4.26322200614959,
+          "median": 4.2586701437830925,
+          "minimum": 4.253194562159479,
+          "observed": 3,
+          "values": [
+            4.2586701437830925,
+            4.253194562159479,
+            4.26322200614959
+          ]
+        },
+        "prefill_tokens_per_second": {
+          "expected": 3,
+          "maximum": 4114.182156785175,
+          "median": 4109.794395009637,
+          "minimum": 4106.51684294336,
+          "observed": 3,
+          "values": [
+            4109.794395009637,
+            4114.182156785175,
+            4106.51684294336
+          ]
+        },
+        "reserved_kv_pool_bytes": {
+          "expected": 3,
+          "maximum": 4831985664,
+          "median": 4831985664,
+          "minimum": 4831985664,
+          "observed": 3,
+          "values": [
+            4831985664,
+            4831985664,
+            4831985664
+          ]
+        },
+        "selection_seconds": {
+          "expected": 3,
+          "maximum": 0.10111538087949157,
+          "median": 0.10074741439893842,
+          "minimum": 0.09892595745623112,
+          "observed": 3,
+          "values": [
+            0.09892595745623112,
+            0.10074741439893842,
+            0.10111538087949157
+          ]
+        },
+        "total_vram_bytes": {
+          "expected": 3,
+          "maximum": 22516137984,
+          "median": 22516137984,
+          "minimum": 22516137984,
+          "observed": 3,
+          "values": [
+            22516137984,
+            22516137984,
+            22516137984
+          ]
+        }
+      },
+      "retention": 0.5
+    }
+  ],
+  "formats": [
+    "png",
+    "svg",
+    "pdf"
+  ],
+  "figure_count": 18,
+  "export_count": 54,
+  "supporting_cross_method_metrics": [
+    "occupied-kv",
+    "reserved-pool",
+    "peak-vram",
+    "prefill-throughput",
+    "decode-time",
+    "selection",
+    "compaction"
+  ],
+  "supplements": "All nine metrics have three per-method facets with full control and 80/50/25 percent conditions.",
+  "files": [
+    {
+      "file": "analysis.json",
+      "sha256": "cb4b1f46886756e09189732d1ae5a8576fc6c617b072e53ce4504a247e786d69",
+      "bytes": 5669715
+    },
+    {
+      "file": "main-decode-peak-vram.pdf",
+      "sha256": "e576d9c79259c6efaaad2b0672a90275f9b4344a37d4cb4ab4d439d64bda71ea",
+      "bytes": 38763
+    },
+    {
+      "file": "main-decode-peak-vram.png",
+      "sha256": "506ff14b76a51f793d17605372309ec687e83141efb71fa719a2ca7060340316",
+      "bytes": 137716
+    },
+    {
+      "file": "main-decode-peak-vram.svg",
+      "sha256": "c027689b25a80f0a58aede2b0984c170b47cced248b82d5e71183b8d85429e8c",
+      "bytes": 47740
+    },
+    {
+      "file": "main-decode-throughput.pdf",
+      "sha256": "2e1abfd8680cc59c6c2888f7b53d2bed8b371c48772d668dcea2458edf12de41",
+      "bytes": 38715
+    },
+    {
+      "file": "main-decode-throughput.png",
+      "sha256": "22e753b9d884c94a9f518e7673d89859962bede5464468e5a8bf34ec01314110",
+      "bytes": 156149
+    },
+    {
+      "file": "main-decode-throughput.svg",
+      "sha256": "f41ad472fe98bbd88f3e0b92eadd54177e606d82ddf63be397f2e66deb9b84f4",
+      "bytes": 46179
+    },
+    {
+      "file": "supplement-compaction.pdf",
+      "sha256": "cb536e2a3dbf9b3332b576f722594c0b95389af1c4c21a8f37ccc0afec5642ae",
+      "bytes": 57508
+    },
+    {
+      "file": "supplement-compaction.png",
+      "sha256": "17c73dccabe41de00b498f4f136e31cd9ac488dea9f65b0ce612b2162ee58fea",
+      "bytes": 222327
+    },
+    {
+      "file": "supplement-compaction.svg",
+      "sha256": "261e553460b633286159929c67aa8e7de3ec231df99757914aeb9aa90324633a",
+      "bytes": 116621
+    },
+    {
+      "file": "supplement-decode-peak-vram.pdf",
+      "sha256": "63138a6696b10348ad95a38344dc34364263192a2f4a11770d0952f0156e9b49",
+      "bytes": 56729
+    },
+    {
+      "file": "supplement-decode-peak-vram.png",
+      "sha256": "a64bec993f1e56b95c8da7d45d98d936a943c979e2f4e69b05d86ec07062bc48",
+      "bytes": 156271
+    },
+    {
+      "file": "supplement-decode-peak-vram.svg",
+      "sha256": "e7752642ba17be38d20044b2d0e30e29fbe639ec06d9192cebc91dcc08b30504",
+      "bytes": 121728
+    },
+    {
+      "file": "supplement-decode-throughput.pdf",
+      "sha256": "9b0cf58cdb878ad56651677d190bf8c5c59e66d005d115398f18eb54908deee2",
+      "bytes": 57739
+    },
+    {
+      "file": "supplement-decode-throughput.png",
+      "sha256": "a07e0e6788da4dcd606194b3da3b9d6311fef847d7a02b502f52ee91cdcd0bc4",
+      "bytes": 198504
+    },
+    {
+      "file": "supplement-decode-throughput.svg",
+      "sha256": "c26eda754016391408a9f1faffc9bd2e4c78c02264499259e3d9e716c9e60efc",
+      "bytes": 116854
+    },
+    {
+      "file": "supplement-decode-time.pdf",
+      "sha256": "85545fb33811e677dd062b758f813406a1ac0f97c037c7c863688cec4eccf070",
+      "bytes": 57861
+    },
+    {
+      "file": "supplement-decode-time.png",
+      "sha256": "4ee5c480553afe9fe89438e50f50612e5b768450807b90f23ce829a11e404fe9",
+      "bytes": 172581
+    },
+    {
+      "file": "supplement-decode-time.svg",
+      "sha256": "e5d880a324c2af2f3159128b4f55e778b519a141b156c0501c6585ba8742d4ed",
+      "bytes": 118461
+    },
+    {
+      "file": "supplement-occupied-kv.pdf",
+      "sha256": "0c199be19aa20a4f9215dc56365a83db9ec724cfcd3de377bd1f6c7a42b56e27",
+      "bytes": 56032
+    },
+    {
+      "file": "supplement-occupied-kv.png",
+      "sha256": "5ac9ac2f8c6a32865b32f69355c33586801594fdba0da83e7637738bf976355d",
+      "bytes": 218136
+    },
+    {
+      "file": "supplement-occupied-kv.svg",
+      "sha256": "e43add15ec21a081d2be5619a8118d79a15d10703405f884c295bb345d9cece8",
+      "bytes": 116929
+    },
+    {
+      "file": "supplement-peak-vram.pdf",
+      "sha256": "8cda4c960517a63d55f83e7676ee5c23c6eb802de6bda32be3b3c1b6d893e394",
+      "bytes": 56523
+    },
+    {
+      "file": "supplement-peak-vram.png",
+      "sha256": "f13c5da883da1adb388055f481ba767d5f66a600eb37164c0c925e717d56e511",
+      "bytes": 145706
+    },
+    {
+      "file": "supplement-peak-vram.svg",
+      "sha256": "4bd9fb5cf1b06077a19e90846dde0039991da04b1756d1945a982b628370a12b",
+      "bytes": 118420
+    },
+    {
+      "file": "supplement-prefill-throughput.pdf",
+      "sha256": "d6538797ca315dfbeb111f1f2bac09cc74cfa8eec033b2b4b34f9deb3b591075",
+      "bytes": 57980
+    },
+    {
+      "file": "supplement-prefill-throughput.png",
+      "sha256": "417e0a83dc4ce4805acd46a6b0752299df4257e751be71f2af95ada9a5c67ea5",
+      "bytes": 176512
+    },
+    {
+      "file": "supplement-prefill-throughput.svg",
+      "sha256": "84d872f26ac72ef20154ac92cedcd22efc6f6b263006f7a6aeaa5eed5c34d43d",
+      "bytes": 118412
+    },
+    {
+      "file": "supplement-reserved-pool.pdf",
+      "sha256": "28b7fa41e9f0ab414f44c23b46b622ba3de33e6f818a3354318cc25f6d1b9716",
+      "bytes": 55408
+    },
+    {
+      "file": "supplement-reserved-pool.png",
+      "sha256": "d84a8ae84873e08b7b408911b8d4c47f0be63265b96c05cc70aaa9c0383ad93b",
+      "bytes": 133516
+    },
+    {
+      "file": "supplement-reserved-pool.svg",
+      "sha256": "966c482b3d6329b33c57ba4662fda196ece84902547c2f87b4e8a5e2a5e0b52e",
+      "bytes": 116523
+    },
+    {
+      "file": "supplement-selection.pdf",
+      "sha256": "fcd2bb65da52f8d0c0bd20dadc7ecfe672f7f8ccc818cd4fd6e5ec1443fb1c13",
+      "bytes": 57132
+    },
+    {
+      "file": "supplement-selection.png",
+      "sha256": "8114fe8af1b9c5d12ca8bc3c91f4108bfd39b1c9fb8a34cc579b53d2c45605b1",
+      "bytes": 164712
+    },
+    {
+      "file": "supplement-selection.svg",
+      "sha256": "b6550a1dc224f63ce72c19486505a50812854eafd9acf53650641054c6436a6f",
+      "bytes": 116605
+    },
+    {
+      "file": "supporting-compaction.pdf",
+      "sha256": "87f0afee27ea011351ea978df3df8bdcc41de2b7ac19143953d965b7d96db5fd",
+      "bytes": 38528
+    },
+    {
+      "file": "supporting-compaction.png",
+      "sha256": "880c6461b3a1d9647c585629b518935bda35ec09b79fc1387148983939941a73",
+      "bytes": 172285
+    },
+    {
+      "file": "supporting-compaction.svg",
+      "sha256": "c758ba09efdfbcf4b7b2d07d054b9a1ca4824432e9b4fa4a383e355588701573",
+      "bytes": 46142
+    },
+    {
+      "file": "supporting-decode-time.pdf",
+      "sha256": "3605a58024972244b889e5c0272244a5906024841020d3da7129a56021381543",
+      "bytes": 38906
+    },
+    {
+      "file": "supporting-decode-time.png",
+      "sha256": "ac9ceabeb0fc2dbfa9704d8fc576d5f23352075675102d812cddd06a3fdaa084",
+      "bytes": 149501
+    },
+    {
+      "file": "supporting-decode-time.svg",
+      "sha256": "939b401c2034148ce30b040f8e217c81bd46525f165fa53d6b0a28e7effe3499",
+      "bytes": 46946
+    },
+    {
+      "file": "supporting-occupied-kv.pdf",
+      "sha256": "c23b1520e208247f2c0cedeeafbbc35aa78fcd726d28839c2a30e80eaf947b70",
+      "bytes": 38205
+    },
+    {
+      "file": "supporting-occupied-kv.png",
+      "sha256": "17a57119dfc6634aded936567b9f6c9a921449ce2245ebffb2204020ef20f170",
+      "bytes": 151224
+    },
+    {
+      "file": "supporting-occupied-kv.svg",
+      "sha256": "afc2f1ffe1b91069ff5e59c982a8b9304fc49eecf9f2f2477cb661dc4faf6422",
+      "bytes": 46154
+    },
+    {
+      "file": "supporting-peak-vram.pdf",
+      "sha256": "f6b719bed0b36ed95044e3dcb97d9b246a2bb97442a896fe17edbcf877f24d44",
+      "bytes": 38713
+    },
+    {
+      "file": "supporting-peak-vram.png",
+      "sha256": "750b8737b05169bb903ee47822f553a4900ecd03336456cfa56204ccf9237342",
+      "bytes": 133570
+    },
+    {
+      "file": "supporting-peak-vram.svg",
+      "sha256": "c51ed7372085f3dfc04d63c9a94e89db62c889818e4a02c993adf456bece6be2",
+      "bytes": 46995
+    },
+    {
+      "file": "supporting-prefill-throughput.pdf",
+      "sha256": "57afe625bb1bf7f2b353a271cefa8d0f8cbdd02d231457f1ee73e2916498a060",
+      "bytes": 39041
+    },
+    {
+      "file": "supporting-prefill-throughput.png",
+      "sha256": "749e0c2aef35bb7c471e275cb0248e865fb6b19c4baeb5647930e99eef0daf7c",
+      "bytes": 153804
+    },
+    {
+      "file": "supporting-prefill-throughput.svg",
+      "sha256": "4e40084a44824e0c65af83e45d59dc79b5c4c659a048bf38c64b840eb4a2df64",
+      "bytes": 46974
+    },
+    {
+      "file": "supporting-reserved-pool.pdf",
+      "sha256": "cbf863dcf840294659a574ad7327dbf89a9f7d5e62d1696f64dfd087fcb73fb3",
+      "bytes": 38073
+    },
+    {
+      "file": "supporting-reserved-pool.png",
+      "sha256": "28e63244ab2d0db93cf79e5cb63690bc6a5596b86848fdc487b1212201352d3e",
+      "bytes": 122542
+    },
+    {
+      "file": "supporting-reserved-pool.svg",
+      "sha256": "07d11d9b8d9f572242bec8b8c11a8f8ee49a614185188d4a82d74c860e9c993e",
+      "bytes": 46091
+    },
+    {
+      "file": "supporting-selection.pdf",
+      "sha256": "2ccb9fe44247ad12344aff8c883b3696d9f93e27682bf61cc640d0744a8e1344",
+      "bytes": 38427
+    },
+    {
+      "file": "supporting-selection.png",
+      "sha256": "cdfc2b851d73f3a0fc8b858473c2fc1eb356a7f91264aa62694160e4b0e59ee9",
+      "bytes": 150735
+    },
+    {
+      "file": "supporting-selection.svg",
+      "sha256": "20f579eec69e85c76b267da21ab8237e19ab07228054494e57e874bb924ce54f",
+      "bytes": 46137
+    }
+  ],
+  "validation": {
+    "strict_shared_history_analysis": "passed for all five source runs",
+    "remote_local_sha256_and_byte_counts": "verified for all 790 copied files",
+    "svg_xml_parsed": 18,
+    "pdf_headers_and_single_page_checked": 18,
+    "visually_inspected_pngs": [
+      "main-decode-throughput.png",
+      "main-decode-peak-vram.png",
+      "supplement-decode-peak-vram.png"
+    ],
+    "visually_inspected_rendered_pdfs": [
+      "main-decode-throughput.pdf",
+      "main-decode-peak-vram.pdf"
+    ],
+    "existing_focused_history_analysis_tests_passed": 18,
+    "ad_hoc_parameterized_layout_checks_passed": 2,
+    "executed_pytest_total_passed": 20,
+    "tracked_tests_changed": false,
+    "ruff_changed_files": "passed",
+    "actual_data_layout_boundary_checks": "Every visible text label fits the canvas in main decode throughput, main decode peak, supplementary decode peak and main prefill peak views.",
+    "measured_cells_and_points_unchanged_after_rendering_fix": true,
+    "rendering_validation_artifacts": [
+      {
+        "file": "plot-label-checks/pytest.xml",
+        "sha256": "3f7f0e78e938ecc21336f1e387bd8eb4d89659afaaf6a30bf18b8dad71996368"
+      },
+      {
+        "file": "plot-label-checks/checks.json",
+        "sha256": "d01dd08608640e1631b6a696d335e60e79e66de9de4c6fcb2fc2b12c2effd362"
+      },
+      {
+        "file": "plot-label-checks/executed-test_history_analysis.py",
+        "sha256": "5b25402c26c7924bbbff21cab0f8ffc8d736f00b98dc61faa7651b0a6f18a7bb"
+      }
+    ]
+  },
+  "interpretation": [
+    "At 50 percent retention, median decode throughput across 2k to 16k changes from 39.361 to 35.208 tokens/s for full KV, 35.906 to 29.702 for StreamingLLM, 23.023 to 1.571 for R-KV, and 29.590 to 22.574 for AgentKV. This is a measured single-history cost comparison, not task quality.",
+    "Ordinary decode-pass peak VRAM at 50 percent is non-monotone for R-KV: 21.534, 22.458, 29.747, 24.804 and 27.773 GiB. Full, StreamingLLM and AgentKV remain around 21 GiB under the same preallocated pool. Lower occupied KV does not imply proportionally lower total VRAM in this implementation.",
+    "All first repetitions remain in the raw points, ranges and all-three medians. StreamingLLM first-use spread and smaller later-repeat variation remain visible; ranges are not confidence intervals or proof of steady performance.",
+    "Occupied KV is a supporting accounting view: compressed methods at equal retention coincide by construction. It must not be presented as a method difference.",
+    "Selection and compaction are synchronized whole instrumented prefix-plus-continuation replay totals, not per-token rates, and cannot be added again to inference elapsed."
+  ],
+  "scope_limits": [
+    "One historical train/dev token sequence with forced output tokens; no task tools or evaluator execute.",
+    "Technical repetitions are not independent task samples or task-bootstrap uncertainty.",
+    "Fixed condition order, standard synthetic warmup, persistent compilation caches and all first repetitions are preserved; no per-shape warmup or timing rerun was added.",
+    "GPU allocation was exclusive to one timing workload; no concurrency claim is made about unrelated storage services.",
+    "A6000 40 GiB is an authorized diagnostic setup, not a frozen final task evaluation.",
+    "Numerical-reference failures remain preserved; this cost grid is not final-study model-accuracy qualification."
+  ],
+  "separate_infeasibility": {
+    "record": "history-feasibility-32600-2026-11-08.json",
+    "job_id": "13839242",
+    "logical_length": 32600,
+    "decode_forwards": 8,
+    "repetitions": 1,
+    "completed_conditions": 7,
+    "failed_rkv_conditions": 3,
+    "interpretation": "Preserved separately and excluded before this complete repeated grid was declared. Not pooled with 64-decode timing; no free replacement, cap change or hidden failed condition."
+  },
+  "additional_job_submitted": false
+}
