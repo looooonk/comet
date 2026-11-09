@@ -46,6 +46,7 @@ class Engine:
     workspace_reserve_bytes: int
     prefill_chunk_tokens: int
     device_name: str | None = None
+    backend: str = "native_minisgl"
 
 
 @dataclass(frozen=True)
@@ -178,7 +179,9 @@ class Experiment:
             raise ValueError("device_name must be an explicit GPU model name")
         profile = validate_model(self.engine.model, self.engine.model_revision,
                                  self.engine.tokenizer_revision)
-        if self.engine.model != "Qwen/Qwen3-8B" and self.stage != "pilot":
+        if self.engine.backend != profile.get("backend", "native_minisgl"):
+            raise ValueError("model architecture does not match the selected backend")
+        if self.engine.model not in {"Qwen/Qwen3-8B", "Qwen/Qwen3.5-9B"} and self.stage != "pilot":
             raise ValueError(f"{self.engine.model} is an exploratory pilot model; "
                              "the research contract uses Qwen3-8B")
         if self.sampling.enable_thinking and not profile["supports_thinking"]:
@@ -219,6 +222,8 @@ class Experiment:
         data = asdict(self)
         if self.engine.device_name is None:
             del data["engine"]["device_name"]
+        if self.engine.backend == "native_minisgl":
+            del data["engine"]["backend"]
         if not self.agent.require_executable:
             del data["agent"]["require_executable"]
         if self.environment_warmup is None:

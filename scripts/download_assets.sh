@@ -8,7 +8,7 @@ export COMET_ENV="$runtime_env"
 export COMET_APPWORLD_ROOT="$appworld_root"
 profile=$("$COMET_ENV/bin/python" -c \
     'import json, sys; from pathlib import Path; print(json.loads((Path(sys.prefix) / ".comet-runtime.json").read_text())["profile"])')
-case "$profile" in appworld|gpu) ;; *) echo "Use an AppWorld or GPU runtime" >&2; exit 2 ;; esac
+case "$profile" in appworld|gpu|hybrid) ;; *) echo "Use an AppWorld or GPU runtime" >&2; exit 2 ;; esac
 source "$COMET_REPO/scripts/activate_runtime.sh" "$profile"
 if [[ -d "$appworld_root/data" ]]; then
     [[ "$(cat "$appworld_root/data/version.txt")" == 0.2.0 ]] || {
@@ -28,6 +28,15 @@ elif [[ "${3:-}" == --model-14b ]]; then
 elif [[ "${3:-}" == --model-4b-instruct ]]; then
     "$runtime_env/bin/hf" download Qwen/Qwen3-4B-Instruct-2507 \
         --revision cdbee75f17c01a7cc42f958dc650907174af0554
+elif [[ "${3:-}" == --model-9b-hybrid ]]; then
+    "$runtime_env/bin/python" - <<'PY'
+from huggingface_hub import snapshot_download
+
+print(snapshot_download(
+    "Qwen/Qwen3.5-9B", revision="c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    allow_patterns=["*.json", "*.jinja", "*.safetensors", "*.txt", "README.md", "LICENSE"],
+))
+PY
 elif [[ -n "${3:-}" ]]; then
     printf 'Unknown asset option: %s\n' "$3" >&2
     exit 1

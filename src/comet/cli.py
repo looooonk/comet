@@ -296,7 +296,7 @@ def main(argv: list[str] | None = None) -> None:
         _print({"figure": str(args.output)})
     else:
         from comet.appworld import AppWorldAdapter, validate_tasks
-        from comet.engine import EngineSettings, MiniSGLangEngine
+        from comet.engine import EngineSettings, create_engine
         from comet.runner import Runner
 
         config = Experiment.load(args.config)
@@ -311,8 +311,9 @@ def main(argv: list[str] | None = None) -> None:
             validate_tasks("train", [config.environment_warmup.task_id])
 
         def make_engine(condition):
-            return MiniSGLangEngine(
+            return create_engine(
                 EngineSettings(
+                    backend=config.engine.backend,
                     model=config.engine.model,
                     model_path=str(args.model_path.resolve()),
                     model_revision=config.engine.model_revision,

@@ -79,3 +79,10 @@ measurements; the overnight deadline does not relax task-budget accounting.
 Judge validation by meaningful output agreement, state correctness and task
 behavior, not bitwise equality. Preserve material discrepancies and failures.
 Do not freeze settings or mark live qualification complete from CPU tests.
+
+The user also authorized lowering task difficulty and other reasonable research
+adjustments when needed to expose the intended compaction/success phenomenon.
+Prefer the outlined AppWorld study; declare departures as new exploratory
+versions, select difficulty on train/dev, retain every measured condition and
+freeze before test. This flexibility does not permit manufactured results or
+unreported selection using test outcomes.

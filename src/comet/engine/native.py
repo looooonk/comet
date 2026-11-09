@@ -31,6 +31,8 @@ class MiniSGLangEngine:
     """One model, one live session, and a separate raw CPU token transcript."""
 
     def __init__(self, settings: EngineSettings):
+        if settings.backend != "native_minisgl":
+            raise UnsupportedPath("Mini-SGLang does not implement hybrid models")
         self.settings = settings
         self._verify_installation()
         import torch

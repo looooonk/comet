@@ -11,6 +11,13 @@ from comet.errors import MemoryCapExceeded, UnsupportedPath
 MINISGL_REVISION = "254c57bc84e4a7895159ba1062bd46c83626f511"
 MODEL_REVISION = "b968826d9c46dd6066d109eabc6255188de91218"
 MODEL_PROFILES = {
+    "Qwen/Qwen3.5-9B": {
+        "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+        "parameters": 9653104368, "supports_thinking": True,
+        "backend": "transformers_hybrid",
+        "dimensions": {"hidden_size": 4096, "num_hidden_layers": 32,
+                       "num_attention_heads": 16, "intermediate_size": 12288},
+    },
     "Qwen/Qwen3-8B": {
         "revision": MODEL_REVISION, "parameters": 8190735360, "supports_thinking": True,
         "dimensions": {"hidden_size": 4096, "num_hidden_layers": 36,
@@ -73,10 +80,13 @@ class EngineSettings:
     require_a100: bool = True
     model: str = "Qwen/Qwen3-8B"
     device_name: str | None = None
+    backend: str = "native_minisgl"
 
     def __post_init__(self):
         retention_target(0, self.retention, self.method)
-        validate_model(self.model, self.model_revision, self.tokenizer_revision)
+        profile = validate_model(self.model, self.model_revision, self.tokenizer_revision)
+        if self.backend != profile.get("backend", "native_minisgl"):
+            raise ValueError("model architecture does not match the selected backend")
         for key in ("max_context_tokens", "peak_vram_bytes", "workspace_reserve_bytes", "prefill_chunk_tokens"):
             if isinstance(getattr(self, key), bool) or getattr(self, key) <= 0:
                 raise ValueError(f"{key} must be positive")
@@ -103,6 +113,8 @@ class EngineSettings:
         data.pop("model_path")
         if self.device_name is None:
             data.pop("device_name")
+        if self.backend == "native_minisgl":
+            data.pop("backend")
         if not policy:
             data.pop("method")
             data.pop("retention")
@@ -139,6 +151,7 @@ def model_storage(model_path: str, revision: str, model: str = "Qwen/Qwen3-8B") 
     if path.name != revision:
         raise ValueError("model_path must be the pinned Hugging Face snapshot directory")
     config = json.loads((path / "config.json").read_text())
+    hybrid = profile.get("backend") == "transformers_hybrid"
     expected = {
         "architectures": ["Qwen3ForCausalLM"], "model_type": "qwen3",
         "num_key_value_heads": 8, "head_dim": 128, "vocab_size": 151936,
@@ -147,6 +160,19 @@ def model_storage(model_path: str, revision: str, model: str = "Qwen/Qwen3-8B") 
         "sliding_window": None, "use_sliding_window": False, "rms_norm_eps": 1e-6,
         "torch_dtype": "bfloat16", **profile["dimensions"], **profile.get("architecture", {}),
     }
+    if hybrid:
+        if config.get("architectures") != ["Qwen3_5ForConditionalGeneration"]:
+            raise ValueError("expected the pinned Qwen3.5 hybrid architecture")
+        config = config["text_config"]
+        expected = {
+            **profile["dimensions"], "model_type": "qwen3_5_text", "dtype": "bfloat16",
+            "head_dim": 256, "num_key_value_heads": 4, "vocab_size": 248320,
+            "linear_num_key_heads": 16, "linear_num_value_heads": 32,
+            "linear_key_head_dim": 128, "linear_value_head_dim": 128,
+            "linear_conv_kernel_dim": 4,
+            "layer_types": ["linear_attention"] * 3 + ["full_attention"],
+        }
+        expected["layer_types"] *= 8
     if any(key not in config or config[key] != value for key, value in expected.items()):
         raise ValueError(f"expected the pinned {model} architecture and BF16 configuration")
     files = sorted(path.glob("*.safetensors"))
@@ -162,7 +188,7 @@ def model_storage(model_path: str, revision: str, model: str = "Qwen/Qwen3-8B") 
         for name, tensor in header.items():
             if name == "__metadata__":
                 continue
-            if tensor.get("dtype") != "BF16":
+            if tensor.get("dtype") not in ({"BF16", "F32"} if hybrid else {"BF16"}):
                 raise ValueError("pinned model weights must be BF16")
             size = 1
             for dimension in tensor["shape"]:
