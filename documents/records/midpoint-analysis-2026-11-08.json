@@ -1,0 +1,282 @@
+{
+  "cost_grid": [
+    {
+      "decode_tok_s": 29.589876404638243,
+      "logical_tokens": 2048,
+      "method": "agentkv",
+      "occupied_kv_gib": 0.140625,
+      "peak_total_vram_delta_vs_full_gib": 0.00390625,
+      "peak_total_vram_gib": 20.96978759765625,
+      "selection_seconds": 0.5059990980662405,
+      "throughput_fraction_of_full": 0.7517593452270257
+    },
+    {
+      "decode_tok_s": 39.360836140590074,
+      "logical_tokens": 2048,
+      "method": "full",
+      "occupied_kv_gib": 0.28125,
+      "peak_total_vram_delta_vs_full_gib": 0.0,
+      "peak_total_vram_gib": 20.96588134765625,
+      "selection_seconds": 0.0,
+      "throughput_fraction_of_full": 1.0
+    },
+    {
+      "decode_tok_s": 23.02255178367124,
+      "logical_tokens": 2048,
+      "method": "rkv",
+      "occupied_kv_gib": 0.140625,
+      "peak_total_vram_delta_vs_full_gib": 0.568359375,
+      "peak_total_vram_gib": 21.53424072265625,
+      "selection_seconds": 1.1975716021843255,
+      "throughput_fraction_of_full": 0.5849101299941567
+    },
+    {
+      "decode_tok_s": 35.90636053980311,
+      "logical_tokens": 2048,
+      "method": "streamingllm",
+      "occupied_kv_gib": 0.140625,
+      "peak_total_vram_delta_vs_full_gib": 0.001953125,
+      "peak_total_vram_gib": 20.96783447265625,
+      "selection_seconds": 0.09788103541359305,
+      "throughput_fraction_of_full": 0.9122357160186289
+    },
+    {
+      "decode_tok_s": 29.289073906225507,
+      "logical_tokens": 4096,
+      "method": "agentkv",
+      "occupied_kv_gib": 0.28125,
+      "peak_total_vram_delta_vs_full_gib": 0.005859375,
+      "peak_total_vram_gib": 20.97174072265625,
+      "selection_seconds": 0.4860470532439649,
+      "throughput_fraction_of_full": 0.7576827043742451
+    },
+    {
+      "decode_tok_s": 38.65612048042559,
+      "logical_tokens": 4096,
+      "method": "full",
+      "occupied_kv_gib": 0.5625,
+      "peak_total_vram_delta_vs_full_gib": 0.0,
+      "peak_total_vram_gib": 20.96588134765625,
+      "selection_seconds": 0.0,
+      "throughput_fraction_of_full": 1.0
+    },
+    {
+      "decode_tok_s": 13.699625981254945,
+      "logical_tokens": 4096,
+      "method": "rkv",
+      "occupied_kv_gib": 0.28125,
+      "peak_total_vram_delta_vs_full_gib": 1.4921875,
+      "peak_total_vram_gib": 22.45806884765625,
+      "selection_seconds": 3.248334126546979,
+      "throughput_fraction_of_full": 0.3543973324532673
+    },
+    {
+      "decode_tok_s": 34.85744148372081,
+      "logical_tokens": 4096,
+      "method": "streamingllm",
+      "occupied_kv_gib": 0.28125,
+      "peak_total_vram_delta_vs_full_gib": 0.001953125,
+      "peak_total_vram_gib": 20.96783447265625,
+      "selection_seconds": 0.09820860391482711,
+      "throughput_fraction_of_full": 0.9017314994496582
+    },
+    {
+      "decode_tok_s": 26.323616972403396,
+      "logical_tokens": 8192,
+      "method": "agentkv",
+      "occupied_kv_gib": 0.5625,
+      "peak_total_vram_delta_vs_full_gib": 0.013671875,
+      "peak_total_vram_gib": 20.97955322265625,
+      "selection_seconds": 0.6041059135459363,
+      "throughput_fraction_of_full": 0.7028720566513588
+    },
+    {
+      "decode_tok_s": 37.45150589399592,
+      "logical_tokens": 8192,
+      "method": "full",
+      "occupied_kv_gib": 1.125,
+      "peak_total_vram_delta_vs_full_gib": 0.0,
+      "peak_total_vram_gib": 20.96588134765625,
+      "selection_seconds": 0.0,
+      "throughput_fraction_of_full": 1.0
+    },
+    {
+      "decode_tok_s": 5.142903163937265,
+      "logical_tokens": 8192,
+      "method": "rkv",
+      "occupied_kv_gib": 0.5625,
+      "peak_total_vram_delta_vs_full_gib": 8.78125,
+      "peak_total_vram_gib": 29.74713134765625,
+      "selection_seconds": 11.719039843417704,
+      "throughput_fraction_of_full": 0.13732166547572003
+    },
+    {
+      "decode_tok_s": 31.784421287044687,
+      "logical_tokens": 8192,
+      "method": "streamingllm",
+      "occupied_kv_gib": 0.5625,
+      "peak_total_vram_delta_vs_full_gib": 0.001953125,
+      "peak_total_vram_gib": 20.96783447265625,
+      "selection_seconds": 0.0973459011875093,
+      "throughput_fraction_of_full": 0.8486820630659938
+    },
+    {
+      "decode_tok_s": 23.93660970554804,
+      "logical_tokens": 12288,
+      "method": "agentkv",
+      "occupied_kv_gib": 0.84375,
+      "peak_total_vram_delta_vs_full_gib": 0.111328125,
+      "peak_total_vram_gib": 21.07720947265625,
+      "selection_seconds": 0.7249627048149705,
+      "throughput_fraction_of_full": 0.6591075837531993
+    },
+    {
+      "decode_tok_s": 36.31669593186023,
+      "logical_tokens": 12288,
+      "method": "full",
+      "occupied_kv_gib": 1.6875,
+      "peak_total_vram_delta_vs_full_gib": 0.0,
+      "peak_total_vram_gib": 20.96588134765625,
+      "selection_seconds": 0.0,
+      "throughput_fraction_of_full": 1.0
+    },
+    {
+      "decode_tok_s": 2.5909730290093074,
+      "logical_tokens": 12288,
+      "method": "rkv",
+      "occupied_kv_gib": 0.84375,
+      "peak_total_vram_delta_vs_full_gib": 3.837890625,
+      "peak_total_vram_gib": 24.80377197265625,
+      "selection_seconds": 25.31793911382556,
+      "throughput_fraction_of_full": 0.07134385335798887
+    },
+    {
+      "decode_tok_s": 31.247837251235673,
+      "logical_tokens": 12288,
+      "method": "streamingllm",
+      "occupied_kv_gib": 0.84375,
+      "peak_total_vram_delta_vs_full_gib": 0.001953125,
+      "peak_total_vram_gib": 20.96783447265625,
+      "selection_seconds": 0.0994684062898159,
+      "throughput_fraction_of_full": 0.8604262158062208
+    },
+    {
+      "decode_tok_s": 22.573759366433897,
+      "logical_tokens": 16384,
+      "method": "agentkv",
+      "occupied_kv_gib": 1.125,
+      "peak_total_vram_delta_vs_full_gib": 0.15234375,
+      "peak_total_vram_gib": 21.11822509765625,
+      "selection_seconds": 0.8356050006113946,
+      "throughput_fraction_of_full": 0.6411500206300504
+    },
+    {
+      "decode_tok_s": 35.20823308131681,
+      "logical_tokens": 16384,
+      "method": "full",
+      "occupied_kv_gib": 2.25,
+      "peak_total_vram_delta_vs_full_gib": 0.0,
+      "peak_total_vram_gib": 20.96588134765625,
+      "selection_seconds": 0.0,
+      "throughput_fraction_of_full": 1.0
+    },
+    {
+      "decode_tok_s": 1.5705369846675457,
+      "logical_tokens": 16384,
+      "method": "rkv",
+      "occupied_kv_gib": 1.125,
+      "peak_total_vram_delta_vs_full_gib": 6.806640625,
+      "peak_total_vram_gib": 27.77252197265625,
+      "selection_seconds": 43.27311888663098,
+      "throughput_fraction_of_full": 0.044607094625857505
+    },
+    {
+      "decode_tok_s": 29.702086570872456,
+      "logical_tokens": 16384,
+      "method": "streamingllm",
+      "occupied_kv_gib": 1.125,
+      "peak_total_vram_delta_vs_full_gib": 0.00390625,
+      "peak_total_vram_gib": 20.96978759765625,
+      "selection_seconds": 0.10074741439893842,
+      "throughput_fraction_of_full": 0.8436119615054984
+    }
+  ],
+  "cost_scope": "Qwen3-8B BF16, one fixed history, RTX A6000; ordinary throughput and total VRAM",
+  "historical_broad_pilot": {
+    "scope": "Old sampler defect; descriptive terminal outcomes only",
+    "terminal_counts": {
+      "completed": 14,
+      "context_limit": 5,
+      "timeout": 19
+    },
+    "timeout_reasons": {
+      "Budget expired during completion_observation": 1,
+      "Budget expired during inference": 18
+    }
+  },
+  "input_sha256": {
+    "appworld-corrected-pilot-scoring-2026-11-08.md": "89d17f15411868e2ac91001d60750174df9ba6bbce26b47785c94ec1b8ebdcf0",
+    "baseline-qwen8b-2026-11-08-completion.json": "a572d288717b387c41d4fc12575a71eb43e3a4be78c852c1de2e9c3ee960c940",
+    "execution-prompt-2026-11-08-attempts.csv": "9d8655ee9d39e738e74d914859b7f34d4570140a78f5c81b32b4b95e1f07ed77",
+    "history-timing-grid-2026-11-08.json": "aa0ecc6adee9cfb01cbd3ad9da2a49569af1cb6a7bf7249a26143ca1fe9137bd"
+  },
+  "prompt_latency": {
+    "leave_one_task_out_seconds": {
+      "0d8a4ee_1": -37.0190287809819,
+      "3ab5b8b_1": -19.012911772471853,
+      "57c3486_1": 3.6025935461511835
+    },
+    "mean_candidate_minus_control_seconds": -17.47644900243419,
+    "pairs": [
+      {
+        "candidate_minus_control_seconds": -55.18301595374942,
+        "candidate_status": "completed",
+        "control_status": "completed",
+        "seed": 17,
+        "task": "0d8a4ee_1"
+      },
+      {
+        "candidate_minus_control_seconds": 98.40043706307188,
+        "candidate_status": "context_limit",
+        "control_status": "context_limit",
+        "seed": 18,
+        "task": "0d8a4ee_1"
+      },
+      {
+        "candidate_minus_control_seconds": -20.802116603124887,
+        "candidate_status": "completed",
+        "control_status": "completed",
+        "seed": 17,
+        "task": "3ab5b8b_1"
+      },
+      {
+        "candidate_minus_control_seconds": -8.004930321592838,
+        "candidate_status": "completed",
+        "control_status": "completed",
+        "seed": 18,
+        "task": "3ab5b8b_1"
+      },
+      {
+        "candidate_minus_control_seconds": 387.31787337874994,
+        "candidate_status": "timeout",
+        "control_status": "completed",
+        "seed": 17,
+        "task": "57c3486_1"
+      },
+      {
+        "candidate_minus_control_seconds": -506.5869415779598,
+        "candidate_status": "completed",
+        "control_status": "timeout",
+        "seed": 18,
+        "task": "57c3486_1"
+      }
+    ],
+    "scope": "Matched 8B dev pilot; all terminal cells included; CSV success column unused",
+    "task_mean_candidate_minus_control_seconds": {
+      "0d8a4ee_1": 21.60871055466123,
+      "3ab5b8b_1": -14.403523462358862,
+      "57c3486_1": -59.634534099604934
+    }
+  },
+  "source_commit": "772b7e8247faf004e92731d4779b06e1368ba8f0"
+}

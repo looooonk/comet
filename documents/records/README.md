@@ -2,6 +2,10 @@
 
 ## Latest results
 
+The [November 8 midpoint analysis](midpoint-analysis-2026-11-08.md) reproduces
+the fixed-history cost comparison and checks how individual dev tasks influence
+the matched full-cache prompt comparison.
+
 The [Qwen3-14B retention pilot](retention-pilot-2026-10-20.md) completed on
 October 20, 2026; its results were collected and reproduced on October 31.
 Full cache solved 1/8 dev tasks, and AgentKV at 80%, 50%, and 25% retention
