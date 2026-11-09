@@ -152,6 +152,8 @@ def main(argv: list[str] | None = None) -> None:
         "selection", "compaction", "instrumented-time",
     ))
     history_plot.add_argument("--history", dest="history_id")
+    history_plot.add_argument("--retention", type=float, choices=(0.8, 0.5, 0.25),
+                              help="Compare methods at one retention on shared axes, including full KV")
     history_plot.add_argument("--title", default="Matched-history cost")
     compare = commands.add_parser("compare-protocol", help="Compare explicitly declared paired protocol arms")
     compare.add_argument("control", type=Path)
@@ -242,7 +244,7 @@ def main(argv: list[str] | None = None) -> None:
         from comet.history_plots import plot_histories
 
         plot_histories(args.analysis, args.output, metric=args.metric,
-                       history_id=args.history_id, title=args.title)
+                       history_id=args.history_id, title=args.title, retention=args.retention)
         _print({"figure": str(args.output)})
     elif args.command == "compare-protocol":
         from comet.comparison import compare_protocol_runs

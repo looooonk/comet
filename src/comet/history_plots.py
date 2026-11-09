@@ -16,10 +16,12 @@ PLOT_METRICS = {
 }
 _METHODS = {"streamingllm": "StreamingLLM", "rkv": "R-KV", "agentkv": "AgentKV"}
 _COLORS = {1.0: "#555555", 0.8: "#4477aa", 0.5: "#228833", 0.25: "#ee7733"}
+_METHOD_COLORS = {"full": "#555555", "streamingllm": "#4477aa", "rkv": "#ee7733", "agentkv": "#228833"}
 
 
 def plot_histories(analysis_path: Path, output: Path, *, metric: str,
-                   history_id: str | None = None, title: str = "Matched-history cost") -> None:
+                   history_id: str | None = None, title: str = "Matched-history cost",
+                   retention: float | None = None) -> None:
     import matplotlib
 
     matplotlib.use("Agg")
@@ -31,6 +33,8 @@ def plot_histories(analysis_path: Path, output: Path, *, metric: str,
         raise ValueError("History plots require validated matched-history analysis")
     if metric not in PLOT_METRICS:
         raise ValueError(f"Unknown history metric: {metric}")
+    if retention is not None and retention not in {0.8, 0.5, 0.25}:
+        raise ValueError("Select compressed retention 0.8, 0.5 or 0.25")
     histories = analysis["summary"]["histories"]
     if history_id is None:
         if len(histories) != 1:
@@ -48,18 +52,34 @@ def plot_histories(analysis_path: Path, output: Path, *, metric: str,
                     for point in points}
     statuses = {}
     selected_cells = [cell for cell in analysis["cells"] if cell["history_id"] == history_id]
+    if retention is not None:
+        selected_cells = [cell for cell in selected_cells if
+                          (cell["method"] == "full" and cell["retention"] == 1)
+                          or cell["retention"] == retention]
     for cell in selected_cells:
         statuses[cell["status"]] = statuses.get(cell["status"], 0) + 1
     coverage = sum(cell["metrics"][key]["value"] is not None for cell in selected_cells)
+    if retention is None:
+        panels = [(label, [("full" if fraction == 1 else method, fraction, color)
+                           for fraction, color in _COLORS.items()])
+                  for method, label in _METHODS.items()]
+        legend_items = [(color, "Full KV" if fraction == 1 else f"{fraction:.0%} retained")
+                        for fraction, color in _COLORS.items()]
+    else:
+        panels = [(f"Compressed conditions at {retention:.0%} retention",
+                   [(method, 1.0 if method == "full" else retention, color)
+                    for method, color in _METHOD_COLORS.items()])]
+        legend_items = [(color, "Full KV" if method == "full" else _METHODS[method])
+                        for method, color in _METHOD_COLORS.items()]
     with plt.rc_context({"font.size": 10, "axes.spines.top": False, "axes.spines.right": False,
                          "svg.fonttype": "none", "savefig.dpi": 180}):
-        fig, axes = plt.subplots(1, 3, figsize=(12.4, 5.2), sharex=True, sharey=True)
-        for ax, (method, method_label) in zip(axes, _METHODS.items(), strict=True):
-            for lane, (retention, color) in enumerate(_COLORS.items()):
-                selected_method = "full" if retention == 1 else method
+        fig, grid = plt.subplots(1, len(panels), figsize=(12.4, 5.2), sharex=True, sharey=True, squeeze=False)
+        axes = grid[0]
+        for ax, (panel_label, series) in zip(axes, panels, strict=True):
+            for lane, (selected_method, fraction, color) in enumerate(series):
                 values = []
                 for length in lengths:
-                    point = by_condition.get((selected_method, retention, length))
+                    point = by_condition.get((selected_method, fraction, length))
                     estimate = point["metrics"][key] if point else None
                     if estimate is None:
                         values.append(float("nan"))
@@ -85,7 +105,7 @@ def plot_histories(analysis_path: Path, output: Path, *, metric: str,
                                     fontsize=7, va="center")
                 ax.plot(lengths, values, marker="o", markersize=4, color=color,
                         linewidth=1.4, linestyle="-" if len(lengths) > 1 else "none", zorder=4)
-            ax.set_title(method_label, fontsize=11, pad=10)
+            ax.set_title(panel_label, fontsize=11, pad=10)
             ax.set_xlabel("Logical history length (tokens)")
             ax.set_xticks(lengths, [f"{length:,}" for length in lengths], rotation=30 if len(lengths) > 3 else 0)
             ax.grid(axis="y", alpha=0.18)
@@ -97,9 +117,8 @@ def plot_histories(analysis_path: Path, output: Path, *, metric: str,
                 ax.set_xlim(min(lengths) - margin, max(lengths) + margin)
         axes[0].set_ylim(bottom=0)
         axes[0].set_ylabel(label)
-        legend = [Line2D([0], [0], color=color, marker="o", markersize=4,
-                         label="Full KV" if retention == 1 else f"{retention:.0%} retained")
-                  for retention, color in _COLORS.items()]
+        legend = [Line2D([0], [0], color=color, marker="o", markersize=4, label=legend_label)
+                  for color, legend_label in legend_items]
         fig.legend(handles=legend, loc="upper right", bbox_to_anchor=(0.98, 0.91),
                    ncol=4, frameon=False, fontsize=9)
         fig.suptitle(title, x=0.07, ha="left", fontsize=15, fontweight="bold")
@@ -112,7 +131,9 @@ def plot_histories(analysis_path: Path, output: Path, *, metric: str,
             f"Covered observations: {coverage}/{len(selected_cells)}. Cell status: "
             + ", ".join(f"{status.replace('_', ' ')} {count}" for status, count in sorted(statuses.items()))
             + ".\nOpen points: all recorded repetitions; solid points: medians; vertical ranges: observed min-max, not confidence intervals."
-            + "\nFull control is repeated in each facet. Crosses flag incomplete cells or metric coverage; labels show covered/expected observations."
+            + ("\nFull control is repeated in each facet. " if retention is None else
+               f"\nFull control and all three methods at {retention:.0%} retention. ")
+            + "Crosses flag incomplete cells or metric coverage; labels show covered/expected observations."
         )
         if phase == "instrumented":
             caption += "\nSelection/compaction sum the whole prefix-plus-continuation replay, not per-token rates; nested costs are not added again."

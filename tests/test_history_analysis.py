@@ -219,3 +219,26 @@ def test_shared_axis_includes_larger_later_method_values(history_runs, tmp_path,
                    title="Synthetic layout fixture: not experimental data")
     assert len(observed_limits) == 3
     assert all(lower == 0 and upper >= 20_000 for lower, upper in observed_limits)
+
+
+def test_cross_method_plot_preserves_selected_failures_and_all_repetitions(history_runs, tmp_path):
+    pytest.importorskip("matplotlib")
+    first, second, output = history_runs
+    _change_pass(first, "decode", lambda value: value.pop("metric_coverage"),
+                 condition="rkv", retention=0.5)
+    _change_pass(first, "decode", lambda value: value.pop("metric_coverage"),
+                 condition="agentkv", retention=0.8)
+    analyze_histories([first, second], output)
+    figure = tmp_path / "synthetic-cross-method.svg"
+    main(["plot-histories", str(output), "--metric", "decode-throughput", "--output", str(figure),
+          "--retention", "0.5", "--title", "Synthetic fixture: not experimental data"])
+    text = figure.read_text()
+    assert "Compressed conditions at 50% retention" in text
+    assert "Covered observations: 15/16" in text
+    assert "1/2" in text
+    assert all(label in text for label in ("Full KV", "StreamingLLM", "R-KV", "AgentKV"))
+    assert "80% retained" not in text and "25% retained" not in text
+    assert "Open points: all recorded repetitions" in text
+    assert "Full control is repeated in each facet" not in text
+    with pytest.raises(ValueError, match="compressed retention"):
+        plot_histories(output, figure, metric="decode-throughput", retention=1.0)

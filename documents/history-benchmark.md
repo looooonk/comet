@@ -151,6 +151,15 @@ comet plot-histories "$COMET_HISTORY_ANALYSIS" --metric decode-throughput \
   --output "$COMET_HISTORY_FIGURE"
 ```
 
+By default the figure has one facet per method, retaining every configured
+retention and repeating the full-cache control. Add `--retention 0.5` for a
+single shared-axis comparison of full KV and the three compressed methods at
+50%. The same view supports `0.8` and `0.25`. Declare the main retention before
+examining comparative outcomes and retain all-retention figures alongside it.
+Coverage counts in the focused view refer only to its four selected conditions;
+missing measurements and failures within them remain explicit. This changes
+presentation, not analysis, repetition inclusion or the underlying results.
+
 The analyzer requires the same historical source manifest, source trajectories,
 model/tokenizer, engine settings, code and dependency provenance, GPU model and
 capacity, driver, CUDA runtime, and measurement contract across supplied runs.
