@@ -139,6 +139,8 @@ provenance, and stop when checks fail. Rebuild cleaned caches only as needed.
   uncertainty. No fitted or fabricated intermediate measurements.
 - [ ] Supporting memory, latency, throughput, FLOPs, attempts and recovery-cost
   figures; clearly label occupied KV, reserved pools and total VRAM separately.
+  The synthetic 16K memory/recovery figure is exported; task-comparison figures
+  remain pending. See `documents/records/qwen9b-findings.md`.
 - [ ] Answer Q1 and Q2 with effect sizes, task counts, uncertainty, trigger
   admissions/refusals and limitations, including genuine negative results.
 - [ ] Export publication-ready PNG/SVG/PDF and machine-readable summaries with
