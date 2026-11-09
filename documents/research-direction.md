@@ -5,8 +5,10 @@ Qwen3 4B/8B/14B baselines with a new implementation phase for newer Qwen models.
 The [candidate list](experimental-models.md) includes dense and MoE models up to
 35B total parameters. The old 14B ceiling is no longer the selection constraint.
 The original proposal remains background; this decision supersedes its model
-and hardware assumptions. Backend and hybrid-state support must be designed
-before new experiments. Qwen3.5-9B is the first selected candidate. Its shared hybrid backend is implemented and undergoing live qualification; see the [backend decision](hybrid-backend.md).
+and hardware assumptions. Qwen3.5-9B is the selected study model, using one
+implemented and validated hybrid backend; see the
+[backend decision](hybrid-backend.md) and [current evidence](records/qwen9b-findings.md).
+Every new device/cap combination still requires its own live qualification.
 
 ## Central deliverable
 
@@ -59,7 +61,7 @@ being compressed. Record mandatory retained entries, realized retention and
 non-KV memory separately. Active MoE parameters do not define resident weight
 memory or inference cost by themselves.
 
-## Next implementation handoff
+## Study workflow
 
 1. Verify official candidate identities and select a model/backend/hardware plan.
 2. Implement and validate the model's complete persistent state, sampling,
@@ -69,7 +71,8 @@ memory or inference cost by themselves.
 4. Tune recovery on dev, freeze model/configs/tasks/seeds, and execute Q1/Q2.
 5. Produce the central plot, supporting costs, uncertainty and answers.
 
-The cleanup phase launches no jobs. Existing historical configs and dated plans
-are archived in Git, summarized in [legacy results](records/legacy-results.md).
-They are not a queue to resume. New infrastructure and experiments begin only
-in the subsequent work requested by the user.
+Historical configs and dated plans are archived in Git, summarized in
+[legacy results](records/legacy-results.md). They are not a queue to resume.
+The authorized new study uses versioned Qwen3.5-9B configurations, with completed
+pilot evidence, frozen settings and execution status indexed in
+[the current records](records/README.md).

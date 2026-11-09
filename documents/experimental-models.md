@@ -1,10 +1,13 @@
 # Model direction after the November 8 pivot
 
 The user ended the effort to make the legacy Qwen3 4B/8B/14B pilots the main
-baseline. The next implementation phase will investigate newer Qwen models for
+baseline. The study selects Qwen3.5-9B for
 a useful AppWorld task-success regime and the central
 [compaction-aggressivity study](research-direction.md). The former 14B ceiling
-is superseded. The first implementation candidate is Qwen3.5-9B with a shared Transformers hybrid backend; see the [verified identities and state contract](hybrid-backend.md). Live qualification remains required.
+is superseded. The selected model uses a shared Transformers hybrid backend;
+see the [verified identities and state contract](hybrid-backend.md) and
+[live evidence](records/qwen9b-findings.md). New hardware/cap combinations
+require separate qualification.
 
 ## Candidate list
 

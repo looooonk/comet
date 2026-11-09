@@ -10,7 +10,7 @@ General documents must be independent of individual accounts, workspaces, and ru
 
 Implement the agreed experiments before expanding scope. Do not silently replace the model, benchmark, inference engine, methods, metrics, or budget semantics. Record any user- or team-authorized departure from the proposal in `documents/`, with its rationale and affected comparisons, and update the corresponding instructions and configs. Routine implementation choices do not need a new research decision.
 
-The active direction is the newer Qwen candidate family listed in [documents/experimental-models.md](documents/experimental-models.md), including models above 14B. Stop treating the legacy 4B/8B/14B baselines or their old plans as pending work. Verify exact official identities and design the necessary backend/state support in the next implementation phase. The shared Transformers hybrid backend now implements Qwen3.5-9B as the first candidate; see [the backend decision](documents/hybrid-backend.md). Other new architectures remain unsupported. Keep backend/model guards strict and do not claim qualification from legacy tests. The subsequent execution request authorizes new experiments and adequately sized resources.
+The active study uses Qwen3.5-9B from the newer Qwen candidate family listed in [documents/experimental-models.md](documents/experimental-models.md). Stop treating the legacy 4B/8B/14B baselines or their old plans as pending work. The shared Transformers hybrid backend implements the selected model; see [the backend decision](documents/hybrid-backend.md). Other new architectures remain unsupported. Verify their official identities and design complete state support before any future selection. Keep backend/model guards strict and use the new model's live evidence, not legacy tests, for qualification. The execution request authorizes experiments and adequately sized resources.
 
 The central deliverable is a fine-grained compaction-aggressivity versus task-success curve with informative intermediate behavior, paired uncertainty and explicit test-time budgets. Find that operating regime on train/dev and freeze before test. Do not manufacture differences, drop flat outcomes or select favorable test tasks.
 
@@ -29,7 +29,7 @@ The user authorized adequately sized alternative GPUs for pilots and final evalu
 
 | Component | Required setup |
 | --- | --- |
-| Model | Qwen3.5-9B as the first candidate, pending train/dev qualification |
+| Model | Qwen3.5-9B, selected through the declared train/dev study |
 | Benchmark | AppWorld |
 | Inference engine | Shared Transformers hybrid backend for the 9B study; Mini-SGLang remains legacy |
 | Hardware | A qualified GPU configuration selected for the new model; match device model/count and caps within each comparison |
