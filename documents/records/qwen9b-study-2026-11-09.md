@@ -131,3 +131,17 @@ the suite had 335 passes, 17 skips and this one capacity refusal. No task
 attempt ran. `train-baseline-l4-v2.json` explicitly lowers the cap to 21 GiB
 while keeping the 2 GiB workspace and all other settings. The failed launch
 is retained as infrastructure evidence; it is not a task-success measurement.
+
+The failed cloud launch's 15 output files were fetched and verified; its VM,
+disk, Batch job and live artifact prefix were removed. The corrected launch
+`gpu-20261109-061851-5d856b` stages source `57e815e`. Reserve $5 for each
+cloud launch until reconciliation, plus the separate historical $10 reserve,
+leaving $20 uncommitted under the $40 ceiling. These are conservative reservations,
+not billing measurements.
+
+Checkpoint diagnostics now support clean cell segments using the existing
+launcher. Saved source checkpoints and their original charges survive resume.
+The CPU check compares uninterrupted and segmented trajectories, budgets, failed
+source preparation, scoring and checkpoint preservation; 70 focused tests passed.
+A matching L4 process-interruption configuration is prepared; its live execution
+is still pending.
