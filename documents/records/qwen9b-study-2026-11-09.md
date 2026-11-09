@@ -263,3 +263,13 @@ and log record. The replacement is `gpu-20261109-074439-b5e235`, source `ae8762d
 It first executes the declared prompt-only pilot. The revised ledger reserves
 $10 for up to 7.25 hours at $1/hour plus 50 GiB NAT and $0.40 other charges,
 leaving $4.25 uncommitted. These remain conservative allowances, not billing.
+
+
+The corrected protocol's arithmetic task reached agent completion in 66.5 seconds
+and ten tool turns; correctness remains pending offline scoring. The file
+organization task still hit four consecutive errors after six tool turns.
+The live interruption check is therefore declared as `resume-check-l4-v2.json`
+using the arithmetic train task and corrected prompt. This selects a useful
+integration fixture, not a research sample or favorable test outcome. It retains
+the 120-second budget, preserved/interrupted/fresh arms and existing real-process
+validation harness; its outputs are explicitly ineligible as freeze evidence.
