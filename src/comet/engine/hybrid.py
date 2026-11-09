@@ -69,7 +69,12 @@ class HybridEngine:
         available = settings.peak_vram_bytes - self._external
         if available < 2 * self.parameter_count + settings.workspace_reserve_bytes:
             raise MemoryCapExceeded("weights and workspace do not fit the selected memory cap")
-        torch.cuda.set_per_process_memory_fraction(available / total)
+        # CUDA kernels load lazily and allocate memory outside PyTorch's reserved pool.
+        self._allocator_headroom = 2**30
+        allocator_cap = available - self._allocator_headroom
+        if allocator_cap < 2 * self.parameter_count:
+            raise MemoryCapExceeded("weights and CUDA runtime headroom do not fit the selected cap")
+        torch.cuda.set_per_process_memory_fraction(allocator_cap / total)
         self.tokenizer = AutoTokenizer.from_pretrained(settings.model_path, local_files_only=True)
         self.model = Qwen3_5ForConditionalGeneration.from_pretrained(
             settings.model_path, dtype=torch.bfloat16, device_map="cuda",
@@ -192,7 +197,9 @@ class HybridEngine:
             raise UnsupportedPath(f"memory monitoring failed: {self._monitor_error}")
         memory = self.memory_stats()
         if memory["peak_total_vram_bytes"] > self.settings.peak_vram_bytes:
-            raise MemoryCapExceeded("hybrid inference exceeded peak total VRAM cap")
+            raise MemoryCapExceeded(
+                f"hybrid peak total VRAM {memory['peak_total_vram_bytes']} exceeds cap "
+                f"{self.settings.peak_vram_bytes}")
         return memory
 
     def _check_deadline(self, deadline):
@@ -440,6 +447,7 @@ class HybridEngine:
                 "dtype": "bfloat16", "cuda_runtime": self.torch.version.cuda,
                 "model_parameter_count": self.parameter_count,
                 "text_parameter_count": self._text_parameters,
+                "allocator_headroom_bytes": self._allocator_headroom,
                 "packages": {name: importlib.metadata.version(name) for name in
                              ("torch", "transformers", "flash-linear-attention", "comet-agentkv-selectors")},
                 "attention_backend": "torch_sdpa", "cuda_graphs": False,

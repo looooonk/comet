@@ -165,3 +165,15 @@ AppWorld isolation/scoring checks already passed in both earlier cloud launches.
 The run remains bounded to 3,600 seconds with zero retries. Three cloud launch
 reservations of $5 plus the historical $10 reserve leave $15 uncommitted pending
 cost reconciliation; these are not billed charges.
+
+That launch passed all 24 L4 retention branches, checkpoint replay, one-rebuild
+semantics, RNG continuity and refusal at an insufficient cap. Its independent
+reference had cosine 0.99892, top-10 overlap 1.0 and greedy answer `7391`.
+The subsequent full-cache 8,192-token capacity check exceeded the 21 GiB cap;
+the suite stopped with 14 passes and one failure, before any task attempt.
+Observed non-PyTorch memory reached about 792 MiB after lazy kernel loading.
+The allocator now leaves a separate 1 GiB runtime allowance rather than letting
+its reserved pool consume the full initial free allowance. The experimental
+cap remains 21 GiB, and failed capacity evidence is retained. The next focused
+rerun keeps three method branches and all four capacity checks; it need not
+repeat all 24 already-passed short-history retention branches.

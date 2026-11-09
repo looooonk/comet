@@ -140,8 +140,8 @@ def test_live_hybrid_reference_persistence_recovery_and_branches(tmp_path):
                 engine.start(17)
                 engine.generate(capacity_tokens, 2, 0.0, 1.0, deadline)
                 evidence["capacity"].append({"method": method, "memory": engine.memory_stats()})
-        evidence["engine"] = engine.provenance()
     finally:
+        evidence["engine"] = engine.provenance()
         destination = os.environ.get("COMET_GPU_EVIDENCE")
         if destination:
             write_json(Path(destination), evidence)

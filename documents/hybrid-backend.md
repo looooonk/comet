@@ -63,6 +63,9 @@ branches restore these values without aliasing. Full-history recovery discards
 the current cache, recomputes *all* hybrid state from the raw transcript once,
 then reapplies retention. It neither reruns tools nor restores environment state.
 Admission includes full-cache rebuild and workspace peaks under the same cap.
+The PyTorch pool leaves 1 GiB of additional headroom for lazy CUDA runtime/kernel
+allocations. This is separate from the rebuild workspace estimate and does not
+raise the experimental cap. Device-wide peak use remains measured and enforced.
 
 AgentKV retains the upstream four phase rings with eight queries per phase;
 R-KV uses recent queries. Eviction takes place after each prefill chunk and each
