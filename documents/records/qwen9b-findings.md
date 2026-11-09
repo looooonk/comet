@@ -1,11 +1,102 @@
 # Qwen3.5-9B: verified findings, November 9
 
-**Interim result:** the shared hybrid backend supports the required methods at
-16,384 tokens on one L4 under a 21 GiB cap, and the corrected full-cache agent
-solves 3/4 declared train tasks. The train grid now shows an AgentKV transition
-between 50% and 40% retention on one arithmetic fixture. The common-checkpoint
-diagnostic shows selective recovery benefits. Final test evaluation is running;
-queued or running experiments are not counted as completed evidence.
+**Frozen test result:** recovering history at 50% AgentKV retention solved one
+of two test tasks, versus zero without recovery or with full cache, under the
+same 120-second budget and 21 GiB cap. Recovery also removed the only R-KV
+success at 80% retention. Additional attempts added no test success, and dynamic
+recovery did not outperform the fixed trigger. These are selective effects on
+two families and one seed, not evidence of a general recovery advantage.
+
+The shared Qwen3.5-9B hybrid backend supports all three required methods at
+16,384 tokens. The completed study includes capability checks, independent
+runtime budgets, a train aggressivity grid, a common-checkpoint diagnostic,
+separate dev confirmation and fresh-start frozen test evaluation. Supplemental
+Blackwell runs remain separate and are not counted below before retrieval.
+
+## Q2: frozen fresh-start evaluation
+
+![Frozen test aggressivity and task success](../figures/qwen9b/final-aggressivity.png)
+
+The [frozen configuration](../../configs/qwen9b/final-l4-v1.json) covers two
+predeclared test families, seed 17, 34 conditions and **68 task/condition cells**.
+Each cell has one shared 120-second budget, a 21 GiB peak total-VRAM cap and at
+most two sequential attempts; the single-attempt full-cache control has N=1.
+All attempts start from the initial task environment. Scoring occurred only
+after execution finished. The [summary](qwen9b-final-summary.json) and
+[complete analysis](qwen9b-final-analysis.json) retain all outcomes and paired
+comparisons.
+
+| Method | Retained KV | Never | Fixed | Dynamic |
+| --- | ---: | ---: | ---: | ---: |
+| StreamingLLM | 80% | 0/2 | 0/2 | 0/2 |
+| StreamingLLM | 50% | 0/2 | 0/2 | 0/2 |
+| StreamingLLM | 25% | 0/2 | 0/2 | 0/2 |
+| R-KV | 80% | **1/2** | 0/2 | 0/2 |
+| R-KV | 50% | 0/2 | 0/2 | 0/2 |
+| R-KV | 25% | 0/2 | 0/2 | 0/2 |
+| AgentKV | 80% | 0/2 | 0/2 | 0/2 |
+| AgentKV | 50% | 0/2 | **1/2** | **1/2** |
+| AgentKV | 25% | 0/2 | 0/2 | 0/2 |
+
+Entries are oracle success counts within budget: an upper bound assuming
+perfect outcome selection, not an online selection policy. Full-cache N=1 and
+N=2 both score **0/2**. Every successful condition solves its task on the first
+attempt, so first-attempt and oracle curves coincide here. The five supplemental
+AgentKV no-recovery points score 1/2 at 70% and 60%, and 0/2 at 90%, 40% and 30%.
+Together with the required anchors, this is a measured, nonmonotonic curve;
+unmeasured competitor points are not interpolated into evidence.
+
+AgentKV 50% recovery improves success by **50 percentage points** against both
+never-rebuild and full-cache best-of-N. Its paired task-bootstrap 95% interval
+is **[0, 100] points**; the conservative bounded interval is **[-100, 100]**.
+R-KV 80% recovery instead changes success by -50 points versus never-rebuild
+(bootstrap [-100, 0], bounded [-100, 100]). All five successful condition/task
+cells concern the same playlist-update family; the second family is never
+solved. The two tasks and one seed cannot establish a reliable population
+ranking, a monotonic optimum or a dynamic-trigger advantage. No settings or
+task selections changed after the freeze.
+
+### What recovery changed in the saved trajectories
+
+In the [post-hoc case study](qwen9b-final-case-study.json), full cache completes
+the playlist task but assigns incorrect genre labels. AgentKV 50% without
+recovery repeats failed logins and stops. Fixed recovery follows its first
+failed login, at four tool calls and 7,671 raw tokens; the rebuild takes 7.80
+seconds. Dynamic recovery happens before the first login, at three calls and
+7,427 tokens, costing 7.62 seconds. Both continuations then retrieve the profile,
+log in successfully and pass all six evaluator checks, finishing their first
+attempts in 91.43 and 71.12 seconds respectively. This supports an
+authentication-context explanation without identifying particular causal tokens.
+It does not establish that the earlier trigger is generally better.
+
+### Attempts, limits and costs
+
+All **101 attempts** remain in the analysis: nine completed (five correct),
+60 timed out, 21 stopped on errors and 11 reached the context limit. All 30
+requested rebuilds were admitted, with observed costs of 3.58-8.35 seconds;
+there were no memory refusals. AgentKV 25% attempts stop after only one or two
+tool calls, so neither recovery trigger is reached. Peak total VRAM is recorded
+for every attempt and reaches at most **20.05 GiB**, below the 21 GiB cap.
+The maximum recorded budget overshoot is 0.77 seconds from in-flight work and
+cleanup; no failed attempt receives a replacement budget.
+
+AgentKV 50% recovery fits three attempts across the two tasks, versus four for
+both never-rebuild and full-cache best-of-N. Its success therefore does not come
+from more attempts. Mean per-cell peak occupied KV is 412 MiB for full-cache
+best-of-N and 227 MiB for AgentKV 50% dynamic recovery, while mean total peaks
+are approximately 20.04 and 20.01 GiB. Task histories and stopping times differ,
+so this comparison is not an isolated memory experiment; the matched-history
+capacity check below supplies that measurement. R-KV 80% without recovery spends
+51.4 seconds per cell on compaction, illustrating a substantial implementation
+cost that the FLOPs estimate does not include.
+
+The supporting exports cover [resources without recovery](../figures/qwen9b/final-resources.pdf),
+[fixed](../figures/qwen9b/final-resources-fixed.pdf) and
+[dynamic](../figures/qwen9b/final-resources-dynamic.pdf) recovery, plus
+[recovery effects/costs](../figures/qwen9b/final-recovery.pdf),
+[trigger inputs](../figures/qwen9b/final-triggers.pdf),
+[attempt counts](../figures/qwen9b/final-attempts.pdf) and
+[success versus time](../figures/qwen9b/final-success-time.pdf).
 
 ## Capability and cost
 
@@ -131,19 +222,17 @@ methods, preserving tool effects, RNG state and independent environment restore.
 This diagnostic starts after two full-cache tools; its success cannot be
 substituted for fresh-start final evaluation.
 
-## Final evaluation and additional coverage
-
-The [frozen L4 study](../../configs/qwen9b/final-l4-v1.json) started on November 9
-at approximately 07:18 ET after the declared train/dev gates passed. It uses
-two predeclared test families, one seed, 120 seconds, N=2, all 29 core conditions
-plus five intermediate AgentKV points. Unmeasured intermediate competitor test
-points must not be implied. No test outcome may select a task or change settings.
+## Additional hardware coverage
 
 After access was restored and the user extended the stop time to 14:00 ET, a
 separate three-task Blackwell train grid was declared and submitted. It retains
 the full eight-level grid for every method and includes single/oracle views.
-It must pass fresh hardware qualification and will be analyzed separately from
-L4. Final results and resource cleanup remain pending.
+It passed fresh 16K qualification at a separately declared 24 GiB cap. A
+three-family Q1 diagnostic runs alongside it. Access is again awaiting an SSH
+agent unlock; their results will be analyzed separately after retrieval. An
+optional held-out Blackwell replication is declared with a 10:20 ET launch
+cutoff and fresh dev gates, but has not been submitted. These are not additional
+completed test observations.
 
 ## Reproduction and exports
 
@@ -153,7 +242,25 @@ is `comet-run:1fb4b489-1af3-42f1-b754-f998fb6b3aa1`. Large trajectories remain
 outside tracked source. The [figure inventory](qwen9b-qualification-figures.json)
 records portable source/export paths and hashes.
 
-After activating the managed CPU profile, regenerate the capacity figure with:
+Frozen test run `comet-run:b4c4ade9-2ab1-4c76-8863-6cc727920d8b` executed source
+`cc9057a`. Its [export inventory](qwen9b-final-figures.json) identifies all 24
+PNG/SVG/PDF files, the frozen configuration and analysis. The central plot is
+available as [PNG](../figures/qwen9b/final-aggressivity.png),
+[SVG](../figures/qwen9b/final-aggressivity.svg) and
+[PDF](../figures/qwen9b/final-aggressivity.pdf). The completed per-plan archive
+was retrieved and verified independently of the later cloud-wide upload timeout;
+that infrastructure failure did not interrupt execution or scoring.
+
+After activating the managed CPU profile, regenerate the central test plot with:
+
+```bash
+comet plot-aggressivity documents/records/qwen9b-final-analysis.json \
+  --output documents/figures/qwen9b/final-aggressivity \
+  --title 'Qwen3.5-9B | frozen test | L4 | 120 s | 21 GiB'
+```
+
+The same analysis feeds `plot-resources`, `plot-recovery`, `plot-triggers`,
+`plot-attempts` and `plot-success-time`. Regenerate the capacity figure with:
 
 ```bash
 python scripts/plot_hybrid_qualification.py \

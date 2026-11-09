@@ -422,7 +422,7 @@ previously declared settings. `configs/qwen9b/final-l4-v1.json` preserves the
 worker's freeze metadata and pilot artifact references. No test outcome was
 used to change its settings.
 
-The user extended the stop time to **14:00 ET, November 9**. With Insomnia SSH
+The user extended the stop time to **14:00 ET (19:00 UTC), November 9**. With Insomnia SSH
 restored and seven Blackwell GPUs currently unallocated across two nodes, a
 separate supplemental train cohort is declared as
 `configs/qwen9b/train-finegrid-blackwell-v1.json`. It uses the first three
@@ -482,3 +482,27 @@ leaving time for analysis and cleanup before 14:00 ET. If access or queue timing
 prevents this, record it as not executed rather than delaying the existing study
 or changing its frozen settings. Maximum task execution is 174 GPU-minutes;
 the dev check adds at most 28 GPU-minutes. No additional cloud spending is planned.
+
+The frozen L4 study completed all 68 cells at 09:39 ET; separate evaluation,
+analysis and trajectory auditing finished at 09:40 ET with exit zero. Its
+complete per-plan archive was retrieved and verified locally. The 101 attempts
+produce five successful condition/task cells, all on one of the two test
+families. AgentKV 50% fixed/dynamic recovery scores 1/2 versus 0/2 for never
+and full cache; R-KV 80% without recovery and AgentKV 60/70% without recovery
+also score 1/2. Neither additional attempts nor dynamic versus fixed recovery
+adds success on this sample. All 30 requested rebuilds were admitted and the
+maximum observed device peak was 20.05 GiB under the 21 GiB cap. The
+[findings](qwen9b-findings.md), [summary](qwen9b-final-summary.json) and
+[figure inventory](qwen9b-final-figures.json) preserve the completed evidence.
+
+The outer cloud job subsequently failed during its bounded final directory
+transfer, after the successful scientific work and independent archive upload.
+Its final upload marker is absent. The cloud prefix will be retained as a backup,
+with compute cleanup verified separately; the complete local experiment archive
+is unaffected. No upload marker or successful global-transfer record is fabricated.
+
+At 09:58 ET the cloud cleanup helper verified that the Batch job, owned VM and
+disk were absent. Its backup objects remain because final transfer did not
+complete. The $10 session planning allowance is now recorded as completed;
+actual billing has not been reconciled. The cumulative $40 ceiling retains
+$4.25 uncommitted and no cloud job remains active.

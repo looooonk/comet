@@ -1,7 +1,11 @@
 # Results and cleanup records
 
-- [Verified Qwen3.5-9B findings](qwen9b-findings.md): interim capability, measured
-  memory/recovery costs, exported figure and remaining research comparisons.
+- [Verified Qwen3.5-9B findings](qwen9b-findings.md): completed frozen L4 test,
+  train/dev comparisons, recovery effects, measured costs and limitations.
+- [Frozen test summary](qwen9b-final-summary.json): all 68 cells and 101 attempts,
+  with [complete paired analysis](qwen9b-final-analysis.json),
+  [trajectory case study](qwen9b-final-case-study.json) and
+  [24 figure exports](qwen9b-final-figures.json).
 - [Completed L4 pilot summary](qwen9b-pilot-summary.json): all 109 paired cells
   from compression, recovery, budgets, fine-grid and dev runs; full analyses and
   [figure exports](qwen9b-pilot-figures.json) retain their individual outcomes.

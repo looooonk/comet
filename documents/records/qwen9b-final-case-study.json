@@ -1,0 +1,609 @@
+{
+  "schema_version": 1,
+  "artifact_id": "comet-run:b4c4ade9-2ab1-4c76-8863-6cc727920d8b",
+  "scope": "Post-hoc case study after all frozen execution and scoring. API names and outcomes only; no credential values or evaluator feedback entered execution. One task, not independent replications.",
+  "task": "Spotify playlist genre-label updates",
+  "observations": [
+    "Full cache completed but assigned incorrect genre labels to two playlists.",
+    "AgentKV at 50% without recovery repeated failed Spotify logins and stopped after four consecutive action/execution failures.",
+    "Fixed recovery followed the first failed login; the next action obtained the profile and logged in successfully. Dynamic recovery occurred before the first login, followed by profile lookup and successful login.",
+    "Both AgentKV recovery branches passed all six evaluator checks. The saved outputs support an authentication-context explanation, without identifying the causal contribution of particular restored tokens.",
+    "R-KV at 80% succeeded without recovery; its dynamic-recovery continuation completed with one incorrect genre label."
+  ],
+  "attempts": [
+    {
+      "condition": {
+        "id": "full_once",
+        "max_attempts": 1,
+        "method": "full",
+        "recovery": "never",
+        "retention": 1.0
+      },
+      "task_id": "59fae45_1",
+      "seed": 17,
+      "attempt_index": 0,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 107.64125732700268,
+      "failure_reason": null,
+      "evaluator_passes": 5,
+      "evaluator_failures": 1,
+      "recovery_events": [],
+      "trajectory": "cells/59fae45_1-full_once-17/attempt-000/trajectory.json",
+      "trajectory_sha256": "108027f30665fdb267a6945ac4e1d6c761cba96b81f4dee72fe04d0ad399de08",
+      "turns": [
+        {
+          "turn": 1,
+          "apis": [
+            "apis.api_docs.show_api_descriptions"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 2,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 3,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 4,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 5,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 6,
+          "apis": [
+            "apis.supervisor.show_profile",
+            "apis.supervisor.show_account_passwords",
+            "apis.spotify.login"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 7,
+          "apis": [
+            "apis.spotify.show_playlist_library",
+            "apis.spotify.show_playlist_library"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 8,
+          "apis": [
+            "apis.spotify.show_playlist"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 9,
+          "apis": [
+            "apis.spotify.update_playlist"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 10,
+          "apis": [],
+          "execution_failed": false
+        },
+        {
+          "turn": 11,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 12,
+          "apis": [
+            "apis.spotify.show_genres"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 13,
+          "apis": [
+            "apis.spotify.show_artist"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 14,
+          "apis": [
+            "apis.spotify.update_playlist"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 15,
+          "apis": [
+            "apis.supervisor.complete_task"
+          ],
+          "execution_failed": false
+        }
+      ]
+    },
+    {
+      "condition": {
+        "id": "rkv_80_never",
+        "max_attempts": 2,
+        "method": "rkv",
+        "recovery": "never",
+        "retention": 0.8
+      },
+      "task_id": "59fae45_1",
+      "seed": 17,
+      "attempt_index": 0,
+      "status": "completed",
+      "success": true,
+      "elapsed_seconds": 108.55274374200235,
+      "failure_reason": null,
+      "evaluator_passes": 6,
+      "evaluator_failures": 0,
+      "recovery_events": [],
+      "trajectory": "cells/59fae45_1-rkv_80_never-17/attempt-000/trajectory.json",
+      "trajectory_sha256": "ceba5b3e2506aa6e5ee65641077babe9395818f832d44861912cf40c97f0de8f",
+      "turns": [
+        {
+          "turn": 1,
+          "apis": [
+            "apis.api_docs.show_api_descriptions"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 2,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 3,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 4,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 5,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 6,
+          "apis": [
+            "apis.supervisor.show_account_passwords",
+            "apis.supervisor.show_profile",
+            "apis.spotify.login"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 7,
+          "apis": [
+            "apis.spotify.show_playlist_library",
+            "apis.spotify.show_playlist_library"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 8,
+          "apis": [
+            "apis.spotify.show_playlist",
+            "apis.spotify.show_song"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 9,
+          "apis": [],
+          "execution_failed": false
+        },
+        {
+          "turn": 10,
+          "apis": [
+            "apis.spotify.update_playlist"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 11,
+          "apis": [
+            "apis.supervisor.complete_task"
+          ],
+          "execution_failed": false
+        }
+      ]
+    },
+    {
+      "condition": {
+        "id": "rkv_80_dynamic",
+        "max_attempts": 2,
+        "method": "rkv",
+        "recovery": "dynamic",
+        "retention": 0.8
+      },
+      "task_id": "59fae45_1",
+      "seed": 17,
+      "attempt_index": 0,
+      "status": "completed",
+      "success": false,
+      "elapsed_seconds": 112.64290197200171,
+      "failure_reason": null,
+      "evaluator_passes": 5,
+      "evaluator_failures": 1,
+      "recovery_events": [
+        {
+          "context_tokens": 7299,
+          "tool_calls": 3,
+          "seconds": 7.72092354599954,
+          "admitted": true
+        }
+      ],
+      "trajectory": "cells/59fae45_1-rkv_80_dynamic-17/attempt-000/trajectory.json",
+      "trajectory_sha256": "e2c1f72308ac6c1db15f84a6f6247bab9fa3f1eb1b03270b10137dfbaa2382f9",
+      "turns": [
+        {
+          "turn": 1,
+          "apis": [
+            "apis.api_docs.show_api_descriptions"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 2,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 3,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 4,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 5,
+          "apis": [
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 6,
+          "apis": [
+            "apis.supervisor.show_profile",
+            "apis.supervisor.show_account_passwords",
+            "apis.spotify.login"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 7,
+          "apis": [
+            "apis.spotify.show_playlist_library"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 8,
+          "apis": [
+            "apis.spotify.show_song"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 9,
+          "apis": [],
+          "execution_failed": false
+        },
+        {
+          "turn": 10,
+          "apis": [
+            "apis.spotify.update_playlist"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 11,
+          "apis": [
+            "apis.supervisor.complete_task"
+          ],
+          "execution_failed": false
+        }
+      ]
+    },
+    {
+      "condition": {
+        "id": "agentkv_50_never",
+        "max_attempts": 2,
+        "method": "agentkv",
+        "recovery": "never",
+        "retention": 0.5
+      },
+      "task_id": "59fae45_1",
+      "seed": 17,
+      "attempt_index": 0,
+      "status": "error",
+      "success": false,
+      "elapsed_seconds": 45.60066902000108,
+      "failure_reason": "AgentProtocolError: 4 consecutive execution/action failures",
+      "evaluator_passes": 0,
+      "evaluator_failures": 0,
+      "recovery_events": [],
+      "trajectory": "cells/59fae45_1-agentkv_50_never-17/attempt-000/trajectory.json",
+      "trajectory_sha256": "5895444cc4dcc04e48c5f3262b4351862ece6adcfc8974c346e3388d1405c685",
+      "turns": [
+        {
+          "turn": 1,
+          "apis": [
+            "apis.api_docs.show_api_descriptions"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 2,
+          "apis": [
+            "apis.api_docs.show_api_doc",
+            "apis.api_docs.show_api_doc",
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 3,
+          "apis": [
+            "apis.supervisor.show_account_passwords"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 4,
+          "apis": [
+            "apis.spotify.login"
+          ],
+          "execution_failed": true
+        },
+        {
+          "turn": 5,
+          "apis": [
+            "apis.spotify.login"
+          ],
+          "execution_failed": true
+        },
+        {
+          "turn": 6,
+          "apis": [
+            "apis.spotify.login"
+          ],
+          "execution_failed": true
+        },
+        {
+          "turn": 7,
+          "apis": [
+            "apis.spotify.login"
+          ],
+          "execution_failed": true
+        }
+      ]
+    },
+    {
+      "condition": {
+        "id": "agentkv_50_fixed",
+        "max_attempts": 2,
+        "method": "agentkv",
+        "recovery": "fixed",
+        "retention": 0.5
+      },
+      "task_id": "59fae45_1",
+      "seed": 17,
+      "attempt_index": 0,
+      "status": "completed",
+      "success": true,
+      "elapsed_seconds": 91.4256577970009,
+      "failure_reason": null,
+      "evaluator_passes": 6,
+      "evaluator_failures": 0,
+      "recovery_events": [
+        {
+          "context_tokens": 7671,
+          "tool_calls": 4,
+          "seconds": 7.798766018000606,
+          "admitted": true
+        }
+      ],
+      "trajectory": "cells/59fae45_1-agentkv_50_fixed-17/attempt-000/trajectory.json",
+      "trajectory_sha256": "a667982e66ab1908dafa9200caff0b9e80b17f0a2766a5b28fc045cf85d774d8",
+      "turns": [
+        {
+          "turn": 1,
+          "apis": [
+            "apis.api_docs.show_api_descriptions"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 2,
+          "apis": [
+            "apis.api_docs.show_api_doc",
+            "apis.api_docs.show_api_doc",
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 3,
+          "apis": [
+            "apis.supervisor.show_account_passwords"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 4,
+          "apis": [
+            "apis.spotify.login"
+          ],
+          "execution_failed": true
+        },
+        {
+          "turn": 5,
+          "apis": [
+            "apis.supervisor.show_profile",
+            "apis.spotify.login"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 6,
+          "apis": [
+            "apis.spotify.show_playlist_library"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 7,
+          "apis": [
+            "apis.spotify.show_playlist",
+            "apis.spotify.show_song",
+            "apis.spotify.update_playlist"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 8,
+          "apis": [
+            "apis.spotify.show_playlist_library"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 9,
+          "apis": [
+            "apis.supervisor.complete_task"
+          ],
+          "execution_failed": false
+        }
+      ]
+    },
+    {
+      "condition": {
+        "id": "agentkv_50_dynamic",
+        "max_attempts": 2,
+        "method": "agentkv",
+        "recovery": "dynamic",
+        "retention": 0.5
+      },
+      "task_id": "59fae45_1",
+      "seed": 17,
+      "attempt_index": 0,
+      "status": "completed",
+      "success": true,
+      "elapsed_seconds": 71.12433881000106,
+      "failure_reason": null,
+      "evaluator_passes": 6,
+      "evaluator_failures": 0,
+      "recovery_events": [
+        {
+          "context_tokens": 7427,
+          "tool_calls": 3,
+          "seconds": 7.617675536999741,
+          "admitted": true
+        }
+      ],
+      "trajectory": "cells/59fae45_1-agentkv_50_dynamic-17/attempt-000/trajectory.json",
+      "trajectory_sha256": "a115a62919fc75dfb82a73a777e9432f5ab2620d7ba223eb8f293cc16d3ed1e0",
+      "turns": [
+        {
+          "turn": 1,
+          "apis": [
+            "apis.api_docs.show_api_descriptions"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 2,
+          "apis": [
+            "apis.api_docs.show_api_doc",
+            "apis.api_docs.show_api_doc",
+            "apis.api_docs.show_api_doc"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 3,
+          "apis": [
+            "apis.supervisor.show_account_passwords"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 4,
+          "apis": [
+            "apis.supervisor.show_profile",
+            "apis.spotify.login"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 5,
+          "apis": [
+            "apis.spotify.show_playlist_library"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 6,
+          "apis": [
+            "apis.spotify.show_playlist",
+            "apis.spotify.show_song",
+            "apis.spotify.update_playlist"
+          ],
+          "execution_failed": false
+        },
+        {
+          "turn": 7,
+          "apis": [
+            "apis.supervisor.complete_task"
+          ],
+          "execution_failed": false
+        }
+      ]
+    }
+  ]
+}

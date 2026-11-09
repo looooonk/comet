@@ -131,30 +131,43 @@ provenance, and stop when checks fail. Rebuild cleaned caches only as needed.
   retention level. Tune thresholds only on train/dev.
   All 28 arms completed on one arithmetic fixture. Dynamic recovery rescued
   R-KV and AgentKV at 25%; benefits did not generalize across all settings.
-- [ ] Q2: compare full-cache and compressed oracle best-of-N, with/without
+- [x] Q2: compare full-cache and compressed oracle best-of-N, with/without
   recovery, under identical wall-clock and peak total-VRAM caps.
+  The frozen L4 study completed 68 cells and 101 attempts; AgentKV 50%
+  recovery solves 1/2 tasks versus 0/2 without recovery or with full cache.
+  R-KV 80% recovery harms success. N=2 adds no success on this test sample.
 - [x] Independently rerun granular runtime budgets; do not treat truncation of
   one long trajectory as a rerun with a shorter budget.
   The paired 90/120/150-second runs completed and were scored separately.
 - [x] Freeze model, backend, prompts, sampling, context limits, task/split IDs,
   paired seeds, retention grid, thresholds, N, memory and timing definitions.
   `configs/qwen9b/final-l4-v1.json` preserves the November 9 freeze.
-- [ ] Execute fresh-start final evaluation without evaluator feedback online.
+- [x] Execute fresh-start final evaluation without evaluator feedback online.
   Preserve paired task structure; retain timeout/OOM/infeasibility outcomes.
+  Two predeclared test families, seed 17, 120 seconds and 21 GiB; all outcomes
+  retained and separately scored after execution. No observed cap violation.
 
 ## 5. Deliver answers and figures
 
-- [ ] Central aggressivity-versus-task-success figure, single attempt and oracle
+- [x] Central aggressivity-versus-task-success figure, single attempt and oracle
   best-of-N distinguished, with useful dev-selected operating range and paired
   uncertainty. No fitted or fabricated intermediate measurements.
-- [ ] Supporting memory, latency, throughput, FLOPs, attempts and recovery-cost
+- [x] Supporting memory, latency, throughput, FLOPs, attempts and recovery-cost
   figures; clearly label occupied KV, reserved pools and total VRAM separately.
-  The synthetic 16K memory/recovery figure is exported; task-comparison figures
-  remain pending. See `documents/records/qwen9b-findings.md`.
-- [ ] Answer Q1 and Q2 with effect sizes, task counts, uncertainty, trigger
+  Eight frozen-test figures and the synthetic 16K capacity figure are exported.
+  See `documents/records/qwen9b-findings.md`.
+- [x] Answer Q1 and Q2 with effect sizes, task counts, uncertainty, trigger
   admissions/refusals and limitations, including genuine negative results.
-- [ ] Export publication-ready PNG/SVG/PDF and machine-readable summaries with
+- [x] Export publication-ready PNG/SVG/PDF and machine-readable summaries with
   versioned configurations and portable artifact identities.
+
+## 6. Finish supplemental runs and resource handoff
+
+- [ ] Retrieve and analyze the already launched three-family Blackwell fine
+  grid and Q1 diagnostic, keeping their hardware cohort separate from L4.
+- [ ] Verify cloud and cluster jobs have ended, preserve useful artifacts and
+  record cleanup. The optional Blackwell test replication is not required if
+  its predeclared access, dev-confirmation or launch-time gates cannot be met.
 
 ## What to reuse
 
