@@ -87,6 +87,8 @@ cache, 18.66 for StreamingLLM/AgentKV and 24.13 for R-KV; peak occupied KV was
 256 MiB full and 66.9 MiB compressed, including transient pre-eviction entries.
 Recurrent/convolution state occupied about 49 MiB separately. These are synthetic
 qualification measurements, not task-success results.
+The [compact state-check artifact](qwen9b-a6000-state-check.json) preserves the
+reference/capacity measurements and identifies the full 24-branch evidence.
 
 That run had 335 passes, 17 skips and one chat-template failure. The pinned 3.5
 template rejects an isolated tool response without a preceding user query.
@@ -113,3 +115,11 @@ at a conservative $5 including staging/network/storage overhead, within the
 existing $40 total ceiling and separate $10 historical reserve. No cloud task
 result is claimed from this declaration. Current [official Spot pricing](https://cloud.google.com/spot-vms/pricing)
 informed the estimate; final billed charges remain distinct from estimates.
+
+Cloud run `gpu-20261109-060734-d05896` was submitted with a 3,600-second workload
+limit and zero retries. It stages only runtime source, tests, configs and locks
+from `faef892`, with the upstream identity saved separately, and downloads public
+pinned assets on the worker. It uses an official Ubuntu 24.04 amd64 image pinned
+at `sha256:78d4744ead1f5b19b04d0df558ab182a5300903900755e515b2ca4d10eb2044d`.
+Live checks gate the four-task baseline; execution is followed by separate
+scoring. Submission is not evidence that provisioning or the experiment passed.
