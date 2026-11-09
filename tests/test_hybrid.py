@@ -67,7 +67,7 @@ def test_live_hybrid_reference_persistence_recovery_and_branches(tmp_path):
         tokens = engine.tokenizer.apply_chat_template(
             [{"role": "user", "content": "Remember: the access code is 7391. " * 20
               + "What is the access code? Reply with the number."}],
-            tokenize=True, add_generation_prompt=True, enable_thinking=False,
+            tokenize=True, return_dict=False, add_generation_prompt=True, enable_thinking=False,
         )
         engine.set_policy("full", 1.0)
         engine.start(17)

@@ -61,3 +61,18 @@ reset, tool call, checkpoint, recovery and cleanup remains charged.
 
 Large outputs remain outside tracked source. Add measured results and portable
 artifact identities here only after inspection.
+
+The second live check (`hybrid-second`, source `d8b9765`) passed all six
+AppWorld integration/isolation tests. The 9B weights loaded from local scratch
+in about two seconds, after substantial cold shared-library import delays.
+Synthetic warmup ran all four methods. The subsequent reference prompt exposed
+a Transformers 5.22 API change: chat templating returns a mapping by default.
+The runner and live checks now explicitly request token IDs with
+`return_dict=False`. No task outcome was collected. Three additional launcher
+fixture failures came from inherited local-staging settings and are repaired.
+The run retained 329 passes, 18 skips and these four failures.
+
+The local suite after staging/plot additions passed 336 tests, with one optional
+numerical module skipped and 16 live checks deselected. A managed-runtime
+archive now allows identical pinned packages to be staged on local scratch;
+packing, activation and configuration validation were exercised locally.

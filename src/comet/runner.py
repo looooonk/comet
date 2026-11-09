@@ -359,6 +359,7 @@ class Runner:
                 {"role": "user", "content": environment.initial_prompt()},
             ],
             tokenize=True,
+            return_dict=False,
             add_generation_prompt=True,
             enable_thinking=self.config.sampling.enable_thinking,
         )

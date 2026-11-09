@@ -51,11 +51,13 @@ def test_instruct_observation_uses_tokenizer_generation_prompt(finished):
 
 
 @pytest.mark.gpu
-@pytest.mark.skipif(os.environ.get("COMET_RUN_GPU_TESTS") != "1", reason="requires pinned tokenizer")
+@pytest.mark.skipif(os.environ.get("COMET_RUN_GPU_TESTS") != "1"
+                    and os.environ.get("COMET_RUN_HYBRID_TESTS") != "1", reason="requires pinned tokenizer")
 def test_live_runner_observation_matches_pinned_model_template():
     from transformers import AutoTokenizer
 
-    model = os.environ.get("COMET_TEST_MODEL", "Qwen/Qwen3-8B")
+    model = os.environ.get("COMET_TEST_MODEL", "Qwen/Qwen3.5-9B"
+                           if os.environ.get("COMET_RUN_HYBRID_TESTS") == "1" else "Qwen/Qwen3-8B")
     tokenizer = AutoTokenizer.from_pretrained(os.environ["COMET_MODEL_PATH"], local_files_only=True)
     observation = '{"value": 7, "message": "stored"}'
     for thinking in ([False, True] if MODEL_PROFILES[model]["supports_thinking"] else [False]):
@@ -64,7 +66,7 @@ def test_live_runner_observation_matches_pinned_model_template():
         initial = current._initial_tokens(engine, SimpleNamespace(initial_prompt=lambda: "A task"))
         assert initial == tokenizer.apply_chat_template(
             [{"role": "system", "content": current.config.prompt}, {"role": "user", "content": "A task"}],
-            tokenize=True, add_generation_prompt=True, enable_thinking=thinking,
+            tokenize=True, return_dict=False, add_generation_prompt=True, enable_thinking=thinking,
         )
         turn = tokenizer.apply_chat_template(
             [{"role": "user", "content": f"<tool_response>\n{observation}\n</tool_response>"}],
