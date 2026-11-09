@@ -79,7 +79,8 @@ def _persistence_check(tmp_path):
     engine = MiniSGLangEngine(EngineSettings(
         model=model, model_path=os.environ["COMET_MODEL_PATH"], model_revision=revision,
         tokenizer_revision=revision, method="full", retention=1.0,
-        max_context_tokens=1024, peak_vram_bytes=40 << 30, workspace_reserve_bytes=4 << 30,
+        max_context_tokens=1024, peak_vram_bytes=int(os.environ.get("COMET_GPU_CAP_BYTES", 40 << 30)),
+        workspace_reserve_bytes=4 << 30,
         prefill_chunk_tokens=128, require_a100=False,
     ))
     records = []
@@ -152,7 +153,7 @@ def _persistence_check(tmp_path):
             assert not engine.recover(raw, time.monotonic() + 600).admitted
             memory = engine.memory_stats()
             assert memory["physical_cached_tokens"] == retention_target(len(raw), 0.5, method)
-            assert memory["peak_total_vram_bytes"] <= 40 << 30
+            assert memory["peak_total_vram_bytes"] <= engine.settings.peak_vram_bytes
             after_recovery = tmp_path / f"{method}-recovered.pt"
             engine.checkpoint(after_recovery)
             next_output = engine.generate([], 4, 0.0, 1.0, time.monotonic() + 600)
@@ -167,7 +168,10 @@ def _persistence_check(tmp_path):
             records.append(_nonthinking_phase_check(engine, tmp_path))
         evidence = Path(os.environ.get("COMET_GPU_EVIDENCE", tmp_path / "gpu-evidence.json"))
         evidence.parent.mkdir(parents=True, exist_ok=True)
-        evidence.write_text(json.dumps({"device": engine.device_name, "integration_only": True, "checks": records}, indent=2) + "\n")
+        evidence.write_text(json.dumps({
+            "device": engine.device_name, "integration_only": True,
+            "settings": asdict(engine.settings), "checks": records,
+        }, indent=2) + "\n")
     finally:
         engine.close()
 
@@ -494,7 +498,8 @@ def _capacity_check(tmp_path):
     settings = EngineSettings(
         model=model, model_path=os.environ["COMET_MODEL_PATH"], model_revision=revision,
         tokenizer_revision=revision, method="full", retention=1.0,
-        max_context_tokens=32768, peak_vram_bytes=40 << 30, workspace_reserve_bytes=6 << 30,
+        max_context_tokens=32768, peak_vram_bytes=int(os.environ.get("COMET_GPU_CAP_BYTES", 40 << 30)),
+        workspace_reserve_bytes=6 << 30,
         prefill_chunk_tokens=256, require_a100=False,
     )
     engine = MiniSGLangEngine(settings)

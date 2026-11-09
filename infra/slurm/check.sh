@@ -8,4 +8,6 @@
 #SBATCH --mem=48G
 set -euo pipefail
 : "${COMET_REPO:?Set COMET_REPO to the checkout directory}"
-exec srun --cpus-per-task="${SLURM_CPUS_PER_TASK:-1}" --kill-on-bad-exit=1 bash "$COMET_REPO/scripts/run_checks.sh" "${1:?Pass cpu, appworld, or gpu}"
+profile=${1:?Pass cpu, appworld, or gpu}
+shift
+exec srun --cpus-per-task="${SLURM_CPUS_PER_TASK:-1}" --kill-on-bad-exit=1 bash "$COMET_REPO/scripts/run_checks.sh" "$profile" "$@"

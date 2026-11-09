@@ -33,6 +33,21 @@ runtime cannot run numerical engine checks, and process-interruption testing
 requires the separate configuration below. Set `COMET_TEST_CAPACITY=1` to include
 the optional near-limit context check. Always inspect skips as well as exit codes.
 
+An already managed GPU runtime can run its native CPU selector tests inside a
+CPU allocation without a model or GPU:
+
+```sh
+bash "$COMET_REPO/scripts/run_checks.sh" gpu --cpu-only
+```
+
+This keeps GPU-profile ownership verification and the installed pinned engine,
+masks CUDA devices, and selects tests marked neither `gpu` nor `appworld`.
+`mode.txt` records the selection. Shell syntax checks still run; lint runs only
+when `ruff` is installed, with its absence recorded in `lint-status.txt`. No
+packages are synchronized. The Slurm check wrapper forwards the same option.
+Native CPU checks validate selector outputs and accounting, not persistent GPU
+KV, checkpoint/recovery execution, or inference at the newly checked settings.
+
 ## Live integration checks
 
 Inside an allocated GPU node, select the managed GPU environment and run:
@@ -50,6 +65,12 @@ The runner preserves `sampling.json`, `gpu.json`, `memory.json`, and, when reque
 source `scripts/activate_runtime.sh gpu`; use the runtime's Python directly.
 Do not run `uv run` inside it, since automatic project synchronization can remove
 its CUDA/AppWorld dependencies.
+
+`COMET_GPU_CAP_BYTES` sets an explicit persistence/capacity-check memory cap,
+defaulting to 40 GiB. `COMET_REFERENCE_CAP_BYTES` separately sets the numerical
+reference-check cap. These overrides are recorded in the check settings and
+still require actual CUDA allocations to fit; they do not change the calculated
+tight cap used by the dedicated admission-refusal check.
 
 The AppWorld fixtures check execution, fresh resets, checkpoint restore, offline
 evaluation, explicit authentication, parsed response types, and pagination. The
