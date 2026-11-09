@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "study_id": "qwen9b-test50-finegrid-blackwell-v1",
+  "status": "study_started_remaining_workers_queued",
+  "recorded_at_utc": "2026-11-09T21:52:32.086696+00:00",
+  "execution_source_commit": "f2413b4ce49c9851cc9f32a1a40cc37a67f57284",
+  "validation_fix_commit": "fa9668a",
+  "scientific_settings_changed": false,
+  "study_config_digest": "c90f3b78e107c74429bd9940a4905c1b1d86b5679ba6bec9e3d83456704a09b7",
+  "repairs": [
+    "Scope AppWorld cleanup assertions to the scoring namespace owned by the test.",
+    "Run GPU/AppWorld tests and the process-resume test in separate processes so prior CUDA allocations cannot consume the child memory allowance.",
+    "Handle the optional infeasible flag without assuming it exists on successful cells.",
+    "Accept ordinary AgentProtocolError task outcomes while retaining state, paired-action and budget assertions. Unexpected infrastructure failures still block qualification."
+  ],
+  "prior_launches": [
+    {
+      "array": 13844484,
+      "outcome": "Four validation failures; remaining jobs cancelled. No final tasks started.",
+      "evidence": "validation/test50-v1"
+    },
+    {
+      "array": 13844649,
+      "outcome": "Cancelled after detecting the optional-field assertion error. No final tasks started.",
+      "evidence": "validation/test50-launch2"
+    },
+    {
+      "array": 13844702,
+      "outcome": "Worker 2 passed all checks and continues into the study. Workers 0, 1, 3 and 4 failed only on ordinary agent protocol outcomes; workers 5-7 were cancelled and replaced.",
+      "evidence": "validation/test50-launch3"
+    }
+  ],
+  "validation": {
+    "local_cpu_passed": 351,
+    "cpu_skipped": 2,
+    "live_deselected_on_cpu": 17,
+    "insomnia_cpu_job": 13844701,
+    "insomnia_cpu_passed": 351,
+    "live_checks_passed": 24,
+    "qualification_worker": 2,
+    "qualification_artifact": "validation/test50-launch3/worker-2",
+    "dev_smoke_cells": 4,
+    "dev_smoke_execution_and_scoring": "completed",
+    "additional_resume_review": {
+      "workers": [
+        0,
+        1,
+        3,
+        4
+      ],
+      "preserved_completed_cells": true,
+      "preserved_interrupted_trajectories": true,
+      "interruption_budget_seconds": 120,
+      "paired_initial_actions": true,
+      "paired_prefix_tokens": 3434,
+      "distinct_environments_per_worker": 3,
+      "original_reports_unchanged": true,
+      "artifact": "validation/test50-qualified/agent-outcomes-review.json"
+    }
+  },
+  "qualification_reuse": "The remaining workers verify the same source, managed runtime and GPU model and reuse completed qualification plus the four-cell dev smoke. No scientific settings or final-task budgets are replaced.",
+  "jobs": {
+    "running_partition": {
+      "partition": 2,
+      "array_task": "13844702_2",
+      "scheduler_job_id": 13844703
+    },
+    "replacement_array": {
+      "job_id": 13845293,
+      "indices": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    "offline_scoring_and_plots": {
+      "job_id": 13845304,
+      "afterok": [
+        13845293,
+        13844703
+      ]
+    }
+  },
+  "resources": {
+    "partition": "short",
+    "qos": "h012",
+    "gpu_model": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "gpus_per_worker": 1,
+    "cpus_per_worker": 4,
+    "host_memory_gib": 24,
+    "peak_total_vram_cap_gib": 24,
+    "cell_budget_seconds": 120,
+    "worker_allocation_seconds": {
+      "200_cells": 30600,
+      "150_cells": 23400
+    },
+    "automatic_requeue": false
+  },
+  "study_artifact_id": "qwen9b-test50-finegrid-blackwell-v1-launch3",
+  "verified_study_start": {
+    "partition": 2,
+    "run_id": "58b28412-9520-4b7d-96b8-39aeb136b0de",
+    "started_at_unix": 1794260914.2930663,
+    "completed_cells": 1,
+    "attempts": 4,
+    "infeasible_cells": 0
+  },
+  "eta": {
+    "timezone": "America/New_York",
+    "running_partition_nominal_finish": "2026-11-09T21:48:34.293066-05:00",
+    "longest_remaining_partition_cell_seconds": 24000,
+    "staging_and_scoring_allowance_seconds": 3000,
+    "overall_completion": "The remaining workers have no assigned start times. Full completion is queue-dependent; allow about 7.5 hours after the last 200-cell worker starts, or 6 hours after the last 150-cell worker starts."
+  },
+  "submission_artifacts": {
+    "worker.sh": {
+      "sha256": "2360feb785e2f3e7849db55cb9771979ae1e2db922b6132cc6e4e21576ae53a0"
+    },
+    "check_qualification.py": {
+      "sha256": "197a604ecba9b4a052e706039b66b34f9fbe352bdf7877f7e1da7cd2450ddac6"
+    },
+    "score.sh": {
+      "sha256": "7e57b87488f6a0446237ec991e48521e76557ba4db3f88cd004c04c9282bc660"
+    }
+  },
+  "source_checkout_policy": "Keep the running execution checkout pinned. Subsequent test and documentation commits are pushed but not deployed into active jobs.",
+  "results_claim": "Final execution has started; complete task-success results and plots are not yet available."
+}
