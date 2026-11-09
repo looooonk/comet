@@ -13,6 +13,19 @@ throughput and peak total VRAM over the ordinary prefix-plus-continuation pass.
 They show a clear cost distinction on this fixed history, without claiming task
 quality or recovery benefit.
 
+![Decode throughput at 50% retention](figures/history-timing-2026-11-08/main-decode-throughput.png)
+
+[Vector SVG](figures/history-timing-2026-11-08/main-decode-throughput.svg) |
+[PDF](figures/history-timing-2026-11-08/main-decode-throughput.pdf)
+
+![Peak total VRAM at 50% retention](figures/history-timing-2026-11-08/main-decode-peak-vram.png)
+
+[Vector SVG](figures/history-timing-2026-11-08/main-decode-peak-vram.svg) |
+[PDF](figures/history-timing-2026-11-08/main-decode-peak-vram.pdf)
+
+These six committed exports are byte-identical to the verified artifact copies.
+Their hashes are included in the evidence record.
+
 | Logical tokens | Full KV tok/s | StreamingLLM 50% tok/s | R-KV 50% tok/s | AgentKV 50% tok/s |
 | ---: | ---: | ---: | ---: | ---: |
 | 2,048 | 39.361 | 35.906 | 23.023 | 29.590 |

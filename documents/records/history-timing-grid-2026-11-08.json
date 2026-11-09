@@ -4279,5 +4279,37 @@
     "failed_rkv_conditions": 3,
     "interpretation": "Preserved separately and excluded before this complete repeated grid was declared. Not pooled with 64-decode timing; no free replacement, cap change or hidden failed condition."
   },
-  "additional_job_submitted": false
+  "additional_job_submitted": false,
+  "committed_main_figures": [
+    {
+      "path": "documents/records/figures/history-timing-2026-11-08/main-decode-throughput.png",
+      "sha256": "22e753b9d884c94a9f518e7673d89859962bede5464468e5a8bf34ec01314110",
+      "bytes": 156149
+    },
+    {
+      "path": "documents/records/figures/history-timing-2026-11-08/main-decode-throughput.svg",
+      "sha256": "f41ad472fe98bbd88f3e0b92eadd54177e606d82ddf63be397f2e66deb9b84f4",
+      "bytes": 46179
+    },
+    {
+      "path": "documents/records/figures/history-timing-2026-11-08/main-decode-throughput.pdf",
+      "sha256": "2e1abfd8680cc59c6c2888f7b53d2bed8b371c48772d668dcea2458edf12de41",
+      "bytes": 38715
+    },
+    {
+      "path": "documents/records/figures/history-timing-2026-11-08/main-decode-peak-vram.png",
+      "sha256": "506ff14b76a51f793d17605372309ec687e83141efb71fa719a2ca7060340316",
+      "bytes": 137716
+    },
+    {
+      "path": "documents/records/figures/history-timing-2026-11-08/main-decode-peak-vram.svg",
+      "sha256": "c027689b25a80f0a58aede2b0984c170b47cced248b82d5e71183b8d85429e8c",
+      "bytes": 47740
+    },
+    {
+      "path": "documents/records/figures/history-timing-2026-11-08/main-decode-peak-vram.pdf",
+      "sha256": "e576d9c79259c6efaaad2b0672a90275f9b4344a37d4cb4ab4d439d64bda71ea",
+      "bytes": 38763
+    }
+  ]
 }
