@@ -1,0 +1,300 @@
+{
+  "agent": {
+    "max_consecutive_errors": 4,
+    "require_executable": true
+  },
+  "budget_seconds": 120,
+  "checkpoint_after_tool_calls": null,
+  "conditions": [
+    {
+      "id": "full_once",
+      "max_attempts": 1,
+      "method": "full",
+      "recovery": "never",
+      "retention": 1.0
+    },
+    {
+      "id": "full_best_of_n",
+      "max_attempts": 2,
+      "method": "full",
+      "recovery": "never",
+      "retention": 1.0
+    },
+    {
+      "id": "streamingllm_90_never",
+      "max_attempts": 2,
+      "method": "streamingllm",
+      "recovery": "never",
+      "retention": 0.9
+    },
+    {
+      "id": "streamingllm_80_never",
+      "max_attempts": 2,
+      "method": "streamingllm",
+      "recovery": "never",
+      "retention": 0.8
+    },
+    {
+      "id": "streamingllm_70_never",
+      "max_attempts": 2,
+      "method": "streamingllm",
+      "recovery": "never",
+      "retention": 0.7
+    },
+    {
+      "id": "streamingllm_60_never",
+      "max_attempts": 2,
+      "method": "streamingllm",
+      "recovery": "never",
+      "retention": 0.6
+    },
+    {
+      "id": "streamingllm_50_never",
+      "max_attempts": 2,
+      "method": "streamingllm",
+      "recovery": "never",
+      "retention": 0.5
+    },
+    {
+      "id": "streamingllm_40_never",
+      "max_attempts": 2,
+      "method": "streamingllm",
+      "recovery": "never",
+      "retention": 0.4
+    },
+    {
+      "id": "streamingllm_30_never",
+      "max_attempts": 2,
+      "method": "streamingllm",
+      "recovery": "never",
+      "retention": 0.3
+    },
+    {
+      "id": "streamingllm_25_never",
+      "max_attempts": 2,
+      "method": "streamingllm",
+      "recovery": "never",
+      "retention": 0.25
+    },
+    {
+      "id": "rkv_90_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.9
+    },
+    {
+      "id": "rkv_80_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.8
+    },
+    {
+      "id": "rkv_70_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.7
+    },
+    {
+      "id": "rkv_60_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.6
+    },
+    {
+      "id": "rkv_50_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.5
+    },
+    {
+      "id": "rkv_40_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.4
+    },
+    {
+      "id": "rkv_30_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.3
+    },
+    {
+      "id": "rkv_25_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.25
+    },
+    {
+      "id": "agentkv_90_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.9
+    },
+    {
+      "id": "agentkv_80_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.8
+    },
+    {
+      "id": "agentkv_70_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.7
+    },
+    {
+      "id": "agentkv_60_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.6
+    },
+    {
+      "id": "agentkv_50_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.5
+    },
+    {
+      "id": "agentkv_40_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.4
+    },
+    {
+      "id": "agentkv_30_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.3
+    },
+    {
+      "id": "agentkv_25_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.25
+    }
+  ],
+  "engine": {
+    "backend": "transformers_hybrid",
+    "device_name": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "dtype": "bfloat16",
+    "max_context_tokens": 16384,
+    "model": "Qwen/Qwen3.5-9B",
+    "model_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "prefill_chunk_tokens": 128,
+    "tokenizer_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "workspace_reserve_bytes": 2147483648
+  },
+  "environment_warmup": {
+    "seed": 0,
+    "task_id": "82e2fac_1"
+  },
+  "experiment_id": "qwen9b-test50-finegrid-blackwell-v1",
+  "frozen": {
+    "frozen_at_unix": 1794257426.758632,
+    "pilot_evidence": [
+      {
+        "artifact_id": "comet-run:d4dcbbba-3768-45fa-b490-1d6219eb6efa",
+        "config_digest": "efa3fd46a0557015770e665a0ad96fc45ffe010904dd1a42554223683f176d18",
+        "manifest_digest": "79a6db86804390fa975cb7bed8c8796249d35b623a1777363e6511ad68d42ae6",
+        "run_id": "d4dcbbba-3768-45fa-b490-1d6219eb6efa"
+      },
+      {
+        "artifact_id": "comet-run:86afcd9a-c4d9-4a25-8ea8-6b89a038814b",
+        "config_digest": "1ac182b934163609fddbfb21ce8a447be1aad55fc131d01ea6de1078df9af6f5",
+        "manifest_digest": "5ace9b5c316e4f0dc767b87e2a0aae27a1a6d96def291c4eff26a41c459fd13e",
+        "run_id": "86afcd9a-c4d9-4a25-8ea8-6b89a038814b"
+      }
+    ],
+    "settings_digest": "55aa6ac63bf6f4a11ce27d92629099bb1adff54945e7da5718a86ee6fea34c39"
+  },
+  "max_attempts": 2,
+  "notes": "Fifty held-out task families selected from split IDs only by the declared SHA-256 rule; one variant per family. Excludes the two families inspected in the prior L4 test. Eight retention levels, three methods, never-rebuild and two full-cache controls match the supplemental Blackwell fine grid. Seed 17; 120 seconds shared by at most two sequential attempts. Separate cohort; do not pool with historical runs. See documents/records/qwen9b/test50-design.md.",
+  "peak_vram_bytes": 25769803776,
+  "prompt": "You operate a live AppWorld task by executing Python. Return exactly one fenced Python code block per turn, with short executable code and no prose. Python variables persist. Print values needed for the next decision.\n\nThe Python object apis ALREADY EXISTS. Call its methods directly, for example apis.supervisor.show_profile(). NEVER import apis, api_docs, supervisor, or an app module. Do not use requests, HTTP URLs, api.call, or a client library.\n\nYour FIRST action must only inspect the available API names for an app relevant to the task. Example for a Spotify task:\n```python\nprint(apis.api_docs.show_api_descriptions(app_name=\"spotify\"))\n```\nReplace spotify with the relevant app name. Stop the code block and wait for the actual result. Before calling an unfamiliar API, inspect its complete documentation in a separate turn:\n```python\nprint(apis.api_docs.show_api_doc(app_name=\"spotify\", api_name=\"login\"))\n```\nUse the actual app and API names returned by the documentation. Read the documented argument names, return shape, authentication and pagination. Call APIs with keyword arguments. Do not guess names, arguments, IDs, passwords or response fields.\n\nObtain credentials with apis.supervisor.show_account_passwords(). Select the record whose account_name exactly equals the app name, such as spotify or file_system; do not look for a supervisor password. Use the app's documented username type from the supplied supervisor profile or apis.supervisor.show_profile(). Save the login result's access_token and pass access_token explicitly to endpoints that require it. Never invent a password or use the email address as a password.\n\nWork in short steps. After an error, inspect the relevant API documentation and fix the specific assumption. Never repeat the same failing block unchanged. Earlier calls in a failed block may already have taken effect. Inspect actual returned values, handle every documented page until exhausted, and follow all qualifiers and exclusions in the user instruction. Verify requested changes through ordinary APIs. Finally call apis.supervisor.complete_task(), or pass the computed answer through its documented answer argument for a question. Do not complete merely because a code block ran without an error. Tool observations appear in <tool_response> tags.\n\nFor login, username is the supervisor's email for file_system and Spotify, and the supervisor's phone_number for phone. An app name is never the username. A password is never an access_token. This is a working file_system login pattern; adapt the app and username type using its documentation:\n```python\nprofile = apis.supervisor.show_profile()\npasswords = apis.supervisor.show_account_passwords()\npassword = next(row[\"password\"] for row in passwords if row[\"account_name\"] == \"file_system\")\nlogin_result = apis.file_system.login(username=profile[\"email\"], password=password)\naccess_token = login_result[\"access_token\"]\nprint(\"Authenticated\")\n```\nKeep the returned access_token in a Python variable and reuse that variable. Do not copy long token strings into later code. For large collections, keep all records in Python variables, process all required pages, and print only counts, field names, small samples or selected relevant fields. Avoid filling the conversation with entire unfiltered collections. You can process and update all records without printing all of them.",
+  "sampling": {
+    "enable_thinking": false,
+    "max_new_tokens": 1024,
+    "temperature": 0.7,
+    "top_p": 0.8
+  },
+  "schema_version": 1,
+  "seeds": [
+    17
+  ],
+  "split": "test_normal",
+  "stage": "final",
+  "task_ids": [
+    "3aa1a22_2",
+    "9ef798c_2",
+    "32616b5_1",
+    "8ce6779_1",
+    "31dc501_2",
+    "634f342_1",
+    "0de03ea_3",
+    "d18139b_1",
+    "cef9191_1",
+    "29a7b7e_1",
+    "552869a_2",
+    "2c544f9_3",
+    "c77c005_2",
+    "ffe6d5e_1",
+    "d6ac34d_2",
+    "f861c32_3",
+    "6f4b9a5_2",
+    "dac78d9_3",
+    "8749218_2",
+    "ff58e36_3",
+    "fd1f8fa_3",
+    "ccf4b82_2",
+    "bde252e_1",
+    "425a494_1",
+    "83a7951_2",
+    "5a83b05_1",
+    "986aa4e_1",
+    "21abae1_2",
+    "afc4005_2",
+    "3d9a636_1",
+    "d194965_2",
+    "652485c_3",
+    "b9c5c9a_1",
+    "166f4ff_1",
+    "a30375d_3",
+    "9dabbc9_3",
+    "024c982_2",
+    "6b6ca61_3",
+    "9016950_2",
+    "90adc3f_1",
+    "1150ed6_2",
+    "325d6ec_3",
+    "522e5e5_1",
+    "09b0ee6_3",
+    "2d9f728_2",
+    "3b8fb7a_2",
+    "7847649_2",
+    "270f1ff_1",
+    "f323bae_2",
+    "0a9d82a_1"
+  ],
+  "triggers": {
+    "dynamic_context_tokens": 6144,
+    "dynamic_rule": "and",
+    "dynamic_tool_calls": 3,
+    "fixed_tool_calls": 4
+  }
+}

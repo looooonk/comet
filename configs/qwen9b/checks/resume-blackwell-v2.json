@@ -1,0 +1,32 @@
+{
+  "extends": "../blackwell/test50-smoke-v1.json",
+  "experiment_id": "qwen9b-resume-check-blackwell-v2",
+  "split": "train",
+  "task_ids": [
+    "34d9492_1"
+  ],
+  "conditions": [
+    {
+      "id": "preserved",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "interrupted",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "fresh",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    }
+  ],
+  "notes": "Test50 preflight interruption check at the study 16K context and 24 GiB cap; integration only."
+}

@@ -1,0 +1,54 @@
+{
+  "partitions": [
+    {
+      "budget_seconds": 24000,
+      "cells": 200,
+      "config": "part-00.json",
+      "digest": "1177344f0fd34be1be7616c3b8b1903e59059bf5be85baea3f8c892d8227a35b"
+    },
+    {
+      "budget_seconds": 24000,
+      "cells": 200,
+      "config": "part-01.json",
+      "digest": "853fec1a69e74fd733b5b169397bfc9c032f02f6ff567767485590c17952c740"
+    },
+    {
+      "budget_seconds": 18000,
+      "cells": 150,
+      "config": "part-02.json",
+      "digest": "98bf32a8ab812487be31ee23d08b8c8538da48ec4597f2ea2dd414c61511b2d1"
+    },
+    {
+      "budget_seconds": 18000,
+      "cells": 150,
+      "config": "part-03.json",
+      "digest": "4b0637f46af3b4e04978e545a328ed817fc5bb00f4d69930a8883bb6af3e0846"
+    },
+    {
+      "budget_seconds": 18000,
+      "cells": 150,
+      "config": "part-04.json",
+      "digest": "4e2b773663dc16a1b769216fbdeef51d5e0512146b7d3b1666e0d948e1e6b9fd"
+    },
+    {
+      "budget_seconds": 18000,
+      "cells": 150,
+      "config": "part-05.json",
+      "digest": "fcf40a651f4ff17709b9ba1839dcfdc8bff66bf33e1f42b0dd58457df237d236"
+    },
+    {
+      "budget_seconds": 18000,
+      "cells": 150,
+      "config": "part-06.json",
+      "digest": "845deeefdcf7fea895d30c4caf184b01bd8a528a58acd957919cfbef264fa011"
+    },
+    {
+      "budget_seconds": 18000,
+      "cells": 150,
+      "config": "part-07.json",
+      "digest": "6cdb67511be3f4e089ab6947b68ce6bdb5f072182232de9d2b2e1dab32234c41"
+    }
+  ],
+  "study_config": "../test50-v1.json",
+  "study_digest": "c90f3b78e107c74429bd9940a4905c1b1d86b5679ba6bec9e3d83456704a09b7"
+}

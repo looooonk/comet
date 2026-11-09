@@ -1,0 +1,38 @@
+{
+  "extends": "dev-v1.json",
+  "experiment_id": "qwen9b-test50-dev-smoke-v1",
+  "task_ids": [
+    "4ec8de5_1"
+  ],
+  "conditions": [
+    {
+      "id": "full_best_of_n",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_25_never",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_25_never",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_never",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Predeclared one-task dev integration smoke for every test50 worker. Four cells, same frozen numerical settings; no outcome-dependent test selection or tuning."
+}
