@@ -2,8 +2,10 @@
 
 **Interim result:** the shared hybrid backend supports the required methods at
 16,384 tokens on one L4 under a 21 GiB cap, and the corrected full-cache agent
-solves 3/4 declared train tasks. The compaction-success curve and Q1/Q2 answers
-remain pending. Queued experiments are not counted as completed evidence.
+solves 3/4 declared train tasks. The train grid now shows an AgentKV transition
+between 50% and 40% retention on one arithmetic fixture. The common-checkpoint
+diagnostic shows selective recovery benefits. Final test evaluation is running;
+queued or running experiments are not counted as completed evidence.
 
 ## Capability and cost
 
@@ -56,32 +58,81 @@ in the analysis are estimates and omit recurrent updates, eviction, elementwise
 operations and vision. The bounded R-KV workspace passed five live numerical
 checks; the managed local suite passed 339 tests, with GPU checks run separately.
 
-## Remaining comparisons
+## Completed L4 train/dev results
 
-The matched compression screen, independent 90/120/150-second budgets,
-28-arm common-checkpoint diagnostic, all-method eight-level train grid and
-separate dev confirmation were queued before local cloud authentication expired.
-Only a closed, unscored portion of the first compression screen has been
-retrieved. Its traces show no-progress behavior under aggressive compaction,
-but they do not yet support a complete success-rate comparison.
+The [pilot summary](qwen9b-pilot-summary.json) covers all 109 cells and 125
+attempts across six completed runs. No observed device peak exceeded 21 GiB.
+Measured task-budget overshoot was at most 2.56 seconds, from noninterruptible
+work and cleanup; most runs stayed within 0.06 seconds. Failures remain in the
+success denominators and did not receive replacement attempts.
 
-The [final candidate](../../configs/qwen9b/final-candidate-l4-v1.json) is declared
-but unfrozen and unlaunched: two predeclared test families, one seed, 120 seconds,
-N=2, all 29 core conditions plus five intermediate AgentKV points. The full
-eight-level grid for all methods is measured separately on train. This scope
-reduction preserves the core recovery comparisons within the available time;
-unmeasured intermediate test points must not be implied.
+The single-task, no-recovery [fine grid](qwen9b-train-finegrid-analysis.json)
+solved the arithmetic task with full cache and AgentKV at 90/80/70/60/50%
+retention. AgentKV failed at 40/30/25%; StreamingLLM and R-KV failed at every
+measured compressed point. This identifies a transition on this fixture, with
+insufficient task coverage for a population claim. With N=1, single-attempt
+and oracle success are identical.
 
-Freeze requires completed train/dev evidence, at least one dev success and
-both successes and failures in the train grid. Q1 requires the independently
-restored checkpoint branches; Q2 requires fresh-start paired final attempts.
-All timeouts, errors and flat outcomes remain in their denominators. No test
-outcome may select a task or change the frozen settings.
+![L4 train fine grid](../figures/qwen9b/train-finegrid-aggressivity.png)
 
-Cloud sign-in expired during execution. The bounded worker and queued plans
-continue independently, but retrieval and final submission require renewed
-access. Completion, final figures and resource cleanup have not been verified
-beyond the last retrieved artifacts.
+The independently executed [budget sweep](qwen9b-independent-budgets.json)
+solved 1/2 train tasks with full cache at both 90 and 120 seconds and 2/2 at
+150 seconds. Every 25%-retention arm scored 0/2 at all three budgets, including
+AgentKV fixed/dynamic recovery. Full-cache N=2 added no oracle success over
+its first attempt on this sample. In the separate two-family
+[dev confirmation](qwen9b-dev-confirmation-analysis.json), however, a second
+full-cache attempt solved one task: oracle success was 1/2 versus 0/2 first
+attempts. All compressed 25% dev arms failed. These are small, paired results
+with wide uncertainty, not evidence that a second attempt generally helps.
+
+## Q1: recovery from a common checkpoint
+
+The [28-arm diagnostic](qwen9b-q1-diagnostic-analysis.json) restores the same
+saved full-cache arithmetic state after two tools. Each branch receives a
+90-second budget including preparation/restore and at most one rebuild.
+The full-cache reference succeeds. The table reports each branch's evaluated
+outcome; rows are settings on one task, not independent task samples.
+
+| Method | Retained KV | Never | Fixed | Dynamic |
+| --- | ---: | --- | --- | --- |
+| StreamingLLM | 80% | Fail | Fail | Fail |
+| StreamingLLM | 50% | Fail | Fail | Fail |
+| StreamingLLM | 25% | Fail | Fail | Fail |
+| R-KV | 80% | Fail | Fail | Fail |
+| R-KV | 50% | Pass | Pass | Fail |
+| R-KV | 25% | Fail | Fail | Pass |
+| AgentKV | 80% | Pass | Fail | Pass |
+| AgentKV | 50% | Fail | Pass | Fail |
+| AgentKV | 25% | Fail | Fail | Pass |
+
+Dynamic recovery changes failure to success at 25% for R-KV and AgentKV;
+fixed recovery helps AgentKV at 50%. Recovery also harms two previously
+successful settings. Each binary change is 100 percentage points on this
+single fixture. Task-bootstrap intervals are degenerate with one task;
+conservative bounded intervals span the full difference range, so these
+observations do not establish population effects.
+
+All 17 requested rebuilds were admitted; no memory refusal occurred. Fixed
+rebuilds took 4.7-5.2 seconds and dynamic rebuilds 6.2-7.7 seconds. The
+StreamingLLM 25% dynamic branch stopped before its trigger. Separate
+[live AppWorld checks](qwen9b-l4-appworld-recovery.json) passed for all three
+methods, preserving tool effects, RNG state and independent environment restore.
+This diagnostic starts after two full-cache tools; its success cannot be
+substituted for fresh-start final evaluation.
+
+## Final evaluation and additional coverage
+
+The [frozen L4 study](../../configs/qwen9b/final-l4-v1.json) started on November 9
+at approximately 07:18 ET after the declared train/dev gates passed. It uses
+two predeclared test families, one seed, 120 seconds, N=2, all 29 core conditions
+plus five intermediate AgentKV points. Unmeasured intermediate competitor test
+points must not be implied. No test outcome may select a task or change settings.
+
+After access was restored and the user extended the stop time to 14:00 ET, a
+separate three-task Blackwell train grid was declared and submitted. It retains
+the full eight-level grid for every method and includes single/oracle views.
+It must pass fresh hardware qualification and will be analyzed separately from
+L4. Final results and resource cleanup remain pending.
 
 ## Reproduction and exports
 

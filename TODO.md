@@ -76,8 +76,10 @@ new experiments within the existing GCP ceiling.
 - [x] Validate persistent state across turns, saved checkpoints and independent
   branches for all required methods, including every hybrid state type.
   A6000 check `hybrid-third` passed all 24 method/retention branches.
-- [ ] Validate one full-history recovery, reapplication of retention, unchanged
+- [x] Validate one full-history recovery, reapplication of retention, unchanged
   environment effects, RNG continuity, and transient memory-cap enforcement.
+  The live L4/AppWorld fixture passed all three methods; the separate 16K check
+  establishes intended-context headroom. See `qwen9b-l4-appworld-recovery.json`.
 - [x] Validate fresh AppWorld attempts and isolated resets, correct saved-state
   evaluation, interruption/resume accounting and offline-only scorer access.
   AppWorld live checks, the scored arithmetic task and L4 process-kill validation
@@ -113,22 +115,30 @@ provenance, and stop when checks fail. Rebuild cleaned caches only as needed.
   Full-cache arithmetic fit two completed attempts in 114.5 seconds, while the
   file task took about 125 seconds for one. Independent 90/120/150-second
   endpoints are declared; 16K recovery costs 21.6-22.8 seconds on the L4.
-- [ ] Run a small matched full-cache/compressed comparison, then the declared
+- [x] Run a small matched full-cache/compressed comparison, then the declared
   fine-grained grid. Keep every measured point, including flat/failed outcomes.
-- [ ] Extend or refine dev settings only as a new declared experiment version.
+  The L4 grid measures all 25 conditions; a separate three-task Blackwell grid
+  is running to strengthen coverage. No cross-hardware pooling.
+- [x] Extend or refine dev settings only as a new declared experiment version.
   Confirm an informative regime on separate dev coverage before final freezing.
+  The two-family confirmation found full-cache oracle success on one family
+  versus none at 25% retention; all single first attempts failed.
 
 ## 4. Recovery and test-time compute
 
-- [ ] Q1: branch from identical saved pre-compaction state and compare never,
+- [x] Q1: branch from identical saved pre-compaction state and compare never,
   fixed-tool-count and context/tool-threshold recovery within each method and
   retention level. Tune thresholds only on train/dev.
+  All 28 arms completed on one arithmetic fixture. Dynamic recovery rescued
+  R-KV and AgentKV at 25%; benefits did not generalize across all settings.
 - [ ] Q2: compare full-cache and compressed oracle best-of-N, with/without
   recovery, under identical wall-clock and peak total-VRAM caps.
-- [ ] Independently rerun granular runtime budgets; do not treat truncation of
+- [x] Independently rerun granular runtime budgets; do not treat truncation of
   one long trajectory as a rerun with a shorter budget.
-- [ ] Freeze model, backend, prompts, sampling, context limits, task/split IDs,
+  The paired 90/120/150-second runs completed and were scored separately.
+- [x] Freeze model, backend, prompts, sampling, context limits, task/split IDs,
   paired seeds, retention grid, thresholds, N, memory and timing definitions.
+  `configs/qwen9b/final-l4-v1.json` preserves the November 9 freeze.
 - [ ] Execute fresh-start final evaluation without evaluator feedback online.
   Preserve paired task structure; retain timeout/OOM/infeasibility outcomes.
 

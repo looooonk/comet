@@ -2,6 +2,11 @@
 
 - [Verified Qwen3.5-9B findings](qwen9b-findings.md): interim capability, measured
   memory/recovery costs, exported figure and remaining research comparisons.
+- [Completed L4 pilot summary](qwen9b-pilot-summary.json): all 109 paired cells
+  from compression, recovery, budgets, fine-grid and dev runs; full analyses and
+  [figure exports](qwen9b-pilot-figures.json) retain their individual outcomes.
+- [Live AppWorld recovery check](qwen9b-l4-appworld-recovery.json): independent
+  environment restores, preserved tool effects/RNG and all three methods.
 - [Qwen3.5-9B study](qwen9b-study-2026-11-09.md): declared samples and current
   implementation/validation progress for the new hybrid backend.
 - [A6000 state check](qwen9b-a6000-state-check.json) and

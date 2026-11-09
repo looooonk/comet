@@ -1,0 +1,110 @@
+[
+  {
+    "path": "documents/figures/qwen9b/train-compression-aggressivity.png",
+    "sha256": "57d539d08ff8799fe373159e46658e1b762b005c7588c723ce3a39ef5d9f112f"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-compression-aggressivity.svg",
+    "sha256": "0add6e9fc6d26cbb584f1bc0048d7875ca39647d69f20951280eeb42ad8382d3"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-compression-aggressivity.pdf",
+    "sha256": "d3bea0745abc32fbb7a5f45f053f73ab07c97c2da9632a3d95cdcadf000a7f46"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-compression-resources.png",
+    "sha256": "bea3ff920d8e0b7ac4ae825dc6247682a0519f71d0c1adae559fdd08d09e53a7"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-compression-resources.svg",
+    "sha256": "bbbcda3ca4035eb79f6cc9aab89d5e83929334c5bb6e17ce7c4ad673c829c96f"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-compression-resources.pdf",
+    "sha256": "2a7111e856c5ae8e488b2a7a72ff00e3307720406be4cda6c7c49185aa474c44"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-compression-attempts.png",
+    "sha256": "89b177c9080fabefbacf7628c957fe3002f49f1ccd537ec74b7af108d1ccb011"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-compression-attempts.svg",
+    "sha256": "83a8c1f0cc4ff28e47ac2ceade13b383d5fe07af199f810c3b4fe2c3fd2a4a98"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-compression-attempts.pdf",
+    "sha256": "147438191b2431566378d5e5e42b130170600aeea8a71b191556a100ad0dd9ca"
+  },
+  {
+    "path": "documents/figures/qwen9b/q1-diagnostic-recovery.png",
+    "sha256": "9ac723ec4d4282e55562d345102628bcfc67317e409124bcdfcbdc17edede466"
+  },
+  {
+    "path": "documents/figures/qwen9b/q1-diagnostic-recovery.svg",
+    "sha256": "0f246a85cf6a24e10862d0c8f6d191068a37c37d9ee3a82b7542648647deeeef"
+  },
+  {
+    "path": "documents/figures/qwen9b/q1-diagnostic-recovery.pdf",
+    "sha256": "e37d86ea503e6ff9092f9e0639e8c2d505be9940dbe9b8e61f15e486ce0cc2c3"
+  },
+  {
+    "path": "documents/figures/qwen9b/q1-diagnostic-triggers.png",
+    "sha256": "354074eafe4c59619237787478c7c887c8f96ddcabfcf921d60f1e69270ef241"
+  },
+  {
+    "path": "documents/figures/qwen9b/q1-diagnostic-triggers.svg",
+    "sha256": "4039d4cb5726b007d3d50acabd69d9b9956a09f42665ceef742dfefe1f3b9b24"
+  },
+  {
+    "path": "documents/figures/qwen9b/q1-diagnostic-triggers.pdf",
+    "sha256": "a4323cc2f85b6f1d4727be95ab4e703714f20a1074619000948683fa53b6c2a1"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-finegrid-aggressivity.png",
+    "sha256": "46336844122dcd807cdc29c5e031d79dd1639124241cc0f4506899119a636e05"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-finegrid-aggressivity.svg",
+    "sha256": "74a15d69c6305a9fabc4a58f87450e8d3d18c52368e5ce7e239d44accc231d42"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-finegrid-aggressivity.pdf",
+    "sha256": "1810bf98a0be3345429ebdf0be61b2accdc6d25eaf42e212db454131d2a1a178"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-finegrid-resources.png",
+    "sha256": "b42e4b27b0afbed349dea94dac192e915f52cd55126f756e23e40c9ea45bee5f"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-finegrid-resources.svg",
+    "sha256": "f82ca1338a129c52918b7f71bf69fbca94880b531085941183f533801bdfb2b1"
+  },
+  {
+    "path": "documents/figures/qwen9b/train-finegrid-resources.pdf",
+    "sha256": "f835f1b34c2b6557df282f4a6167dcf68b94cfffb0ce34116d32c8d279acb15e"
+  },
+  {
+    "path": "documents/figures/qwen9b/dev-confirmation-aggressivity.png",
+    "sha256": "ff4a7fd5af9ea37e7ee7987b2d458b1a37474ff63562be12ef33d04b6c88ce98"
+  },
+  {
+    "path": "documents/figures/qwen9b/dev-confirmation-aggressivity.svg",
+    "sha256": "a3dd7e4491b86c90ab1c42e7fd35ca8b4c55bf826a1231ec313e5bad47ac1cad"
+  },
+  {
+    "path": "documents/figures/qwen9b/dev-confirmation-aggressivity.pdf",
+    "sha256": "2e41f25ac2617d7489dae39fb8e5ce2afcd90adb74c9619cfee1bc68a6492d52"
+  },
+  {
+    "path": "documents/figures/qwen9b/independent-budgets-budget-sweep.png",
+    "sha256": "cf5fc126fe2600ed40c56dd2733d09a47e647f54d25394da7f6ccf5ad2c64341"
+  },
+  {
+    "path": "documents/figures/qwen9b/independent-budgets-budget-sweep.svg",
+    "sha256": "6a9437089cbf7b6dabb757219e6346f9658c5263add2bfc003205a13b84a0634"
+  },
+  {
+    "path": "documents/figures/qwen9b/independent-budgets-budget-sweep.pdf",
+    "sha256": "22c369f28fb955aafd27551b2cdd1da7d48915087ec9dd5010d9569511f51839"
+  }
+]
