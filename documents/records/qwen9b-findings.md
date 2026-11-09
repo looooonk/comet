@@ -235,9 +235,10 @@ rebuilds are admitted. Wide paired uncertainty and differences from L4 reinforce
 the conditional nature of these effects. These are train observations, not
 additional test samples or a controlled hardware comparison.
 
-The optional held-out Blackwell replication is queued behind a fresh dev check,
-with a revised 10:40 ET launch cutoff. Its experimental settings are unchanged;
-it is not counted as completed evidence.
+The optional held-out Blackwell replication is queued behind a fresh dev check.
+Its unchanged matrix is divided among three bounded allocations, with a noon
+initialization cutoff; the execution plan is in the study record. It is not
+counted as completed evidence.
 
 ## Reproduction and exports
 

@@ -535,3 +535,29 @@ and experiment configurations are unchanged. The retrieved train and Q1 runs
 contain 130 and 84 attempts respectively; their complete results, paired
 uncertainty and 27 figure exports are in the
 [Blackwell findings](qwen9b-blackwell-findings.md).
+
+At 10:35 ET the serial optional-final request was canceled before execution.
+The remaining dev execution and variable queue/setup times leave insufficient
+margin for a serial 87-cell replication. The unchanged declared matrix will
+instead be partitioned across three independent one-GPU allocations: full-cache
+controls plus StreamingLLM (33 cells), R-KV (27), and AgentKV (27). Each uses
+the same qualified Blackwell model, 24 GiB cap, four allocated CPUs, two CPU
+threads and all three predeclared test families. No settings or task choices
+are changed in response to outcomes.
+
+Each allocation is bounded to 85 minutes and must pass the same completed-dev
+success gate and initialize its common frozen parent by **12:00 ET**. The
+longest partition has at most 66 minutes of experimental task budgets, leaving
+19 minutes for setup and scoring. This execution plan supersedes the serial
+10:40 cutoff; allocations end by 13:25 ET, leaving analysis and cleanup time
+before 14:00. Source `47596b5` remains immutable on the workers. Local shared
+analysis now supports explicit frozen-parent condition partitions and refuses
+missing/duplicate cells, changed settings or incompatible provenance. The full
+managed CPU check passed **344 tests**, with two optional Torch modules skipped
+and 17 live checks deselected. No inference or budget code changed.
+
+The conditional partition requests are `13842780`, `13842781` and `13842782`,
+all depending on dev job `13842392`. They use distinct run directories and a
+locked, shared parent-freeze record. Parent/partition configurations will be
+retrieved and committed after the dev gate succeeds; submission alone is not
+final-evaluation evidence.

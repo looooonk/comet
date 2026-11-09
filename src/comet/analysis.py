@@ -486,7 +486,14 @@ def read_scored_run(directory: str | Path) -> tuple[dict, dict, dict]:
 
 
 def analyze_runs(run_dirs: list[str | Path], output: str | Path, *, bootstrap_samples: int = 2000,
-                 seed: int = 0) -> dict[str, Any]:
+                 seed: int = 0, study_config: str | Path | None = None) -> dict[str, Any]:
+    from comet.config import Experiment
+
+    study = Experiment.load(study_config) if study_config is not None else None
+    if study is not None and study.stage != "final":
+        raise ValueError("Condition partitions require a frozen final study")
+    expected_conditions = {c.id: c for c in study.conditions} if study else {}
+    partition_conditions: set[str] = set()
     cells: list[dict[str, Any]] = []
     contract: str | None = None
     sources: list[str] = []
@@ -506,6 +513,22 @@ def analyze_runs(run_dirs: list[str | Path], output: str | Path, *, bootstrap_sa
         runtime_contract = runtime
         comparable = {key: value for key, value in manifest["config"].items()
                       if key not in ("conditions", "run_id", "notes")}
+        if study is not None:
+            partition = Experiment.from_dict(manifest["config"])
+            if (partition.stage != "final" or
+                    partition.frozen.get("condition_partition_of") != study.digest or
+                    partition.frozen.get("pilot_evidence") != study.frozen["pilot_evidence"]):
+                raise ValueError("Condition partition does not identify the frozen parent study")
+            parent = {k: v for k, v in study.to_dict().items() if k not in ("conditions", "notes")}
+            comparable["frozen"] = parent["frozen"]
+            if comparable != parent:
+                raise ValueError("Condition partition changes frozen experiment settings")
+            for condition in partition.conditions:
+                if condition != expected_conditions.get(condition.id):
+                    raise ValueError("Condition partition changes a declared comparison")
+                if condition.id in partition_conditions:
+                    raise ValueError("Condition appears in more than one partition")
+                partition_conditions.add(condition.id)
         current = json.dumps(comparable, sort_keys=True)
         if contract is not None and (current != contract or stage != scores["stage"]):
             raise ValueError("Do not pool stages or incompatible frozen experiment settings.")
@@ -514,9 +537,19 @@ def analyze_runs(run_dirs: list[str | Path], output: str | Path, *, bootstrap_sa
         sources.append(str(directory))
         initialization.append({"run_id": manifest["run_id"],
                                **environment_initialization_summary(manifest)})
+    if study is not None:
+        expected = {(task, condition, seed) for task in study.task_ids
+                    for condition in expected_conditions for seed in study.seeds}
+        observed = {(c["task_id"], c["condition"]["id"], c["seed"]) for c in cells}
+        if observed != expected or len(cells) != len(expected):
+            raise ValueError("Condition partitions must cover every frozen cell exactly once")
     result = analyze_cells(cells, bootstrap_samples=bootstrap_samples, seed=seed)
     result.update(stage=stage, source_runs=sources, integration_smoke=integration_smoke)
     result["environment_initialization"] = initialization
+    if study is not None:
+        result["partition_study"] = {"config_digest": study.digest,
+                                     "settings_digest": study.settings_digest,
+                                     "partition_count": len(run_dirs)}
     output = Path(output)
     output.parent.mkdir(parents=True, exist_ok=True)
     _write(output, result)

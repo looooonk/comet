@@ -1,10 +1,13 @@
 import copy
+import json
 import math
+from pathlib import Path
 
 import pytest
 
 from comet.analysis import analyze_cells, analyze_runs
 from comet.artifacts import write_json
+from comet.config import Experiment
 from comet.evaluation import execution_digest
 
 
@@ -203,6 +206,69 @@ def test_analysis_ignores_locations_and_transient_engine_measurements(tmp_path):
     second = _scored_run(tmp_path / "second", "b", changed)
     result = analyze_runs([first, second], tmp_path / "analysis.json", bootstrap_samples=10)
     assert set(result["conditions"]) == {"a", "b"}
+
+
+def _condition_partitions(tmp_path, mutation=None):
+    parent = Experiment.load(Path(__file__).parent / "fixtures/full-cache.json").to_dict()
+    parent.update(stage="final", split="test_normal", task_ids=["t1"], seeds=[1])
+    parent["conditions"].append({"id": "compressed", "method": "streamingllm",
+                                  "retention": 0.5, "recovery": "never", "max_attempts": 1})
+    parent["frozen"] = {"settings_digest": Experiment.from_dict(
+        parent, allow_unfrozen=True).settings_digest, "pilot_evidence": [{"run_id": "pilot"}]}
+    study = Experiment.from_dict(parent)
+    write_json(tmp_path / "study.json", parent)
+    runs = []
+    for index, condition in enumerate(parent["conditions"]):
+        config = copy.deepcopy(parent)
+        config["conditions"] = [condition]
+        config["frozen"]["condition_partition_of"] = study.digest
+        if mutation and index == 1:
+            mutation(config)
+        config["frozen"]["settings_digest"] = Experiment.from_dict(
+            config, allow_unfrozen=True).settings_digest
+        path = _scored_run(tmp_path / str(index), condition["id"], _metadata())
+        record = cell("t1", condition["id"], 1, [index == 0])
+        record["condition"] = config["conditions"][0]
+        record["attempts"][0]["artifact_dir"] = "attempts/0"
+        manifest = json.loads((path / "manifest.json").read_text())
+        manifest.update(stage="final", config=config, config_digest=Experiment.from_dict(config).digest)
+        write_json(path / "cell.json", record)
+        write_json(path / "manifest.json", manifest)
+        write_json(path / "scores.json", {
+            "status": "completed", "run_id": condition["id"], "stage": "final",
+            "config_digest": manifest["config_digest"], "cells": [record],
+            "execution_digest": execution_digest(path, manifest),
+            "evaluation_provenance": _metadata()["evaluation_provenance"],
+        })
+        runs.append(path)
+    return runs, tmp_path / "study.json"
+
+
+def test_frozen_condition_partitions_preserve_the_complete_paired_study(tmp_path):
+    runs, study = _condition_partitions(tmp_path)
+    result = analyze_runs(runs, tmp_path / "analysis.json", study_config=study, bootstrap_samples=10)
+    assert result["task_count"] == 1
+    assert result["conditions"]["full_once"]["oracle_success_rate"]["value"] == 1
+    assert result["conditions"]["compressed"]["oracle_success_rate"]["value"] == 0
+    assert result["partition_study"]["partition_count"] == 2
+    with pytest.raises(ValueError, match="incompatible frozen"):
+        analyze_runs(runs, tmp_path / "analysis.json", bootstrap_samples=10)
+    with pytest.raises(ValueError, match="every frozen cell"):
+        analyze_runs(runs[:1], tmp_path / "analysis.json", study_config=study, bootstrap_samples=10)
+    with pytest.raises(ValueError, match="more than one partition"):
+        analyze_runs(runs + runs[:1], tmp_path / "analysis.json", study_config=study, bootstrap_samples=10)
+
+
+@pytest.mark.parametrize("mutation, message", [
+    (lambda c: c.update(budget_seconds=601), "changes frozen experiment settings"),
+    (lambda c: c["conditions"][0].update(retention=0.25), "changes a declared comparison"),
+    (lambda c: c["frozen"].update(condition_partition_of="another"), "frozen parent study"),
+    (lambda c: c["frozen"].update(pilot_evidence=[{"run_id": "another"}]), "frozen parent study"),
+])
+def test_condition_partitions_refuse_retuning_or_unrelated_freezes(tmp_path, mutation, message):
+    runs, study = _condition_partitions(tmp_path, mutation)
+    with pytest.raises(ValueError, match=message):
+        analyze_runs(runs, tmp_path / "analysis.json", study_config=study, bootstrap_samples=10)
 
 
 def test_recovery_summary_retains_denials_failures_and_unknown_interruption(tmp_path):

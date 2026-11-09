@@ -317,3 +317,31 @@ when available; otherwise retain the missing active segment as interrupted and
 account for its full reserved budgets. Do not present a closed backup as proof
 that no later computation occurred. The existing runtime/source checks still
 apply when resuming on another worker.
+
+
+## Parallel condition partitions of a frozen study
+
+Independent condition groups may run on separate GPUs of the same qualified
+model/count and cap, with sequential attempts within every task/condition. Keep
+the complete task list, seeds and all experimental settings identical. Freeze
+one parent configuration before any test execution. Each partition retains its
+own matching `frozen.settings_digest`, copies the parent's pilot evidence, and
+records the parent's complete configuration digest as
+`frozen.condition_partition_of`. Its condition list must be a literal subset
+of the parent's declarations. Preserve separate manifests and execution/scoring
+artifacts; a completed partition does not establish completion of the study.
+
+After every partition finishes and is separately scored, aggregate with:
+
+```bash
+comet analyze /path/to/part-0 /path/to/part-1 /path/to/part-2 \
+  --study-config /path/to/frozen-parent.json --output /path/to/analysis.json
+```
+
+This checks each frozen configuration, common source/evaluator/runtime/hardware,
+unchanged settings and condition definitions, and exact coverage of every
+parent task/seed/condition once. Missing partitions, duplicated conditions,
+changed budgets and unrelated freeze records are refused. Ordinary analysis
+without `--study-config` retains its existing compatibility rules. The managed
+CPU suite covers positive aggregation and these rejection cases; inference,
+budget enforcement and offline evaluation are unchanged.

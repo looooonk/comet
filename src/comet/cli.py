@@ -140,6 +140,8 @@ def main(argv: list[str] | None = None) -> None:
     analyze.add_argument("--output", type=Path, required=True)
     analyze.add_argument("--bootstrap-samples", type=int, default=2000)
     analyze.add_argument("--seed", type=int, default=0)
+    analyze.add_argument("--study-config", type=Path,
+                         help="Frozen parent configuration for a complete set of condition partitions")
     budget_sweep = commands.add_parser("analyze-budget-sweep", help="Compare independently rerun pilot budgets")
     budget_sweep.add_argument("runs", type=Path, nargs="+")
     budget_sweep.add_argument("--output", type=Path, required=True)
@@ -242,7 +244,8 @@ def main(argv: list[str] | None = None) -> None:
         from comet.analysis import analyze_runs
 
         analyze_runs(
-            args.runs, args.output, bootstrap_samples=args.bootstrap_samples, seed=args.seed
+            args.runs, args.output, bootstrap_samples=args.bootstrap_samples, seed=args.seed,
+            study_config=args.study_config,
         )
         _print({"analysis": str(args.output)})
     elif args.command == "analyze-budget-sweep":
