@@ -337,3 +337,27 @@ A separate live fixture checks all three methods against a real AppWorld phone
 mutation, saved Python state and restored hybrid checkpoints. It checks unchanged
 tool effects, RNG continuity, retention, the one-rebuild limit and measured cap.
 Forced fixture actions are integration evidence only, never task-success data.
+
+
+Plan `05-tiled-context-pilot` passed all five numerical selector checks and all
+four 16,384-token generation conditions. Every compressed method also admitted
+and completed a full-history rebuild with retention reapplied. Maximum observed
+total VRAM was 20.05 GiB under the 21 GiB cap; 16K rebuilds took 21.6-22.8 seconds.
+See the [capacity record](qwen9b-l4-context-16384.json). The local managed CPU
+suite passed 339 tests; two numerical modules lacked local Torch, and 17 live
+checks were deselected. GPU numerical checks ran separately on the L4.
+
+The [v4 capability pilot](qwen9b-protocol-v4.json) solved **3/4 train tasks**:
+file organization (124.1 seconds), arithmetic (57.3 seconds), and phone deletion
+(51.6 seconds). Spotify failed after confusing song IDs with review IDs and
+repeated authorization/duplicate-review errors (112.8 seconds). No task reached
+the context or memory limit. All four tasks and the failed earlier versions are
+retained. This is a useful capability regime without changing model size.
+The versions differ in prompt/context/backend, so this is descriptive evidence,
+not a causal attribution of the success gain to one change.
+
+Independent 90- and 120-second versions of the seven-condition, two-task
+compression screen are declared alongside the 150-second run. The measured
+124-second file attempt and 57-second arithmetic attempt motivate these endpoints
+around one longer attempt or two shorter attempts. They execute fresh task
+states with unchanged settings, and will be scored separately after completion.

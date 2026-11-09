@@ -87,8 +87,10 @@ new experiments within the existing GCP ceiling.
   initialization/close measured separately; every experimental reset/tool/
   checkpoint/rebuild remains charged. CPU checks are not live qualification.
   Passed in `hybrid-second` and `hybrid-third`.
-- [ ] Establish context/output limits and resource headroom that do not obscure
+- [x] Establish context/output limits and resource headroom that do not obscure
   the task comparison. Preserve and diagnose infrastructure failures.
+  All four methods passed 16K generation and compressed recovery under the
+  21 GiB L4 cap; the v4 baseline had no context or memory failures.
 
 Use managed profiles and `scripts/run_checks.sh`. Avoid repeated environment
 copies, large all-in-one jobs and one-off launch frameworks. Use one owned environment per active profile, bound jobs, retain compact
@@ -102,8 +104,9 @@ provenance, and stop when checks fail. Rebuild cleaned caches only as needed.
 - [x] Establish useful full-cache task success. Inspect ordinary trajectories for
   task interpretation, API use, pagination and premature completion failures.
   Larger parameter count alone is not qualification.
-  The corrected train protocol solved 1/4 tasks; the original 0/4 remains
-  recorded. A declared 16,384-token follow-up addresses two context failures.
+  The v4 train protocol solved 3/4 tasks at 16,384 tokens; earlier 0/4 and
+  1/4 outcomes remain recorded. The remaining failure confuses Spotify review
+  IDs with song IDs, rather than exceeding context or memory.
 - [ ] Measure reset, tool, inference, compaction and recovery costs to choose
   granular runtime budgets and attempt limits. Keep one budget per task/seed/
   condition; never give each attempt a fresh budget.

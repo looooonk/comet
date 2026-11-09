@@ -5,6 +5,10 @@
 - [A6000 state check](qwen9b-a6000-state-check.json) and
   [L4 state check](qwen9b-l4-state-check.json): compact reference, state and
   capacity evidence, including the L4 capacity failure.
+- [16K L4 qualification](qwen9b-l4-context-16384.json): bounded R-KV workspace,
+  all-method generation and full-history recovery under the 21 GiB cap.
+- [V4 capability pilot](qwen9b-protocol-v4.json): 3/4 train successes, with all
+  earlier failed pilot versions preserved in the study record.
 
 - [Legacy results](legacy-results.md): useful findings, two retained cost figures,
   limitations, and links to archived evidence.

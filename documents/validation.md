@@ -50,6 +50,22 @@ KV, checkpoint/recovery execution, or inference at the newly checked settings.
 
 ## Live integration checks
 
+For the hybrid backend's combined AppWorld mutation/checkpoint/recovery fixture,
+use an installed hybrid runtime and a new evidence directory:
+
+```sh
+export COMET_HYBRID_APPWORLD_CONFIG="$COMET_REPO/configs/qwen9b/train-protocol-l4-v4.json"
+export PYTEST_ADDOPTS="tests/test_hybrid_appworld.py"
+bash "$COMET_REPO/scripts/run_checks.sh" hybrid
+unset PYTEST_ADDOPTS COMET_HYBRID_APPWORLD_CONFIG
+```
+
+It records `hybrid-appworld.json` and checks all three compressed methods against
+one real tool mutation and independently restored environment/model branches.
+The forced fixture actions establish integration behavior, not task quality.
+Run `tests/test_rkv_memory.py` through the same focused check path to compare the
+bounded-workspace R-KV calculation with its pinned full-matrix reference.
+
 Inside an allocated GPU node, select the managed GPU environment and run:
 
 ```sh
