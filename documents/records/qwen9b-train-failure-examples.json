@@ -1,0 +1,33 @@
+{
+  "artifact_id": "comet-run:09e960e7-5e53-414a-89d4-7c9f7a2566ef",
+  "scope": "illustrative post-hoc train trajectory review, not an exhaustive causal taxonomy",
+  "observations": [
+    {
+      "task_id": "76f2c72_1",
+      "condition": "streamingllm_90_never",
+      "attempt_index": 0,
+      "status": "error",
+      "category": "api_discovery_failure",
+      "description": "Guessed nonexistent directory APIs and stopped after four consecutive errors.",
+      "trajectory": "cells/76f2c72_1-streamingllm_90_never-17/attempt-000/trajectory.json"
+    },
+    {
+      "task_id": "76f2c72_1",
+      "condition": "agentkv_40_never",
+      "attempt_index": 0,
+      "status": "error",
+      "category": "api_discovery_failure",
+      "description": "Guessed nonexistent documentation APIs and stopped before useful task progress.",
+      "trajectory": "cells/76f2c72_1-agentkv_40_never-17/attempt-000/trajectory.json"
+    },
+    {
+      "task_id": "76f2c72_1",
+      "condition": "rkv_90_never",
+      "attempt_index": 0,
+      "status": "completed",
+      "category": "task_constraint_omitted",
+      "description": "Completed with an incorrect answer after summing electricity bills without filtering by the requested year.",
+      "trajectory": "cells/76f2c72_1-rkv_90_never-17/attempt-000/trajectory.json"
+    }
+  ]
+}

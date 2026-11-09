@@ -73,6 +73,15 @@ measured compressed point. This identifies a transition on this fixture, with
 insufficient task coverage for a population claim. With N=1, single-attempt
 and oracle success are identical.
 
+Representative saved traces distinguish several failure modes. StreamingLLM
+at 90% retention guessed nonexistent directory APIs and stopped after four
+errors. AgentKV at 40% similarly guessed documentation APIs before progressing.
+R-KV at 90% reached task completion but summed electricity bills without the
+requested year filter, producing an incorrect answer. These examples support
+API-guidance and task-constraint loss as hypotheses; they do not isolate the
+causal contribution of any particular evicted token. Evaluator feedback was
+used only for this post-hoc analysis.
+
 ![L4 train fine grid](../figures/qwen9b/train-finegrid-aggressivity.png)
 
 The independently executed [budget sweep](qwen9b-independent-budgets.json)
@@ -90,6 +99,8 @@ with wide uncertainty, not evidence that a second attempt generally helps.
 The [28-arm diagnostic](qwen9b-q1-diagnostic-analysis.json) restores the same
 saved full-cache arithmetic state after two tools. Each branch receives a
 90-second budget including preparation/restore and at most one rebuild.
+The saved source contains 4,146 processed tokens and zero prior rebuilds;
+its measured 9.11-second preparation cost is charged to every branch.
 The full-cache reference succeeds. The table reports each branch's evaluated
 outcome; rows are settings on one task, not independent task samples.
 
