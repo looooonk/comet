@@ -1,0 +1,29 @@
+{
+  "artifact_id": "comet-run:c0add870-6b07-408d-a9ec-fdc9257fa6df",
+  "cloud_run_id": "gpu-20261109-074439-b5e235",
+  "plan_id": "02-resume-check",
+  "status": "passed",
+  "integration_only": true,
+  "config_digest": "adee0a2a2c03d0fb4f863e3dc5f8004afbbc7a3c1e07dd752ba28d689ea33cc5",
+  "report_sha256": "7458e63abf21e419353a49af6bb87c86f453f173ed5226e1afadf502e715c575",
+  "preserved_completed_cell": true,
+  "preserved_interrupted_trajectory": true,
+  "paired_first_turn_equal": true,
+  "paired_raw_prefix_tokens": 3161,
+  "distinct_environment_count": 3,
+  "incomplete_scoring_rejected": true,
+  "incompatible_config": {
+    "artifacts_unchanged": true,
+    "returncode": 1
+  },
+  "interrupted_cell": {
+    "elapsed_seconds": 120,
+    "attempt_count": 1,
+    "attempt_status": "interrupted",
+    "reserved_budget_seconds": 120.0
+  },
+  "fresh_cell": {
+    "elapsed_seconds": 67.17610072600019,
+    "attempt_status": "completed"
+  }
+}

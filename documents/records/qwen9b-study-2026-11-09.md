@@ -309,3 +309,13 @@ not an optimal-policy claim or frozen final settings. The queued plan is gated
 on the 16,384-token qualification and a completed v4 pilot with at least one
 success. This train-stage capability gate operates between experiments; no
 scorer is consulted by the online runner or within an attempt schedule.
+
+
+The live process-interruption harness passed in plan `02-resume-check`. Its
+first and fresh arithmetic attempts reached completion in 66.7 and 67.2 seconds.
+The killed attempt retained its transcript and consumed the full reserved
+120-second cell budget, with no replacement attempt. Completed work survived,
+incompatible configuration resume was rejected, incomplete scoring was rejected,
+and all three environments were distinct. The paired initial 3,161-token prefix
+was preserved. This is integration evidence, separate from task-quality evidence;
+see the [portable check record](qwen9b-l4-resume.json).
