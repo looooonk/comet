@@ -3,8 +3,8 @@
   "ceiling_usd": 40,
   "historical_reserve_usd": 10,
   "failed_launch_allowances_usd": 12,
-  "active_reservation_usd": 5,
-  "uncommitted_usd": 13,
+  "active_reservation_usd": 10,
+  "uncommitted_usd": 4.25,
   "cost_kind": "planning allowances and reservations, not billed charges",
   "short_failed_launch_assumptions": {
     "compute_usd_per_hour": 1,
@@ -57,8 +57,35 @@
     },
     {
       "run_id": "gpu-20261109-071607-51dbc9",
+      "status": "completed_qualification_and_four_task_baseline",
+      "lifetime_upper_seconds": 1422.5,
+      "allowance_usd": 3.25,
+      "compute_cleanup_verified": true,
+      "live_artifacts_purged": true
+    },
+    {
+      "run_id": "gpu-20261109-074144-380cde",
+      "status": "canceled_before_task_start_after_unnecessary_mount_audit",
+      "allowance_usd": 0.5,
+      "compute_cleanup_verified": true,
+      "live_artifacts_purged": true
+    },
+    {
+      "run_id": "gpu-20261109-074439-b5e235",
       "status": "active",
-      "reservation_usd": 5
+      "reservation_usd": 10,
+      "workload_limit_seconds": 25200,
+      "max_gpus": 1,
+      "max_retries": 0
     }
-  ]
+  ],
+  "completed_launch_allowances_usd": 3.25,
+  "canceled_launch_allowances_usd": 0.5,
+  "long_session_allowance": {
+    "compute_usd_per_hour": 1,
+    "maximum_lifetime_hours": 7.25,
+    "nat_processed_gib": 50,
+    "nat_usd_per_gib": 0.045,
+    "storage_network_other_allowance_usd": 0.4
+  }
 }

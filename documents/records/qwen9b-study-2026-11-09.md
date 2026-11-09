@@ -244,3 +244,22 @@ follow the pinned [AppWorld usage guide](https://github.com/StonyBrookNLP/appwor
 Sampling, context, task/seed selection, budget and cap remain unchanged. No
 answers, evaluator feedback or test outcomes inform the agent. This is a new
 pilot version, not a relabeling of the failed baseline.
+
+
+The baseline's 47 output files were fetched and verified, and its compute and
+live cloud prefix were removed. A bounded seven-hour session replaces repeated
+cold-start jobs. Plans are copied once, source remains immutable, closed cell
+segments are backed up, and scoring remains outside execution. The helper's
+submission timeout was explicitly extended for this job and restored to its
+one-hour default immediately afterward; concurrency remains one GPU with no
+automatic retries.
+
+The first session allocation, `gpu-20261109-074144-380cde`, was canceled before
+its workload started during an unnecessary mount audit. The actual returned
+Batch definition already included the storage mount; no helper patch was
+needed. No task computation or outputs were lost. Compute deletion was verified,
+and its input/queue-only prefix was removed after retaining the local inputs
+and log record. The replacement is `gpu-20261109-074439-b5e235`, source `ae8762d`.
+It first executes the declared prompt-only pilot. The revised ledger reserves
+$10 for up to 7.25 hours at $1/hour plus 50 GiB NAT and $0.40 other charges,
+leaving $4.25 uncommitted. These remain conservative allowances, not billing.
