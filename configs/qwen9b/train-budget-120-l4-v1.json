@@ -1,0 +1,6 @@
+{
+  "extends": "train-compression-l4-v1.json",
+  "experiment_id": "qwen9b-train-budget-120-l4-v1",
+  "budget_seconds": 120,
+  "notes": "Independent 120-second rerun of all seven initial compression conditions on the same two predeclared train tasks and seed. Together with independent 90- and 150-second runs, probes budgets around the observed 124-second file task and 57-second arithmetic attempt. All settings except budget and experiment identity match the 150-second screen. Outcomes are scored only after execution; shorter endpoints are fresh runs, not truncations."
+}
