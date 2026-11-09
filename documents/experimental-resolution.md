@@ -1,5 +1,9 @@
 # Resolution of experiment curves
 
+The [central study](research-direction.md) uses compaction aggressivity on the
+x-axis and task success on the y-axis. The grid below is a candidate for the
+new model, not a pending legacy run or a frozen final setting.
+
 Keep the required 80%, 50% and 25% retention comparisons and the full-cache
 control. The user also authorized finer experiment settings to reveal
 thresholds and runtime tradeoffs. Supplemental sweeps must be explicitly

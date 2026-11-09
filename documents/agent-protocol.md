@@ -47,9 +47,6 @@ Both agent settings participate in configuration hashes, checkpoint/run
 compatibility, and the final-settings freeze. It must be shared across compared
 retention conditions. Changing it defines a new experiment version.
 
-The [corrected-sampler control](../configs/pilot-sampling-control-qwen8b.json)
-and [bounded candidate](../configs/pilot-agent-guard-qwen8b.json) use identical
-prompts and numerical settings. Both require the patched sampler described in
-[engine.md](engine.md); the only agent-protocol difference is the provisional
-five-error limit and its associated correction behavior. Validate on train/dev
-before adopting that setting for a broader pilot or final evaluation.
+The earlier protocol pilots are historical evidence, not pending experiments.
+For a new model, choose and validate the protocol on train/dev before comparing
+retention conditions; use identical settings in every arm.

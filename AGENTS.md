@@ -2,7 +2,7 @@
 
 ## Scope and source of truth
 
-These instructions apply throughout this repository. Read [README.md](README.md) for the overview and [documents/proposal.pdf](documents/proposal.pdf), especially sections 5-8, before changing experimental behavior. The proposal defines the research scope; the implementation and collaboration conventions below keep the four contributors on one pipeline.
+These instructions apply throughout this repository. Read [README.md](README.md), [the current research direction](documents/research-direction.md), and [documents/proposal.pdf](documents/proposal.pdf), especially sections 5-8, before changing experimental behavior. The November 8 model pivot supersedes the proposal's original model/hardware assumptions; the implementation and collaboration conventions below keep the four contributors on one pipeline.
 
 The repository now has the shared pipeline described in [documents/experiments.md](documents/experiments.md). Inspect the implementation, [validation guide](documents/validation.md), and applicable evidence in [documents/records/](documents/records/README.md) before assuming an integration or experiment has been validated. Add verified setup and execution instructions alongside changes. Keep the README human-facing and free of dense technical details.
 
@@ -10,7 +10,9 @@ General documents must be independent of individual accounts, workspaces, and ru
 
 Implement the agreed experiments before expanding scope. Do not silently replace the model, benchmark, inference engine, methods, metrics, or budget semantics. Record any user- or team-authorized departure from the proposal in `documents/`, with its rationale and affected comparisons, and update the corresponding instructions and configs. Routine implementation choices do not need a new research decision.
 
-The user authorized a pinned Qwen3-14B exploratory train/dev pilot if Qwen3-8B is inadequate, and newer models up to 14B as fallbacks. The user subsequently authorized a qualified stronger model of at most 14B parameters for final Q1/Q2 after useful corrected train/dev results. Follow [documents/experimental-models.md](documents/experimental-models.md): document the selection, keep models' results separate, and retain the same engine and BF16 methods. No replacement is selected yet; current alternative profiles remain pilot-only until qualification and a recorded selection, after which update their guards and affected configs without asking permission again. The pinned nonthinking Qwen3-4B-Instruct-2507 profile is under exploration and requires its own numerical and live qualification. Qwen3.5-9B is unsupported by the pinned engine; document and validate any required engine or state-accounting departure before running it.
+The active direction is the newer Qwen candidate family listed in [documents/experimental-models.md](documents/experimental-models.md), including models above 14B. Stop treating the legacy 4B/8B/14B baselines or their old plans as pending work. Verify exact official identities and design the necessary backend/state support in the next implementation phase. The current registry deliberately rejects these unsupported architectures; do not bypass it or claim qualification from legacy tests. No new experiment or resource provisioning is part of repository cleanup.
+
+The central deliverable is a fine-grained compaction-aggressivity versus task-success curve with informative intermediate behavior, paired uncertainty and explicit test-time budgets. Find that operating regime on train/dev and freeze before test. Do not manufacture differences, drop flat outcomes or select favorable test tasks.
 
 ## Research contract
 
@@ -27,10 +29,10 @@ The user authorized adequately sized alternative GPUs for pilots and final evalu
 
 | Component | Required setup |
 | --- | --- |
-| Model | Qwen3-8B in BF16, or an authorized qualified replacement selected on train/dev before final evaluation |
+| Model | A qualified newer Qwen candidate selected on train/dev; no replacement selected yet |
 | Benchmark | AppWorld |
-| Inference engine | AgentKV Mini-SGLang for every method, including the full-cache baseline |
-| Hardware | One qualified NVIDIA GPU; match GPU model within each comparison |
+| Inference engine | One validated backend for every method; existing Mini-SGLang support is legacy and new backend/state support remains to be designed |
+| Hardware | A qualified GPU configuration selected for the new model; match device model/count and caps within each comparison |
 | Execution | Sequential attempts, batch size 1 |
 | Baseline | Full KV with eviction disabled; one attempt and budget-matched oracle best-of-N |
 | Eviction methods | StreamingLLM, R-KV, and AgentKV using the existing AgentKV engine implementations |
@@ -42,7 +44,7 @@ Retention is the fraction of KV entries that full-cache inference would store at
 
 The user also authorized finer experiment settings. Follow [documents/experimental-resolution.md](documents/experimental-resolution.md): retain the required retention anchors and core matrices, add explicitly declared supplemental retention/runtime/trigger points on train/dev, and freeze any final additions before test evaluation. Do not modify active configurations or select favorable test outcomes.
 
-The proposal cites these implementation revisions as starting points:
+The proposal cites these legacy implementation revisions as starting points, not as proof of support for the new candidates:
 
 - [AgentKV](https://github.com/LiuTaowen-Tony/agentkv/tree/b5280b7c42bd90962712c19f8e0047c89ca40d6d): `b5280b7c42bd90962712c19f8e0047c89ca40d6d`.
 - [kv-management-minisgl](https://github.com/LiuTaowen-Tony/kv-management-minisgl/tree/254c57bc84e4a7895159ba1062bd46c83626f511): `254c57bc84e4a7895159ba1062bd46c83626f511`.
@@ -84,7 +86,7 @@ Define observable context length and tool-call count consistently, including whe
 ## Budget and evaluation invariants
 
 - All attempts for a task/configuration share one wall-clock budget. N is an upper limit, not a promise that N attempts will fit. Do not grant each attempt a fresh per-task budget.
-- Charge attempts, tool calls, environment resets, checkpoint preparation, and rebuilds to that same budget. Exclude model loading and post-hoc evaluation consistently across methods. Record timings by component so the accounting can be checked.
+- Charge attempts, tool calls, experimental environment resets, checkpoint preparation, and rebuilds to that same budget. Exclude model loading and post-hoc evaluation consistently. The user approved one fixed train-environment initialization/close per launch outside task timing, recorded separately with no model observations or tools; opt in through a versioned config and keep historical accounting unchanged. Record all timings by component.
 - Enforce the same peak VRAM cap across comparisons, including transient rebuild peaks. Track peak total VRAM separately from peak KV-cache memory; they are not interchangeable.
 - Count timeout and out-of-memory attempts as failures. Report infeasibility separately without silently dropping failed tasks/configurations from comparisons or giving them free replacement attempts.
 - The primary metric is **oracle task success rate within budget**: the fraction of tasks solved by any of up to N attempts. Label this as an upper bound assuming perfect outcome selection, not an online selection policy.

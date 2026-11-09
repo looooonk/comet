@@ -1,8 +1,0 @@
-{
-  "extends": "pilot-baseline-repair.json",
-  "experiment_id": "pilot-sampling-control-qwen8b-v1",
-  "task_ids": ["0d8a4ee_1", "3ab5b8b_1", "57c3486_1"],
-  "seeds": [17, 18],
-  "agent": {"max_consecutive_errors": 0},
-  "notes": "Targeted dev diagnostic on the corrected, explicitly seeded Mini-SGLang sampler. Three tasks selected from ordinary 8B traces cover malformed/comment-only actions, data-shape errors, and missing authentication. Six fresh full-cache N=1 attempts, seeds 17 and 18, unchanged candidate prompt and numerical settings: 600 seconds per task/seed, 40 GiB VRAM cap, 32768 context tokens, 4096 generation tokens, BF16, reasoning enabled, no recovery. This control retains the legacy agent protocol. Compare with pilot-agent-guard-qwen8b on the same source, environment, GPU allocation, and seeds; score after both executions finish. Preserve the ongoing original 38-rollout run unchanged. This is targeted pilot evidence, not a representative success estimate or frozen final evaluation."
-}

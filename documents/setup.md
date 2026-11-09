@@ -1,5 +1,9 @@
 # Setup and execution
 
+This guide describes the retained legacy implementation. New Qwen support is
+not implemented yet; follow the [current direction](research-direction.md) before
+selecting a model, changing the backend or launching another experiment.
+
 COMET has a small CPU environment for configuration, policies, accounting, analysis,
 and unit tests. Model inference uses a separate Linux x86_64 Python 3.12 environment.
 Every method uses the same pinned Mini-SGLang engine. Nothing in the CPU tests

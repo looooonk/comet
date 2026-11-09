@@ -1,5 +1,9 @@
 # Independent full-cache numerical check
 
+This guide describes the retained legacy implementation. New Qwen support is
+not implemented yet; follow the [current direction](research-direction.md) before
+selecting a model, changing the backend or launching another experiment.
+
 The existing cached-versus-fresh checks compare two paths through Mini-SGLang.
 They can expose state loss while missing a numerical defect shared by both paths.
 The optional `tests/test_reference_gpu.py` compares full-cache Mini-SGLang logits
@@ -75,7 +79,7 @@ the 24 greedy tokens must agree exactly.
 | Reference greedy regret | 0.125 | Reference maximum logit minus its logit for the native-selected token |
 
 The initial screen used 0.02 for relative RMSE. Independent
-[FP32 calibration](records/reference-calibration-2026-11-08.md) found that this
+[FP32 calibration](https://github.com/looooonk/comet/blob/55fca50bfe3c69dfaa4420585e78850da1b3aaf4/documents/records/reference-calibration-2026-11-08.md) found that this
 also rejected ordinary Transformers BF16 arithmetic, while native error was
 smaller. Version `bf16-fp32-calibrated-v2` changes only that limit to 0.05 and
 requires separate prompt validation; the original failed result stays intact.

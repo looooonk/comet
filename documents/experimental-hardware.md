@@ -5,8 +5,12 @@ authorized other adequately sized GPUs for pilots and final evaluation, provided
 the workload finishes in a reasonable time. A100 availability is not a prerequisite
 for progressing the study.
 
-Each controlled comparison must use the same GPU model, engine/runtime, precision,
-task configuration, and experimental peak total VRAM cap. Keep measurements from
+The newer-model pivot may require model parallelism; select that configuration
+in the next infrastructure plan, before provisioning. Record device count and
+topology along with per-device and aggregate memory accounting.
+
+Each controlled comparison must use the same GPU model/count, engine/runtime,
+precision, task configuration, and experimental peak total VRAM cap. Keep measurements from
 different GPU models separate. Device capacity is not the experimental memory cap.
 Retain sequential attempts and batch size one. No change to models, benchmark,
 retention definitions, recovery semantics, or shared task budgets follows from

@@ -1,8 +1,9 @@
 # Experiment workflow
 
 COMET uses the same runner for full KV, StreamingLLM, R-KV and AgentKV. The
-proposal remains the research contract. The sample configurations are explicitly
-provisional train/dev settings; they are runnable examples, not measured or
+[current research direction](research-direction.md) supersedes the original
+model assumptions. The sample configurations are explicitly provisional train/dev
+settings; they are runnable examples, not measured or
 frozen research choices.
 
 The [experiment resolution guide](experimental-resolution.md) describes
@@ -11,11 +12,15 @@ required core comparisons and declare each added grid before execution.
 
 ## Start small
 
+The commands below describe the existing pipeline using a legacy schema example.
+They are not instructions to restart canceled pilots. New Qwen support and its
+experiment configuration must first be implemented and validated.
+
 Follow [setup.md](setup.md) to install the pinned engine and AppWorld data, then:
 
 ```sh
 source "$COMET_REPO/scripts/activate_runtime.sh" gpu
-export COMET_CONFIG="$COMET_REPO/configs/pilot-smoke.json"
+export COMET_CONFIG="$COMET_REPO/configs/examples/pilot-smoke.json"
 export COMET_RUN="$COMET_STORAGE/runs/pilot-smoke-unique-id"
 export COMET_MODEL=/path/to/pinned/model/snapshot
 comet validate "$COMET_CONFIG"
@@ -33,6 +38,19 @@ the task budget. A deterministic synthetic warmup of all methods also runs as
 model initialization, with its shapes and elapsed time recorded in the manifest;
 later shape-dependent compilation remains charged. Attempts, resets, tools,
 checkpoint work and recovery are charged.
+
+New versioned configs may set `environment_warmup` to an explicit training
+`task_id` and `seed`. Once per execution launch, the runner initializes and closes
+that isolated environment without executing tools, presenting a prompt to the
+model or loading evaluator feedback. This user-approved process setup is outside
+task budgets and recorded in `launches[].environment_initialization`, including
+failures and elapsed time. Every experimental reset, tool, checkpoint, rebuild
+and cleanup remains charged. Resume records another setup without granting extra
+task time or attempts; an already completed run does not repeat it. Omission
+preserves historical behavior and config hashes. Analysis reports setup separately,
+without amortizing it into task latency. The new path has CPU regression coverage;
+its live AppWorld isolation check is still required before experimental use.
+
 Evaluation is a separate command and is never called by execution.
 
 For short allocations, `comet run ... --max-cells N` stops cleanly after at most
@@ -58,43 +76,20 @@ manifest becomes `completed`. Omitting the option retains the complete-run
 behavior. Diagnostic runs reject it because they prepare all checkpoint sources
 before branching.
 
-The included configurations are:
+The retained schema examples are `configs/examples/pilot-smoke.json` (full KV
+and three eviction methods) and `configs/examples/checkpoint-diagnostic.json`
+(full KV and three recovery policies for AgentKV at 50%). They illustrate the
+legacy configuration format; they are not queued runs or selected settings for
+the new models. Obsolete full matrices and model-specific pilots are in Git
+history. See [configuration guidance](../configs/README.md).
 
-| Configuration | Purpose |
-| --- | --- |
-| `pilot-smoke.json` | One real dev task, one seed, full KV and all three methods at 50%; at most eight minutes of task budgets |
-| `pilot-long-context.json` | Full KV and AgentKV 50% with 16,384 tokens and ten minutes per cell; original prompt |
-| `pilot-completion.json` | Full KV and AgentKV 50% with 32,768 tokens, ten minutes per cell, Qwen reasoning, and an explicit API protocol |
-| `pilot-retention-qwen14b.json` | Exploratory 14B pilot: eight dev task families, one paired seed, full KV and AgentKV 80/50/25%, no recovery; 32 cells |
-| `pilot-matrix.json` | Q1/Q2 matrix: two full controls plus 27 compressed conditions, two dev tasks and two seeds |
-| `checkpoint-diagnostic.json` | One full control plus 27 compressed continuations from a common pre-compression checkpoint |
-
-The full pilot matrix has 116 cells at a provisional ten-minute shared budget:
-19.3 GPU-hours at the time limit, excluding model loading. Inspect smoke costs
-before scheduling it. Nothing automatically launches this sweep. Task IDs are
-verified against the requested AppWorld split before loading the model.
-
-The completion variant uses the preloaded `apis` object, prints query results,
-and separates documentation queries from subsequent API calls. It enables
-reasoning, allows 2048 generated tokens per turn, and uses a 32,768-token context.
-Both conditions share the same prompt and numerical settings. These provisional
-settings do not establish task-solving quality or qualify unvalidated hardware as
-research pilot evidence. Run history and observations belong in
-[records/](records/README.md).
-
-The 14B variant is a separate, authorized model exploration described in
-[experimental-models.md](experimental-models.md). It does not change the main
-8B research matrix. Its one-attempt conditions isolate retention without recovery.
-The small task sample estimates feasibility and variance; it cannot establish
-small accuracy differences.
-
-After analysis, use a separate CPU checkout environment for optional plotting.
-This command synchronizes its CPU environment; do not point
-`UV_PROJECT_ENVIRONMENT` at the GPU runtime:
+After analysis, select a separately managed CPU environment with the plotting
+extra installed, then use the shared plotting command:
 
 ```sh
-uv run --frozen --extra plots comet plot runs/pilot/analysis.json \
-  --output documents/records/retention-pilot.svg \
+source "$COMET_REPO/scripts/activate_runtime.sh" cpu
+comet plot runs/pilot/analysis.json \
+  --output runs/pilot/figures/retention.svg \
   --title "AppWorld retention pilot"
 ```
 
@@ -211,16 +206,16 @@ otherwise completed source while preserving known costs and any primary failure.
 
 ## Baseline behavior diagnostic
 
-Before expanding a weak full-cache baseline, use the versioned
-[paired prompt diagnostic](baseline-diagnostic.md). It tests authentication,
-pagination, and response inspection on a declared dev regression subset while
-keeping numerical settings fixed. Its targeted results must remain separate
-from the retention pilot and main research evaluation.
+Select the new model and validate its integration before declaring a full-cache
+train/dev pilot. Inspect ordinary trajectories for API, authentication, task
+coverage and premature-completion errors. Use a predeclared representative
+sample for capability estimates; a targeted regression set is a separate test.
+See the [current research direction](research-direction.md).
 
-The [bounded-agent diagnostic](agent-protocol.md) compares the corrected sampler
-with and without execution-error feedback and a consecutive-error limit. Its
-three-task dev subset uses two paired N=1 seeds. This optional protocol changes
-agent behavior and must be recorded and frozen with the other settings.
+The optional [agent protocol](agent-protocol.md) changes feedback and action
+validation. If enabled, evaluate it as an explicit paired intervention and freeze
+the same setting across retention conditions. Historical prompt/guard pilots are
+not pending work and must not restart automatically.
 
 ## Freeze and evaluate
 

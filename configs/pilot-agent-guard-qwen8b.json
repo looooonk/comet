@@ -1,6 +1,0 @@
-{
-  "extends": "pilot-sampling-control-qwen8b.json",
-  "experiment_id": "pilot-agent-guard-qwen8b-v1",
-  "agent": {"max_consecutive_errors": 5},
-  "notes": "Paired candidate for the corrected-sampler control. The prompt, tasks, seeds, model, GPU, sampling, context, time, memory, and N=1 settings are unchanged. The bounded agent protocol rejects comment-only blocks, appends targeted execution guidance after errors, and ends an attempt as an execution failure after five consecutive execution/action errors. Successful execution resets that streak; diagnostic checkpoints preserve it. The provisional threshold of five is a dev choice, not a frozen research setting. All feedback and failures remain in the same attempt budget. The policy neither consults evaluator scores nor resets or replays the environment. Earlier successful actions within a failed block remain in effect. It does not detect every unproductive but successful action. Score only after both paired runs finish; do not pool configurations or treat the original broken-sampling run as a controlled comparison."
-}

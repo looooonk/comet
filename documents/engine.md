@@ -1,14 +1,19 @@
 # Native Mini-SGLang integration
 
+This guide describes the retained legacy implementation. New Qwen support is
+not implemented yet; follow the [current direction](research-direction.md) before
+selecting a model, changing the backend or launching another experiment.
+
 COMET uses the proposal's Mini-SGLang revision
 `254c57bc84e4a7895159ba1062bd46c83626f511`, with
 `patches/minisgl-comet.patch`. The AgentKV reference repository is pinned at
 `b5280b7c42bd90962712c19f8e0047c89ca40d6d`. Model and tokenizer both use
 `Qwen/Qwen3-8B` revision `b968826d9c46dd6066d109eabc6255188de91218` in BF16.
 Pass the local Hugging Face snapshot directory, whose basename is that revision.
-The authorized [Qwen3-14B exploratory pilot](experimental-models.md) uses its own
-pinned model/tokenizer revision with this same engine; final evaluation remains
-restricted to Qwen3-8B.
+The legacy 4B and 14B profiles use their own pinned revisions in this engine.
+Their pilot-only guards remain in code for historical reproduction; the
+[new model decision](experimental-models.md) supersedes the old final-model scope.
+No candidate architecture inherits support from these profiles.
 The adapter verifies the checkout revision and exact patched-file hashes and rejects
 unrecorded tracked upstream changes. It does not use the HTTP serving API.
 
@@ -209,7 +214,7 @@ persistence check also requires sampled generation to advance the CUDA RNG.
 `COMET_TEST_MODEL` defaults to `Qwen/Qwen3-8B`; select `Qwen/Qwen3-14B` explicitly
 with its corresponding snapshot for exploratory integration checks. The long
 32K capacity case additionally requires `COMET_TEST_CAPACITY=1`; see the
-[exploratory model instructions](experimental-models.md) for its fixed settings
+[archived model instructions](https://github.com/looooonk/comet/blob/55fca50bfe3c69dfaa4420585e78850da1b3aaf4/documents/experimental-models.md) for its fixed settings
 and evidence output.
 
 The `memory_cap` case fixes its cap before constructing the engine, using the
