@@ -1,0 +1,1911 @@
+{
+  "arms": {
+    "candidate": {
+      "config_digest": "8d120bb898d462e0fec1d88e828dc8433853c63e934375a9a865f49afa1d2f2b",
+      "environment_initialization": {
+        "charged_to_task_budget": false,
+        "launches": [
+          {
+            "artifact_dir": "initialization/launch-000",
+            "charged_to_task_budget": false,
+            "launch_index": 0,
+            "model_observations": 0,
+            "seconds": 24.760214425000072,
+            "seed": 0,
+            "split": "train",
+            "status": "completed",
+            "task_id": "82e2fac_1",
+            "tool_calls": 0
+          }
+        ],
+        "measured_launches": 1,
+        "measured_seconds": 24.760214425000072,
+        "recorded_launches": 1,
+        "scope": "Separate process setup; never amortized into task latency. Missing durations are not zero.",
+        "settings": {
+          "seed": 0,
+          "task_id": "82e2fac_1"
+        },
+        "status_counts": {
+          "completed": 1
+        },
+        "total_launches": 1
+      },
+      "execution_digest": "a6a44d18d97a620d8a0a58d2bb052ad91daee2b74cba8faa574b1bcf35e29083",
+      "experiment_id": "qwen9b-train-protocol-l4-v3",
+      "protocol": {
+        "prompt": "You operate a live AppWorld task by executing Python. Return exactly one fenced Python code block per turn, with short executable code and no prose. Python variables persist. Print values needed for the next decision.\n\nThe Python object apis ALREADY EXISTS. Call its methods directly, for example apis.supervisor.show_profile(). NEVER import apis, api_docs, supervisor, or an app module. Do not use requests, HTTP URLs, api.call, or a client library.\n\nYour FIRST action must only inspect the available API names for an app relevant to the task. Example for a Spotify task:\n```python\nprint(apis.api_docs.show_api_descriptions(app_name=\"spotify\"))\n```\nReplace spotify with the relevant app name. Stop the code block and wait for the actual result. Before calling an unfamiliar API, inspect its complete documentation in a separate turn:\n```python\nprint(apis.api_docs.show_api_doc(app_name=\"spotify\", api_name=\"login\"))\n```\nUse the actual app and API names returned by the documentation. Read the documented argument names, return shape, authentication and pagination. Call APIs with keyword arguments. Do not guess names, arguments, IDs, passwords or response fields.\n\nObtain credentials with apis.supervisor.show_account_passwords(). Select the record whose account_name exactly equals the app name, such as spotify or file_system; do not look for a supervisor password. Use the app's documented username type from the supplied supervisor profile or apis.supervisor.show_profile(). Save the login result's access_token and pass access_token explicitly to endpoints that require it. Never invent a password or use the email address as a password.\n\nWork in short steps. After an error, inspect the relevant API documentation and fix the specific assumption. Never repeat the same failing block unchanged. Earlier calls in a failed block may already have taken effect. Inspect actual returned values, handle every documented page until exhausted, and follow all qualifiers and exclusions in the user instruction. Verify requested changes through ordinary APIs. Finally call apis.supervisor.complete_task(), or pass the computed answer through its documented answer argument for a question. Do not complete merely because a code block ran without an error. Tool observations appear in <tool_response> tags."
+      },
+      "run_id": "b37f6285-4b66-49c7-ac6b-62f5e62b1b30",
+      "artifact_id": "comet-run:b37f6285-4b66-49c7-ac6b-62f5e62b1b30"
+    },
+    "control": {
+      "config_digest": "4142714a99c8f696e2953f1e3abda9d7ff9d652cb1d7788581fb0f127a14715c",
+      "environment_initialization": {
+        "charged_to_task_budget": false,
+        "launches": [
+          {
+            "artifact_dir": "initialization/launch-000",
+            "charged_to_task_budget": false,
+            "launch_index": 0,
+            "model_observations": 0,
+            "seconds": 23.76829463399997,
+            "seed": 0,
+            "split": "train",
+            "status": "completed",
+            "task_id": "82e2fac_1",
+            "tool_calls": 0
+          }
+        ],
+        "measured_launches": 1,
+        "measured_seconds": 23.76829463399997,
+        "recorded_launches": 1,
+        "scope": "Separate process setup; never amortized into task latency. Missing durations are not zero.",
+        "settings": {
+          "seed": 0,
+          "task_id": "82e2fac_1"
+        },
+        "status_counts": {
+          "completed": 1
+        },
+        "total_launches": 1
+      },
+      "execution_digest": "5194e844a9d233ec9463b3b7938a92982356bc365d82f577918f01b46eccdadf",
+      "experiment_id": "qwen9b-train-baseline-l4-v2",
+      "protocol": {
+        "prompt": "You are an agent solving an AppWorld task using a persistent Python environment and its apis object. Return exactly one executable fenced Python block per response, with short code and no prose. Read API documentation before using unfamiliar functions. Use the supervisor account credentials to log in to each required app; pass the returned access_token to authenticated endpoints. Inspect real response types and fields. When listing objects, handle all pages until the API returns no more items. Follow the complete user instruction, including qualifiers and exclusions. Print concise observations needed for your next step. Check the effects through ordinary app APIs before completing. For a question, give the computed answer through the supervisor completion API. Never invent API names, arguments, object IDs, or data. Tool output appears in <tool_response> tags. Python variables persist across turns."
+      },
+      "run_id": "985b410d-01aa-4851-9f8d-03a8728b19b2",
+      "artifact_id": "comet-run:985b410d-01aa-4851-9f8d-03a8728b19b2"
+    }
+  },
+  "changed_protocol_fields": [
+    "prompt"
+  ],
+  "conditions": {
+    "full_once": {
+      "candidate": {
+        "actual_attempts": {
+          "bootstrap_degenerate": true,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "standard_error": 0.0,
+          "task_count": 4,
+          "uncertainty_notes": [
+            "A degenerate bootstrap interval does not establish zero population uncertainty."
+          ],
+          "value": 1
+        },
+        "attempt_status_counts": {
+          "completed": 1,
+          "context_limit": 2,
+          "error": 1
+        },
+        "behavior": {
+          "attempt_duration_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              28.24192199225004,
+              59.98193556899997
+            ],
+            "standard_error": 8.82109126734128,
+            "task_count": 4,
+            "uncertainty_notes": [],
+            "value": 43.12894663925002
+          },
+          "coverage": {
+            "interrupted_prefixes": 0,
+            "observed_trajectories": 4,
+            "total_attempts": 4,
+            "total_tasks": 4
+          },
+          "definitions": {
+            "attempt_duration_seconds": "mean measured attempt duration per cell, then seeds within task; interrupted attempts unavailable",
+            "coverage": "task estimates require every paired seed; saved interrupted prefixes remain visible in error rates",
+            "error_rate": "error turns / saved turns per cell, averaged across seeds within task"
+          },
+          "error_categories": {
+            "HTTP 401": 4,
+            "Invalid action": 1,
+            "Unexpected parameter": 2
+          },
+          "error_rate": {
+            "bootstrap_degenerate": false,
+            "bounded_mean_ci95": [
+              0,
+              0.9421459959655478
+            ],
+            "ci95": [
+              0.05,
+              0.525
+            ],
+            "standard_error": 0.1469695774279235,
+            "task_count": 4,
+            "uncertainty_notes": [],
+            "value": 0.2630952380952381
+          },
+          "error_turns": 7,
+          "reserved_budget_seconds": 0,
+          "saved_turns": 33,
+          "trajectories": [
+            {
+              "attempt_index": 0,
+              "categories": {
+                "HTTP 401": 3,
+                "Unexpected parameter": 1
+              },
+              "error_turns": 4,
+              "first_error_turn": 3,
+              "longest_error_streak": 4,
+              "path": "cells/34d9492_1-full_once-17/attempt-000/trajectory.json",
+              "repeated_action_strings": 2,
+              "seed": 17,
+              "sha256": "39e03fbb886834e9834b303258cf4f94f2baa7e0a7ba46fe529562d0188a2f60",
+              "task_id": "34d9492_1",
+              "turns": 6
+            },
+            {
+              "attempt_index": 0,
+              "categories": {},
+              "error_turns": 0,
+              "first_error_turn": null,
+              "longest_error_streak": 0,
+              "path": "cells/76f2c72_1-full_once-17/attempt-000/trajectory.json",
+              "repeated_action_strings": 0,
+              "seed": 17,
+              "sha256": "dba56644b2d21edeb647556f514164c870b4a99a5c57b1d13e9357497bf06796",
+              "task_id": "76f2c72_1",
+              "turns": 10
+            },
+            {
+              "attempt_index": 0,
+              "categories": {
+                "HTTP 401": 1
+              },
+              "error_turns": 1,
+              "first_error_turn": 7,
+              "longest_error_streak": 1,
+              "path": "cells/771d8fc_1-full_once-17/attempt-000/trajectory.json",
+              "repeated_action_strings": 0,
+              "seed": 17,
+              "sha256": "49da8df49cd8071284311c15f89d2f74ebc7b40407503079bc413203712db344",
+              "task_id": "771d8fc_1",
+              "turns": 10
+            },
+            {
+              "attempt_index": 0,
+              "categories": {
+                "Invalid action": 1,
+                "Unexpected parameter": 1
+              },
+              "error_turns": 2,
+              "first_error_turn": 6,
+              "longest_error_streak": 2,
+              "path": "cells/692c77d_1-full_once-17/attempt-000/trajectory.json",
+              "repeated_action_strings": 0,
+              "seed": 17,
+              "sha256": "108eedd0fa58f2b332a312751505770b89482a6061ac132a4b59f8961c259d3f",
+              "task_id": "692c77d_1",
+              "turns": 7
+            }
+          ]
+        },
+        "condition": {
+          "id": "full_once",
+          "max_attempts": 1,
+          "method": "full",
+          "recovery": "never",
+          "retention": 1.0
+        },
+        "infeasible_cells": 0,
+        "latency_seconds": {
+          "bootstrap_degenerate": false,
+          "ci95": [
+            28.257487424999994,
+            59.99858898674998
+          ],
+          "standard_error": 8.821223970153573,
+          "task_count": 4,
+          "uncertainty_notes": [],
+          "value": 43.14479390225
+        },
+        "mean_peak_kv_bytes": {
+          "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+          "bootstrap_degenerate": false,
+          "ci95": [
+            184311808.0,
+            263667712.0
+          ],
+          "coverage": {
+            "complete_cells": 4,
+            "complete_tasks": 4,
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "total_cells": 4,
+            "total_tasks": 4
+          },
+          "standard_error": 24704813.392785463,
+          "task_count": 4,
+          "uncertainty_notes": [],
+          "unit": "bytes",
+          "value": 230694912
+        },
+        "mean_peak_total_vram_bytes": {
+          "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+          "bootstrap_degenerate": false,
+          "ci95": [
+            20197867520.0,
+            21467693056.0
+          ],
+          "coverage": {
+            "complete_cells": 4,
+            "complete_tasks": 4,
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "total_cells": 4,
+            "total_tasks": 4
+          },
+          "standard_error": 421885185.54815274,
+          "task_count": 4,
+          "uncertainty_notes": [],
+          "unit": "bytes",
+          "value": 21041971200
+        },
+        "metrics": {
+          "compaction_seconds": {
+            "aggregation": "sum",
+            "coverage": {
+              "complete": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "seconds",
+            "value": 0.0
+          },
+          "decode_throughput": {
+            "aggregation": "ratio of sums",
+            "coverage": {
+              "complete": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "decode tokens / decode second",
+            "value": 13.529205011309296
+          },
+          "estimated_flops": {
+            "aggregation": "sum",
+            "coverage": {
+              "complete": 4
+            },
+            "methods": [
+              "2P_text_per_token_plus_4LHD_per_full_attention_pair"
+            ],
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "estimated FLOPs",
+            "value": 517738169263104
+          },
+          "generated_tokens": {
+            "aggregation": "sum",
+            "coverage": {
+              "complete": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "tokens",
+            "value": 1456
+          },
+          "peak_kv_bytes": {
+            "aggregation": "max",
+            "coverage": {
+              "unspecified": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "bytes",
+            "value": 268435456
+          },
+          "peak_recurrent_state_bytes": {
+            "aggregation": "max",
+            "coverage": {
+              "unspecified": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "bytes",
+            "value": 51904512
+          },
+          "peak_total_vram_bytes": {
+            "aggregation": "max",
+            "coverage": {
+              "unspecified": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "bytes",
+            "value": 21470838784
+          },
+          "prefill_tokens": {
+            "aggregation": "sum",
+            "coverage": {
+              "complete": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "tokens",
+            "value": 26705
+          }
+        },
+        "observations": {
+          "actual_attempt_distribution": {
+            "1": 4
+          },
+          "attained_oracle_curve": {
+            "budget_seconds": 300,
+            "coverage": {
+              "complete_cells": 4,
+              "success_cells": 1,
+              "timed_success_cells": 1,
+              "total_cells": 4,
+              "unavailable_cells": []
+            },
+            "points": [
+              {
+                "bootstrap_degenerate": true,
+                "bounded_mean_ci95": [
+                  0,
+                  0.6790507578703098
+                ],
+                "ci95": [
+                  0.0,
+                  0.0
+                ],
+                "seconds": 0.0,
+                "standard_error": 0.0,
+                "task_count": 4,
+                "uncertainty_notes": [
+                  "A degenerate bootstrap interval does not establish zero population uncertainty."
+                ],
+                "value": 0.0
+              },
+              {
+                "bootstrap_degenerate": false,
+                "bounded_mean_ci95": [
+                  0,
+                  0.9290507578703098
+                ],
+                "ci95": [
+                  0.0,
+                  0.75
+                ],
+                "seconds": 66.52288077699995,
+                "standard_error": 0.25,
+                "task_count": 4,
+                "uncertainty_notes": [],
+                "value": 0.25
+              },
+              {
+                "bootstrap_degenerate": false,
+                "bounded_mean_ci95": [
+                  0,
+                  0.9290507578703098
+                ],
+                "ci95": [
+                  0.0,
+                  0.75
+                ],
+                "seconds": 300,
+                "standard_error": 0.25,
+                "task_count": 4,
+                "uncertainty_notes": [],
+                "value": 0.25
+              }
+            ],
+            "scope": "Success available by cumulative budget-accounted attempt completion time along executed schedules; perfect-selection upper bound, not smaller-budget reruns or an online selector.",
+            "status": "available"
+          },
+          "attempts": [
+            {
+              "attempt_index": 0,
+              "budget_elapsed_seconds": 41.93656522200001,
+              "completion_seconds": 41.93656522200001,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "status": "error",
+              "success": false,
+              "task_id": "34d9492_1",
+              "timing_status": "recorded"
+            },
+            {
+              "attempt_index": 0,
+              "budget_elapsed_seconds": 23.69430850699996,
+              "completion_seconds": 23.69430850699996,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "status": "context_limit",
+              "success": false,
+              "task_id": "692c77d_1",
+              "timing_status": "recorded"
+            },
+            {
+              "attempt_index": 0,
+              "budget_elapsed_seconds": 66.52288077699995,
+              "completion_seconds": 66.52288077699995,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "status": "completed",
+              "success": true,
+              "task_id": "76f2c72_1",
+              "timing_status": "recorded"
+            },
+            {
+              "attempt_index": 0,
+              "budget_elapsed_seconds": 40.41530964499998,
+              "completion_seconds": 40.41530964499998,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "status": "context_limit",
+              "success": false,
+              "task_id": "771d8fc_1",
+              "timing_status": "recorded"
+            }
+          ],
+          "cells": [
+            {
+              "actual_attempts": 1,
+              "budget_accounted_seconds": 41.93893221600001,
+              "budget_seconds": 300,
+              "first_attempt_success": false,
+              "first_success_time": {
+                "attempt_index": null,
+                "coverage": "no_success",
+                "reason": null,
+                "seconds": null
+              },
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "actual_attempts": 1,
+              "budget_accounted_seconds": 23.697005827999988,
+              "budget_seconds": 300,
+              "first_attempt_success": false,
+              "first_success_time": {
+                "attempt_index": null,
+                "coverage": "no_success",
+                "reason": null,
+                "seconds": null
+              },
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1"
+            },
+            {
+              "actual_attempts": 1,
+              "budget_accounted_seconds": 66.52555919099996,
+              "budget_seconds": 300,
+              "first_attempt_success": true,
+              "first_success_time": {
+                "attempt_index": 0,
+                "coverage": "recorded",
+                "reason": null,
+                "seconds": 66.52288077699995
+              },
+              "oracle_success": true,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            },
+            {
+              "actual_attempts": 1,
+              "budget_accounted_seconds": 40.41767837400005,
+              "budget_seconds": 300,
+              "first_attempt_success": false,
+              "first_success_time": {
+                "attempt_index": null,
+                "coverage": "no_success",
+                "reason": null,
+                "seconds": null
+              },
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1"
+            }
+          ],
+          "decisions": [
+            {
+              "attempt_index": 0,
+              "context_tokens": 3174,
+              "decision_index": 0,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "34d9492_1",
+              "tool_calls": 0,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3934,
+              "decision_index": 1,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "34d9492_1",
+              "tool_calls": 1,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 4201,
+              "decision_index": 2,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "34d9492_1",
+              "tool_calls": 2,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 4404,
+              "decision_index": 3,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "34d9492_1",
+              "tool_calls": 3,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 4622,
+              "decision_index": 4,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "34d9492_1",
+              "tool_calls": 4,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 4840,
+              "decision_index": 5,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "34d9492_1",
+              "tool_calls": 5,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3143,
+              "decision_index": 0,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1",
+              "tool_calls": 0,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 5879,
+              "decision_index": 1,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1",
+              "tool_calls": 1,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 6454,
+              "decision_index": 2,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1",
+              "tool_calls": 2,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 7282,
+              "decision_index": 3,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1",
+              "tool_calls": 3,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 7714,
+              "decision_index": 4,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1",
+              "tool_calls": 4,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 7983,
+              "decision_index": 5,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1",
+              "tool_calls": 5,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 8169,
+              "decision_index": 6,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1",
+              "tool_calls": 6,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3140,
+              "decision_index": 0,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 0,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3900,
+              "decision_index": 1,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 1,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 4406,
+              "decision_index": 2,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 2,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 4674,
+              "decision_index": 3,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 3,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 4871,
+              "decision_index": 4,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 4,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 5050,
+              "decision_index": 5,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 5,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 6567,
+              "decision_index": 6,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 6,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 6724,
+              "decision_index": 7,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 7,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 7800,
+              "decision_index": 8,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 8,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 7884,
+              "decision_index": 9,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 9,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3135,
+              "decision_index": 0,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 0,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3991,
+              "decision_index": 1,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 1,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 4761,
+              "decision_index": 2,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 2,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 5540,
+              "decision_index": 3,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 3,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 5800,
+              "decision_index": 4,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 4,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 6061,
+              "decision_index": 5,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 5,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 6331,
+              "decision_index": 6,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 6,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 6632,
+              "decision_index": 7,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 7,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 6883,
+              "decision_index": 8,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 8,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 7052,
+              "decision_index": 9,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 9,
+              "triggered": false
+            }
+          ],
+          "latency_scope": "Total observed cell budget accounting, including interruption reservations; not time to first success or a replay at smaller budgets."
+        },
+        "oracle_success_rate": {
+          "bootstrap_degenerate": false,
+          "bounded_mean_ci95": [
+            0,
+            0.9290507578703098
+          ],
+          "ci95": [
+            0.0,
+            0.75
+          ],
+          "standard_error": 0.25,
+          "task_count": 4,
+          "uncertainty_notes": [],
+          "value": 0.25
+        },
+        "recovery": {
+          "admission_rate": {
+            "observed_requests": 0,
+            "total_requests": 0,
+            "value": null
+          },
+          "admitted_count": 0,
+          "allowance_consumed_count": 0,
+          "coverage": {
+            "attempts_with_decisions": 4,
+            "interrupted_attempts": 0,
+            "requests_with_allowance_state": 0,
+            "total_attempts": 4,
+            "unknown_admission_requests": 0
+          },
+          "decision_count": 33,
+          "failure_reasons": {},
+          "mean_cell_budget_fraction": {
+            "complete_cells": 4,
+            "total_cells": 4,
+            "value": 0.0
+          },
+          "recorded_seconds": {
+            "includes": "admission checks and admitted rebuilds, including observed failure time",
+            "observed_requests": 0,
+            "total_requests": 0,
+            "value": null
+          },
+          "refusal_reasons": {},
+          "requested_count": 0,
+          "result_status_counts": {}
+        },
+        "reserved_budget_seconds": {
+          "bootstrap_degenerate": true,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "standard_error": 0.0,
+          "task_count": 4,
+          "uncertainty_notes": [
+            "A degenerate bootstrap interval does not establish zero population uncertainty."
+          ],
+          "value": 0
+        },
+        "single_attempt_success_rate": {
+          "bootstrap_degenerate": false,
+          "bounded_mean_ci95": [
+            0,
+            0.9290507578703098
+          ],
+          "ci95": [
+            0.0,
+            0.75
+          ],
+          "standard_error": 0.25,
+          "task_count": 4,
+          "uncertainty_notes": [],
+          "value": 0.25
+        },
+        "zero_attempt_cells": 0
+      },
+      "condition": {
+        "id": "full_once",
+        "max_attempts": 1,
+        "method": "full",
+        "recovery": "never",
+        "retention": 1.0
+      },
+      "control": {
+        "actual_attempts": {
+          "bootstrap_degenerate": true,
+          "ci95": [
+            1.0,
+            1.0
+          ],
+          "standard_error": 0.0,
+          "task_count": 4,
+          "uncertainty_notes": [
+            "A degenerate bootstrap interval does not establish zero population uncertainty."
+          ],
+          "value": 1
+        },
+        "attempt_status_counts": {
+          "error": 4
+        },
+        "behavior": {
+          "attempt_duration_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              74.1216242895,
+              118.09131880749996
+            ],
+            "standard_error": 13.790736850196309,
+            "task_count": 4,
+            "uncertainty_notes": [],
+            "value": 95.42192562025
+          },
+          "coverage": {
+            "interrupted_prefixes": 0,
+            "observed_trajectories": 4,
+            "total_attempts": 4,
+            "total_tasks": 4
+          },
+          "definitions": {
+            "attempt_duration_seconds": "mean measured attempt duration per cell, then seeds within task; interrupted attempts unavailable",
+            "coverage": "task estimates require every paired seed; saved interrupted prefixes remain visible in error rates",
+            "error_rate": "error turns / saved turns per cell, averaged across seeds within task"
+          },
+          "error_categories": {
+            "HTTP 401": 1,
+            "NameError": 1,
+            "Unexpected parameter": 1,
+            "other execution error": 13
+          },
+          "error_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0.3209492421296902,
+              1
+            ],
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 4,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1.0
+          },
+          "error_turns": 16,
+          "reserved_budget_seconds": 0,
+          "saved_turns": 16,
+          "trajectories": [
+            {
+              "attempt_index": 0,
+              "categories": {
+                "other execution error": 4
+              },
+              "error_turns": 4,
+              "first_error_turn": 1,
+              "longest_error_streak": 4,
+              "path": "cells/34d9492_1-full_once-17/attempt-000/trajectory.json",
+              "repeated_action_strings": 3,
+              "seed": 17,
+              "sha256": "0fd6c7061d25b6a0ff13989e39f05dd69cf3dfb55c80513d0ca9a8d6144e200e",
+              "task_id": "34d9492_1",
+              "turns": 4
+            },
+            {
+              "attempt_index": 0,
+              "categories": {
+                "other execution error": 4
+              },
+              "error_turns": 4,
+              "first_error_turn": 1,
+              "longest_error_streak": 4,
+              "path": "cells/76f2c72_1-full_once-17/attempt-000/trajectory.json",
+              "repeated_action_strings": 1,
+              "seed": 17,
+              "sha256": "83f2de8b34a0f65716a818da2cfa6072295d383a467815fd22a25fae1c7f9ddb",
+              "task_id": "76f2c72_1",
+              "turns": 4
+            },
+            {
+              "attempt_index": 0,
+              "categories": {
+                "HTTP 401": 1,
+                "NameError": 1,
+                "Unexpected parameter": 1,
+                "other execution error": 1
+              },
+              "error_turns": 4,
+              "first_error_turn": 1,
+              "longest_error_streak": 4,
+              "path": "cells/771d8fc_1-full_once-17/attempt-000/trajectory.json",
+              "repeated_action_strings": 0,
+              "seed": 17,
+              "sha256": "6567308e6cfbb939d7fffebf7cd7c30ea75775642b2440082c0aa9e864b532ee",
+              "task_id": "771d8fc_1",
+              "turns": 4
+            },
+            {
+              "attempt_index": 0,
+              "categories": {
+                "other execution error": 4
+              },
+              "error_turns": 4,
+              "first_error_turn": 1,
+              "longest_error_streak": 4,
+              "path": "cells/692c77d_1-full_once-17/attempt-000/trajectory.json",
+              "repeated_action_strings": 2,
+              "seed": 17,
+              "sha256": "52251409b7cf1e89f89c64e3f09cc4b31dc5036357ac4b7d5abdddf5df146938",
+              "task_id": "692c77d_1",
+              "turns": 4
+            }
+          ]
+        },
+        "condition": {
+          "id": "full_once",
+          "max_attempts": 1,
+          "method": "full",
+          "recovery": "never",
+          "retention": 1.0
+        },
+        "infeasible_cells": 0,
+        "latency_seconds": {
+          "bootstrap_degenerate": false,
+          "ci95": [
+            74.13673953249992,
+            118.10627632250004
+          ],
+          "standard_error": 13.790820973985406,
+          "task_count": 4,
+          "uncertainty_notes": [],
+          "value": 95.43764222249996
+        },
+        "mean_peak_kv_bytes": {
+          "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+          "bootstrap_degenerate": false,
+          "ci95": [
+            134791168.0,
+            152879104.0
+          ],
+          "coverage": {
+            "complete_cells": 4,
+            "complete_tasks": 4,
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "total_cells": 4,
+            "total_tasks": 4
+          },
+          "standard_error": 5486202.236746777,
+          "task_count": 4,
+          "uncertainty_notes": [],
+          "unit": "bytes",
+          "value": 143622144
+        },
+        "mean_peak_total_vram_bytes": {
+          "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+          "bootstrap_degenerate": false,
+          "ci95": [
+            21254832128.0,
+            21283143680.0
+          ],
+          "coverage": {
+            "complete_cells": 4,
+            "complete_tasks": 4,
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "total_cells": 4,
+            "total_tasks": 4
+          },
+          "standard_error": 8897462.402273582,
+          "task_count": 4,
+          "uncertainty_notes": [],
+          "unit": "bytes",
+          "value": 21267415040
+        },
+        "metrics": {
+          "compaction_seconds": {
+            "aggregation": "sum",
+            "coverage": {
+              "complete": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "seconds",
+            "value": 0.0
+          },
+          "decode_throughput": {
+            "aggregation": "ratio of sums",
+            "coverage": {
+              "complete": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "decode tokens / decode second",
+            "value": 13.655226136961028
+          },
+          "estimated_flops": {
+            "aggregation": "sum",
+            "coverage": {
+              "complete": 4
+            },
+            "methods": [
+              "2P_text_per_token_plus_4LHD_per_full_attention_pair"
+            ],
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "estimated FLOPs",
+            "value": 319015318220800
+          },
+          "generated_tokens": {
+            "aggregation": "sum",
+            "coverage": {
+              "complete": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "tokens",
+            "value": 4747
+          },
+          "peak_kv_bytes": {
+            "aggregation": "max",
+            "coverage": {
+              "unspecified": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "bytes",
+            "value": 157122560
+          },
+          "peak_recurrent_state_bytes": {
+            "aggregation": "max",
+            "coverage": {
+              "unspecified": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "bytes",
+            "value": 51904512
+          },
+          "peak_total_vram_bytes": {
+            "aggregation": "max",
+            "coverage": {
+              "unspecified": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "bytes",
+            "value": 21292580864
+          },
+          "prefill_tokens": {
+            "aggregation": "sum",
+            "coverage": {
+              "complete": 4
+            },
+            "observed_attempts": 4,
+            "total_attempts": 4,
+            "unit": "tokens",
+            "value": 12785
+          }
+        },
+        "observations": {
+          "actual_attempt_distribution": {
+            "1": 4
+          },
+          "attained_oracle_curve": {
+            "budget_seconds": 300,
+            "coverage": {
+              "complete_cells": 4,
+              "success_cells": 0,
+              "timed_success_cells": 0,
+              "total_cells": 4,
+              "unavailable_cells": []
+            },
+            "points": [
+              {
+                "bootstrap_degenerate": true,
+                "bounded_mean_ci95": [
+                  0,
+                  0.6790507578703098
+                ],
+                "ci95": [
+                  0.0,
+                  0.0
+                ],
+                "seconds": 0.0,
+                "standard_error": 0.0,
+                "task_count": 4,
+                "uncertainty_notes": [
+                  "A degenerate bootstrap interval does not establish zero population uncertainty."
+                ],
+                "value": 0.0
+              },
+              {
+                "bootstrap_degenerate": true,
+                "bounded_mean_ci95": [
+                  0,
+                  0.6790507578703098
+                ],
+                "ci95": [
+                  0.0,
+                  0.0
+                ],
+                "seconds": 66.52288077699995,
+                "standard_error": 0.0,
+                "task_count": 4,
+                "uncertainty_notes": [
+                  "A degenerate bootstrap interval does not establish zero population uncertainty."
+                ],
+                "value": 0.0
+              },
+              {
+                "bootstrap_degenerate": true,
+                "bounded_mean_ci95": [
+                  0,
+                  0.6790507578703098
+                ],
+                "ci95": [
+                  0.0,
+                  0.0
+                ],
+                "seconds": 300,
+                "standard_error": 0.0,
+                "task_count": 4,
+                "uncertainty_notes": [
+                  "A degenerate bootstrap interval does not establish zero population uncertainty."
+                ],
+                "value": 0.0
+              }
+            ],
+            "scope": "Success available by cumulative budget-accounted attempt completion time along executed schedules; perfect-selection upper bound, not smaller-budget reruns or an online selector.",
+            "status": "available"
+          },
+          "attempts": [
+            {
+              "attempt_index": 0,
+              "budget_elapsed_seconds": 102.82015871299996,
+              "completion_seconds": 102.82015871299996,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "status": "error",
+              "success": false,
+              "task_id": "34d9492_1",
+              "timing_status": "recorded"
+            },
+            {
+              "attempt_index": 0,
+              "budget_elapsed_seconds": 67.80731586899992,
+              "completion_seconds": 67.80731586899992,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "status": "error",
+              "success": false,
+              "task_id": "692c77d_1",
+              "timing_status": "recorded"
+            },
+            {
+              "attempt_index": 0,
+              "budget_elapsed_seconds": 130.65115868499993,
+              "completion_seconds": 130.65115868499993,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "status": "error",
+              "success": false,
+              "task_id": "76f2c72_1",
+              "timing_status": "recorded"
+            },
+            {
+              "attempt_index": 0,
+              "budget_elapsed_seconds": 80.46037405699997,
+              "completion_seconds": 80.46037405699997,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "status": "error",
+              "success": false,
+              "task_id": "771d8fc_1",
+              "timing_status": "recorded"
+            }
+          ],
+          "cells": [
+            {
+              "actual_attempts": 1,
+              "budget_accounted_seconds": 102.82316427299997,
+              "budget_seconds": 300,
+              "first_attempt_success": false,
+              "first_success_time": {
+                "attempt_index": null,
+                "coverage": "no_success",
+                "reason": null,
+                "seconds": null
+              },
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "actual_attempts": 1,
+              "budget_accounted_seconds": 67.81015043099978,
+              "budget_seconds": 300,
+              "first_attempt_success": false,
+              "first_success_time": {
+                "attempt_index": null,
+                "coverage": "no_success",
+                "reason": null,
+                "seconds": null
+              },
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1"
+            },
+            {
+              "actual_attempts": 1,
+              "budget_accounted_seconds": 130.65392555200003,
+              "budget_seconds": 300,
+              "first_attempt_success": false,
+              "first_success_time": {
+                "attempt_index": null,
+                "coverage": "no_success",
+                "reason": null,
+                "seconds": null
+              },
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            },
+            {
+              "actual_attempts": 1,
+              "budget_accounted_seconds": 80.46332863400005,
+              "budget_seconds": 300,
+              "first_attempt_success": false,
+              "first_success_time": {
+                "attempt_index": null,
+                "coverage": "no_success",
+                "reason": null,
+                "seconds": null
+              },
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1"
+            }
+          ],
+          "decisions": [
+            {
+              "attempt_index": 0,
+              "context_tokens": 2886,
+              "decision_index": 0,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "34d9492_1",
+              "tool_calls": 0,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3305,
+              "decision_index": 1,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "34d9492_1",
+              "tool_calls": 1,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3724,
+              "decision_index": 2,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "34d9492_1",
+              "tool_calls": 2,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 4143,
+              "decision_index": 3,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "34d9492_1",
+              "tool_calls": 3,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 2855,
+              "decision_index": 0,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1",
+              "tool_calls": 0,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3346,
+              "decision_index": 1,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1",
+              "tool_calls": 1,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3597,
+              "decision_index": 2,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1",
+              "tool_calls": 2,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3848,
+              "decision_index": 3,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "692c77d_1",
+              "tool_calls": 3,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 2852,
+              "decision_index": 0,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 0,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3398,
+              "decision_index": 1,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 1,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3910,
+              "decision_index": 2,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 2,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 4402,
+              "decision_index": 3,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "76f2c72_1",
+              "tool_calls": 3,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 2847,
+              "decision_index": 0,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 0,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3318,
+              "decision_index": 1,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 1,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 3712,
+              "decision_index": 2,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 2,
+              "triggered": false
+            },
+            {
+              "attempt_index": 0,
+              "context_tokens": 4088,
+              "decision_index": 3,
+              "policy": "never",
+              "reason": "disabled",
+              "rebuilds": 0,
+              "seed": 17,
+              "task_id": "771d8fc_1",
+              "tool_calls": 3,
+              "triggered": false
+            }
+          ],
+          "latency_scope": "Total observed cell budget accounting, including interruption reservations; not time to first success or a replay at smaller budgets."
+        },
+        "oracle_success_rate": {
+          "bootstrap_degenerate": true,
+          "bounded_mean_ci95": [
+            0,
+            0.6790507578703098
+          ],
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "standard_error": 0.0,
+          "task_count": 4,
+          "uncertainty_notes": [
+            "A degenerate bootstrap interval does not establish zero population uncertainty."
+          ],
+          "value": 0.0
+        },
+        "recovery": {
+          "admission_rate": {
+            "observed_requests": 0,
+            "total_requests": 0,
+            "value": null
+          },
+          "admitted_count": 0,
+          "allowance_consumed_count": 0,
+          "coverage": {
+            "attempts_with_decisions": 4,
+            "interrupted_attempts": 0,
+            "requests_with_allowance_state": 0,
+            "total_attempts": 4,
+            "unknown_admission_requests": 0
+          },
+          "decision_count": 16,
+          "failure_reasons": {},
+          "mean_cell_budget_fraction": {
+            "complete_cells": 4,
+            "total_cells": 4,
+            "value": 0.0
+          },
+          "recorded_seconds": {
+            "includes": "admission checks and admitted rebuilds, including observed failure time",
+            "observed_requests": 0,
+            "total_requests": 0,
+            "value": null
+          },
+          "refusal_reasons": {},
+          "requested_count": 0,
+          "result_status_counts": {}
+        },
+        "reserved_budget_seconds": {
+          "bootstrap_degenerate": true,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "standard_error": 0.0,
+          "task_count": 4,
+          "uncertainty_notes": [
+            "A degenerate bootstrap interval does not establish zero population uncertainty."
+          ],
+          "value": 0
+        },
+        "single_attempt_success_rate": {
+          "bootstrap_degenerate": true,
+          "bounded_mean_ci95": [
+            0,
+            0.6790507578703098
+          ],
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "standard_error": 0.0,
+          "task_count": 4,
+          "uncertainty_notes": [
+            "A degenerate bootstrap interval does not establish zero population uncertainty."
+          ],
+          "value": 0.0
+        },
+        "zero_attempt_cells": 0
+      },
+      "paired_comparison": {
+        "direction": "candidate minus control",
+        "latency_seconds": {
+          "bootstrap_degenerate": false,
+          "ci95": [
+            -62.50629920900002,
+            -42.0793974314999
+          ],
+          "standard_error": 5.991610628161682,
+          "task_count": 4,
+          "uncertainty_notes": [],
+          "value": -52.29284832024996
+        },
+        "left": "control",
+        "mean_peak_kv_bytes": {
+          "bootstrap_degenerate": false,
+          "ci95": [
+            35348480.0,
+            127094988.7999998
+          ],
+          "paired_tasks": [
+            "34d9492_1",
+            "692c77d_1",
+            "76f2c72_1",
+            "771d8fc_1"
+          ],
+          "standard_error": 26281530.68478379,
+          "task_count": 4,
+          "total_tasks": 4,
+          "uncertainty_notes": [],
+          "unit": "bytes",
+          "value": 87072768
+        },
+        "mean_peak_total_vram_bytes": {
+          "bootstrap_degenerate": false,
+          "ci95": [
+            -1067450368.0,
+            209715200.0
+          ],
+          "paired_tasks": [
+            "34d9492_1",
+            "692c77d_1",
+            "76f2c72_1",
+            "771d8fc_1"
+          ],
+          "standard_error": 421989420.14607584,
+          "task_count": 4,
+          "total_tasks": 4,
+          "uncertainty_notes": [],
+          "unit": "bytes",
+          "value": -225443840
+        },
+        "oracle_success_rate": {
+          "bootstrap_degenerate": false,
+          "bounded_mean_ci95": [
+            -1,
+            1
+          ],
+          "ci95": [
+            0.0,
+            0.75
+          ],
+          "standard_error": 0.25,
+          "task_count": 4,
+          "uncertainty_notes": [],
+          "value": 0.25
+        },
+        "right": "candidate",
+        "single_attempt_success_rate": {
+          "bootstrap_degenerate": false,
+          "bounded_mean_ci95": [
+            -1,
+            1
+          ],
+          "ci95": [
+            0.0,
+            0.75
+          ],
+          "standard_error": 0.25,
+          "task_count": 4,
+          "uncertainty_notes": [],
+          "value": 0.25
+        }
+      }
+    }
+  },
+  "declared_protocol_fields": [
+    "prompt"
+  ],
+  "dependencies_digest": "093f431c596b910e267dca2107297ca81a54c31e8316c544c71edfaf7470918f",
+  "engine": {
+    "allocator_headroom_bytes": 1073741824,
+    "attention_backend": "torch_sdpa",
+    "backend": "transformers_hybrid",
+    "cuda_graphs": false,
+    "cuda_runtime": "12.8",
+    "device_name": "NVIDIA L4",
+    "device_total_bytes": 23570219008,
+    "dtype": "bfloat16",
+    "estimated_flops_exclusions": [
+      "recurrent_state_updates",
+      "eviction",
+      "elementwise",
+      "vision"
+    ],
+    "estimated_flops_method": "2P_text_per_token_plus_4LHD_per_full_attention_pair",
+    "memory_accounting": "device_peak_10ms_and_forward_boundaries_v1",
+    "model": "Qwen/Qwen3.5-9B",
+    "model_parameter_count": 9653104368,
+    "model_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "packages": {
+      "comet-agentkv-selectors": "0.1.0",
+      "flash-linear-attention": "0.4.1",
+      "torch": "2.9.1",
+      "transformers": "5.22.2"
+    },
+    "retention_state": "full_attention_kv_only; recurrent_and_conv_state_uncompressed",
+    "sampling_rng": "torch_cuda_default_generator_v1",
+    "selector_revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
+    "text_parameter_count": 8953803264,
+    "tokenizer_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a"
+  },
+  "integration_smoke": false,
+  "kind": "paired_protocol_comparison",
+  "replicate_seeds": [
+    17
+  ],
+  "runtime_contract_digest": "3d131f0e1b6bd5ab288d143b881fdafa438589075996dc6a1e1b06d961210349",
+  "schema_version": 1,
+  "stage": "pilot",
+  "task_count": 4,
+  "tasks": [
+    "34d9492_1",
+    "692c77d_1",
+    "76f2c72_1",
+    "771d8fc_1"
+  ],
+  "uncertainty": {
+    "assumption": "independent sampled tasks; repeats do not increase task count",
+    "bounded_mean_method": "Hoeffding, clipped to [0,1] for success and [-1,1] for differences",
+    "interval_scope": "pointwise 95%; not simultaneous across conditions, metrics or time",
+    "method": "paired task bootstrap, percentile 95% CI",
+    "resampling_unit": "task, retaining all attempts and paired replicate seeds",
+    "samples": 2000,
+    "seed": 0,
+    "standard_error_method": "sample standard deviation of task means / sqrt(tasks)"
+  }
+}

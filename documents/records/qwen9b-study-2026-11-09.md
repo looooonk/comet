@@ -273,3 +273,24 @@ using the arithmetic train task and corrected prompt. This selects a useful
 integration fixture, not a research sample or favorable test outcome. It retains
 the 120-second budget, preserved/interrupted/fresh arms and existing real-process
 validation harness; its outputs are explicitly ineligible as freeze evidence.
+
+
+Offline scoring confirms the v3 arithmetic task is correct: **1/4 success**,
+versus 0/4 under the original prompt. The other v3 attempts comprise one API
+error and two context-limit failures. The phone attempt had 7,202 processed
+and 1,607 pending tokens; the Spotify attempt exhausted 8,192 processed tokens.
+These are ordinary observed histories, not evaluator-guided online choices.
+The matched [machine-readable comparison](qwen9b-protocol-v3.json) and
+[PNG](../figures/qwen9b/protocol-v3.png), [SVG](../figures/qwen9b/protocol-v3.svg)
+and [PDF](../figures/qwen9b/protocol-v3.pdf) preserve all four tasks. Four tasks
+provide very weak population precision; the shorter v3 duration partly reflects
+context failures and is not a throughput improvement claim.
+
+`train-protocol-l4-v4.json` is a separately declared follow-up: 16,384 raw tokens,
+a working generic login example using observed credentials, token-variable reuse
+and concise printing of large collections. It preserves all four tasks and the
+300-second budget, 21 GiB cap, model, sampling and seed. The new context is gated
+by a four-method capacity/recovery check. The raw transcript is never truncated
+or summarized by the engine. The metadata-only plan initially failed because a
+helper named `inspect.py` shadowed Python's standard module; the corrected plan
+renames it and reads only the predeclared train/dev task metadata.

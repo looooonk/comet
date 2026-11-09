@@ -97,9 +97,11 @@ provenance, and stop when checks fail. Rebuild cleaned caches only as needed.
 - [x] Declare a train/dev sample by task-family coverage or a reproducible rule,
   not by which tasks happened to succeed. Record prior dev exposure.
   See `documents/records/qwen9b-study-2026-11-09.md` and the baseline config.
-- [ ] Establish useful full-cache task success. Inspect ordinary trajectories for
+- [x] Establish useful full-cache task success. Inspect ordinary trajectories for
   task interpretation, API use, pagination and premature completion failures.
   Larger parameter count alone is not qualification.
+  The corrected train protocol solved 1/4 tasks; the original 0/4 remains
+  recorded. A declared 16,384-token follow-up addresses two context failures.
 - [ ] Measure reset, tool, inference, compaction and recovery costs to choose
   granular runtime budgets and attempt limits. Keep one budget per task/seed/
   condition; never give each attempt a fresh budget.
