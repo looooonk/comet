@@ -59,7 +59,9 @@ Qwen3.5-9B is selected, with live qualification in progress.
 The existing GCP ceiling remains **$40 total**. Two completed cloud jobs have a
 combined estimate of about **$3.54**, not a billing measurement; **$10 remains
 reserved pending reconciliation**, leaving $30 uncommitted under the prior ledger.
-No paid resource is currently active. Vast.ai still requires a separate spending
+One bounded L4 qualification/baseline job is reserved at $5; its first launch
+failed before model loading because the declared cap exceeded usable capacity.
+The corrected launch uses 21 GiB. Vast.ai still requires a separate spending
 decision and is a last resort. The November 8 execution request authorizes the
 new experiments within the existing GCP ceiling.
 

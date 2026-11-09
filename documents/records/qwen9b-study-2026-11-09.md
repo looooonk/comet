@@ -123,3 +123,11 @@ pinned assets on the worker. It uses an official Ubuntu 24.04 amd64 image pinned
 at `sha256:78d4744ead1f5b19b04d0df558ab182a5300903900755e515b2ca4d10eb2044d`.
 Live checks gate the four-task baseline; execution is followed by separate
 scoring. Submission is not evidence that provisioning or the experiment passed.
+
+The first cloud launch ended before model loading: the L4 reports
+23,570,219,008 usable bytes, slightly below the declared 22 GiB. All six
+AppWorld checks and both thinking/nonthinking chat-template modes passed;
+the suite had 335 passes, 17 skips and this one capacity refusal. No task
+attempt ran. `train-baseline-l4-v2.json` explicitly lowers the cap to 21 GiB
+while keeping the 2 GiB workspace and all other settings. The failed launch
+is retained as infrastructure evidence; it is not a task-success measurement.
