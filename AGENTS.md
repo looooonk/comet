@@ -10,7 +10,7 @@ General documents must be independent of individual accounts, workspaces, and ru
 
 Implement the agreed experiments before expanding scope. Do not silently replace the model, benchmark, inference engine, methods, metrics, or budget semantics. Record any user- or team-authorized departure from the proposal in `documents/`, with its rationale and affected comparisons, and update the corresponding instructions and configs. Routine implementation choices do not need a new research decision.
 
-The user authorized a pinned Qwen3-14B exploratory train/dev pilot if Qwen3-8B is inadequate for the requested retention comparison. Newer models up to 14B are also authorized exploratory fallbacks if Qwen3 remains brittle; document and validate any required engine or state-accounting departure before running them. Follow [documents/experimental-models.md](documents/experimental-models.md): keep these results separate, use the same engine and BF16 methods, and retain Qwen3-8B for the main research contract and final evaluation. The pinned nonthinking Qwen3-4B-Instruct-2507 profile is an exploratory option after the corrected 8B/14B pilots remained unsuccessful; it requires its own numerical and live qualification. Qwen3.5-9B is unsupported by the pinned engine.
+The user authorized a pinned Qwen3-14B exploratory train/dev pilot if Qwen3-8B is inadequate, and newer models up to 14B as fallbacks. The user subsequently authorized a qualified stronger model of at most 14B parameters for final Q1/Q2 after useful corrected train/dev results. Follow [documents/experimental-models.md](documents/experimental-models.md): document the selection, keep models' results separate, and retain the same engine and BF16 methods. No replacement is selected yet; current alternative profiles remain pilot-only until qualification and a recorded selection, after which update their guards and affected configs without asking permission again. The pinned nonthinking Qwen3-4B-Instruct-2507 profile is under exploration and requires its own numerical and live qualification. Qwen3.5-9B is unsupported by the pinned engine; document and validate any required engine or state-accounting departure before running it.
 
 ## Research contract
 
@@ -27,7 +27,7 @@ The user authorized adequately sized alternative GPUs for pilots and final evalu
 
 | Component | Required setup |
 | --- | --- |
-| Model | Qwen3-8B in BF16 |
+| Model | Qwen3-8B in BF16, or an authorized qualified replacement selected on train/dev before final evaluation |
 | Benchmark | AppWorld |
 | Inference engine | AgentKV Mini-SGLang for every method, including the full-cache baseline |
 | Hardware | One qualified NVIDIA GPU; match GPU model within each comparison |

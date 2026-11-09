@@ -13,7 +13,7 @@ We focus on two questions:
 1. Can an agent use information available during a task to decide when rebuilding its memory is worthwhile, compared with never rebuilding or rebuilding on a fixed schedule?
 2. Under the same time and memory limits, how do additional attempts and memory recovery affect success as we retain less information?
 
-We will compare full memory with three ways of retaining less of the model's cached history: StreamingLLM, R-KV, and AgentKV. The main experiment uses Qwen3-8B on AppWorld, a collection of multi-step tasks with verifiable outcomes. Rebuilding memory means reconstructing the model's cache from the current attempt's history; it does not undo actions already taken.
+We will compare full memory with three ways of retaining less of the model's cached history: StreamingLLM, R-KV, and AgentKV. The proposal starts with Qwen3-8B on AppWorld, a collection of multi-step tasks with verifiable outcomes. A qualified stronger model may be selected from dev evidence before the final study. Rebuilding memory means reconstructing the model's cache from the current attempt's history; it does not undo actions already taken.
 
 Our main result will be the share of tasks solved by at least one attempt within the budget. Outcomes are checked afterward, so this measures what would be possible with perfect selection among attempts. It does not assume that the agent can recognize a successful attempt while running. We will also report the time and memory costs.
 
@@ -29,7 +29,7 @@ The repository includes a shared experiment runner, pinned AgentKV Mini-SGLang i
 
 Start with the [setup guide](documents/setup.md), then the [experiment workflow](documents/experiments.md). The [validation guide](documents/validation.md) explains the checks; [personal and run records](documents/records/README.md) preserve dated evidence and limitations. One managed setup and validation path serves local development, CI, Insomnia, and GCP. Insomnia job scripts support short development runs; the same environment and commands run on a suitably sized GCP GPU for longer experiments.
 
-The authorized [Qwen3-14B exploratory pilot](documents/experimental-models.md) assesses a stronger model while keeping its results separate from the Qwen3-8B research plan. The [results and validation index](documents/records/README.md) identifies the latest completed comparison, its limitations, and the remaining research work.
+The [model selection plan](documents/experimental-models.md) covers authorized alternatives and their qualification requirements, keeping each model's results separate. The [results and validation index](documents/records/README.md) identifies the latest completed comparison, its limitations, and the remaining research work.
 
 ## Working together
 

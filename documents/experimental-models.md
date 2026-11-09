@@ -1,12 +1,19 @@
-# Exploratory model decision
+# Model selection and qualification
 
 The user authorized a stronger model if Qwen3-8B is inadequate for the requested
 AppWorld success, latency, and KV-memory comparison. Qwen3-14B is an exploratory
-train/dev pilot option for that comparison. This does not replace Qwen3-8B in the
-proposal or authorize a different serving engine, precision, benchmark, or
-eviction algorithm. Its configuration must say `stage: "pilot"`; diagnostic and
-final configurations reject it, including during freeze preparation. Keep its
-runs, scores, plots, and uncertainty estimates separate from 8B results.
+train/dev pilot option for that comparison. The later
+[final-model authorization](records/final-model-flexibility-2026-11-08.md) permits
+a qualified stronger model of at most 14B parameters to replace Qwen3-8B in the
+final Q1/Q2 study after useful corrected train/dev results. It does not authorize
+a different serving engine, precision, benchmark, or eviction algorithm.
+Keep each model's runs, scores, plots and uncertainty estimates separate.
+
+No replacement is selected yet. Registered alternatives currently require
+`stage: "pilot"`; diagnostic and final configurations reject them, including
+during freeze preparation. After qualification, record the selection and update
+that guard and the model decision together before constructing final configs.
+This is an unmet evidence requirement, not a requirement to ask permission again.
 
 On November 8, 2026, the user additionally authorized newer models with at most
 14B parameters, including Qwen3.5-4B and Qwen3.5-9B, if the Qwen3 series remains
@@ -55,8 +62,9 @@ and occupied counts through branching, restoration and recovery in
 
 The [first bounded pilot plan](records/execution-qwen4b-instruct-2026-11-08-plan.md)
 declares model, mode, prompt, inherited sampling and task/budget settings before
-execution. It remains a pilot-only profile. No final-model substitution or
-serving-engine departure is implied.
+execution. It remains a pilot-only profile until qualification and selection;
+the authorization above permits its later use in the final study if it qualifies.
+No serving-engine departure is implied.
 
 Fetch the pinned assets in its managed GPU profile with
 `bash scripts/download_assets.sh "$COMET_ENV" "$COMET_APPWORLD_ROOT" --model-4b-instruct`.
