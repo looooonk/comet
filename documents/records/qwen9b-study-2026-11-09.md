@@ -387,3 +387,23 @@ Cloud CLI credential renewal required interactive sign-in during the compression
 pilot. The already authenticated browser console still exposes the running job
 and its result store; queued plans run independently of the local CLI session.
 The sign-in handoff is pending while browser-based monitoring continues.
+
+
+The final candidate is now explicit but **not frozen or launched**: the first two
+predeclared test-normal families, seed 17, 120 seconds, N=2, one L4 and the same
+21 GiB cap. It retains all 29 core conditions and five supplemental AgentKV
+no-recovery points (90/70/60/40/30% retention), for 34 conditions and 68 cells.
+The separate train pilot covers the full eight-level grid for all three methods.
+Focusing supplemental final points on AgentKV saves 40 maximum GPU-minutes
+compared with 44 conditions, preserving time for the complete core matrix and
+recovery diagnostic. This is a declared time-limited scope reduction, not a
+selection using test outcomes. Competitors' unmeasured intermediate final points
+must not be implied. Freeze requires completed 120-second pilot/dev evidence,
+at least one dev success, and both successes and failures in the train fine grid.
+The two-task/one-seed final remains a small research study with weak population
+precision; all failures and uncertainty must be reported.
+
+The browser console session also expired at approximately 09:21 UTC. Both cloud
+access routes now require Columbia sign-in. Queued computation remains bounded
+and independent of this local authentication interruption; final freezing,
+retrieval and additional launches await renewed access.
