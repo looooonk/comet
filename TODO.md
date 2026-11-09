@@ -58,8 +58,8 @@ Qwen3.5-9B is selected, with live qualification in progress.
 
 The existing GCP ceiling remains **$40 total**. Two completed cloud jobs have a
 combined estimate of about **$3.54**, not a billing measurement; **$10 remains
-reserved pending reconciliation**. Three short failed launches retain $3 each;
-the current bounded L4 run reserves $5, leaving **$16 uncommitted**. See the
+reserved pending reconciliation**. Four short failed launches retain $3 each;
+the current bounded L4 run reserves $5, leaving **$13 uncommitted**. See the
 [cloud ledger](documents/records/qwen9b-cloud-ledger.json). The active cohort uses
 a 21 GiB cap. Vast.ai still requires a separate spending
 decision and is a last resort. The November 8 execution request authorizes the

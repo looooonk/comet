@@ -214,3 +214,8 @@ and external-memory maxima remains a separately labeled conservative estimate,
 not a measured peak. Exact PyTorch allocation/reservation peaks are also saved.
 Sub-10-ms external transients remain a measurement limitation; the separate
 1 GiB allocator headroom remains in place. Eighteen focused CPU checks passed.
+
+The corrected measurement run is `gpu-20261109-071607-51dbc9`, source `ebd58fb`,
+with the same 21 GiB cap and four-task baseline. Four completed short failures
+now retain $3 each; the new $5 reservation and historical $10 leave $13
+uncommitted under the $40 ceiling. All four prior compute cleanups are verified.
