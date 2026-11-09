@@ -407,3 +407,29 @@ The browser console session also expired at approximately 09:21 UTC. Both cloud
 access routes now require Columbia sign-in. Queued computation remains bounded
 and independent of this local authentication interruption; final freezing,
 retrieval and additional launches await renewed access.
+
+Access was restored on November 9 at approximately 07:17 ET. All queued plans
+through separate dev confirmation completed with exit status zero and were
+retrieved. The combined hybrid/AppWorld fixture passed all three methods. The
+train fine grid solved six of 25 condition cells: full cache and AgentKV at
+90/80/70/60/50% retention; every other measured point failed. The separate dev
+sample produced one oracle success in the full-cache N=2 arm, while all
+compressed 25% arms failed. This satisfies the predeclared freeze gates while
+preserving weak and negative outcomes.
+
+The 68-cell final L4 study was frozen at 07:17:55 ET and launched with the
+previously declared settings. `configs/qwen9b/final-l4-v1.json` preserves the
+worker's freeze metadata and pilot artifact references. No test outcome was
+used to change its settings.
+
+The user extended the stop time to **14:00 ET, November 9**. With Insomnia SSH
+restored and seven Blackwell GPUs currently unallocated across two nodes, a
+separate supplemental train cohort is declared as
+`configs/qwen9b/train-finegrid-blackwell-v1.json`. It uses the first three
+original train families, the unchanged v4 prompt, 16K context, 120-second budget
+and 21 GiB cap, with full single/oracle controls and all eight no-recovery
+retentions for all methods. N=2 gives 26 conditions and 78 cells. A bounded
+single-GPU allocation must first pass fresh live qualification at this cap.
+The additional cohort improves sample coverage and exposes the single/oracle
+distinction; it cannot retune the frozen L4 test study, and its hardware-specific
+results remain separate.
