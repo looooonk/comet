@@ -24,7 +24,7 @@ if args.action == "pack":
         raise FileExistsError("Use a new archive for each runtime version")
     args.archive.parent.mkdir(parents=True, exist_ok=True)
     temporary = args.archive.with_suffix(".tmp")
-    with tarfile.open(temporary, "w") as archive:
+    with tarfile.open(temporary, "w", copybufsize=8 * 2**20) as archive:
         archive.add(source, arcname=".")
     temporary.replace(args.archive)
     record = {"source": str(source), "identity": identity,
@@ -50,7 +50,7 @@ else:
         if shutil.disk_usage(destination).free < record["bytes"] + 2**30:
             raise OSError("Insufficient job-local storage for runtime staging")
         # This archive is produced above from our own managed environment.
-        with tarfile.open(args.archive) as archive:
+        with tarfile.open(args.archive, copybufsize=8 * 2**20) as archive:
             archive.extractall(destination, filter="fully_trusted")
         for path in (destination / "bin").iterdir():
             if path.is_symlink() or not path.is_file():
