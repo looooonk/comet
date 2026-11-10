@@ -22,7 +22,7 @@ from comet.evaluation import _inside, score_environment
 TERMINAL_STATUSES = {"completed", "timeout", "oom", "context_limit", "error", "interrupted", "infeasible"}
 
 
-def snapshot_study(partitions: Path, run: Path, output: Path) -> dict:
+def snapshot_study(partitions: Path, run: Path, output: Path, *, reuse_report: Path | None = None) -> dict:
     partitions, run, output = (path.resolve() for path in (partitions, run, output))
     if output.is_relative_to(run) or run.is_relative_to(output):
         raise ValueError("Keep the partial report separate from live execution.")
@@ -33,6 +33,25 @@ def snapshot_study(partitions: Path, run: Path, output: Path) -> dict:
     study = Experiment.load(partitions / index["study_config"])
     if study.digest != index["study_digest"]:
         raise ValueError("Partition index differs from the frozen study.")
+    reusable, reuse_evaluator, derivation = {}, None, None
+    if reuse_report is not None:
+        previous = read_json(reuse_report / "snapshot.json")
+        scores_content = (reuse_report / "scores.json").read_bytes()
+        scores = json.loads(scores_content)
+        if previous["study_digest"] != study.digest or scores.get("status") != "completed":
+            raise ValueError("Reuse requires a scored snapshot of the same frozen study.")
+        scored_cells = {(cell["run_id"], cell["id"]): cell for cell in scores["cells"]}
+        previous_runs = {
+            name: read_json(reuse_report / "sources" / name / "manifest.json")["run_id"]
+            for name in {reference["partition"] for reference in previous["cells"]}
+        }
+        for reference in previous["cells"]:
+            identity = (previous_runs[reference["partition"]], Path(reference["path"]).parent.name)
+            reusable[(reference["partition"], reference["source_cell"])] = (
+                reference["source_cell_sha256"], scored_cells[identity])
+        reuse_evaluator = scores["evaluation_provenance"]
+        derivation = {"snapshot_sha256": hashlib.sha256((reuse_report / "snapshot.json").read_bytes()).hexdigest(),
+                      "scores_sha256": hashlib.sha256(scores_content).hexdigest()}
     conditions = {condition.id: condition for condition in study.conditions}
     required = set(itertools.product(study.task_ids, study.seeds))
     groups = {name: {} for name in conditions}
@@ -102,11 +121,19 @@ def snapshot_study(partitions: Path, run: Path, output: Path) -> dict:
         for name, directory, reference, original, content in groups[condition].values():
             cell = copy.deepcopy(original)
             destination = output / "cells" / name / reference["id"]
+            cached = reusable.get((name, reference["path"]))
+            if cached is not None and cached[0] != hashlib.sha256(content).hexdigest():
+                raise ValueError("Previously scored terminal cell changed; cannot reuse its scores.")
             for attempt in cell["attempts"]:
                 source = _inside(directory, attempt["artifact_dir"])
                 target = destination / f"attempt-{attempt['attempt_index']:03d}"
                 if attempt["status"] == "completed":
-                    shutil.copytree(source / "environment", target / "environment")
+                    if cached is None:
+                        shutil.copytree(source / "environment", target / "environment")
+                    else:
+                        old_attempt = next(a for a in cached[1]["attempts"]
+                                           if a["attempt_index"] == attempt["attempt_index"])
+                        write_json(target / "environment/partial-score.json", old_attempt["evaluation"])
                 attempt["artifact_dir"] = str(target.relative_to(output))
             if _inside(directory, reference["path"]).read_bytes() != content:
                 raise RuntimeError("A terminal cell changed during the snapshot; take a fresh snapshot.")
@@ -118,6 +145,8 @@ def snapshot_study(partitions: Path, run: Path, output: Path) -> dict:
                             "source_cell_sha256": hashlib.sha256(content).hexdigest()})
     for name, manifest in manifests.items():
         write_json(output / "sources" / name / "manifest.json", manifest)
+    if reuse_evaluator is not None:
+        write_json(output / "evaluator.json", reuse_evaluator)
     result = {
         "schema_version": 1, "kind": "partial-study-snapshot", "provisional": True,
         "status": "ready", "captured_at_unix": cutoff, "study": study.to_dict(),
@@ -126,6 +155,7 @@ def snapshot_study(partitions: Path, run: Path, output: Path) -> dict:
                             "included": name in included} for name, group in groups.items()},
         "selection": "Every condition with the complete paired task/seed set at capture time; no outcome filtering.",
         "cells": records,
+        "reused_report": derivation,
     }
     write_json(output / "snapshot.json", result)
     return result
@@ -215,12 +245,13 @@ def main():
     snapshot.add_argument("partitions", type=Path)
     snapshot.add_argument("run", type=Path)
     snapshot.add_argument("output", type=Path)
+    snapshot.add_argument("--reuse-report", type=Path)
     score = commands.add_parser("score")
     score.add_argument("output", type=Path)
     score.add_argument("--workers", type=int, default=1)
     args = parser.parse_args()
     if args.command == "snapshot":
-        result = snapshot_study(args.partitions, args.run, args.output)
+        result = snapshot_study(args.partitions, args.run, args.output, reuse_report=args.reuse_report)
         print(json.dumps({"conditions": len(result["included_conditions"]), "cells": len(result["cells"])}))
     else:
         result = score_snapshot(args.output, workers=args.workers)

@@ -46,8 +46,13 @@ The graph leaves gaps at missing retention points. If the full-cache best-of-two
 control is pending, it is omitted from the oracle panel; the single-attempt
 control can still appear in the first-attempt panel. These reports are labeled
 provisional and cannot pass the normal complete-study scoring/analysis gates.
-Create a new snapshot to refresh coverage. Keep the study frozen regardless of
-the provisional results.
+Create a new snapshot to refresh coverage. Pass `--reuse-report PREVIOUS_REPORT`
+to reuse completed scores from the same frozen study. Previously scored terminal
+cell hashes must still match, and scoring requires the same evaluator source and
+runtime. Only newly covered conditions need fresh environment copies and scoring.
+The new snapshot records its parent snapshot and score hashes; retain that prior
+report and its saved environments as part of the evidence. Keep the study frozen
+regardless of the provisional results.
 
 ## Pinned environment
 

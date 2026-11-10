@@ -110,3 +110,35 @@ def test_parallel_scoring_preserves_failures_and_pairing(tmp_path):
     assert analysis["conditions"]["full_once"]["oracle_success_rate"]["value"] == 0.5
     assert analysis["conditions"]["streamingllm"]["oracle_success_rate"]["value"] == 0
     assert len(list(output.glob("cells/*/*/attempt-*/environment/partial-score.json"))) == 1
+
+
+def test_refresh_reuses_scores_adds_full_conditions_and_rejects_changed_cells(tmp_path):
+    parts, run = live_study(tmp_path)
+    previous = tmp_path / "previous"
+    snapshot_study(parts, run, previous)
+    score_snapshot(previous, scorer=_successful_scorer, bootstrap_samples=20)
+    path = run / "part-02/cells/task2/cell.json"
+    cell = read_json(path)
+    cell.update(completed=True, inflight=False)
+    cell["attempts"][0]["status"] = "timeout"
+    write_json(path, cell)
+    output = tmp_path / "refreshed"
+    snapshot = snapshot_study(parts, run, output, reuse_report=previous)
+    assert snapshot["included_conditions"] == ["full_once", "streamingllm", "rkv"]
+    calls = []
+
+    def scorer(path):
+        calls.append(path)
+        return {"success": False}
+
+    analysis = score_snapshot(output, scorer=scorer, bootstrap_samples=20)
+    assert len(calls) == 1
+    assert "part-02" in calls[0].parts
+    assert analysis["conditions"]["full_once"]["oracle_success_rate"]["value"] == 0.5
+    assert analysis["conditions"]["rkv"]["oracle_success_rate"]["value"] == 0
+    path = run / "part-00/cells/task1/cell.json"
+    cell = read_json(path)
+    cell["elapsed_seconds"] += 1
+    write_json(path, cell)
+    with pytest.raises(ValueError, match="terminal cell changed"):
+        snapshot_study(parts, run, tmp_path / "invalid-refresh", reuse_report=previous)
