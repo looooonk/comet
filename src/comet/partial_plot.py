@@ -52,7 +52,7 @@ def plot_partial_study(directory: Path, output: Path):
             else:
                 axis.text(0.03, 0.95, f"Full-cache N={ceiling} control pending", transform=axis.transAxes,
                           va="top", fontsize=9, color="#666666")
-            axis.set(title=title, xlabel="Eligible KV entries removed (%)", xlim=(-3, 78),
+            axis.set(title=title, xlabel="Target KV reduction (%)", xlim=(-3, 78),
                      xticks=[0, 10, 20, 30, 40, 50, 60, 70, 75], ylim=(-3, 103))
             axis.grid(axis="y", alpha=0.2)
             axis.legend(loc="upper right", fontsize=9, frameon=False)

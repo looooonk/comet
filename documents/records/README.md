@@ -10,6 +10,8 @@ selection among attempts; these small samples do not establish a general ranking
   grid, recovery diagnostic and dev confirmation.
 - [Fifty-family study](qwen9b/test50-design.md): the new frozen test expansion
   and its parallel execution design; submission is not completed-result evidence.
+- [Fifty-task provisional results](qwen9b/test50-partial.md): 12 fully covered
+  conditions, 50 paired tasks per point, with missing comparisons and GPU failures explicit.
 - [Validation evidence](qwen9b/validation/): live state, memory, AppWorld and
   interruption checks, including the failed Blackwell 21 GiB qualification.
 - [Cloud ledger](qwen9b/cloud-ledger.json): the existing spending ceiling and
