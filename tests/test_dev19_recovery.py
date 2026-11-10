@@ -44,3 +44,20 @@ def test_dev19_parts_cover_every_condition_once_without_changing_settings():
         assert all(condition in study.conditions for condition in part.conditions)
         seen += [condition.id for condition in part.conditions]
     assert sorted(seen) == sorted(condition.id for condition in study.conditions)
+
+
+def test_dev19_seed_replicate_changes_only_seeds():
+    first = Experiment.load(BLACKWELL / "dev19-recovery-v1.json")
+    replicate = Experiment.load(BLACKWELL / "dev19-recovery-v2.json")
+    assert replicate.seeds == [29, 31] and not set(replicate.seeds) & set(first.seeds)
+    changed = {"experiment_id", "seeds", "notes"}
+    for name, value in first.to_dict().items():
+        if name not in changed:
+            assert replicate.to_dict()[name] == value, name
+    parent = {k: v for k, v in replicate.to_dict().items() if k not in ("conditions", "notes")}
+    seen = []
+    for path in sorted((BLACKWELL / "dev19-recovery-v2-parts").glob("part-*.json")):
+        part = Experiment.load(path)
+        assert {k: v for k, v in part.to_dict().items() if k not in ("conditions", "notes")} == parent
+        seen += [condition.id for condition in part.conditions]
+    assert sorted(seen) == sorted(condition.id for condition in replicate.conditions)

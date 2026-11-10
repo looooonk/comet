@@ -1,0 +1,9 @@
+{
+  "extends": "dev19-recovery-v1.json",
+  "experiment_id": "qwen9b-dev19-recovery-blackwell-v2",
+  "seeds": [
+    29,
+    31
+  ],
+  "notes": "Seed replicate of qwen9b-dev19-recovery-blackwell-v1, declared after its seed-17 results and before any execution: the same 19 dev tasks, 29 conditions and every numerical setting, with paired replicate seeds 29 and 31. Purpose: measure whether the recovery effects at 50 percent retention persist across seeds. 1,102 fresh-start cells. Train/dev evidence; analyzed on its own and, descriptively, alongside seed 17; never pooled with test or other cohorts. See documents/records/qwen9b/dev19-recovery-design.md."
+}

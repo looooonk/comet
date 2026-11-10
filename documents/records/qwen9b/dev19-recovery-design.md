@@ -56,3 +56,21 @@ test study.
 
 Completed on November 10, 2026, without changes to the declared configuration.
 See the [findings](dev19-recovery.md) and [compact evidence](dev19-recovery-summary.json).
+
+## Seed replicate
+
+Declared on November 10, 2026, after the seed-17 results and before any further
+execution. The [replicate configuration](../../../configs/qwen9b/blackwell/dev19-recovery-v2.json)
+extends the first study and changes only the replicate seeds, to 29 and 31:
+the same 19 tasks, 29 conditions and numerical settings, 1,102 fresh-start
+cells in [eight condition groups](../../../configs/qwen9b/blackwell/dev19-recovery-v2-parts/)
+of 152 or 114 cells. Its purpose is to measure whether the recovery effects at
+50% retention persist across seeds; no threshold, task or condition was chosen
+from the seed-17 outcomes.
+
+Execution stays pinned to the qualified source, runtime, device and cap of the
+first study, with the new configuration files staged verbatim beside that
+checkout so their resolved digests are unchanged. Analyze the two new seeds
+through the shared analysis, bootstrapping tasks with their paired seeds, and
+report seed 17 alongside them descriptively; the shared analysis does not pool
+runs with different seed lists. Status: declared, not yet executed.
