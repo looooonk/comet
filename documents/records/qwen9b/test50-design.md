@@ -143,8 +143,8 @@ The 200-cell workers retain 8h30m allocations; the six 150-cell workers request
 ## Provisional reporting
 
 The [November 9 partial report](test50-partial.md) scores an isolated snapshot of
-12 conditions with all 50 tasks complete. It retains all execution failures and
-leaves the other 14 conditions unreported. Ongoing execution stays frozen.
+15 conditions with all 50 tasks complete. It retains all execution failures and
+leaves the other 11 conditions unreported. Ongoing execution stays frozen.
 Partition 02 saved every cell but failed during CUDA shutdown; metadata-only
 finalization preserved those results. Replacement final scorer `13847761` waits
 for the remaining array to exit and then requires successful finalization of
