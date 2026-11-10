@@ -2,6 +2,36 @@
 
 COMET keeps execution, scoring, and analysis separately callable. The online adapter never calls the evaluator and loads each task with `load_ground_truth=False`. Completion means the agent called AppWorld's supervisor completion API; it does not imply task success. Scoring begins only after the execution manifest and every configured task/condition/replicate-seed cell are complete.
 
+## Provisional reports during execution
+
+An explicitly requested partial report can score an isolated snapshot while the
+remaining study runs. Use a fresh output directory outside the live run:
+
+```sh
+python -m comet.partial snapshot PARTITIONS LIVE_STUDY PARTIAL_REPORT
+python -m comet.partial score PARTIAL_REPORT
+```
+
+The snapshot includes only conditions that have finished the entire frozen
+task/seed set. It retains every failure, lists coverage for all declared conditions,
+and copies saved environments before scoring. It does not acquire the live run
+lock, modify execution artifacts, or feed evaluator results to the agent. The
+shared AppWorld scorer and paired-task analysis compute the results. Missing
+conditions are unmeasured, not zero; every plotted point has the same paired tasks.
+
+With the managed CPU plotting runtime, render the provisional graph with:
+
+```sh
+python -m comet.partial_plot PARTIAL_REPORT PARTIAL_REPORT/aggressivity.png
+```
+
+The graph leaves gaps at missing retention points. If the full-cache best-of-two
+control is pending, it is omitted from the oracle panel; the single-attempt
+control can still appear in the first-attempt panel. These reports are labeled
+provisional and cannot pass the normal complete-study scoring/analysis gates.
+Create a new snapshot to refresh coverage. Keep the study frozen regardless of
+the provisional results.
+
 ## Pinned environment
 
 The adapter targets [AppWorld commit 42b5bcf](https://github.com/StonyBrookNLP/appworld/tree/42b5bcf3cd334fee33f0c37c02070a9f5807add5), package version `0.2.0.dev0`, and data version `0.2.0`. This is an implementation dependency choice, not a change to the benchmark. The installed distribution must record this exact Git revision in its direct installation metadata. See the shared setup instructions and dependency lock for the resolved transitive dependencies, LFS bundle hydration, and installed package constraints.
