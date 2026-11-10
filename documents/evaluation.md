@@ -9,7 +9,7 @@ remaining study runs. Use a fresh output directory outside the live run:
 
 ```sh
 python -m comet.partial snapshot PARTITIONS LIVE_STUDY PARTIAL_REPORT
-python -m comet.partial score PARTIAL_REPORT
+python -m comet.partial score PARTIAL_REPORT --workers 4
 ```
 
 The snapshot includes only conditions that have finished the entire frozen
@@ -18,6 +18,18 @@ and copies saved environments before scoring. It does not acquire the live run
 lock, modify execution artifacts, or feed evaluator results to the agent. The
 shared AppWorld scorer and paired-task analysis compute the results. Missing
 conditions are unmeasured, not zero; every plotted point has the same paired tasks.
+
+Scoring workers use separate processes because AppWorld owns process-global
+database state. Use at most the allocated CPU count and one numerical-library
+thread per worker. Cached outcomes support resuming the same snapshot with the
+same evaluator and runtime.
+
+When live workers contend for shared database files, prepare job-local scoring
+assets with `scripts/stage_partial_assets.py prepare PARTIAL_REPORT --source
+APPWORLD_ROOT --destination JOB_LOCAL_ROOT`. This copies the base databases,
+shares immutable task assets, and redirects only the copied snapshot references.
+Run `scripts/stage_partial_assets.py restore PARTIAL_REPORT` on exit to restore
+those references. Original execution artifacts remain untouched.
 
 With the managed CPU plotting runtime, render the provisional graph with:
 

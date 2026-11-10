@@ -96,3 +96,17 @@ def test_partial_snapshot_rejects_terminal_cell_with_running_attempt(tmp_path):
     write_json(path, cell)
     with pytest.raises(ValueError, match="nonterminal"):
         snapshot_study(parts, run, tmp_path / "partial")
+
+
+def _successful_scorer(path):
+    return {"success": True}
+
+
+def test_parallel_scoring_preserves_failures_and_pairing(tmp_path):
+    parts, run = live_study(tmp_path)
+    output = tmp_path / "partial"
+    snapshot_study(parts, run, output)
+    analysis = score_snapshot(output, scorer=_successful_scorer, bootstrap_samples=20, workers=2)
+    assert analysis["conditions"]["full_once"]["oracle_success_rate"]["value"] == 0.5
+    assert analysis["conditions"]["streamingllm"]["oracle_success_rate"]["value"] == 0
+    assert len(list(output.glob("cells/*/*/attempt-*/environment/partial-score.json"))) == 1

@@ -3,6 +3,7 @@
 import argparse
 import json
 import math
+import textwrap
 from pathlib import Path
 
 
@@ -58,8 +59,12 @@ def plot_partial_study(directory: Path, output: Path):
         axes[0].set_ylabel("Task success (%)")
         figure.suptitle(f"PROVISIONAL: {analysis['task_count']} paired tasks per point", fontsize=15)
         errors = analysis.get("execution_warnings", {}).get("cuda_illegal_access_attempts", {})
-        warning = (f"\nIncludes {sum(errors.values())} CUDA illegal-access attempt failures: "
-                   + ", ".join(errors)) if errors else ""
+        affected = [f"{methods[rows[name]['condition']['method']][0]} at "
+                    f"{100 * rows[name]['condition']['retention']:g}% retention" for name in errors]
+        warning = "\n" + textwrap.fill(
+            f"Includes {sum(errors.values())} CUDA illegal-access attempt failures: " + ", ".join(affected),
+            width=130,
+        ) if errors else ""
         figure.text(
             0.5, 0.035,
             f"{len(rows)} of {len(declared)} conditions fully scored. Missing points are pending, not zero.\n"

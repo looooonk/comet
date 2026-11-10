@@ -8,8 +8,10 @@ import csv
 import hashlib
 import itertools
 import json
+import multiprocessing
 import shutil
 import time
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 from comet.analysis import analyze_cells
@@ -129,7 +131,29 @@ def snapshot_study(partitions: Path, run: Path, output: Path) -> dict:
     return result
 
 
-def score_snapshot(output: Path, *, scorer=None, bootstrap_samples=2000) -> dict:
+def _score_cell(output, reference, scorer):
+    cell = read_json(_inside(output, reference["path"]))
+    for attempt in cell["attempts"]:
+        if attempt["status"] == "completed":
+            environment = _inside(output, attempt["artifact_dir"]) / "environment"
+            cache = environment / "partial-score.json"
+            outcome = read_json(cache) if cache.exists() else scorer(environment)
+            if type(outcome.get("success")) is not bool:
+                raise ValueError("AppWorld scorer must return a boolean success.")
+            write_json(cache, outcome)
+            attempt.update(success=outcome["success"], evaluation=outcome)
+        else:
+            attempt.update(success=False, evaluation={"skipped": "execution failure",
+                                                      "status": attempt["status"]})
+    cell["oracle_success"] = any(attempt["success"] for attempt in cell["attempts"])
+    cell["single_attempt_success"] = bool(cell["attempts"] and cell["attempts"][0]["success"])
+    cell["actual_attempts"] = len(cell["attempts"])
+    return cell
+
+
+def score_snapshot(output: Path, *, scorer=None, bootstrap_samples=2000, workers=1) -> dict:
+    if workers < 1:
+        raise ValueError("Use at least one scoring worker.")
     snapshot = read_json(output / "snapshot.json")
     if snapshot.get("kind") != "partial-study-snapshot" or snapshot["status"] != "ready":
         raise ValueError("Require a prepared partial-study snapshot.")
@@ -142,26 +166,13 @@ def score_snapshot(output: Path, *, scorer=None, bootstrap_samples=2000) -> dict
     else:
         write_json(evaluator_path, evaluator)
     scorer = scorer or score_environment
-    scored = []
-    for reference in snapshot["cells"]:
-        cell_path = _inside(output, reference["path"])
-        cell = read_json(cell_path)
-        for attempt in cell["attempts"]:
-            if attempt["status"] == "completed":
-                environment = _inside(output, attempt["artifact_dir"]) / "environment"
-                cache = environment / "partial-score.json"
-                outcome = read_json(cache) if cache.exists() else scorer(environment)
-                if type(outcome.get("success")) is not bool:
-                    raise ValueError("AppWorld scorer must return a boolean success.")
-                write_json(cache, outcome)
-                attempt.update(success=outcome["success"], evaluation=outcome)
-            else:
-                attempt.update(success=False, evaluation={"skipped": "execution failure",
-                                                          "status": attempt["status"]})
-        cell["oracle_success"] = any(attempt["success"] for attempt in cell["attempts"])
-        cell["single_attempt_success"] = bool(cell["attempts"] and cell["attempts"][0]["success"])
-        cell["actual_attempts"] = len(cell["attempts"])
-        scored.append(cell)
+    if workers == 1:
+        scored = [_score_cell(output, reference, scorer) for reference in snapshot["cells"]]
+    else:
+        # AppWorld owns process-global database state, so threads cannot isolate evaluations.
+        with ProcessPoolExecutor(max_workers=workers, mp_context=multiprocessing.get_context("spawn")) as pool:
+            scored = list(pool.map(_score_cell, itertools.repeat(output), snapshot["cells"],
+                                   itertools.repeat(scorer)))
     analysis = analyze_cells(scored, bootstrap_samples=bootstrap_samples)
     cuda_errors = {}
     for cell in scored:
@@ -174,7 +185,8 @@ def score_snapshot(output: Path, *, scorer=None, bootstrap_samples=2000) -> dict
     analysis["partial_study"] = {key: snapshot[key] for key in (
         "provisional", "captured_at_unix", "study_digest", "included_conditions", "coverage", "selection")}
     write_json(output / "scores.json", {"provisional": True, "status": "completed",
-                                       "evaluation_provenance": evaluator, "cells": scored})
+                                       "evaluation_provenance": evaluator, "scoring_workers": workers,
+                                       "cells": scored})
     write_json(output / "analysis.json", analysis)
     with (output / "summary.csv").open("w") as stream:
         columns = ["condition", "completed_cells", "expected_cells", "reported_tasks",
@@ -205,12 +217,13 @@ def main():
     snapshot.add_argument("output", type=Path)
     score = commands.add_parser("score")
     score.add_argument("output", type=Path)
+    score.add_argument("--workers", type=int, default=1)
     args = parser.parse_args()
     if args.command == "snapshot":
         result = snapshot_study(args.partitions, args.run, args.output)
         print(json.dumps({"conditions": len(result["included_conditions"]), "cells": len(result["cells"])}))
     else:
-        result = score_snapshot(args.output)
+        result = score_snapshot(args.output, workers=args.workers)
         print(json.dumps({"tasks": result["task_count"], "conditions": len(result["conditions"])}))
 
 
