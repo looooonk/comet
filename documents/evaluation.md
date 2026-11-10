@@ -30,6 +30,11 @@ APPWORLD_ROOT --destination JOB_LOCAL_ROOT`. This copies the base databases,
 shares immutable task assets, and redirects only the copied snapshot references.
 Run `scripts/stage_partial_assets.py restore PARTIAL_REPORT` on exit to restore
 those references. Original execution artifacts remain untouched.
+If reads of the shared databases themselves stall, `--base-databases` may point
+to an independent copy from the same pinned AppWorld data release. The helper
+checks the database filenames and sizes against the installed layout and records
+the copied files' hashes. This is an offline asset relocation, not a benchmark
+version change.
 
 With the managed CPU plotting runtime, render the provisional graph with:
 

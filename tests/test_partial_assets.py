@@ -1,3 +1,5 @@
+import pytest
+
 from comet.artifacts import read_json, write_json
 from scripts.stage_partial_assets import prepare, restore
 
@@ -18,3 +20,12 @@ def test_scoring_assets_isolate_databases_and_restore_snapshot_references(tmp_pa
     assert database.read_bytes() == b"original database"
     restore(report)
     assert reference.read_bytes() == original
+    independent = tmp_path / "independent"
+    independent.mkdir()
+    (independent / "example.db").write_bytes(database.read_bytes())
+    prepare(source, tmp_path / "second-local", report, independent)
+    assert read_json(report / "scoring-assets.json")["base_database_source"] == str(independent)
+    restore(report)
+    (independent / "example.db").write_bytes(b"different layout")
+    with pytest.raises(ValueError, match="pinned installation layout"):
+        prepare(source, tmp_path / "invalid-local", report, independent)
