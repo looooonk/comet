@@ -1,0 +1,1402 @@
+{
+  "analysis": {
+    "bootstrap_draws": 10000,
+    "bootstrap_seed": 20261109,
+    "method": {
+      "assumption": "independent sampled tasks; repeats do not increase task count",
+      "bounded_mean_method": "Hoeffding, clipped to [0,1] for success and [-1,1] for differences",
+      "interval_scope": "pointwise 95%; not simultaneous across conditions, metrics or time",
+      "method": "paired task bootstrap, percentile 95% CI",
+      "resampling_unit": "task, retaining all attempts and paired replicate seeds",
+      "samples": 10000,
+      "seed": 20261109,
+      "standard_error_method": "sample standard deviation of task means / sqrt(tasks)"
+    }
+  },
+  "artifacts": {
+    "compact_bundle": "dev19-recovery-compact.tar.gz",
+    "compact_bundle_sha256": "df458e3cb4939911e5cc352e614f9b5706e60505aceaa2312694f85839b4952d",
+    "contents": "pooled analysis plus each group's manifest, scores and cell records; complete run directories with trajectories and environments remain in external project storage"
+  },
+  "attempts": 963,
+  "cells": 551,
+  "conditions": {
+    "agentkv_25_dynamic": {
+      "attempt_statuses": {
+        "completed": 3,
+        "context_limit": 1,
+        "error": 26,
+        "timeout": 6
+      },
+      "attempts": 36,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 84.03,
+      "mean_peak_kv_bytes": 133546846.31578948,
+      "mean_peak_total_vram_bytes": 23112356917.894737,
+      "oracle_bounded_ci95": [
+        0,
+        0.36420143485172496
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.15789473684210525
+      ],
+      "oracle_solved": 1,
+      "rebuilds_admitted": 11,
+      "solved_tasks": [
+        "b119b1f_1"
+      ],
+      "tasks": 19
+    },
+    "agentkv_25_fixed": {
+      "attempt_statuses": {
+        "completed": 2,
+        "error": 22,
+        "timeout": 9
+      },
+      "attempts": 33,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 89.29,
+      "mean_peak_kv_bytes": 124505249.68421052,
+      "mean_peak_total_vram_bytes": 23373066024.42105,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 15,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "agentkv_25_never": {
+      "attempt_statuses": {
+        "completed": 2,
+        "context_limit": 1,
+        "error": 19,
+        "timeout": 10
+      },
+      "attempts": 32,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 90.48,
+      "mean_peak_kv_bytes": 64371442.526315786,
+      "mean_peak_total_vram_bytes": 21160791417.263157,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 0,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "agentkv_50_dynamic": {
+      "attempt_statuses": {
+        "completed": 15,
+        "context_limit": 21,
+        "timeout": 2
+      },
+      "attempts": 38,
+      "first_attempt_solved": 5,
+      "mean_latency_seconds": 52.4,
+      "mean_peak_kv_bytes": 283801923.3684211,
+      "mean_peak_total_vram_bytes": 24731910144,
+      "oracle_bounded_ci95": [
+        0,
+        0.5747277506411986
+      ],
+      "oracle_ci95": [
+        0.05263157894736842,
+        0.47368421052631576
+      ],
+      "oracle_solved": 5,
+      "rebuilds_admitted": 30,
+      "solved_tasks": [
+        "23cf851_2",
+        "383cbac_1",
+        "396c5a2_3",
+        "6171bbc_2",
+        "6bdbc26_3"
+      ],
+      "tasks": 19
+    },
+    "agentkv_50_fixed": {
+      "attempt_statuses": {
+        "completed": 16,
+        "context_limit": 19,
+        "error": 2,
+        "timeout": 1
+      },
+      "attempts": 38,
+      "first_attempt_solved": 5,
+      "mean_latency_seconds": 56.55,
+      "mean_peak_kv_bytes": 293966901.8947368,
+      "mean_peak_total_vram_bytes": 24774736195.36842,
+      "oracle_bounded_ci95": [
+        0.056851196727222386,
+        0.6799909085359355
+      ],
+      "oracle_ci95": [
+        0.15789473684210525,
+        0.5789473684210527
+      ],
+      "oracle_solved": 7,
+      "rebuilds_admitted": 30,
+      "solved_tasks": [
+        "23cf851_2",
+        "396c5a2_3",
+        "50e1ac9_3",
+        "6171bbc_2",
+        "6bdbc26_3",
+        "6c2c621_1",
+        "b119b1f_1"
+      ],
+      "tasks": 19
+    },
+    "agentkv_50_never": {
+      "attempt_statuses": {
+        "completed": 11,
+        "context_limit": 24,
+        "timeout": 3
+      },
+      "attempts": 38,
+      "first_attempt_solved": 2,
+      "mean_latency_seconds": 57.58,
+      "mean_peak_kv_bytes": 230500459.78947368,
+      "mean_peak_total_vram_bytes": 24760387260.63158,
+      "oracle_bounded_ci95": [
+        0,
+        0.4694645927464618
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.3157894736842105
+      ],
+      "oracle_solved": 3,
+      "rebuilds_admitted": 0,
+      "solved_tasks": [
+        "23cf851_2",
+        "6171bbc_2",
+        "6bdbc26_3"
+      ],
+      "tasks": 19
+    },
+    "agentkv_80_dynamic": {
+      "attempt_statuses": {
+        "completed": 28,
+        "context_limit": 3,
+        "error": 3,
+        "timeout": 2
+      },
+      "attempts": 36,
+      "first_attempt_solved": 6,
+      "mean_latency_seconds": 55.42,
+      "mean_peak_kv_bytes": 301142231.57894737,
+      "mean_peak_total_vram_bytes": 24808842509.473682,
+      "oracle_bounded_ci95": [
+        0.056851196727222386,
+        0.6799909085359355
+      ],
+      "oracle_ci95": [
+        0.15789473684210525,
+        0.5789473684210527
+      ],
+      "oracle_solved": 7,
+      "rebuilds_admitted": 35,
+      "solved_tasks": [
+        "23cf851_2",
+        "396c5a2_3",
+        "50e1ac9_3",
+        "6171bbc_2",
+        "6bdbc26_3",
+        "d4e9306_1",
+        "fac291d_3"
+      ],
+      "tasks": 19
+    },
+    "agentkv_80_fixed": {
+      "attempt_statuses": {
+        "completed": 34,
+        "context_limit": 2,
+        "error": 2
+      },
+      "attempts": 38,
+      "first_attempt_solved": 7,
+      "mean_latency_seconds": 46.93,
+      "mean_peak_kv_bytes": 277417337.2631579,
+      "mean_peak_total_vram_bytes": 24730364874.105263,
+      "oracle_bounded_ci95": [
+        0.056851196727222386,
+        0.6799909085359355
+      ],
+      "oracle_ci95": [
+        0.15789473684210525,
+        0.5789473684210527
+      ],
+      "oracle_solved": 7,
+      "rebuilds_admitted": 38,
+      "solved_tasks": [
+        "23cf851_2",
+        "396c5a2_3",
+        "6171bbc_2",
+        "6bdbc26_3",
+        "6c2c621_1",
+        "d4e9306_1",
+        "fac291d_3"
+      ],
+      "tasks": 19
+    },
+    "agentkv_80_never": {
+      "attempt_statuses": {
+        "completed": 33,
+        "context_limit": 3,
+        "timeout": 2
+      },
+      "attempts": 38,
+      "first_attempt_solved": 6,
+      "mean_latency_seconds": 54.18,
+      "mean_peak_kv_bytes": 263811718.7368421,
+      "mean_peak_total_vram_bytes": 24756744838.736843,
+      "oracle_bounded_ci95": [
+        0.056851196727222386,
+        0.6799909085359355
+      ],
+      "oracle_ci95": [
+        0.15789473684210525,
+        0.5789473684210527
+      ],
+      "oracle_solved": 7,
+      "rebuilds_admitted": 0,
+      "solved_tasks": [
+        "23cf851_2",
+        "396c5a2_3",
+        "4ec8de5_3",
+        "6171bbc_2",
+        "6bdbc26_3",
+        "d4e9306_1",
+        "fac291d_3"
+      ],
+      "tasks": 19
+    },
+    "full_best_of_n": {
+      "attempt_statuses": {
+        "completed": 35,
+        "context_limit": 1,
+        "error": 2
+      },
+      "attempts": 38,
+      "first_attempt_solved": 6,
+      "mean_latency_seconds": 48.91,
+      "mean_peak_kv_bytes": 332153694.31578946,
+      "mean_peak_total_vram_bytes": 24699900981.894737,
+      "oracle_bounded_ci95": [
+        0.004219617779853968,
+        0.6273593295885671
+      ],
+      "oracle_ci95": [
+        0.10526315789473684,
+        0.5263157894736842
+      ],
+      "oracle_solved": 6,
+      "rebuilds_admitted": 0,
+      "solved_tasks": [
+        "23cf851_2",
+        "396c5a2_3",
+        "6bdbc26_3",
+        "6c2c621_1",
+        "d4e9306_1",
+        "fac291d_3"
+      ],
+      "tasks": 19
+    },
+    "full_once": {
+      "attempt_statuses": {
+        "completed": 18,
+        "error": 1
+      },
+      "attempts": 19,
+      "first_attempt_solved": 6,
+      "mean_latency_seconds": 29.04,
+      "mean_peak_kv_bytes": 297904235.7894737,
+      "mean_peak_total_vram_bytes": 24673631393.68421,
+      "oracle_bounded_ci95": [
+        0.004219617779853968,
+        0.6273593295885671
+      ],
+      "oracle_ci95": [
+        0.10526315789473684,
+        0.5263157894736842
+      ],
+      "oracle_solved": 6,
+      "rebuilds_admitted": 0,
+      "solved_tasks": [
+        "23cf851_2",
+        "396c5a2_3",
+        "6bdbc26_3",
+        "6c2c621_1",
+        "d4e9306_1",
+        "fac291d_3"
+      ],
+      "tasks": 19
+    },
+    "rkv_25_dynamic": {
+      "attempt_statuses": {
+        "completed": 2,
+        "context_limit": 1,
+        "error": 19,
+        "timeout": 12
+      },
+      "attempts": 34,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 108.75,
+      "mean_peak_kv_bytes": 188733332.21052632,
+      "mean_peak_total_vram_bytes": 24413474169.263157,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 18,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "rkv_25_fixed": {
+      "attempt_statuses": {
+        "completed": 3,
+        "context_limit": 1,
+        "error": 19,
+        "timeout": 11
+      },
+      "attempts": 34,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 100.02,
+      "mean_peak_kv_bytes": 152993792,
+      "mean_peak_total_vram_bytes": 24430803267.36842,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 25,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "rkv_25_never": {
+      "attempt_statuses": {
+        "completed": 1,
+        "context_limit": 1,
+        "error": 17,
+        "timeout": 14
+      },
+      "attempts": 33,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 109.57,
+      "mean_peak_kv_bytes": 77127248.84210527,
+      "mean_peak_total_vram_bytes": 22829903656.42105,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 0,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "rkv_50_dynamic": {
+      "attempt_statuses": {
+        "completed": 8,
+        "error": 14,
+        "timeout": 10
+      },
+      "attempts": 32,
+      "first_attempt_solved": 2,
+      "mean_latency_seconds": 97.43,
+      "mean_peak_kv_bytes": 203808336.84210527,
+      "mean_peak_total_vram_bytes": 24539524042.105263,
+      "oracle_bounded_ci95": [
+        0,
+        0.4694645927464618
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.3157894736842105
+      ],
+      "oracle_solved": 3,
+      "rebuilds_admitted": 21,
+      "solved_tasks": [
+        "23cf851_2",
+        "6bdbc26_3",
+        "fac291d_3"
+      ],
+      "tasks": 19
+    },
+    "rkv_50_fixed": {
+      "attempt_statuses": {
+        "completed": 7,
+        "context_limit": 1,
+        "error": 13,
+        "timeout": 11
+      },
+      "attempts": 32,
+      "first_attempt_solved": 2,
+      "mean_latency_seconds": 99.64,
+      "mean_peak_kv_bytes": 218636719.15789473,
+      "mean_peak_total_vram_bytes": 24592063218.526318,
+      "oracle_bounded_ci95": [
+        0,
+        0.4168330137990934
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.2631578947368421
+      ],
+      "oracle_solved": 2,
+      "rebuilds_admitted": 29,
+      "solved_tasks": [
+        "23cf851_2",
+        "fac291d_3"
+      ],
+      "tasks": 19
+    },
+    "rkv_50_never": {
+      "attempt_statuses": {
+        "completed": 4,
+        "error": 16,
+        "timeout": 10
+      },
+      "attempts": 30,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 92.56,
+      "mean_peak_kv_bytes": 152704700.63157895,
+      "mean_peak_total_vram_bytes": 23132776555.789474,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 0,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "rkv_80_dynamic": {
+      "attempt_statuses": {
+        "completed": 32,
+        "context_limit": 1,
+        "error": 1,
+        "timeout": 2
+      },
+      "attempts": 36,
+      "first_attempt_solved": 8,
+      "mean_latency_seconds": 72.94,
+      "mean_peak_kv_bytes": 278314792.42105263,
+      "mean_peak_total_vram_bytes": 24671865370.94737,
+      "oracle_bounded_ci95": [
+        0.1094827756745908,
+        0.7326224874833038
+      ],
+      "oracle_ci95": [
+        0.21052631578947367,
+        0.631578947368421
+      ],
+      "oracle_solved": 8,
+      "rebuilds_admitted": 36,
+      "solved_tasks": [
+        "23cf851_2",
+        "383cbac_1",
+        "396c5a2_3",
+        "50e1ac9_3",
+        "6bdbc26_3",
+        "6c2c621_1",
+        "d4e9306_1",
+        "fac291d_3"
+      ],
+      "tasks": 19
+    },
+    "rkv_80_fixed": {
+      "attempt_statuses": {
+        "completed": 30,
+        "context_limit": 3,
+        "timeout": 4
+      },
+      "attempts": 37,
+      "first_attempt_solved": 7,
+      "mean_latency_seconds": 73.08,
+      "mean_peak_kv_bytes": 281116672,
+      "mean_peak_total_vram_bytes": 24750674135.57895,
+      "oracle_bounded_ci95": [
+        0.056851196727222386,
+        0.6799909085359355
+      ],
+      "oracle_ci95": [
+        0.15789473684210525,
+        0.5789473684210527
+      ],
+      "oracle_solved": 7,
+      "rebuilds_admitted": 37,
+      "solved_tasks": [
+        "23cf851_2",
+        "396c5a2_3",
+        "6171bbc_2",
+        "6bdbc26_3",
+        "6c2c621_1",
+        "d4e9306_1",
+        "fac291d_3"
+      ],
+      "tasks": 19
+    },
+    "rkv_80_never": {
+      "attempt_statuses": {
+        "completed": 28,
+        "context_limit": 1,
+        "error": 3,
+        "timeout": 3
+      },
+      "attempts": 35,
+      "first_attempt_solved": 7,
+      "mean_latency_seconds": 70.63,
+      "mean_peak_kv_bytes": 276279080.42105263,
+      "mean_peak_total_vram_bytes": 23194476975.157894,
+      "oracle_bounded_ci95": [
+        0.1094827756745908,
+        0.7326224874833038
+      ],
+      "oracle_ci95": [
+        0.21052631578947367,
+        0.631578947368421
+      ],
+      "oracle_solved": 8,
+      "rebuilds_admitted": 0,
+      "solved_tasks": [
+        "23cf851_2",
+        "383cbac_1",
+        "396c5a2_3",
+        "4ec8de5_3",
+        "6bdbc26_3",
+        "6c2c621_1",
+        "d4e9306_1",
+        "fac291d_3"
+      ],
+      "tasks": 19
+    },
+    "streamingllm_25_dynamic": {
+      "attempt_statuses": {
+        "context_limit": 10,
+        "error": 2,
+        "timeout": 16
+      },
+      "attempts": 28,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 114.74,
+      "mean_peak_kv_bytes": 205175969.68421054,
+      "mean_peak_total_vram_bytes": 24710276365.473682,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 24,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "streamingllm_25_fixed": {
+      "attempt_statuses": {
+        "context_limit": 10,
+        "error": 3,
+        "timeout": 15
+      },
+      "attempts": 28,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 114.06,
+      "mean_peak_kv_bytes": 150039498.10526314,
+      "mean_peak_total_vram_bytes": 23381344256,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 26,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "streamingllm_25_never": {
+      "attempt_statuses": {
+        "context_limit": 10,
+        "error": 2,
+        "timeout": 17
+      },
+      "attempts": 29,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 117.26,
+      "mean_peak_kv_bytes": 109585246.31578948,
+      "mean_peak_total_vram_bytes": 21967311925.894737,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 0,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "streamingllm_50_dynamic": {
+      "attempt_statuses": {
+        "context_limit": 4,
+        "error": 14,
+        "timeout": 12
+      },
+      "attempts": 30,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 94.88,
+      "mean_peak_kv_bytes": 184320215.57894737,
+      "mean_peak_total_vram_bytes": 23763798554.94737,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 15,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "streamingllm_50_fixed": {
+      "attempt_statuses": {
+        "context_limit": 3,
+        "error": 14,
+        "timeout": 14
+      },
+      "attempts": 31,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 100.69,
+      "mean_peak_kv_bytes": 168123984.84210527,
+      "mean_peak_total_vram_bytes": 23787750238.31579,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 18,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "streamingllm_50_never": {
+      "attempt_statuses": {
+        "context_limit": 3,
+        "error": 12,
+        "timeout": 14
+      },
+      "attempts": 29,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 96.13,
+      "mean_peak_kv_bytes": 157922573.47368422,
+      "mean_peak_total_vram_bytes": 22866217498.94737,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 0,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "streamingllm_80_dynamic": {
+      "attempt_statuses": {
+        "context_limit": 1,
+        "error": 19,
+        "timeout": 13
+      },
+      "attempts": 33,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 103.56,
+      "mean_peak_kv_bytes": 195038369.68421054,
+      "mean_peak_total_vram_bytes": 23291387472.842106,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 9,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "streamingllm_80_fixed": {
+      "attempt_statuses": {
+        "completed": 2,
+        "context_limit": 3,
+        "error": 18,
+        "timeout": 11
+      },
+      "attempts": 34,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 100.51,
+      "mean_peak_kv_bytes": 211801573.0526316,
+      "mean_peak_total_vram_bytes": 23464347324.63158,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 10,
+      "solved_tasks": [],
+      "tasks": 19
+    },
+    "streamingllm_80_never": {
+      "attempt_statuses": {
+        "context_limit": 2,
+        "error": 20,
+        "timeout": 12
+      },
+      "attempts": 34,
+      "first_attempt_solved": 0,
+      "mean_latency_seconds": 102.03,
+      "mean_peak_kv_bytes": 212394846.31578946,
+      "mean_peak_total_vram_bytes": 23099001370.94737,
+      "oracle_bounded_ci95": [
+        0,
+        0.31156985590435654
+      ],
+      "oracle_ci95": [
+        0.0,
+        0.0
+      ],
+      "oracle_solved": 0,
+      "rebuilds_admitted": 0,
+      "solved_tasks": [],
+      "tasks": 19
+    }
+  },
+  "declaration_commit": "6164ba9",
+  "infrastructure": {
+    "cuda_or_oom_attempt_failures": 0,
+    "max_mean_peak_total_vram_gib": 23.11
+  },
+  "integration_smoke": false,
+  "paired_oracle_differences": [
+    {
+      "ci95": [
+        -0.0,
+        -0.0
+      ],
+      "difference": -0.0,
+      "right_minus_left": [
+        "streamingllm_80_fixed",
+        "streamingllm_80_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        -0.0
+      ],
+      "difference": -0.0,
+      "right_minus_left": [
+        "streamingllm_80_dynamic",
+        "streamingllm_80_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        -0.0
+      ],
+      "difference": -0.0,
+      "right_minus_left": [
+        "streamingllm_50_fixed",
+        "streamingllm_50_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        -0.0
+      ],
+      "difference": -0.0,
+      "right_minus_left": [
+        "streamingllm_50_dynamic",
+        "streamingllm_50_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        -0.0
+      ],
+      "difference": -0.0,
+      "right_minus_left": [
+        "streamingllm_25_fixed",
+        "streamingllm_25_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        -0.0
+      ],
+      "difference": -0.0,
+      "right_minus_left": [
+        "streamingllm_25_dynamic",
+        "streamingllm_25_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.21052631578947373,
+        0.10526315789473684
+      ],
+      "difference": -0.05263157894736842,
+      "right_minus_left": [
+        "rkv_80_fixed",
+        "rkv_80_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.15789473684210525,
+        0.15789473684210525
+      ],
+      "difference": -0.0,
+      "right_minus_left": [
+        "rkv_80_dynamic",
+        "rkv_80_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        0.2631578947368421
+      ],
+      "difference": 0.10526315789473684,
+      "right_minus_left": [
+        "rkv_50_fixed",
+        "rkv_50_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        0.3157894736842105
+      ],
+      "difference": 0.15789473684210525,
+      "right_minus_left": [
+        "rkv_50_dynamic",
+        "rkv_50_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        -0.0
+      ],
+      "difference": -0.0,
+      "right_minus_left": [
+        "rkv_25_fixed",
+        "rkv_25_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        -0.0
+      ],
+      "difference": -0.0,
+      "right_minus_left": [
+        "rkv_25_dynamic",
+        "rkv_25_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.15789473684210525,
+        0.15789473684210525
+      ],
+      "difference": -0.0,
+      "right_minus_left": [
+        "agentkv_80_fixed",
+        "agentkv_80_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.15789473684210525,
+        0.15789473684210525
+      ],
+      "difference": -0.0,
+      "right_minus_left": [
+        "agentkv_80_dynamic",
+        "agentkv_80_never"
+      ]
+    },
+    {
+      "ci95": [
+        0.05263157894736842,
+        0.42105263157894735
+      ],
+      "difference": 0.21052631578947367,
+      "right_minus_left": [
+        "agentkv_50_fixed",
+        "agentkv_50_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        0.2631578947368421
+      ],
+      "difference": 0.10526315789473684,
+      "right_minus_left": [
+        "agentkv_50_dynamic",
+        "agentkv_50_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        -0.0
+      ],
+      "difference": -0.0,
+      "right_minus_left": [
+        "agentkv_25_fixed",
+        "agentkv_25_never"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        0.15789473684210525
+      ],
+      "difference": 0.05263157894736842,
+      "right_minus_left": [
+        "agentkv_25_dynamic",
+        "agentkv_25_never"
+      ]
+    },
+    {
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "difference": 0.0,
+      "right_minus_left": [
+        "full_once",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "streamingllm_80_never",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "streamingllm_80_fixed",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "streamingllm_80_dynamic",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "streamingllm_50_never",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "streamingllm_50_fixed",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "streamingllm_50_dynamic",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "streamingllm_25_never",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "streamingllm_25_fixed",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "streamingllm_25_dynamic",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        0.0,
+        0.2631578947368421
+      ],
+      "difference": 0.10526315789473684,
+      "right_minus_left": [
+        "rkv_80_never",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        0.0,
+        0.15789473684210525
+      ],
+      "difference": 0.05263157894736842,
+      "right_minus_left": [
+        "rkv_80_fixed",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        0.0,
+        0.2631578947368421
+      ],
+      "difference": 0.10526315789473684,
+      "right_minus_left": [
+        "rkv_80_dynamic",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "rkv_50_never",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.42105263157894735,
+        -0.05263157894736842
+      ],
+      "difference": -0.21052631578947367,
+      "right_minus_left": [
+        "rkv_50_fixed",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.3157894736842105,
+        0.0
+      ],
+      "difference": -0.15789473684210525,
+      "right_minus_left": [
+        "rkv_50_dynamic",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "rkv_25_never",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "rkv_25_fixed",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "rkv_25_dynamic",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.10526315789473684,
+        0.21052631578947373
+      ],
+      "difference": 0.05263157894736842,
+      "right_minus_left": [
+        "agentkv_80_never",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.0,
+        0.15789473684210525
+      ],
+      "difference": 0.05263157894736842,
+      "right_minus_left": [
+        "agentkv_80_fixed",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.10526315789473684,
+        0.21052631578947373
+      ],
+      "difference": 0.05263157894736842,
+      "right_minus_left": [
+        "agentkv_80_dynamic",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.3684210526315789,
+        0.05263157894736842
+      ],
+      "difference": -0.15789473684210525,
+      "right_minus_left": [
+        "agentkv_50_never",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.15789473684210525,
+        0.26315789473684215
+      ],
+      "difference": 0.05263157894736842,
+      "right_minus_left": [
+        "agentkv_50_fixed",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.2631578947368421,
+        0.15789473684210525
+      ],
+      "difference": -0.05263157894736842,
+      "right_minus_left": [
+        "agentkv_50_dynamic",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "agentkv_25_never",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.10526315789473684
+      ],
+      "difference": -0.3157894736842105,
+      "right_minus_left": [
+        "agentkv_25_fixed",
+        "full_best_of_n"
+      ]
+    },
+    {
+      "ci95": [
+        -0.5263157894736842,
+        -0.0
+      ],
+      "difference": -0.2631578947368421,
+      "right_minus_left": [
+        "agentkv_25_dynamic",
+        "full_best_of_n"
+      ]
+    }
+  ],
+  "record": "Completed nineteen-family dev recovery study, November 10, 2026",
+  "recovery": {
+    "admitted": 427,
+    "refused": 0,
+    "requests": 427
+  },
+  "runs": [
+    {
+      "cells": 152,
+      "config_digest": "1fc9815cb2732da6cb634529d19deda2eae0ad6b7d07a165553f0c248dd9daa2",
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "group": "part-00",
+      "integration_smoke": false,
+      "run_id": "7e103173-5c1a-4d57-916f-7d49d3bb5cd3",
+      "source_commit": "6164ba9047348c7a270589a386648d34de5373fc",
+      "status": "completed"
+    },
+    {
+      "cells": 133,
+      "config_digest": "ad9a96acfb004b03fc6469b50c901143b58157a95c1f0aac47c8369ecb2efb3f",
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "group": "part-01",
+      "integration_smoke": false,
+      "run_id": "587b7e9f-4a14-4702-bf13-771615c0bcd5",
+      "source_commit": "6164ba9047348c7a270589a386648d34de5373fc",
+      "status": "completed"
+    },
+    {
+      "cells": 133,
+      "config_digest": "34661b0526f5ce342080eff8ad83987c09e8cb082952a68d1699dc6b9a0b2b8c",
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "group": "part-02",
+      "integration_smoke": false,
+      "run_id": "a869fbe5-114c-42fe-a1d3-61689a8ffff3",
+      "source_commit": "6164ba9047348c7a270589a386648d34de5373fc",
+      "status": "completed"
+    },
+    {
+      "cells": 133,
+      "config_digest": "4bff63b52b879bc582de59ea0fc9f668a91bcc149746dfaa502c260e39fb66d7",
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "group": "part-03",
+      "integration_smoke": false,
+      "run_id": "2b84a17b-613e-45db-b274-272acfd90106",
+      "source_commit": "6164ba9047348c7a270589a386648d34de5373fc",
+      "status": "completed"
+    }
+  ],
+  "schema_version": 1,
+  "seeds": [
+    17
+  ],
+  "stage": "pilot",
+  "study_config_digest": "e520ccd4ace8c7aabcf471cba4212276ce07ef71db11381be6244d4971b2d3a6",
+  "study_id": "qwen9b-dev19-recovery-blackwell-v1",
+  "tasks": 19,
+  "validation": {
+    "dev_smoke_cells": 4,
+    "live_checks_failed": 0,
+    "live_checks_passed": 24,
+    "qualification_job": 13847982,
+    "scheduler": "account edu, partition short, QoS free, one RTX PRO 6000 Blackwell Server Edition GPU, four CPUs and 24 GiB host RAM per worker",
+    "scoring_job": 13847984,
+    "setup_job": 13847977,
+    "worker_array": 13847983
+  }
+}

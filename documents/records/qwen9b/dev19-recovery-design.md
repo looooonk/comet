@@ -54,7 +54,5 @@ test study.
 
 ## Status
 
-Declared and validated on CPU only (configuration validation and the focused
-configuration tests). No model inference, AppWorld execution or GPU check has
-run for this study. Job identifiers, starts and results belong in a separate
-submission record once it is launched.
+Completed on November 10, 2026, without changes to the declared configuration.
+See the [findings](dev19-recovery.md) and [compact evidence](dev19-recovery-summary.json).
