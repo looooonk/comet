@@ -163,6 +163,14 @@ def score_snapshot(output: Path, *, scorer=None, bootstrap_samples=2000) -> dict
         cell["actual_attempts"] = len(cell["attempts"])
         scored.append(cell)
     analysis = analyze_cells(scored, bootstrap_samples=bootstrap_samples)
+    cuda_errors = {}
+    for cell in scored:
+        count = sum("illegal memory access" in (attempt.get("failure_reason") or "")
+                    for attempt in cell["attempts"])
+        if count:
+            name = cell["condition"]["id"]
+            cuda_errors[name] = cuda_errors.get(name, 0) + count
+    analysis["execution_warnings"] = {"cuda_illegal_access_attempts": cuda_errors}
     analysis["partial_study"] = {key: snapshot[key] for key in (
         "provisional", "captured_at_unix", "study_digest", "included_conditions", "coverage", "selection")}
     write_json(output / "scores.json", {"provisional": True, "status": "completed",
@@ -170,7 +178,8 @@ def score_snapshot(output: Path, *, scorer=None, bootstrap_samples=2000) -> dict
     write_json(output / "analysis.json", analysis)
     with (output / "summary.csv").open("w") as stream:
         columns = ["condition", "completed_cells", "expected_cells", "reported_tasks",
-                   "first_attempt_success_percent", "oracle_success_percent"]
+                   "first_attempt_success_percent", "oracle_success_percent",
+                   "oom_attempts", "cuda_illegal_access_attempts"]
         writer = csv.DictWriter(stream, fieldnames=columns)
         writer.writeheader()
         for condition, coverage in snapshot["coverage"].items():
@@ -180,7 +189,9 @@ def score_snapshot(output: Path, *, scorer=None, bootstrap_samples=2000) -> dict
                 result = analysis["conditions"][condition]
                 row.update(reported_tasks=analysis["task_count"],
                            first_attempt_success_percent=100 * result["single_attempt_success_rate"]["value"],
-                           oracle_success_percent=100 * result["oracle_success_rate"]["value"])
+                           oracle_success_percent=100 * result["oracle_success_rate"]["value"],
+                           oom_attempts=result["attempt_status_counts"].get("oom", 0),
+                           cuda_illegal_access_attempts=cuda_errors.get(condition, 0))
             writer.writerow(row)
     return analysis
 
