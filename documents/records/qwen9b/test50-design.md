@@ -143,10 +143,16 @@ The 200-cell workers retain 8h30m allocations; the six 150-cell workers request
 ## Provisional reporting
 
 The [November 9 partial report](test50-partial.md) scores an isolated snapshot of
-15 conditions with all 50 tasks complete. It retains all execution failures and
-leaves the other 11 conditions unreported. Ongoing execution stays frozen.
+21 conditions with all 50 tasks complete. It retains all execution failures and
+leaves the other five conditions unreported. Ongoing execution stays frozen.
 Partition 02 saved every cell but failed during CUDA shutdown; metadata-only
 finalization preserved those results. Replacement final scorer `13847761` waits
 for the remaining array to exit and then requires successful finalization of
 every partition before full scoring. This supersedes the cancelled scorer's
 success-only dependency without replacing any task budget.
+
+The [November 10 resume record](test50-resume-20261110.json) supersedes that
+final-scorer submission after five workers stopped near their allocation limits.
+It preserves 1,246 completed cells, queues compatible resumes only for partitions
+01 and 04-07, and attaches final scorer `13853128` to resume array `13853125`.
+The snapshot now includes the full-cache N=2 control; five AgentKV points remain.
