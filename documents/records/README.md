@@ -12,6 +12,8 @@ selection among attempts; these small samples do not establish a general ranking
   and its parallel execution design; submission is not completed-result evidence.
 - [Fifty-task provisional results](qwen9b/test50-partial.md): 12 fully covered
   conditions, 50 paired tasks per point, with missing comparisons and GPU failures explicit.
+- [Nineteen-family dev recovery study](qwen9b/dev19-recovery-design.md): the
+  declared core matrix with recovery on every dev family; not yet executed.
 - [Validation evidence](qwen9b/validation/): live state, memory, AppWorld and
   interruption checks, including the failed Blackwell 21 GiB qualification.
 - [Cloud ledger](qwen9b/cloud-ledger.json): the existing spending ceiling and

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "study_id": "qwen9b-dev19-recovery-blackwell-v1",
+  "split": "dev",
+  "namespace": "comet-dev19-recovery-v1:20261109",
+  "rule": "All 19 dev families. Within each family choose the task minimizing SHA-256 of namespace + ':variant:' + task_id. Selection reads split identifiers only.",
+  "families": [
+    "0d8a4ee",
+    "23cf851",
+    "37a8675",
+    "383cbac",
+    "396c5a2",
+    "3ab5b8b",
+    "4ec8de5",
+    "4fab96f",
+    "50e1ac9",
+    "530b157",
+    "57c3486",
+    "6171bbc",
+    "68ee2c9",
+    "6bdbc26",
+    "6c2c621",
+    "b119b1f",
+    "d4e9306",
+    "df61dc5",
+    "fac291d"
+  ],
+  "task_ids": [
+    "0d8a4ee_2",
+    "23cf851_2",
+    "37a8675_1",
+    "383cbac_1",
+    "396c5a2_3",
+    "3ab5b8b_2",
+    "4ec8de5_3",
+    "4fab96f_3",
+    "50e1ac9_3",
+    "530b157_2",
+    "57c3486_1",
+    "6171bbc_2",
+    "68ee2c9_2",
+    "6bdbc26_3",
+    "6c2c621_1",
+    "b119b1f_1",
+    "d4e9306_1",
+    "df61dc5_3",
+    "fac291d_3"
+  ],
+  "expected_split_ids_sha256": "d36670b383552f4c586baf1f84f0d53fcd3e05db5698b1532b2291ace23288a8",
+  "expected_split_size": 57,
+  "variant_counts": {
+    "1": 6,
+    "2": 6,
+    "3": 7
+  },
+  "previously_examined_families": [
+    "4ec8de5",
+    "396c5a2"
+  ],
+  "verification": "The family list was read from the pinned AppWorld 0.2.0 dev split on November 6, 2026; the launcher re-checks every task identifier against the split before loading the model."
+}
