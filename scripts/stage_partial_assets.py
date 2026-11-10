@@ -8,6 +8,14 @@ from pathlib import Path
 from comet.artifacts import write_json
 
 
+def copy_database(source, destination):
+    # GPFS sendfile can stall while live SQLite readers hold the source open.
+    with Path(source).open("rb") as reader, Path(destination).open("wb") as writer:
+        shutil.copyfileobj(reader, writer, 1024 * 1024)
+    shutil.copystat(source, destination)
+    return destination
+
+
 def prepare(source: Path, destination: Path, report: Path):
     source, destination = source.resolve(), destination.resolve()
     if source == destination or destination.is_relative_to(source):
@@ -16,7 +24,7 @@ def prepare(source: Path, destination: Path, report: Path):
     for path in (source / "data").iterdir():
         target = destination / "data" / path.name
         if path.name == "base_dbs":
-            shutil.copytree(path, target)
+            shutil.copytree(path, target, copy_function=copy_database)
         else:
             target.symlink_to(path, target_is_directory=path.is_dir())
     for path in report.glob("cells/*/*/attempt-*/environment/reference.json"):
