@@ -66,6 +66,29 @@ Without recovery that arm ended 24 of 38 attempts at the context limit; with
 fixed recovery 19. This identifies where the gain occurred, not which tokens
 caused it.
 
+## Where recovery acted
+
+From the saved cell records, without rerunning anything. At 50% retention
+without recovery, 24 of AgentKV's 38 attempts ended because the raw transcript
+reached the 16,384-token limit, after a median of five tool calls; full cache
+had one such ending in 38 attempts. With fixed recovery that count was 19 and
+with dynamic 21. The compressed agent therefore most often failed by filling
+its context early, not by running out of time.
+
+The fixed trigger rebuilt at the fourth tool call by definition, at a median
+context of 5,539 tokens (10th-90th percentile 3,936-8,135) across all 228
+admitted rebuilds; the dynamic trigger fired at a median of five tool calls and
+6,447 tokens across 199. Median rebuild time was 1.9 and 2.2 seconds, with a
+maximum of 6.1.
+
+On the four tasks AgentKV 50% gained under fixed recovery, the solved attempts
+finished in 8-16 tool calls after a rebuild at 5,483-9,179 context tokens,
+similar to full-cache attempts on the same tasks (7-20 tool calls). Full cache
+itself solved two of those four tasks (`396c5a2_3`, `6c2c621_1`) and not the
+other two (`50e1ac9_3`, `b119b1f_1`). That the rebuild restores instructions
+the compressed cache had lost is a hypothesis consistent with these counts, not
+something this study isolates.
+
 ## Cost and failures
 
 All 427 requested rebuilds were admitted; none was refused by the memory cap.
