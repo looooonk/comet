@@ -7,6 +7,7 @@ from comet.task_characteristics import (
     flood_summary,
     opening_api,
     opening_summary,
+    prohibited_patterns,
     spearman,
     task_outcomes,
     task_table,
@@ -119,3 +120,12 @@ def test_documentation_calls_reports_count_and_size_per_api():
         "search_api_docs": {"calls": 2, "median_chars": 18000, "max_chars": 21000},
         "show_api_doc": {"calls": 1, "median_chars": 900, "max_chars": 900},
     }
+
+
+def test_prohibited_patterns_flags_what_the_prompt_forbids():
+    assert prohibited_patterns("import apis\nprint(apis.apps)") == ["import"]
+    assert prohibited_patterns("from apis import spotify") == ["import"]
+    assert prohibited_patterns("import requests\nr = requests.get('http://localhost:5000/x')") == ["import", "http"]
+    assert prohibited_patterns("print(apis.api_docs.show_api_descriptions(app_name='spotify'))") == []
+    assert prohibited_patterns("important = 1\nprint(important)") == []
+    assert prohibited_patterns("") == []

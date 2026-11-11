@@ -12,6 +12,8 @@ from collections import Counter
 from statistics import mean
 
 API_CALL = re.compile(r"apis\.(\w+)\.(\w+)\s*\(")
+IMPORT = re.compile(r"^\s*(?:import|from)\s+\w", re.MULTILINE)
+HTTP = re.compile(r"\brequests\.|https?://")
 TOLERANCE_ARMS = ("rkv_80_never", "agentkv_80_never", "rkv_50_never", "agentkv_50_never")
 RECOVERY_ARMS = ("agentkv_50", "rkv_50")
 
@@ -32,6 +34,16 @@ def action_kind(action: str) -> str:
     if app == "api_docs":
         return "documentation"
     return "supervisor" if app == "supervisor" else "task_api"
+
+
+def prohibited_patterns(action: str) -> list[str]:
+    """Constructs the v4 prompt forbids outright: imports, and requests or HTTP URLs."""
+    found = []
+    if IMPORT.search(action or ""):
+        found.append("import")
+    if HTTP.search(action or ""):
+        found.append("http")
+    return found
 
 
 def attempt_profile(attempt: dict) -> dict:

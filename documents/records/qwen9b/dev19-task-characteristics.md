@@ -4,7 +4,9 @@ At 50% retention the compressed agent stops following the prompt's
 documentation protocol before its first action. Full cache opened all 38
 attempts with the compact API listing the prompt prescribes; AgentKV 50% did so
 in 13 of 38 and opened 20 with a wide full-specification search whose results
-fill the 16K context in two to five calls. One rebuild after four tool calls
+fill the 16K context in two to five calls. Across all 29 conditions, 104 of
+113 passing attempts began with that listing call, and no StreamingLLM attempt
+did at any retention. One rebuild after four tool calls
 raised passing attempts from 3 to 8 among the 13 that opened on protocol and
 from 0 to 1 among the 20 that opened with the search. Across tasks, tolerance
 to compression follows whether full cache solves the task at all; tool-call
@@ -53,6 +55,44 @@ large transaction listing, not documentation.
 The 5 "other" openings called names that do not exist
 (`show_api_docs`, `show_api_description`) or read one API's documentation
 before listing any.
+
+## First action across all conditions
+
+First actions were then read for all 963 attempts of the 29 conditions.
+
+![First-action adherence and tasks solved](figures/dev19-protocol-adherence.png)
+
+[PDF](figures/dev19-protocol-adherence.pdf)
+
+| Never-rebuild arm | Opened with the listing | First action empty | First action uses an import, `requests` or a URL | Tasks solved |
+| --- | ---: | ---: | ---: | ---: |
+| Full cache (N=2) | 38/38 | 0 | 0 | 6/19 |
+| AgentKV 80% | 38/38 | 0 | 0 | 7/19 |
+| R-KV 80% | 34/35 | 0 | 0 | 8/19 |
+| AgentKV 50% | 13/38 | 0 | 0 | 3/19 |
+| R-KV 50% | 7/30 | 3 | 3 | 0/19 |
+| AgentKV 25% | 0/32 | 6 | 5 | 0/19 |
+| R-KV 25% | 0/33 | 15 | 8 | 0/19 |
+| StreamingLLM 80% | 0/34 | 9 | 21 | 0/19 |
+| StreamingLLM 50% | 0/29 | 8 | 17 | 0/19 |
+| StreamingLLM 25% | 0/29 | 16 | 4 | 0/19 |
+
+The prompt forbids imports, `requests` and HTTP URLs and requires one fenced
+code block. Each method loses the protocol differently. AgentKV 50% still
+reaches for the documentation app but through the wide search. R-KV 50% more
+often skips documentation for credential calls or nonexistent names and stops
+on four consecutive failures (16 of 30 attempts). At 25% no attempt of either
+method opened on protocol. StreamingLLM opened on protocol in no attempt at any
+retention, including 80%: it imported modules or called URLs in 21 of 34 first
+actions there. StreamingLLM keeps a short sink and the most recent tokens, so
+the first tokens it drops are the body of the system prompt; that this explains
+its zero success at every retention is a hypothesis these counts fit.
+
+Over all 29 conditions, 104 of the 113 passing attempts opened with the
+listing: 104 of 336 listing openings passed and 9 of 627 others. The share of
+attempts opening on protocol and tasks solved have rank correlation +0.91
+across conditions; the three policies of a method and retention share their
+first actions, so this is about 11 distinct points, not 29.
 
 ## Where the rebuild helped
 
@@ -124,9 +164,9 @@ run, its first action, not of the task.
 ## Limits
 
 One seed, 19 tasks and two attempts per task; attempts within a task are not
-independent, and counts by first action are descriptive. Trajectories were read
-for three of the 29 conditions; R-KV 50%, the 80% and 25% arms and StreamingLLM
-have cell records here but not this reading. Task metadata was read for dev
+independent, and counts by first action are descriptive. Complete trajectories
+were read for three of the 29 conditions; the other 26 were read for first
+actions and endings only. Task metadata was read for dev
 tasks only. The correlations are exploratory and uncorrected. The summaries
 come from `comet.task_characteristics`, which reads saved artifacts and runs no
 model, tool or evaluator. A seed replicate and the supplemental studies in the
