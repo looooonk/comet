@@ -215,3 +215,13 @@ conditions repeat the first study, and each trigger-timing attempt shares its
 actions with the first study up to its rebuild; both are checked action for
 action. The order (trigger timing, replicate, frontier), the four-worker limit
 and the guard are as declared above.
+
+The first launch on node-local storage, at 17:38 on November 11, is void. Its
+four trigger-timing workers ran on one node, each completed one cell and all
+four died with a bus error between 17:46:25 and 17:47:02 during their second
+cell. At least 17 jobs of four other users failed on that node between 17:46
+and 17:49, and the replicate and frontier arrays released by the failure could
+not be launched there and wrote no cells. The four completed cells averaged
+0.04 seconds of saving and 1.2 of reset. The eight cells are kept outside
+project comparisons and are not resumed. The workers still loaded their Python
+libraries from shared storage; the cause of the node fault was not established.
