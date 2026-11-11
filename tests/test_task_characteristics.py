@@ -66,6 +66,27 @@ def test_task_outcomes_requires_every_arm():
         task_outcomes({"full_once": True})
 
 
+@pytest.mark.parametrize("missing", [
+    "full_best_of_n", "agentkv_50_dynamic", "rkv_50_dynamic",
+])
+def test_task_outcomes_rejects_missing_arms_even_when_other_arms_succeed(missing):
+    solved = {
+        "full_once": True,
+        "full_best_of_n": True,
+        "rkv_80_never": True,
+        "agentkv_80_never": True,
+        "rkv_50_never": True,
+        "agentkv_50_never": True,
+        "agentkv_50_fixed": True,
+        "agentkv_50_dynamic": True,
+        "rkv_50_fixed": True,
+        "rkv_50_dynamic": True,
+    }
+    del solved[missing]
+    with pytest.raises(KeyError, match=missing):
+        task_outcomes(solved)
+
+
 def test_spearman_handles_ties_and_constant_input():
     assert spearman([1, 2, 3, 4], [10, 20, 30, 40]) == pytest.approx(1.0)
     assert spearman([1, 2, 3, 4], [4, 3, 2, 1]) == pytest.approx(-1.0)

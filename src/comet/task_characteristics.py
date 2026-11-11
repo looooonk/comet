@@ -126,10 +126,13 @@ def task_outcomes(solved: dict[str, bool]) -> dict:
     """Per-task oracle outcomes; every referenced condition must be present."""
     benefit = {}
     for arm in RECOVERY_ARMS:
-        recovered = solved[f"{arm}_fixed"] or solved[f"{arm}_dynamic"]
+        # Read both arms before combining them so a success cannot hide missing data.
+        fixed, dynamic = solved[f"{arm}_fixed"], solved[f"{arm}_dynamic"]
+        recovered = fixed or dynamic
         benefit[arm] = int(recovered) - int(solved[f"{arm}_never"])
+    full_once, full_best_of_n = solved["full_once"], solved["full_best_of_n"]
     return {
-        "full_cache_solved": bool(solved["full_once"] or solved["full_best_of_n"]),
+        "full_cache_solved": bool(full_once or full_best_of_n),
         "tolerance": sum(bool(solved[arm]) for arm in TOLERANCE_ARMS),
         "tolerance_arms": len(TOLERANCE_ARMS),
         "recovery_benefit": benefit,
