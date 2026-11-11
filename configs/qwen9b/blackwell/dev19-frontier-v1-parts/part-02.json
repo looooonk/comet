@@ -1,0 +1,27 @@
+{
+  "extends": "../dev19-frontier-v1.json",
+  "conditions": [
+    {
+      "id": "rkv_70_fixed",
+      "method": "rkv",
+      "retention": 0.7,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_30_never",
+      "method": "rkv",
+      "retention": 0.3,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Condition group 2 of 7 of qwen9b-dev19-frontier-blackwell-v1 for one-GPU workers; every other setting, task and seed is inherited unchanged. Analyze the groups together."
+}

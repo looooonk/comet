@@ -61,3 +61,25 @@ def test_dev19_seed_replicate_changes_only_seeds():
         assert {k: v for k, v in part.to_dict().items() if k not in ("conditions", "notes")} == parent
         seen += [condition.id for condition in part.conditions]
     assert sorted(seen) == sorted(condition.id for condition in replicate.conditions)
+
+
+def test_dev19_frontier_extends_the_first_study_with_a_finer_retention_grid():
+    first = Experiment.load(BLACKWELL / "dev19-recovery-v1.json")
+    frontier = Experiment.load(BLACKWELL / "dev19-frontier-v1.json")
+    changed = {"experiment_id", "conditions", "notes"}
+    for name, value in first.to_dict().items():
+        if name not in changed:
+            assert frontier.to_dict()[name] == value, name
+    compressed = [c for c in frontier.conditions if c.method != "full"]
+    assert {c.method for c in compressed} == {"rkv", "agentkv"}
+    assert {c.retention for c in compressed} == {0.7, 0.6, 0.5, 0.4, 0.3}
+    assert {c.recovery for c in compressed} == {"never", "fixed"}
+    assert len(compressed) == 20 and all(c.max_attempts == 2 for c in compressed)
+    assert [c.id for c in frontier.conditions if c.method == "full"] == ["full_best_of_n"]
+    parent = {k: v for k, v in frontier.to_dict().items() if k not in ("conditions", "notes")}
+    seen = []
+    for path in sorted((BLACKWELL / "dev19-frontier-v1-parts").glob("part-*.json")):
+        part = Experiment.load(path)
+        assert {k: v for k, v in part.to_dict().items() if k not in ("conditions", "notes")} == parent
+        seen += [condition.id for condition in part.conditions]
+    assert sorted(seen) == sorted(condition.id for condition in frontier.conditions)

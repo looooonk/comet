@@ -74,3 +74,19 @@ checkout so their resolved digests are unchanged. Analyze the two new seeds
 through the shared analysis, bootstrapping tasks with their paired seeds, and
 report seed 17 alongside them descriptively; the shared analysis does not pool
 runs with different seed lists. Status: declared, not yet executed.
+
+## Supplemental retention frontier
+
+Declared on November 10, 2026, before any execution of this grid. The
+[frontier configuration](../../../configs/qwen9b/blackwell/dev19-frontier-v1.json)
+keeps the 19 dev tasks, seed 17 and every numerical setting of the first study
+and measures R-KV and AgentKV at 70%, 60%, 50%, 40% and 30% retention under
+never and fixed recovery, with the full-cache N=2 control: 21 conditions and 399
+fresh-start cells in [seven condition groups](../../../configs/qwen9b/blackwell/dev19-frontier-v1-parts/).
+The research contract authorizes finer train/dev retention grids declared as
+new versions. Its purpose is to locate the range of compression over which a
+single rebuild restores success; the first study showed an effect at 50% and
+none at 80% or 25%. StreamingLLM and the dynamic trigger are omitted to bound
+the grid. The 50% conditions repeat the first study with the same seed as a
+consistency check. All points are reported, including flat ones; no threshold
+is tuned from these outcomes. Status: declared, not yet executed.
