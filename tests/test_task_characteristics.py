@@ -3,7 +3,10 @@ import pytest
 from comet.task_characteristics import (
     action_kind,
     attempt_profile,
+    documentation_calls,
     flood_summary,
+    opening_api,
+    opening_summary,
     spearman,
     task_outcomes,
     task_table,
@@ -86,3 +89,33 @@ def test_task_table_joins_metadata_full_cache_behaviour_and_outcomes():
     assert row["full_cache_tool_calls"] == 4 and row["full_cache_documentation_chars"] == 800
     assert row["full_cache_context_tokens"] == 7000
     assert row["tolerance"] == 0 and row["recovery_benefit"] == {"agentkv_50": 0, "rkv_50": 0}
+
+
+def test_opening_summary_cross_tabulates_the_first_call_with_how_attempts_end():
+    listing = _turn("print(apis.api_docs.show_api_descriptions(app_name='spotify'))", 9000)
+    search = _turn("print(apis.api_docs.search_api_docs(query='spotify', page_limit=20))", 15000)
+    attempts = [
+        {"status": "completed", "turns": [listing]},
+        {"status": "context_limit", "turns": [search, search]},
+        {"status": "context_limit", "turns": [search]},
+        {"status": "error", "turns": []},
+    ]
+    assert opening_api(attempts[0]) == "api_docs.show_api_descriptions"
+    assert opening_api(attempts[3]) is None
+    summary = opening_summary(attempts)
+    assert summary["api_docs.show_api_descriptions"] == {"attempts": 1, "status": {"completed": 1}}
+    assert summary["api_docs.search_api_docs"] == {"attempts": 2, "status": {"context_limit": 2}}
+    assert summary["none"] == {"attempts": 1, "status": {"error": 1}}
+
+
+def test_documentation_calls_reports_count_and_size_per_api():
+    attempts = [{"status": "context_limit", "turns": [
+        _turn("print(apis.api_docs.search_api_docs(query='a'))", 15000),
+        _turn("print(apis.api_docs.search_api_docs(query='b'))", 21000),
+        _turn("print(apis.api_docs.show_api_doc(app_name='a', api_name='b'))", 900),
+        _turn("print(apis.spotify.login(username=u, password=p))", 300),
+    ]}]
+    assert documentation_calls(attempts) == {
+        "search_api_docs": {"calls": 2, "median_chars": 18000, "max_chars": 21000},
+        "show_api_doc": {"calls": 1, "median_chars": 900, "max_chars": 900},
+    }

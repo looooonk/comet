@@ -83,3 +83,22 @@ def test_dev19_frontier_extends_the_first_study_with_a_finer_retention_grid():
         assert {k: v for k, v in part.to_dict().items() if k not in ("conditions", "notes")} == parent
         seen += [condition.id for condition in part.conditions]
     assert sorted(seen) == sorted(condition.id for condition in frontier.conditions)
+
+
+def test_dev19_trigger_timing_changes_only_the_fixed_threshold_at_half_retention():
+    first = Experiment.load(BLACKWELL / "dev19-recovery-v1.json")
+    reference = {c.id: c for c in first.conditions}
+    thresholds = []
+    for path in sorted((BLACKWELL / "dev19-trigger-v1").glob("fixed-*.json")):
+        study = Experiment.load(path)
+        thresholds.append(study.triggers.fixed_tool_calls)
+        assert study.experiment_id == f"qwen9b-dev19-trigger-fixed{thresholds[-1]}-blackwell-v1"
+        assert [c.id for c in study.conditions] == ["agentkv_50_fixed", "rkv_50_fixed"]
+        assert all(c == reference[c.id] for c in study.conditions)
+        expected = {**first.to_dict()["triggers"], "fixed_tool_calls": thresholds[-1]}
+        assert study.to_dict()["triggers"] == expected
+        changed = {"experiment_id", "conditions", "triggers", "notes"}
+        for name, value in first.to_dict().items():
+            if name not in changed:
+                assert study.to_dict()[name] == value, name
+    assert sorted(thresholds) == [1, 2, 6, 8] and first.triggers.fixed_tool_calls == 4

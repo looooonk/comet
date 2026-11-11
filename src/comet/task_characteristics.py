@@ -82,6 +82,34 @@ def flood_summary(attempts: list[dict]) -> dict:
     }
 
 
+def opening_api(attempt: dict) -> str | None:
+    """The first AppWorld API named in the attempt's first submitted action."""
+    turns = attempt.get("turns") or []
+    return _first_api(turns[0].get("action") or "") if turns else None
+
+
+def opening_summary(attempts: list[dict]) -> dict:
+    """How attempts ended, grouped by the API their first action called."""
+    summary: dict = {}
+    for attempt in attempts:
+        entry = summary.setdefault(opening_api(attempt) or "none", {"attempts": 0, "status": Counter()})
+        entry["attempts"] += 1
+        entry["status"][attempt.get("status")] += 1
+    return {api: {"attempts": e["attempts"], "status": dict(e["status"])} for api, e in summary.items()}
+
+
+def documentation_calls(attempts: list[dict]) -> dict:
+    """Number and observation size of documentation calls, by api_docs method."""
+    sizes: dict[str, list[int]] = {}
+    for attempt in attempts:
+        for turn in attempt.get("turns") or []:
+            api = _first_api(turn.get("action") or "")
+            if api and api.startswith("api_docs."):
+                sizes.setdefault(api.split(".", 1)[1], []).append(turn.get("obs_chars") or 0)
+    return {name: {"calls": len(values), "median_chars": _median(values), "max_chars": max(values)}
+            for name, values in sizes.items()}
+
+
 def task_outcomes(solved: dict[str, bool]) -> dict:
     """Per-task oracle outcomes; every referenced condition must be present."""
     benefit = {}

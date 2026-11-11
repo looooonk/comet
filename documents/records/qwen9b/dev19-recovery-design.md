@@ -90,3 +90,26 @@ none at 80% or 25%. StreamingLLM and the dynamic trigger are omitted to bound
 the grid. The 50% conditions repeat the first study with the same seed as a
 consistency check. All points are reported, including flat ones; no threshold
 is tuned from these outcomes. Status: declared, not yet executed.
+
+## Supplemental trigger timing
+
+Declared on November 10, 2026, before any execution of these configurations and
+after reading the seed-17 trajectories. [Four configurations](../../../configs/qwen9b/blackwell/dev19-trigger-v1/)
+keep the 19 dev tasks, seed 17 and every other setting of the first study and
+change only the fixed threshold: AgentKV and R-KV at 50% retention with the
+single rebuild after 1, 2, 6 or 8 tool calls instead of 4. Each has 38
+fresh-start cells, 152 in total. The first study supplies the threshold-4 and
+never-rebuild points for the same tasks and seed. Triggers are selected on
+train/dev under the research contract; these outcomes do not retune the frozen
+test study.
+
+Expectation recorded before execution: in the first study eight of AgentKV 50%'s
+38 attempts reached the context limit before the fourth tool call, so no rebuild
+occurred, and attempts that opened with a wide documentation search were not
+rescued by a rebuild at the fourth call. If an earlier rebuild restores the
+prompt's lookup protocol, thresholds 1 and 2 should end fewer attempts at the
+context limit than threshold 4, and thresholds 6 and 8 should approach the
+never-rebuild arm. All four points are reported whether or not this holds.
+Each configuration has its own trigger and is analyzed as a separate run;
+comparisons across thresholds are paired by task and descriptive. Status:
+declared, not yet executed.
