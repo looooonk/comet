@@ -1,0 +1,12 @@
+{
+  "extends": "../cuda-repair-dev-v1.json",
+  "conditions": [
+    {
+      "id": "rkv_90_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.9
+    }
+  ]
+}

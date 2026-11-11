@@ -1,0 +1,12 @@
+{
+  "extends": "../cuda-repair-dev-v1.json",
+  "conditions": [
+    {
+      "id": "full_best_of_n",
+      "max_attempts": 2,
+      "method": "full",
+      "recovery": "never",
+      "retention": 1.0
+    }
+  ]
+}

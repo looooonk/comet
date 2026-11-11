@@ -1,0 +1,276 @@
+{
+  "artifact_id": "qwen9b-test50-agentkv90-failure-audit-v1",
+  "source_run_id": "58b28412-9520-4b7d-96b8-39aeb136b0de",
+  "source_scores_sha256": "cc71153bf582006ccf9269760ad9ae3016a937ca76e44c2be7033179c4b68124",
+  "condition": "agentkv_90_never",
+  "tasks": 50,
+  "attempts": 100,
+  "attempt_status_counts": {
+    "completed": 10,
+    "oom": 31,
+    "error": 59
+  },
+  "task_status_groups": {
+    "completed+oom": 2,
+    "oom": 14,
+    "completed": 4,
+    "error+oom": 1,
+    "error": 29
+  },
+  "first_illegal_access": {
+    "task_id": "fd1f8fa_3",
+    "task_execution_index": 20,
+    "attempt_index": 1,
+    "generated_tokens": 140
+  },
+  "subsequent_poisoned_attempts": 58,
+  "subsequent_tasks_without_usable_attempts": 29,
+  "cuda_context_reference": "https://docs.nvidia.com/cuda/archive/12.6.0/cuda-driver-api/group__CUDA__TYPES.html",
+  "allocator_reference": "https://docs.pytorch.org/docs/main/generated/torch.cuda.memory.set_per_process_memory_fraction.html",
+  "allocator_cap_observed_gib": 22.46,
+  "experimental_total_vram_cap_gib": 24,
+  "physical_vram_gib": 94.97,
+  "physical_vram_free_in_first_oom_gib": 71.96,
+  "accuracy_interpretation": "Keep the original 2/50 measured success, but do not interpret the 90 percent retention point as an isolated accuracy effect; no failure-filtered success estimate is substituted.",
+  "task_groups": {
+    "completed+oom": [
+      "3aa1a22_2",
+      "c77c005_2"
+    ],
+    "oom": [
+      "9ef798c_2",
+      "32616b5_1",
+      "8ce6779_1",
+      "31dc501_2",
+      "634f342_1",
+      "0de03ea_3",
+      "d18139b_1",
+      "cef9191_1",
+      "29a7b7e_1",
+      "f861c32_3",
+      "6f4b9a5_2",
+      "dac78d9_3",
+      "8749218_2",
+      "ff58e36_3"
+    ],
+    "completed": [
+      "552869a_2",
+      "2c544f9_3",
+      "ffe6d5e_1",
+      "d6ac34d_2"
+    ],
+    "error+oom": [
+      "fd1f8fa_3"
+    ],
+    "error": [
+      "ccf4b82_2",
+      "bde252e_1",
+      "425a494_1",
+      "83a7951_2",
+      "5a83b05_1",
+      "986aa4e_1",
+      "21abae1_2",
+      "afc4005_2",
+      "3d9a636_1",
+      "d194965_2",
+      "652485c_3",
+      "b9c5c9a_1",
+      "166f4ff_1",
+      "a30375d_3",
+      "9dabbc9_3",
+      "024c982_2",
+      "6b6ca61_3",
+      "9016950_2",
+      "90adc3f_1",
+      "1150ed6_2",
+      "325d6ec_3",
+      "522e5e5_1",
+      "09b0ee6_3",
+      "2d9f728_2",
+      "3b8fb7a_2",
+      "7847649_2",
+      "270f1ff_1",
+      "f323bae_2",
+      "0a9d82a_1"
+    ]
+  },
+  "repairs": [
+    "22f97ea",
+    "49740e2"
+  ],
+  "diagnostics": [
+    {
+      "artifact_id": "agentkv90-debug-v2/case-0",
+      "slurm_job": "13857295_0",
+      "source_commit": "f2413b4",
+      "report_sha256": "71bac6f0730202803cbd6309c16f8c41b12ddb190ca5f6ed8bc537a1a9d958f7",
+      "method": "agentkv",
+      "retention": 0.9,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 24308285440,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": []
+    },
+    {
+      "artifact_id": "agentkv90-debug-v2/case-1",
+      "slurm_job": "13857295_1",
+      "source_commit": "f2413b4",
+      "report_sha256": "e4b4fa27520a0cb003c39deb3b163df9979e38acfe8a034547452006ab256155",
+      "method": "agentkv",
+      "retention": 0.8,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 24759173120,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": []
+    },
+    {
+      "artifact_id": "agentkv90-debug-v2/case-2",
+      "slurm_job": "13857295_2",
+      "source_commit": "f2413b4",
+      "report_sha256": "6aba9ac33a85eecb3709969ee909f563bdcc7608b724e7584df4814e6f7e3d70",
+      "method": "rkv",
+      "retention": 0.9,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 24589303808,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": []
+    },
+    {
+      "artifact_id": "agentkv90-debug-v2/case-3",
+      "slurm_job": "13857295_3",
+      "source_commit": "f2413b4",
+      "report_sha256": "376e783f76c6f76875fb12ec313b04a64a00d2fdc0f7bf6d8dc8b01dde959e18",
+      "method": "full",
+      "retention": 1.0,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 24591400960,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": []
+    },
+    {
+      "artifact_id": "agentkv90-debug-v3/case-0",
+      "slurm_job": "13857321_0",
+      "source_commit": "f2413b4",
+      "report_sha256": "56cd837c1f657e7f384d3d9cb616951534b2d733604896d547edadd84cc83dec",
+      "method": "agentkv",
+      "retention": 0.9,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 23437967360,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": [
+        20315283456,
+        20315283456
+      ]
+    },
+    {
+      "artifact_id": "agentkv90-debug-v3/case-1",
+      "slurm_job": "13857321_1",
+      "source_commit": "f2413b4",
+      "report_sha256": "963a3fcc097022a50bb1a283e59bf0f981f83e8cc4accc66825cc762d4aa44c5",
+      "method": "agentkv",
+      "retention": 0.8,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 23555407872,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": [
+        20160003584,
+        20160003584
+      ]
+    },
+    {
+      "artifact_id": "agentkv90-debug-v3/case-2",
+      "slurm_job": "13857321_2",
+      "source_commit": "f2413b4",
+      "report_sha256": "7e180e68ea0f86775819971a4c94aa8b1c6494e9d099ae55a7ed7a7707025948",
+      "method": "agentkv",
+      "retention": 0.9,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 22861250560,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": [
+        19526033408,
+        19526033408
+      ]
+    },
+    {
+      "artifact_id": "agentkv90-debug-v3/case-3",
+      "slurm_job": "13857321_3",
+      "source_commit": "f2413b4",
+      "report_sha256": "4d474d739e43d1cc0ba1978fbecc403d9e7d4507be843c3bd10238483e8ad549",
+      "method": "agentkv",
+      "retention": 0.8,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 21290483712,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": [
+        19459073024,
+        19459073024
+      ]
+    }
+  ],
+  "limitations": [
+    "Original first illegal-access kernel remains unidentified.",
+    "Fresh-process probes explicitly collect garbage; they are not task-success evaluation.",
+    "Saved-history replay uses approximate forward boundaries and synchronous CUDA.",
+    "Historical OOM count attributable to retained exception frames is not known."
+  ],
+  "cpu_checks": {
+    "passed": 363,
+    "optional_torch_skipped": 2,
+    "live_deselected": 17
+  },
+  "corrective_replication": {
+    "status": "dev_gate_prepared",
+    "tasks": 50,
+    "conditions": [
+      "full_best_of_n",
+      "rkv_90_never",
+      "rkv_80_never",
+      "agentkv_90_never",
+      "agentkv_80_never"
+    ],
+    "source_commit": "49740e2",
+    "setup_job": "13857341",
+    "original_results_preserved": true
+  }
+}

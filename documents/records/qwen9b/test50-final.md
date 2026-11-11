@@ -75,7 +75,10 @@ remain unsuccessful in the denominators.
 AgentKV at 90% retention accounts for all 59 CUDA illegal-access failures and
 31 OOM attempts; only ten attempts completed there. R-KV at 90% has the other
 28 OOM attempts. These points reflect runtime failures as well as task behavior
-and cannot isolate reasoning quality. The five interrupted attempts each keep
+and cannot isolate reasoning quality. The [subsequent investigation](agentkv90-investigation.md)
+confirmed that one CUDA fault poisoned the remaining 29 AgentKV tasks and found
+a runner bug retaining failed-operation tensors. A separate corrective
+replication preserves this original curve. The five interrupted attempts each keep
 their original 120-second reservation, with no replacement attempt or budget.
 
 ![Final latency, attempts, memory and compute observations](figures/test50-final-resources.png)

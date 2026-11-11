@@ -9,6 +9,8 @@ among attempts; uncertainty and runtime failures limit claims of a general ranki
 - [Fifty-task final results](qwen9b/test50-final.md): all 26 conditions and 1,300
   evaluations, with full-range and 0-50% success plots, resource plots, CSV and
   paired uncertainty. Execution and scoring completed on November 10, 2026.
+- [AgentKV 90% investigation](qwen9b/agentkv90-investigation.md): confirmed CUDA
+  cascade, retained exception frames, bounded GPU checks and corrective replication.
 - [Fifty-family study design](qwen9b/test50-design.md): frozen task selection,
   matched settings, qualification and execution history.
 - [L4 findings](qwen9b/findings.md): the frozen two-task test, train/dev pilots,
