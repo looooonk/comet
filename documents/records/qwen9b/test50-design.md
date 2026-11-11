@@ -5,6 +5,10 @@ to 50 tasks, using available Insomnia GPUs, and committing/submitting the work
 on `dev/yenna`. This version increases task coverage of the supplemental fine
 grid. It does not replace the earlier recovery study or pool its observations.
 
+All 1,300 evaluations and final scoring completed on November 10, 2026.
+See the [final results and plots](test50-final.md); the launch and repair history
+below records how that frozen study was completed.
+
 ## Frozen comparison
 
 The [parent configuration](../../../configs/qwen9b/blackwell/test50-v1.json)
@@ -49,9 +53,9 @@ The [eight condition partitions](../../../configs/qwen9b/blackwell/test50-v1-par
 cover every parent cell exactly once, retaining all 50 tasks and the shared seed.
 Two partitions contain 200 cells each; six contain 150. Their maximum nominal
 cell time is respectively 6h40m and 5h, plus setup, validation and saving.
-The current launch requests 8h30m for 200-cell workers and 6h30m for 150-cell
-workers, with automatic requeue disabled.
-Up to eight independent one-GPU workers may run concurrently.
+The qualified launch requested 8h30m for 200-cell workers and 6h30m for 150-cell
+workers, with automatic requeue disabled and up to eight independent one-GPU
+workers running concurrently.
 
 The live qualification checks all eight retention fractions, persistent state, compressed
 and recovered replay, numerical reference agreement, 16K capacity/recovery,
@@ -114,13 +118,13 @@ modules skipped and 17 live tests deselected. Replacement GPU workers must
 pass the live checks and dev smoke or verify reusable evidence for the identical
 execution source, managed runtime, GPU model and cap before final execution.
 
-Execution remains pinned to `f2413b4`; subsequent changes affect validation tests
-and documentation, not the model runner or experiment settings. Worker
-`13844702_2` passed all 24 live checks and runs the four-condition dev smoke before
-its final partition. The seven remaining partitions are submitted as array
-`13845293`, reusing that completed qualification once the smoke and offline
-scoring finish. Job `13845304` scores and plots the complete study after both
-execution jobs succeed. Keep the execution checkout pinned while they run.
+Execution stayed pinned to `f2413b4`; subsequent changes affected validation tests
+and reporting, not the model runner or experiment settings. Worker `13844702_2`
+passed all 24 live checks and the four-condition dev smoke before its final
+partition. The seven other partitions were submitted as array `13845293`,
+reusing that completed qualification. Job `13845304` was the originally dependent
+scorer; the final scorer was replaced as described below without changing task
+budgets or the frozen comparison.
 
 An intermediate launch at `1255369` was stopped before final execution after an
 added assertion was found to index an optional field directly. At `f2413b4`,
@@ -140,19 +144,25 @@ identical GPU checks. No final-task budget was replaced.
 The 200-cell workers retain 8h30m allocations; the six 150-cell workers request
 6h30m, allowing 90 minutes beyond their five-hour nominal cell budgets.
 
-## Provisional reporting
+## Partial reporting and final completion
 
-The [November 9 partial report](test50-partial.md) scores an isolated snapshot of
-21 conditions with all 50 tasks complete. It retains all execution failures and
-leaves the other five conditions unreported. Ongoing execution stays frozen.
-Partition 02 saved every cell but failed during CUDA shutdown; metadata-only
-finalization preserved those results. Replacement final scorer `13847761` waits
-for the remaining array to exit and then requires successful finalization of
-every partition before full scoring. This supersedes the cancelled scorer's
-success-only dependency without replacing any task budget.
+During execution, isolated partial reports included only conditions with all
+50 tasks complete, retaining every execution failure. The last partial snapshot
+covered 21 conditions; those superseded exports remain in Git history. No
+partial result was used to change ongoing execution. Partition 02 saved every
+cell but failed during CUDA shutdown; metadata-only finalization preserved its
+results. Replacement scorer `13847761` correctly refused to score the full study
+while five other partitions still had eligible inference after allocation expiry.
 
-The [November 10 resume record](test50-resume-20261110.json) supersedes that
-final-scorer submission after five workers stopped near their allocation limits.
-It preserves 1,246 completed cells, queues compatible resumes only for partitions
-01 and 04-07, and attaches final scorer `13853128` to resume array `13853125`.
-The snapshot now includes the full-cache N=2 control; five AgentKV points remain.
+The [November 10 resume record](test50-resume-20261110.json) preserves the 1,246
+terminal cells and submits compatible resumes only for partitions 01 and 04-07.
+Array `13853125` started at 16:06:05 ET after capacity returned and finished by
+16:29:59 ET. It settled five interrupted journals with their original budget
+charges and executed the 49 unstarted cells. No completed task was rerun.
+
+Final scorer `13853128` successfully finalized all eight partitions, scored all
+1,300 evaluations, verified exact parent coverage and generated the final analysis
+and plots by 16:59:29 ET. All 26 conditions now have 50 paired task outcomes.
+The [final evidence](test50-final-summary.json) records completion, source hashes,
+failure counts and validation. No GCP resources were launched, and the November 12
+start forecast no longer applies.

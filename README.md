@@ -13,13 +13,13 @@ history without undoing the agent's actions.
 
 ## Results
 
-Our main plots show how task success changes as more cached history is removed.
-The initial study found that recovery can help some settings and hurt others.
-The samples are small: two test tasks on L4 and three training tasks in the
-supplemental Blackwell study.
+The completed compression study covers **50 held-out tasks per condition and
+26 conditions**. The [final results and plots](documents/records/qwen9b/test50-final.md)
+show first-attempt and oracle success, resource costs and all execution failures.
+Both full-range and 0-50% success-axis figures are available.
 
-See the [results and figures](documents/records/README.md) for the comparisons
-and their limitations.
+The [results index](documents/records/README.md) also preserves the earlier small
+recovery studies and the limitations of each comparison.
 
 ## Getting started
 

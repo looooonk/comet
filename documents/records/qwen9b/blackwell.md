@@ -1,5 +1,9 @@
 # Qwen3.5-9B: Blackwell findings
 
+The later [fifty-task held-out study](test50-final.md) completed all 26 conditions
+on November 10, 2026. Its results are separate from the small train/dev and
+recovery observations below.
+
 The supplemental study covers three predeclared train families and one seed
 on one RTX PRO 6000 Blackwell Server Edition at a separately qualified 24 GiB
 cap. It shows intermediate success, one best-of-N gain and both benefits and
@@ -90,7 +94,8 @@ Separate [dev confirmation](dev-confirmation-blackwell-summary.json) covers
 rebuild requests were admitted. The [analysis](analysis/dev-confirmation-blackwell-analysis.json)
 retains every outcome. This repeats the L4 dev direction on the same families,
 not a larger independent sample. The optional frozen Blackwell test was not
-executed because of queue capacity; its historical plan is in Git.
+executed because of queue capacity; its historical plan is in Git. That optional
+plan is distinct from the later completed fifty-task study.
 
 Run IDs are `comet-run:d4dcbbba-3768-45fa-b490-1d6219eb6efa` (fine grid) and
 `comet-run:65d3bf00-8c5d-4bf8-b3d9-8e1466743bf9` (diagnostic). Complete raw outputs,
