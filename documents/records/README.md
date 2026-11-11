@@ -1,58 +1,40 @@
-# Results and validation records
+# Results
 
-## Latest results
+The completed Qwen3.5-9B studies use AppWorld, paired tasks and offline scoring.
+The latest compression grid has 50 held-out task families per condition; the
+earlier recovery studies have much smaller samples. Keep L4 and Blackwell cohorts
+and their train/dev/test stages separate. Oracle success assumes perfect selection
+among attempts; uncertainty and runtime failures limit claims of a general ranking.
 
-The [November 8 midpoint analysis](midpoint-analysis-2026-11-08.md) reproduces
-the fixed-history cost comparison and checks how individual dev tasks influence
-the matched full-cache prompt comparison.
+- [Fifty-task final results](qwen9b/test50-final.md): all 26 conditions and 1,300
+  evaluations, with full-range and 0-50% success plots, resource plots, CSV and
+  paired uncertainty. Execution and scoring completed on November 10, 2026.
+- [AgentKV 90% investigation](qwen9b/agentkv90-investigation.md): confirmed CUDA
+  cascade, retained exception frames, bounded GPU checks and corrective replication.
+- [Fifty-family study design](qwen9b/test50-design.md): frozen task selection,
+  matched settings, qualification and execution history.
+- [L4 findings](qwen9b/findings.md): the frozen two-task test, train/dev pilots,
+  recovery diagnostic and memory qualification.
+- [Blackwell findings](qwen9b/blackwell.md): the supplemental three-family train
+  grid, recovery diagnostic and dev confirmation.
+- [Validation evidence](qwen9b/validation/): live state, memory, AppWorld and
+  interruption checks, including the failed Blackwell 21 GiB qualification.
+- [Cloud ledger](qwen9b/cloud-ledger.json): the existing spending ceiling and
+  unreconciled allowances. These are planning amounts, not billed charges.
 
-The [Qwen3-14B retention pilot](retention-pilot-2026-10-20.md) completed on
-October 20, 2026; its results were collected and reproduced on October 31.
-Full cache solved 1/8 dev tasks, and AgentKV at 80%, 50%, and 25% retention
-solved 0/8 each. All 32 attempts are accounted for, including ten timeouts and
-one interruption. The report includes uncertainty, paired comparisons, resource
-coverage, a figure, and reproducible artifact identifiers.
+Selected figures are kept as PNG and PDF alongside the results. Committed analyses
+retain all measured conditions and paired uncertainty; the plotting commands can
+regenerate additional views and formats. Historical paths inside saved JSON refer
+to the source layout at the recorded revision. The [configuration guide](../../configs/README.md)
+identifies the current equivalent configurations.
 
-This exploratory run used alternative hardware, one attempt per condition, and
-no recovery. It does not qualify the main Qwen3-8B/A100 experiment or resolve
-the recovery and best-of-N questions. Main-pilot tuning and freeze, the full
-diagnostic matrix, and final evaluation remain outstanding. See the report's
-[remaining work](retention-pilot-2026-10-20.md#remaining-research-work).
+Completed raw run directories belong in external project storage, with their
+manifests, trajectories, scores, environments and diagnostic checkpoints intact.
+Temporary logs, duplicate archives, interim exports and execution diaries are
+not part of the source tree. Superseded partial results and older tracked records
+remain in Git history.
 
-The October 17 interruption and October 19 pending-job records below are
-historical snapshots. The continuation, postflight, and export all completed;
-the [completion evidence](retention-pilot-2026-10-20.json) supersedes their
-pending status.
+## Historical analysis
 
-## Record conventions
-
-Keep personal notes, dated execution logs, validation results, and artifact
-inventories here. General implementation, setup, and repository guidance belongs
-in the parent `documents/` directory.
-
-Use dated, descriptive filenames and preserve existing evidence when adding a
-follow-up. Record the relevant source, configuration, hardware, and limitations.
-Omit personal account names, SSH workspace locations, private filesystem paths,
-and links other contributors cannot access. Use portable artifact filenames and
-hashes; link shared storage only when it is accessible to collaborators. Large
-runtime artifacts are not included in this directory.
-
-## Evidence index
-
-| Record | Contents |
-| --- | --- |
-| [October 20 pilot results](retention-pilot-2026-10-20.md) | Completed 32-attempt comparison, uncertainty, cost, trajectory observations, and remaining research work; reviewed October 31 |
-| [Completed analysis](retention-pilot-2026-10-20-analysis.json) | Shared condition and paired estimates with standard errors, intervals, and resource coverage |
-| [Per-attempt results](retention-pilot-2026-10-20-attempts.csv) | All 32 outcomes and selected measurements, with missing data left empty |
-| [Completion evidence](retention-pilot-2026-10-20.json) | Resolved config, revisions, validation, integrity checks, and artifact hashes |
-| [Retention figure](retention-pilot-2026-10-20.svg) | Success, budget-accounted time, and occupied KV with pointwise uncertainty |
-| [2026-10-16 validation report](validation-2026-10-16.md) | Insomnia setup observations, integration checks, task attempts, and remaining limitations |
-| [Initial validation evidence](validation-2026-10-16.json) | Revisions, retention matrix, checks, measurements, and artifact hashes |
-| [Follow-up validation evidence](validation-2026-10-16-followup.json) | Larger-context attempts, live memory refusal, process interruption/resume, and offline scoring |
-| [Paired retention pilot plan](retention-pilot-2026-10-17-plan.md) | Declared task sample, model departure, common budgets, and uncertainty analysis |
-| [14B pilot preflight evidence](retention-pilot-2026-10-17-validation.json) | Model hashes, GPU persistence/capacity/cap checks, and hardware failure records |
-| [Infrastructure-compromised pilot](retention-pilot-2026-10-17-quota-failure.json) | All 32 outcomes and original hashes from the run affected by compiler-cache quota exhaustion; excluded as a whole from the repaired comparison |
-| [Repaired-pilot interruption](retention-pilot-2026-10-17-interruption.json) | Historical driver stall, preservation of 25 terminal cells, and conservative continuation policy |
-| [October 19 queue follow-up](retention-pilot-2026-10-19-status.json) | Historical pending-job snapshot and eligibility change; superseded by the October 20 completion evidence |
-
-See the [validation guide](../validation.md) for reusable check instructions.
+- [November 8 midpoint analysis](midpoint-analysis-2026-11-08.md): reproducible
+  legacy Qwen3-8B/A6000 evidence, separate from the current Qwen3.5-9B studies.

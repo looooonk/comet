@@ -1,0 +1,1024 @@
+{
+  "cloud_run_id": "gpu-20261109-074439-b5e235",
+  "source_commit": "0d438bf",
+  "device": "NVIDIA L4",
+  "runs": [
+    {
+      "plan": "06-compression-pilot",
+      "artifact_id": "comet-run:fe7bb663-429e-412f-a278-ac44b6d8fe81",
+      "stage": "pilot",
+      "config_digest": "01c11bc58c5a256a15272452cb1b867272a63ee0631c142b30de7b5c52949c8d",
+      "manifest_sha256": "66742232d9f88df56a1d12055528763802d0668ae6b0e25c05bb33bac2ca636f",
+      "scores_sha256": "c1e5c85b6c44f0261f6b6f88a407f35f3ad9b90542116cfafbd329926bd88128",
+      "completed_cells": 14,
+      "task_count": 2,
+      "condition_count": 7,
+      "attempt_count": 20,
+      "budget_seconds": 150,
+      "maximum_budget_overrun_seconds": 2.562034241999754,
+      "peak_total_vram_bytes": 21498101760,
+      "peak_vram_cap_bytes": 22548578304,
+      "conditions": {
+        "agentkv_25_dynamic": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_25_fixed": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "recovery_requested": 2,
+          "recovery_admitted": 2,
+          "recovery_seconds": 9.146374111000114
+        },
+        "agentkv_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "full_best_of_n": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 2,
+          "attempt_status_counts": {
+            "completed": 3,
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "full_once": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "context_limit": 1,
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        }
+      }
+    },
+    {
+      "plan": "07-q1-diagnostic",
+      "artifact_id": "comet-run:4faf690f-b87e-4ce8-9088-bed0967a7fdd",
+      "stage": "diagnostic",
+      "config_digest": "b1cdffad7c94bea6c2837f5f25aa8c03be8bd7321d3203e1c4a869aa5c1a69c5",
+      "manifest_sha256": "dd2aaf7ca93cb6afd4863c4b5cd27f47b750d925a08262ad0cc88386803e01f0",
+      "scores_sha256": "1437497b630dbf63f97d7b63a79ba0b0d412309584bc0cd53d73b96c5cd3abeb",
+      "completed_cells": 28,
+      "task_count": 1,
+      "condition_count": 28,
+      "attempt_count": 28,
+      "budget_seconds": 90,
+      "maximum_budget_overrun_seconds": 0.04410847399958584,
+      "peak_total_vram_bytes": 21523267584,
+      "peak_vram_cap_bytes": 22548578304,
+      "conditions": {
+        "agentkv_25_dynamic": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 6.976814679000199
+        },
+        "agentkv_25_fixed": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 4.7184368469997935
+        },
+        "agentkv_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_50_dynamic": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 6.417064924999977
+        },
+        "agentkv_50_fixed": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 4.777862321999237
+        },
+        "agentkv_50_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_80_dynamic": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 6.224851914999817
+        },
+        "agentkv_80_fixed": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 4.671809251000013
+        },
+        "agentkv_80_never": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "full_reference": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_25_dynamic": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 6.244104821000292
+        },
+        "rkv_25_fixed": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "error": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 5.158295470000667
+        },
+        "rkv_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "error": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_50_dynamic": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 6.64336767199984
+        },
+        "rkv_50_fixed": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 5.1655525729993315
+        },
+        "rkv_50_never": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_80_dynamic": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 6.5641747899999245
+        },
+        "rkv_80_fixed": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 4.766144891000295
+        },
+        "rkv_80_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_25_dynamic": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "error": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_25_fixed": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "error": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 4.917413467000188
+        },
+        "streamingllm_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "error": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_50_dynamic": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 7.693110471000182
+        },
+        "streamingllm_50_fixed": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 4.883621627000139
+        },
+        "streamingllm_50_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_80_dynamic": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 6.871657920999496
+        },
+        "streamingllm_80_fixed": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 4.9273884439999165
+        },
+        "streamingllm_80_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        }
+      }
+    },
+    {
+      "plan": "08-budget-120",
+      "artifact_id": "comet-run:3555e1d1-d825-4252-8fda-4f9761e15925",
+      "stage": "pilot",
+      "config_digest": "44cf5ede50c71cb2c1fc0e86c4c807f85e45fa1748ebe2c9c3fab2251b48299a",
+      "manifest_sha256": "04e8713cac81280d930333b6c5a23b0559d16afe71d015ee96e2610730294c6c",
+      "scores_sha256": "891919d861b2d07df293bf095a88c460bf039cd3f00f0dfe9f3b19fba3d701a7",
+      "completed_cells": 14,
+      "task_count": 2,
+      "condition_count": 7,
+      "attempt_count": 18,
+      "budget_seconds": 120,
+      "maximum_budget_overrun_seconds": 0.053982871999323834,
+      "peak_total_vram_bytes": 21496004608,
+      "peak_vram_cap_bytes": 22548578304,
+      "conditions": {
+        "agentkv_25_dynamic": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_25_fixed": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 3.916835718000584
+        },
+        "agentkv_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "full_best_of_n": {
+          "first_attempt_success": 0.5,
+          "oracle_success": 0.5,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "completed": 2,
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "full_once": {
+          "first_attempt_success": 0.5,
+          "oracle_success": 0.5,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1,
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        }
+      }
+    },
+    {
+      "plan": "09-budget-90",
+      "artifact_id": "comet-run:70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+      "stage": "pilot",
+      "config_digest": "0794e21b50437889c23dd4a909ee916ea6b9d8d9a369ffdbc3efe86ddc908277",
+      "manifest_sha256": "39dfcc6b28a9650f88021a75529fda356d1ebead75d30a6976ab7d93fa392b5b",
+      "scores_sha256": "b60934f5237b203bbecc7a9ebd8f120d994a5c300a928a4ee7827a927427237f",
+      "completed_cells": 14,
+      "task_count": 2,
+      "condition_count": 7,
+      "attempt_count": 18,
+      "budget_seconds": 90,
+      "maximum_budget_overrun_seconds": 0.04760824799996044,
+      "peak_total_vram_bytes": 21468741632,
+      "peak_vram_cap_bytes": 22548578304,
+      "conditions": {
+        "agentkv_25_dynamic": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_25_fixed": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "full_best_of_n": {
+          "first_attempt_success": 0.5,
+          "oracle_success": 0.5,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "completed": 1,
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "full_once": {
+          "first_attempt_success": 0.5,
+          "oracle_success": 0.5,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1,
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        }
+      }
+    },
+    {
+      "plan": "10-train-finegrid",
+      "artifact_id": "comet-run:09e960e7-5e53-414a-89d4-7c9f7a2566ef",
+      "stage": "pilot",
+      "config_digest": "64c2ac4fec739ddfce85785a9118e97baf420d2e7ead1b86015fbcbf872b4da4",
+      "manifest_sha256": "31d31a6778d92707da212f351dedc7c2a22fc4c5c717b2673dd17f34371cfbb7",
+      "scores_sha256": "aa8e069eee20f4907c476945af45b954ad25daafb99b5598c73d7905a8fdb900",
+      "completed_cells": 25,
+      "task_count": 1,
+      "condition_count": 25,
+      "attempt_count": 25,
+      "budget_seconds": 120,
+      "maximum_budget_overrun_seconds": 0.04759081399970455,
+      "peak_total_vram_bytes": 21481324544,
+      "peak_vram_cap_bytes": 22548578304,
+      "conditions": {
+        "agentkv_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "error": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_30_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "error": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_40_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "error": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_50_never": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_60_never": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_70_never": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_80_never": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "agentkv_90_never": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "full_once": {
+          "first_attempt_success": 1.0,
+          "oracle_success": 1.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_30_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "error": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_40_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_50_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_60_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_70_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_80_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_90_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_30_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_40_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_50_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_60_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_70_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_80_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_90_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "error": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        }
+      }
+    },
+    {
+      "plan": "11-dev-confirmation",
+      "artifact_id": "comet-run:0e289877-d5bf-4ab4-aa8d-3edbdbb55911",
+      "stage": "pilot",
+      "config_digest": "550c6070743d969d97d8f93f72179b89ab0f3aef311861bed5590438c2d394e8",
+      "manifest_sha256": "e234c4f98e3fe59722f09dcc1ac7bc9b564122b1551b38a44662721ad0da498c",
+      "scores_sha256": "7184b68c52b69f749c65349135b6ab054c9e297b448c9fccb570a72fdcfec981",
+      "completed_cells": 14,
+      "task_count": 2,
+      "condition_count": 7,
+      "attempt_count": 16,
+      "budget_seconds": 120,
+      "maximum_budget_overrun_seconds": 0.046989050999400206,
+      "peak_total_vram_bytes": 21523267584,
+      "peak_vram_cap_bytes": 22548578304,
+      "conditions": {
+        "agentkv_25_dynamic": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 6.264209294000466
+        },
+        "agentkv_25_fixed": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "recovery_requested": 1,
+          "recovery_admitted": 1,
+          "recovery_seconds": 4.167247274999681
+        },
+        "agentkv_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "full_best_of_n": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.5,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "completed": 2,
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "full_once": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "completed": 1,
+            "timeout": 1
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "rkv_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1.5,
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        },
+        "streamingllm_25_never": {
+          "first_attempt_success": 0.0,
+          "oracle_success": 0.0,
+          "actual_attempts_mean": 1,
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "recovery_requested": 0,
+          "recovery_admitted": 0,
+          "recovery_seconds": null
+        }
+      }
+    }
+  ]
+}

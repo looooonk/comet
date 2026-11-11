@@ -38,21 +38,25 @@ def save_snapshot(engine, path: Path) -> dict:
             value = value.cpu().clone()
         req_data[field.name] = value
     req_data.update(device_len=req.device_len, max_device_len=req.max_device_len)
-    slots = scheduler.engine.page_table[req.table_idx, :req.physical_cached_len].long()
+    slots = scheduler.engine.page_table[req.table_idx, : req.physical_cached_len].long()
     kv = []
     for layer in range(scheduler.engine.kv_cache.num_layers):
-        kv.append([
-            cache(layer).index_select(0, slots).cpu()
-            for cache in (scheduler.engine.kv_cache.k_cache, scheduler.engine.kv_cache.v_cache)
-        ])
+        kv.append(
+            [
+                cache(layer).index_select(0, slots).cpu()
+                for cache in (scheduler.engine.kv_cache.k_cache, scheduler.engine.kv_cache.v_cache)
+            ]
+        )
         engine._check_memory()
     ring = scheduler.engine.query_ring
     payload = {
         "schema": 2,
         "request": req_data,
         "kv": kv,
-        "query_ring": {name: getattr(ring, name)[req.table_idx].cpu().clone()
-                       for name in ("q", "positions", "write_pos", "size")},
+        "query_ring": {
+            name: getattr(ring, name)[req.table_idx].cpu().clone()
+            for name in ("q", "positions", "write_pos", "size")
+        },
         "raw": engine._raw,
         "phase": engine._phase,
         "semantic": engine._semantic,
@@ -66,13 +70,16 @@ def save_snapshot(engine, path: Path) -> dict:
         "retention_events": scheduler.eviction_manager.retention_events,
     }
     manifest = {
-        "schema": 2, "settings_fingerprint": engine.settings.fingerprint(),
+        "schema": 2,
+        "settings_fingerprint": engine.settings.fingerprint(),
         "base_fingerprint": engine.settings.fingerprint(policy=False),
-        "settings": asdict(engine.settings), "minisgl_revision": MINISGL_REVISION,
+        "settings": asdict(engine.settings),
+        "minisgl_revision": MINISGL_REVISION,
         "patch_file_sha256": PATCH_FILE_HASHES,
         "logical_cached_tokens": req.logical_cached_len,
         "physical_cached_tokens": req.physical_cached_len,
-        "raw_tokens": len(engine._raw), "recovery_count": engine._recoveries,
+        "raw_tokens": len(engine._raw),
+        "recovery_count": engine._recoveries,
         "full_cache": req.physical_cached_len == req.logical_cached_len,
         "device_name": engine.device_name,
     }
@@ -92,8 +99,11 @@ def restore_snapshot(engine, path: Path, *, branch: bool) -> dict:
     from minisgl.core import Req, SamplingParams
 
     manifest = json.loads(path.with_suffix(path.suffix + ".json").read_text())
-    if (manifest.get("schema") != 2 or manifest.get("minisgl_revision") != MINISGL_REVISION
-            or manifest.get("patch_file_sha256") != PATCH_FILE_HASHES):
+    if (
+        manifest.get("schema") != 2
+        or manifest.get("minisgl_revision") != MINISGL_REVISION
+        or manifest.get("patch_file_sha256") != PATCH_FILE_HASHES
+    ):
         raise UnsupportedPath("unsupported engine checkpoint schema or dependency revision")
     expected = engine.settings.fingerprint(policy=not branch)
     if manifest["base_fingerprint" if branch else "settings_fingerprint"] != expected:
@@ -114,13 +124,13 @@ def restore_snapshot(engine, path: Path, *, branch: bool) -> dict:
     req.session_id = f"comet-{uuid.uuid4().hex}"
     engine._session_id = req.session_id
     slots = scheduler.cache_manager.allocate_token_slots(req.physical_cached_len).long()
-    scheduler.engine.page_table[req.table_idx, :req.physical_cached_len].copy_(slots)
+    scheduler.engine.page_table[req.table_idx, : req.physical_cached_len].copy_(slots)
     engine._orphan_req = req
     for layer, (key, value) in enumerate(payload["kv"]):
         scheduler.engine.kv_cache.k_cache(layer).index_copy_(0, slots, key.to(scheduler.device))
         scheduler.engine.kv_cache.v_cache(layer).index_copy_(0, slots, value.to(scheduler.device))
         engine._check_memory()
-    scheduler.token_pool[req.table_idx, :req.device_len].copy_(req.input_ids)
+    scheduler.token_pool[req.table_idx, : req.device_len].copy_(req.input_ids)
     ring = scheduler.engine.query_ring
     for name, tensor in payload["query_ring"].items():
         getattr(ring, name)[req.table_idx].copy_(tensor)
@@ -130,7 +140,9 @@ def restore_snapshot(engine, path: Path, *, branch: bool) -> dict:
     engine._semantic = list(payload["semantic"])
     engine._recoveries = payload["recoveries"]
     engine._uid = payload["uid"]
-    engine._next_logits = None if payload["next_logits"] is None else payload["next_logits"].to(scheduler.device)
+    engine._next_logits = (
+        None if payload["next_logits"] is None else payload["next_logits"].to(scheduler.device)
+    )
     scheduler.eviction_manager.retention_events = payload["retention_events"]
     with torch.inference_mode(), scheduler.engine_stream_ctx:
         scheduler.engine.stream.wait_stream(scheduler.stream)

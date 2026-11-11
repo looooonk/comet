@@ -1,0 +1,12 @@
+{
+  "extends": "../cuda-repair-dev-v1.json",
+  "conditions": [
+    {
+      "id": "agentkv_90_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.9
+    }
+  ]
+}

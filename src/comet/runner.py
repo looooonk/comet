@@ -1,15 +1,17 @@
 from __future__ import annotations
 
 import dataclasses
+import traceback
 import uuid
 from pathlib import Path
 from typing import Callable
 
+from comet.agent import execution_feedback
 from comet.artifacts import provenance, read_json, run_lock, write_json
 from comet.budget import Budget
 from comet.clocks import monotonic, wall_time
 from comet.config import Condition, Experiment, attempt_seed
-from comet.errors import BudgetExpired, MemoryCapExceeded, UnsupportedPath
+from comet.errors import BudgetExpired, FatalAcceleratorError, MemoryCapExceeded, UnsupportedPath
 from comet.policies import decide
 
 
@@ -23,6 +25,23 @@ def _plain(value):
 
 def _runtime_contract(metadata: dict) -> dict:
     return {k: v for k, v in metadata.items() if k not in {"model_path", "memory", "warmup"}}
+
+
+def _fatal_cuda_failure(attempt: dict) -> bool:
+    messages = [
+        attempt.get("failure_reason"),
+        attempt.get("metrics", {}).get("memory_error"),
+        *attempt.get("cleanup_errors", []),
+    ]
+    fatal_errors = (
+        "illegal memory access", "device-side assert", "unspecified launch failure",
+        "misaligned address", "illegal instruction",
+    )
+    return any(
+        message and "cuda" in message.lower()
+        and any(error in message.lower() for error in fatal_errors)
+        for message in messages
+    )
 
 
 class Runner:
@@ -40,82 +59,148 @@ class Runner:
         self.engine_factory, self.environment_factory = engine_factory, environment_factory
         self.clock, self.integration_smoke = clock, integration_smoke
         if integration_smoke and config.stage == "final":
-            raise ValueError("Final evaluation requires the specified A100 hardware")
+            raise ValueError("Final evaluation requires the selected qualified hardware")
 
-    def run(self, *, resume: bool = False) -> dict:
+    def run(self, *, resume: bool = False, max_cells: int | None = None) -> dict:
+        if max_cells is not None:
+            if type(max_cells) is not int or max_cells <= 0:
+                raise ValueError("max_cells must be a positive integer")
         with run_lock(self.output):
             manifest = self._manifest(resume)
             if manifest["status"] == "completed":
                 return manifest
+            launch = {"at_unix": wall_time(), "max_cells": max_cells, "completed_cells": 0}
+            manifest.setdefault("launches", []).append(launch)
+            write_json(self.output / "manifest.json", manifest)
             initial = (
                 Condition("diagnostic_source", "full", 1.0, "never", 1)
                 if self.config.stage == "diagnostic"
                 else self.config.conditions[0]
             )
             try:
-                engine = self.engine_factory(initial)
-            except Exception as error:
-                if (
-                    not isinstance(error, MemoryError)
-                    and type(error).__name__ != "OutOfMemoryError"
-                ):
-                    raise
-                for reference in manifest["cells"]:
-                    if self._done(reference):
-                        continue
-                    condition = next(
-                        c for c in self.config.conditions if c.id == reference["condition_id"]
+                try:
+                    engine = self.engine_factory(initial)
+                except Exception as error:
+                    if (
+                        not isinstance(error, MemoryError)
+                        and type(error).__name__ != "OutOfMemoryError"
+                    ):
+                        raise
+                    for reference in manifest["cells"]:
+                        if self._done(reference):
+                            continue
+                        condition = next(
+                            c for c in self.config.conditions if c.id == reference["condition_id"]
+                        )
+                        path = self.output / reference["path"]
+                        cell = (
+                            read_json(path)
+                            if path.exists()
+                            else self._new_cell(manifest, reference, condition)
+                        )
+                        if cell.get("inflight"):
+                            self._interrupt_cell(cell)
+                        cell.update(completed=True, infeasible=True, failure_reason=str(error))
+                        write_json(path, cell)
+                        launch["completed_cells"] += 1
+                        if launch["completed_cells"] == max_cells:
+                            break
+                    return self._finish_launch(manifest, launch)
+                try:
+                    if hasattr(engine, "warmup"):
+                        engine.warmup()
+                    self.engine_metadata = (
+                        engine.provenance() if hasattr(engine, "provenance") else {}
                     )
-                    path = self.output / reference["path"]
-                    cell = (
-                        read_json(path)
-                        if path.exists()
-                        else self._new_cell(manifest, reference, condition)
-                    )
-                    if cell.get("inflight"):
-                        self._interrupt_cell(cell)
-                    cell.update(completed=True, infeasible=True, failure_reason=str(error))
-                    write_json(path, cell)
-                manifest.update(status="completed", finished_at_unix=wall_time())
-                write_json(self.output / "manifest.json", manifest)
-                return manifest
-            try:
-                if hasattr(engine, "warmup"):
-                    engine.warmup()
-                self.engine_metadata = engine.provenance() if hasattr(engine, "provenance") else {}
-                previous = manifest.get("engine")
-                if previous is not None and _runtime_contract(previous) != _runtime_contract(
-                    self.engine_metadata
-                ):
-                    raise ValueError(
-                        "Resume runtime dependencies or hardware differ from the original run"
-                    )
-                manifest.setdefault("engine", self.engine_metadata)
-                manifest.setdefault("launches", []).append(
-                    {"at_unix": wall_time(), "engine": self.engine_metadata}
-                )
-                write_json(self.output / "manifest.json", manifest)
-                if self.config.stage == "diagnostic":
-                    from comet.diagnostic import prepare_checkpoints
+                    previous = manifest.get("engine")
+                    if previous is not None and _runtime_contract(previous) != _runtime_contract(
+                        self.engine_metadata
+                    ):
+                        raise ValueError(
+                            "Resume runtime dependencies or hardware differ from the original run"
+                        )
+                    manifest.setdefault("engine", self.engine_metadata)
+                    launch["engine"] = self.engine_metadata
+                    write_json(self.output / "manifest.json", manifest)
+                    self._warmup_environment(manifest, launch)
+                    if self.config.stage == "diagnostic":
+                        from comet.diagnostic import prepare_checkpoints
 
-                    prepare_checkpoints(self, manifest, engine)
-                for condition in self.config.conditions:
-                    pending = [
-                        c
-                        for c in manifest["cells"]
-                        if c["condition_id"] == condition.id and not self._done(c)
-                    ]
-                    if not pending:
-                        continue
-                    engine.set_policy(condition.method, condition.retention)
-                    for reference in pending:
-                        self._run_cell(manifest, reference, condition, engine)
+                        prepare_checkpoints(self, manifest, engine)
+                    for condition in self.config.conditions:
+                        if launch["completed_cells"] == max_cells:
+                            break
+                        pending = [
+                            c
+                            for c in manifest["cells"]
+                            if c["condition_id"] == condition.id and not self._done(c)
+                        ]
+                        if max_cells is not None:
+                            pending = pending[: max_cells - launch["completed_cells"]]
+                        if not pending:
+                            continue
+                        engine.set_policy(condition.method, condition.retention)
+                        for reference in pending:
+                            self._run_cell(manifest, reference, condition, engine)
+                            launch["completed_cells"] += 1
+                finally:
+                    engine.close()
+                return self._finish_launch(manifest, launch)
+            except BaseException as error:
+                try:
+                    write_json(self.output / "manifest.json", manifest)
+                except Exception as journal_error:
+                    error.add_note(f"Could not preserve launch progress: {journal_error}")
+                raise
+
+    def _warmup_environment(self, manifest: dict, launch: dict) -> None:
+        settings = self.config.environment_warmup
+        if settings is None:
+            return
+        from comet.appworld import validate_tasks
+
+        directory = self.output / "initialization" / f"launch-{len(manifest['launches']) - 1:03d}"
+        record = {
+            "status": "running",
+            "task_id": settings.task_id,
+            "seed": settings.seed,
+            "split": "train",
+            "charged_to_task_budget": False,
+            "tool_calls": 0,
+            "model_observations": 0,
+            "artifact_dir": str(directory.relative_to(self.output)),
+        }
+        launch["environment_initialization"] = record
+        write_json(self.output / "manifest.json", manifest)
+        started = self.clock()
+        try:
+            validate_tasks("train", [settings.task_id])
+            environment = self.environment_factory()
+            try:
+                environment.reset(settings.task_id, settings.seed, directory / "environment")
             finally:
-                engine.close()
-            manifest["status"] = "completed"
-            manifest["finished_at_unix"] = wall_time()
+                environment.close()
+            record["status"] = "completed"
+        except BaseException as error:
+            record.update(status="failed", failure_reason=f"{type(error).__name__}: {error}")
+            raise
+        finally:
+            record["seconds"] = self.clock() - started
             write_json(self.output / "manifest.json", manifest)
-            return manifest
+
+    def _finish_launch(self, manifest: dict, launch: dict) -> dict:
+        completed = all(self._done(reference) for reference in manifest["cells"])
+        launch.update(
+            finished_at_unix=wall_time(),
+            stop_reason="all_cells_completed" if completed else "max_cells",
+        )
+        manifest["status"] = "completed" if completed else "running"
+        if completed:
+            manifest["finished_at_unix"] = launch["finished_at_unix"]
+        else:
+            manifest.pop("finished_at_unix", None)
+        write_json(self.output / "manifest.json", manifest)
+        return manifest
 
     def _done(self, reference: dict) -> bool:
         path = self.output / reference["path"]
@@ -211,6 +296,26 @@ class Runner:
                 write_json(attempt_dir / "attempt.json", attempt)
             attempt["budget_elapsed_seconds"] = budget.elapsed
             cell.update(elapsed_seconds=budget.elapsed, inflight=False)
+            if _fatal_cuda_failure(attempt):
+                # A poisoned CUDA context must not consume attempts in later cells.
+                # Retire this cell without a free retry; a fresh process can resume others.
+                reserved = max(0.0, self.config.budget_seconds - budget.elapsed)
+                cell.update(
+                    completed=True, observed_elapsed_seconds=budget.elapsed,
+                    reserved_budget_seconds=reserved,
+                    elapsed_seconds=max(self.config.budget_seconds, budget.elapsed),
+                )
+                attempt.update(
+                    reserved_budget_seconds=reserved,
+                    budget_elapsed_seconds=cell["elapsed_seconds"],
+                )
+                write_json(attempt_dir / "attempt.json", attempt)
+                self._persist_cell(path, cell, budget)
+                raise FatalAcceleratorError(
+                    f"Fatal CUDA failure in {cell['task_id']}/{condition.id}; "
+                    "failed cell saved and remaining cells left unstarted. "
+                    "Resume compatible unfinished work in a fresh process."
+                )
             self._persist_cell(path, cell, budget)
         cell.update(completed=True, elapsed_seconds=budget.elapsed)
         self._persist_cell(path, cell, budget)
@@ -219,14 +324,62 @@ class Runner:
         reserved = max(0.0, self.config.budget_seconds - cell["elapsed_seconds"])
         for attempt in cell["attempts"]:
             if attempt["status"] == "running":
+                path = self.output / attempt["artifact_dir"] / "attempt.json"
+                if path.exists():
+                    latest = read_json(path)
+                    if any(
+                        latest.get(key) != attempt.get(key)
+                        for key in ("attempt_index", "seed", "artifact_dir")
+                    ):
+                        raise ValueError("Interrupted attempt journal has a different identity")
+                    attempt.update(latest)
+                if attempt["status"] != "running":
+                    observed = max(
+                        attempt.get("budget_elapsed_seconds", 0),
+                        cell["elapsed_seconds"] + attempt.get("elapsed_seconds", 0),
+                    )
+                    cell["observed_elapsed_seconds"] = observed
+                    cell["reserved_budget_seconds"] = max(
+                        0.0, self.config.budget_seconds - observed
+                    )
+                    if attempt["status"] == "completed" and observed >= self.config.budget_seconds:
+                        attempt.update(
+                            status="timeout",
+                            failure_reason="Durable attempt journal reached or exceeded the shared budget",
+                            budget_elapsed_seconds=observed,
+                        )
+                        write_json(path, attempt)
+                    continue
                 attempt.update(
                     status="interrupted",
                     failure_reason="process_interrupted",
                     budget_elapsed_seconds=self.config.budget_seconds,
                     reserved_budget_seconds=reserved,
                 )
-                write_json(self.output / attempt["artifact_dir"] / "attempt.json", attempt)
-        cell.update(elapsed_seconds=self.config.budget_seconds, completed=True, inflight=False)
+                metrics = attempt.setdefault("metrics", {})
+                coverage = metrics.setdefault("metric_coverage", {})
+                for key in (
+                    "estimated_flops",
+                    "generated_tokens",
+                    "prefill_tokens",
+                    "decode_tokens",
+                    "rebuild_prefill_tokens",
+                    "peak_kv_bytes",
+                    "peak_total_vram_bytes",
+                    "prefill_seconds",
+                    "decode_seconds",
+                    "rebuild_seconds",
+                ):
+                    if isinstance(metrics.get(key), (int, float)):
+                        coverage[key] = "partial" if key.endswith("seconds") else "lower_bound"
+                write_json(path, attempt)
+        cell.update(
+            elapsed_seconds=max(
+                self.config.budget_seconds, cell.get("observed_elapsed_seconds", 0)
+            ),
+            completed=True,
+            inflight=False,
+        )
 
     def _persist_cell(self, path: Path, cell: dict, budget: Budget) -> None:
         write_json(path, cell)
@@ -269,13 +422,24 @@ class Runner:
                 {"role": "user", "content": environment.initial_prompt()},
             ],
             tokenize=True,
+            return_dict=False,
             add_generation_prompt=True,
             enable_thinking=self.config.sampling.enable_thinking,
         )
 
     def _observation_tokens(self, engine, observation: str, *, finished: bool) -> list[int]:
         prefix = "" if finished else "<|im_end|>"
+        if self.config.engine.model == "Qwen/Qwen3-4B-Instruct-2507":
+            turn = engine.tokenizer.apply_chat_template(
+                [{"role": "user", "content": f"<tool_response>\n{observation}\n</tool_response>"}],
+                tokenize=False,
+                add_generation_prompt=True,
+            )
+            return engine.tokenizer.encode(prefix + "\n" + turn, add_special_tokens=False)
         suffix = "" if self.config.sampling.enable_thinking else "<think>\n\n</think>\n\n"
+        # The pinned 3.5 template rejects isolated tool turns; its suffix is checked on a full dialogue.
+        if self.config.engine.model == "Qwen/Qwen3.5-9B" and self.config.sampling.enable_thinking:
+            suffix = "<think>\n"
         text = (
             f"{prefix}\n<|im_start|>user\n<tool_response>\n{observation}\n"
             f"</tool_response><|im_end|>\n<|im_start|>assistant\n{suffix}"
@@ -294,16 +458,19 @@ class Runner:
         environment = self.environment_factory()
         start, old_timings = budget.elapsed, dict(budget.timings)
         state = {"tool_calls": 0, "rebuilds": 0, "turns": [], "pending_tokens": []}
+        engine_started = False
         try:
+            if self.config.stage == "diagnostic":
+                from comet.diagnostic import charge_checkpoint_preparation, restore_checkpoint
+
+                charge_checkpoint_preparation(self, cell, attempt, budget)
             with budget.charge("reset"):
+                engine_started = True
                 engine.start(attempt["seed"])
                 environment.reset(cell["task_id"], attempt["seed"], directory / "environment")
                 state["pending_tokens"] = self._initial_tokens(engine, environment)
             if self.config.stage == "diagnostic":
-                from comet.diagnostic import restore_checkpoint
-
                 state = restore_checkpoint(self, cell, environment, engine, budget)
-                attempt["metrics"].update(state.pop("preparation_metrics", {}))
             self._trajectory(
                 cell, attempt, directory, condition, engine, environment, budget, state
             )
@@ -325,9 +492,9 @@ class Runner:
                 attempt.update(status="error", failure_reason=f"{type(error).__name__}: {error}")
         finally:
             cleanup_start = budget.elapsed
-            cleanup = ([engine.synchronize] if hasattr(engine, "synchronize") else []) + [
-                environment.close
-            ]
+            cleanup = (
+                [engine.synchronize] if engine_started and hasattr(engine, "synchronize") else []
+            ) + [environment.close]
             for finish in cleanup:
                 try:
                     finish()
@@ -338,7 +505,13 @@ class Runner:
                         or type(error).__name__ == "OutOfMemoryError"
                         else "error"
                     )
-                    attempt.update(status=status, failure_reason=f"Attempt cleanup failed: {error}")
+                    attempt.setdefault("cleanup_errors", []).append(
+                        f"{type(error).__name__}: {error}"
+                    )
+                    if attempt["status"] == "completed":
+                        attempt.update(
+                            status=status, failure_reason=f"Attempt cleanup failed: {error}"
+                        )
             budget.timings["cleanup"] = (
                 budget.timings.get("cleanup", 0) + budget.elapsed - cleanup_start
             )
@@ -348,19 +521,75 @@ class Runner:
             attempt["timings"] = {k: v - old_timings.get(k, 0) for k, v in budget.timings.items()}
             attempt["tool_calls"] = state["tool_calls"]
             attempt["rebuilds"] = state["rebuilds"]
-            for key, value in _plain(engine.memory_stats()).items():
-                if key.startswith("peak_"):
-                    value = max(value, attempt["metrics"].get(key, 0))
-                attempt["metrics"][key] = value
+            try:
+                memory = _plain(engine.memory_stats()) if engine_started else {}
+            except Exception as error:
+                attempt["metrics"]["memory_error"] = f"{type(error).__name__}: {error}"
+                if attempt["status"] == "completed":
+                    attempt.update(
+                        status="error", failure_reason=f"Final memory measurement failed: {error}"
+                    )
+            else:
+                for key, value in memory.items():
+                    if key.startswith("peak_"):
+                        value = max(value, attempt["metrics"].get(key, 0))
+                    attempt["metrics"][key] = value
             write_json(
                 directory / "trajectory.json",
                 {
                     **state,
-                    "raw_token_ids": list(engine.raw_token_ids),
-                    "retention_events": getattr(engine, "retention_events", []),
+                    "raw_token_ids": list(engine.raw_token_ids) if engine_started else [],
+                    "retention_events": getattr(engine, "retention_events", [])
+                    if engine_started
+                    else [],
                 },
             )
             write_json(directory / "attempt.json", attempt)
+
+    def _record_operation(self, attempt: dict, result: dict, *, recovery: bool = False) -> None:
+        metrics = attempt["metrics"]
+        coverage = metrics.setdefault("metric_coverage", {})
+        fields = {"estimated_flops": "estimated_flops"}
+        if "compaction_seconds" in result:
+            fields["compaction_seconds"] = "compaction_seconds"
+        if recovery:
+            fields.update(rebuild_seconds="seconds", rebuild_prefill_tokens="prompt_tokens")
+        else:
+            fields.update(
+                decode_seconds="decode_seconds",
+                prefill_seconds="prefill_seconds",
+                prefill_tokens="prompt_tokens",
+                decode_tokens="decode_tokens",
+                generated_tokens="generated_tokens",
+            )
+            if "token_ids" in result:
+                result = {**result, "generated_tokens": len(result["token_ids"])}
+        failed = result.get("status") == "failed"
+        for name, source in fields.items():
+            previous = coverage.get(name, "complete")
+            if source not in result:
+                coverage[name] = (
+                    ("partial" if name.endswith("seconds") else "lower_bound")
+                    if name in metrics
+                    else "unavailable"
+                )
+                continue
+            metrics[name] = metrics.get(name, 0) + result[source]
+            current = "complete"
+            if failed and name != "generated_tokens":
+                current = "partial" if name.endswith("seconds") else "lower_bound"
+            if previous != "complete":
+                current = "partial" if name.endswith("seconds") else "lower_bound"
+            coverage[name] = current
+        for name in ("incomplete_forward_tokens", "incomplete_forward_estimated_flops"):
+            if name in result:
+                metrics[name] = metrics.get(name, 0) + result[name]
+        for name, value in result.get("memory", {}).items():
+            if name.startswith("peak_"):
+                metrics[name] = max(metrics.get(name, 0), value)
+        metrics["flops_estimation_method"] = self.engine_metadata.get(
+            "estimated_flops_method", "unavailable"
+        )
 
     def _trajectory(
         self,
@@ -390,54 +619,94 @@ class Runner:
                 state["rebuilds"],
             )
             event = decision.to_dict()
+            attempt["recovery_events"].append(event)
             if decision.triggered:
-                with budget.charge("rebuild"):
-                    recovery = _plain(
-                        engine.recover(
-                            list(engine.raw_token_ids) + state["pending_tokens"],
+                event["result"] = {
+                    "status": "pending",
+                    "admitted": None,
+                    "allowance_consumed": None,
+                }
+                write_json(directory / "recovery_events.json", attempt["recovery_events"])
+                write_json(directory / "attempt.json", attempt)
+                recovery, error, called = {}, None, False
+                started = budget.elapsed
+                try:
+                    with budget.charge("rebuild"):
+                        called = True
+                        recovery = _plain(
+                            engine.recover(
+                                list(engine.raw_token_ids) + state["pending_tokens"],
+                                deadline=budget.deadline,
+                            )
+                        )
+                except BaseException as failure:
+                    # Keeping the exception retains its traceback and failed GPU tensors.
+                    error = f"{type(failure).__name__}: {failure}"
+                    attempt["failure_traceback"] = traceback.format_exc()
+                    raise
+                finally:
+                    progress = getattr(engine, "last_recovery", {}) if called else {}
+                    recovery = {**recovery, **progress}
+                    recovery.setdefault(
+                        "status",
+                        "failed"
+                        if error
+                        else "completed"
+                        if recovery.get("admitted")
+                        else "denied",
+                    )
+                    recovery.setdefault("admitted", None)
+                    recovery.setdefault("allowance_consumed", recovery["admitted"])
+                    recovery.setdefault("seconds", budget.elapsed - started)
+                    if error is not None:
+                        recovery.setdefault("failure_reason", error)
+                    event["result"] = recovery
+                    if recovery["allowance_consumed"]:
+                        state["rebuilds"] += 1
+                        if len(engine.raw_token_ids) >= context:
+                            state["pending_tokens"] = []
+                    attempt["rebuilds"] = state["rebuilds"]
+                    self._record_operation(attempt, recovery, recovery=True)
+                    write_json(directory / "recovery_events.json", attempt["recovery_events"])
+                    write_json(directory / "attempt.json", attempt)
+            result, called, error = {}, False, None
+            try:
+                with budget.charge("inference"):
+                    called = True
+                    result = _plain(
+                        engine.generate(
+                            state["pending_tokens"],
+                            max_new_tokens=min(
+                                self.config.sampling.max_new_tokens,
+                                self.config.engine.max_context_tokens - context,
+                            ),
+                            temperature=self.config.sampling.temperature,
+                            top_p=self.config.sampling.top_p,
                             deadline=budget.deadline,
                         )
                     )
-                event["result"] = recovery
-                attempt["metrics"]["estimated_flops"] = attempt["metrics"].get(
-                    "estimated_flops", 0
-                ) + recovery.get("estimated_flops", 0)
-                admitted = recovery.get("admitted", False)
-                if admitted:
-                    state["rebuilds"] += 1
-                    state["pending_tokens"] = []
-                    attempt["metrics"]["rebuild_prefill_tokens"] = recovery.get("input_tokens", 0)
-                    attempt["metrics"]["rebuild_seconds"] = recovery.get("seconds", 0)
-            attempt["recovery_events"].append(event)
-            with budget.charge("inference"):
-                generation = engine.generate(
-                    state["pending_tokens"],
-                    max_new_tokens=min(
-                        self.config.sampling.max_new_tokens,
-                        self.config.engine.max_context_tokens - context,
-                    ),
-                    temperature=self.config.sampling.temperature,
-                    top_p=self.config.sampling.top_p,
-                    deadline=budget.deadline,
-                )
-            result = _plain(generation)
-            for key in ("decode_seconds", "prefill_seconds", "estimated_flops"):
-                attempt["metrics"][key] = attempt["metrics"].get(key, 0) + result.get(key, 0)
-            attempt["metrics"]["decode_tokens"] = attempt["metrics"].get(
-                "decode_tokens", 0
-            ) + result.get("decode_tokens", 0)
-            attempt["metrics"]["flops_estimation_method"] = self.engine_metadata.get(
-                "estimated_flops_method", "unavailable"
-            )
-            attempt["metrics"]["generated_tokens"] = attempt["metrics"].get(
-                "generated_tokens", 0
-            ) + len(result["token_ids"])
-            attempt["metrics"]["prefill_tokens"] = attempt["metrics"].get(
-                "prefill_tokens", 0
-            ) + result.get("prompt_tokens", 0)
+            except BaseException as failure:
+                error = f"{type(failure).__name__}: {failure}"
+                attempt["failure_traceback"] = traceback.format_exc()
+                raise
+            finally:
+                progress = getattr(engine, "last_generation", {}) if called else {}
+                recorded = {**result, **progress}
+                recorded.setdefault("status", "failed" if error else "completed")
+                self._record_operation(attempt, recorded)
+                if error is not None:
+                    recorded.setdefault("failure_reason", error)
+                    attempt.setdefault("generation_failures", []).append(recorded)
+                    write_json(directory / "attempt.json", attempt)
             response = engine.tokenizer.decode(result["token_ids"], skip_special_tokens=True)
             try:
-                action = parse_action(response)
+                action = parse_action(
+                    response,
+                    require_executable=(
+                        self.config.agent.require_executable
+                        or bool(self.config.agent.max_consecutive_errors)
+                    ),
+                )
             except ValueError as error:
                 action, observation = (
                     None,
@@ -447,11 +716,24 @@ class Runner:
                 with budget.charge("tool"):
                     observation = environment.execute(action, timeout_seconds=budget.remaining)
                     state["tool_calls"] += 1
-            state["turns"].append(
-                {"response": response, "action": action, "observation": observation}
-            )
+            turn = {"response": response, "action": action, "observation": observation}
+            feedback = ""
+            limit = self.config.agent.max_consecutive_errors
+            if limit:
+                with budget.charge("agent_protocol"):
+                    streak, feedback = execution_feedback(
+                        observation, state.get("consecutive_errors", 0), limit
+                    )
+                    state["consecutive_errors"] = streak
+                    turn.update(consecutive_errors=streak, agent_feedback=feedback)
+            state["turns"].append(turn)
+            visible_observation = observation
+            if feedback:
+                visible_observation += (
+                    f"\n\n<execution_feedback>\n{feedback}\n</execution_feedback>"
+                )
             state["pending_tokens"] = self._observation_tokens(
-                engine, observation, finished=result["finished"]
+                engine, visible_observation, finished=result["finished"]
             )
             with budget.charge("trajectory_save"):
                 write_json(
@@ -460,11 +742,17 @@ class Runner:
                 )
             with budget.charge("completion_observation"):
                 completed = environment.completed()
-            if completed or (
-                stop_after_tools is not None and state["tool_calls"] >= stop_after_tools
-            ):
+            if completed:
+                return
+            if limit and state["consecutive_errors"] >= limit:
+                raise AgentProtocolError(f"{limit} consecutive execution/action failures")
+            if stop_after_tools is not None and state["tool_calls"] >= stop_after_tools:
                 return
 
 
 class ContextLimit(RuntimeError):
+    pass
+
+
+class AgentProtocolError(RuntimeError):
     pass

@@ -1,0 +1,37 @@
+{
+  "extends": "pilot-smoke.json",
+  "experiment_id": "checkpoint-schema-example-v1",
+  "stage": "diagnostic",
+  "checkpoint_after_tool_calls": 1,
+  "conditions": [
+    {
+      "id": "full_once",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_50_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_50_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_50_dynamic",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 1
+    }
+  ],
+  "notes": "Legacy schema example for identical-source checkpoint branching: full cache and AgentKV at 50% with never, fixed and dynamic recovery. Numeric settings are placeholders for integration development, not a queued pilot or frozen study. Prefix preparation and branch reset/restore remain charged. New Qwen support requires a separate validated configuration."
+}

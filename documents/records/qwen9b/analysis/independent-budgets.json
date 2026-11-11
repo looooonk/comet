@@ -1,0 +1,2881 @@
+{
+  "budgets_seconds": [
+    90,
+    120,
+    150
+  ],
+  "conditions": {
+    "agentkv_25_dynamic": {
+      "condition": {
+        "id": "agentkv_25_dynamic",
+        "max_attempts": 2,
+        "method": "agentkv",
+        "recovery": "dynamic",
+        "retention": 0.25
+      },
+      "points": [
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              1.0,
+              2.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 1.5
+          },
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              90.03389726400019,
+              90.0419316410007
+            ],
+            "standard_error": 0.004017188500256452,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 90.03791445250044
+          },
+          "budget_seconds": 90,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 3,
+            "started_attempts": 3
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.0419316410007,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "error",
+                  "success": false
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.03389726400019,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              1.0,
+              2.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 1.5
+          },
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              120.0390867590013,
+              120.04651486799958
+            ],
+            "standard_error": 0.0037140544991416387,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 120.04280081350043
+          },
+          "budget_seconds": 120,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 3,
+            "started_attempts": 3
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 120.04651486799958,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "error",
+                  "success": false
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 120.0390867590013,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              1.0,
+              2.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 1.5
+          },
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              150.0450668349995,
+              151.95922850199986
+            ],
+            "standard_error": 0.9570808335001856,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 151.00214766849967
+          },
+          "budget_seconds": 150,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 3,
+            "started_attempts": 3
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 150.0450668349995,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "error",
+                  "success": false
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 151.95922850199986,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        }
+      ]
+    },
+    "agentkv_25_fixed": {
+      "condition": {
+        "id": "agentkv_25_fixed",
+        "max_attempts": 2,
+        "method": "agentkv",
+        "recovery": "fixed",
+        "retention": 0.25
+      },
+      "points": [
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              1.0,
+              2.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 1.5
+          },
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              90.03472991200033,
+              90.03962608899928
+            ],
+            "standard_error": 0.0024480884994773078,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 90.03717800049981
+          },
+          "budget_seconds": 90,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 3,
+            "started_attempts": 3
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.03962608899928,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "error",
+                  "success": false
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.03472991200033,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              1.0,
+              2.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 1.5
+          },
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              120.03789843900086,
+              120.04100975099936
+            ],
+            "standard_error": 0.001555655999254668,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 120.03945409500011
+          },
+          "budget_seconds": 120,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 3,
+            "started_attempts": 3
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 120.04100975099936,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "error",
+                  "success": false
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 120.03789843900086,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              1.0,
+              2.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 1.5
+          },
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              150.0407370869998,
+              150.04851542600045
+            ],
+            "standard_error": 0.003889169500325806,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 150.04462625650012
+          },
+          "budget_seconds": 150,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 3,
+            "started_attempts": 3
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 150.04851542600045,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "error",
+                  "success": false
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 150.0407370869998,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        }
+      ]
+    },
+    "agentkv_25_never": {
+      "condition": {
+        "id": "agentkv_25_never",
+        "max_attempts": 2,
+        "method": "agentkv",
+        "recovery": "never",
+        "retention": 0.25
+      },
+      "points": [
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              1.0,
+              2.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 1.5
+          },
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              90.0356656240001,
+              90.03777726199951
+            ],
+            "standard_error": 0.0010558189997027512,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 90.0367214429998
+          },
+          "budget_seconds": 90,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 3,
+            "started_attempts": 3
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.03777726199951,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "error",
+                  "success": false
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.0356656240001,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              1.0,
+              2.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 1.5
+          },
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              120.03760365699964,
+              120.04165451799963
+            ],
+            "standard_error": 0.0020254304999980373,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 120.03962908749963
+          },
+          "budget_seconds": 120,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 3,
+            "started_attempts": 3
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 120.04165451799963,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "error",
+                  "success": false
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 120.03760365699964,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              1.0,
+              2.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 1.5
+          },
+          "attempt_status_counts": {
+            "error": 1,
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              150.04477244400005,
+              152.56203424199975
+            ],
+            "standard_error": 1.258630898999854,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 151.3034033429999
+          },
+          "budget_seconds": 150,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 3,
+            "started_attempts": 3
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 150.04477244400005,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "error",
+                  "success": false
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 152.56203424199975,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        }
+      ]
+    },
+    "full_best_of_n": {
+      "condition": {
+        "id": "full_best_of_n",
+        "max_attempts": 2,
+        "method": "full",
+        "recovery": "never",
+        "retention": 1.0
+      },
+      "points": [
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              1.0,
+              2.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 1.5
+          },
+          "attempt_status_counts": {
+            "completed": 1,
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              90.03464390000045,
+              90.03735408100147
+            ],
+            "standard_error": 0.0013550905005104141,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 90.03599899050096
+          },
+          "budget_seconds": 90,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 3,
+            "started_attempts": 3
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.03735408100147,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "completed",
+                  "success": true
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.03464390000045,
+              "oracle_success": true,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": false,
+            "bounded_mean_ci95": [
+              0,
+              1
+            ],
+            "ci95": [
+              0.0,
+              1.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 0.5
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": false,
+            "bounded_mean_ci95": [
+              0,
+              1
+            ],
+            "ci95": [
+              0.0,
+              1.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 0.5
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              1.0,
+              2.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 1.5
+          },
+          "attempt_status_counts": {
+            "completed": 2,
+            "timeout": 1
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              114.25339745400015,
+              120.04007381600059
+            ],
+            "standard_error": 2.8933381810002174,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 117.14673563500037
+          },
+          "budget_seconds": 120,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 3,
+            "started_attempts": 3
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 120.04007381600059,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "completed",
+                  "success": true
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "completed",
+                  "success": true
+                }
+              ],
+              "budget_accounted_seconds": 114.25339745400015,
+              "oracle_success": true,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": false,
+            "bounded_mean_ci95": [
+              0,
+              1
+            ],
+            "ci95": [
+              0.0,
+              1.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 0.5
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": false,
+            "bounded_mean_ci95": [
+              0,
+              1
+            ],
+            "ci95": [
+              0.0,
+              1.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 0.5
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              2.0,
+              2.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 2
+          },
+          "attempt_status_counts": {
+            "completed": 3,
+            "timeout": 1
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              114.49706566900022,
+              150.03855205599984
+            ],
+            "standard_error": 17.77074319349981,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 132.26780886250003
+          },
+          "budget_seconds": 150,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 4,
+            "started_attempts": 4
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "completed",
+                  "success": true
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 150.03855205599984,
+              "oracle_success": true,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "completed",
+                  "success": true
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "completed",
+                  "success": true
+                }
+              ],
+              "budget_accounted_seconds": 114.49706566900022,
+              "oracle_success": true,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0.03967720868007929,
+              1
+            ],
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0.03967720868007929,
+              1
+            ],
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1
+          },
+          "zero_attempt_cells": 0
+        }
+      ]
+    },
+    "full_once": {
+      "condition": {
+        "id": "full_once",
+        "max_attempts": 1,
+        "method": "full",
+        "recovery": "never",
+        "retention": 1.0
+      },
+      "points": [
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1
+          },
+          "attempt_status_counts": {
+            "completed": 1,
+            "timeout": 1
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              57.464688745001695,
+              90.03720804099976
+            ],
+            "standard_error": 16.28625964799903,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 73.75094839300073
+          },
+          "budget_seconds": 90,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 2,
+            "started_attempts": 2
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.03720804099976,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "completed",
+                  "success": true
+                }
+              ],
+              "budget_accounted_seconds": 57.464688745001695,
+              "oracle_success": true,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": false,
+            "bounded_mean_ci95": [
+              0,
+              1
+            ],
+            "ci95": [
+              0.0,
+              1.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 0.5
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": false,
+            "bounded_mean_ci95": [
+              0,
+              1
+            ],
+            "ci95": [
+              0.0,
+              1.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 0.5
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1
+          },
+          "attempt_status_counts": {
+            "completed": 1,
+            "timeout": 1
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              57.4942748400008,
+              120.03766348700083
+            ],
+            "standard_error": 31.27169432350001,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 88.76596916350081
+          },
+          "budget_seconds": 120,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 2,
+            "started_attempts": 2
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 120.03766348700083,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "completed",
+                  "success": true
+                }
+              ],
+              "budget_accounted_seconds": 57.4942748400008,
+              "oracle_success": true,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": false,
+            "bounded_mean_ci95": [
+              0,
+              1
+            ],
+            "ci95": [
+              0.0,
+              1.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 0.5
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": false,
+            "bounded_mean_ci95": [
+              0,
+              1
+            ],
+            "ci95": [
+              0.0,
+              1.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 0.5
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1
+          },
+          "attempt_status_counts": {
+            "completed": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              57.6667718409999,
+              125.53636787899995
+            ],
+            "standard_error": 33.93479801900002,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 91.60156985999993
+          },
+          "budget_seconds": 150,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 2,
+            "started_attempts": 2
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "completed",
+                  "success": true
+                }
+              ],
+              "budget_accounted_seconds": 125.53636787899995,
+              "oracle_success": true,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "completed",
+                  "success": true
+                }
+              ],
+              "budget_accounted_seconds": 57.6667718409999,
+              "oracle_success": true,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0.03967720868007929,
+              1
+            ],
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0.03967720868007929,
+              1
+            ],
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1
+          },
+          "zero_attempt_cells": 0
+        }
+      ]
+    },
+    "rkv_25_never": {
+      "condition": {
+        "id": "rkv_25_never",
+        "max_attempts": 2,
+        "method": "rkv",
+        "recovery": "never",
+        "retention": 0.25
+      },
+      "points": [
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1
+          },
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              90.03843393399984,
+              90.03987649600094
+            ],
+            "standard_error": 0.0007212810005512438,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 90.03915521500039
+          },
+          "budget_seconds": 90,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 2,
+            "started_attempts": 2
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.03987649600094,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.03843393399984,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1
+          },
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              120.04130684899974,
+              120.04232606599908
+            ],
+            "standard_error": 0.0005096084996694116,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 120.04181645749941
+          },
+          "budget_seconds": 120,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 2,
+            "started_attempts": 2
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 120.04130684899974,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 120.04232606599908,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1
+          },
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              150.04544229400017,
+              150.04628121799942
+            ],
+            "standard_error": 0.0004194619996269466,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 150.0458617559998
+          },
+          "budget_seconds": 150,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 2,
+            "started_attempts": 2
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 150.04628121799942,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 150.04544229400017,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        }
+      ]
+    },
+    "streamingllm_25_never": {
+      "condition": {
+        "id": "streamingllm_25_never",
+        "max_attempts": 2,
+        "method": "streamingllm",
+        "recovery": "never",
+        "retention": 0.25
+      },
+      "points": [
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1
+          },
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              90.04222861299968,
+              90.04760824799996
+            ],
+            "standard_error": 0.002689817500140634,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 90.04491843049982
+          },
+          "budget_seconds": 90,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 2,
+            "started_attempts": 2
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.04760824799996,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 90.04222861299968,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              1.0,
+              1.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 1
+          },
+          "attempt_status_counts": {
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              120.04824720400029,
+              120.05398287199932
+            ],
+            "standard_error": 0.0028678339995167335,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 120.0511150379998
+          },
+          "budget_seconds": 120,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 2,
+            "started_attempts": 2
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 120.05398287199932,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 120.04824720400029,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        },
+        {
+          "actual_attempts": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              1.0,
+              2.0
+            ],
+            "standard_error": 0.5,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 1.5
+          },
+          "attempt_status_counts": {
+            "context_limit": 1,
+            "timeout": 2
+          },
+          "budget_accounted_seconds": {
+            "bootstrap_degenerate": false,
+            "ci95": [
+              150.0334418389998,
+              150.04812970900002
+            ],
+            "standard_error": 0.007343935000108103,
+            "task_count": 2,
+            "uncertainty_notes": [],
+            "value": 150.04078577399991
+          },
+          "budget_seconds": 150,
+          "coverage": {
+            "complete_cells": 2,
+            "expected_cells": 2,
+            "scored_attempts": 3,
+            "started_attempts": 3
+          },
+          "infeasible_cells": 0,
+          "observations": [
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "context_limit",
+                  "success": false
+                },
+                {
+                  "attempt_index": 1,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 150.0334418389998,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "34d9492_1"
+            },
+            {
+              "attempts": [
+                {
+                  "attempt_index": 0,
+                  "status": "timeout",
+                  "success": false
+                }
+              ],
+              "budget_accounted_seconds": 150.04812970900002,
+              "oracle_success": false,
+              "reserved_budget_seconds": 0,
+              "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+              "seed": 17,
+              "task_id": "76f2c72_1"
+            }
+          ],
+          "oracle_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "reserved_budget_seconds": {
+            "bootstrap_degenerate": true,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "single_attempt_success_rate": {
+            "bootstrap_degenerate": true,
+            "bounded_mean_ci95": [
+              0,
+              0.9603227913199207
+            ],
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "standard_error": 0.0,
+            "task_count": 2,
+            "uncertainty_notes": [
+              "A degenerate bootstrap interval does not establish zero population uncertainty."
+            ],
+            "value": 0
+          },
+          "zero_attempt_cells": 0
+        }
+      ]
+    }
+  },
+  "declared_varying_fields": [
+    "budget_seconds",
+    "experiment_id",
+    "notes"
+  ],
+  "dependencies_digest": "093f431c596b910e267dca2107297ca81a54c31e8316c544c71edfaf7470918f",
+  "engine": {
+    "allocator_headroom_bytes": 1073741824,
+    "attention_backend": "torch_sdpa",
+    "backend": "transformers_hybrid",
+    "cuda_graphs": false,
+    "cuda_runtime": "12.8",
+    "device_name": "NVIDIA L4",
+    "device_total_bytes": 23570219008,
+    "dtype": "bfloat16",
+    "estimated_flops_exclusions": [
+      "recurrent_state_updates",
+      "eviction",
+      "elementwise",
+      "vision"
+    ],
+    "estimated_flops_method": "2P_text_per_token_plus_4LHD_per_full_attention_pair",
+    "memory_accounting": "device_peak_10ms_and_forward_boundaries_v1",
+    "model": "Qwen/Qwen3.5-9B",
+    "model_parameter_count": 9653104368,
+    "model_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "packages": {
+      "comet-agentkv-selectors": "0.1.0",
+      "flash-linear-attention": "0.4.1",
+      "torch": "2.9.1",
+      "transformers": "5.22.2"
+    },
+    "retention_state": "full_attention_kv_only; recurrent_and_conv_state_uncompressed",
+    "rkv_redundancy_backend": "query_row_tiles_256mib_v1",
+    "sampling_rng": "torch_cuda_default_generator_v1",
+    "selector_revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
+    "text_parameter_count": 8953803264,
+    "tokenizer_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a"
+  },
+  "integration_smoke": false,
+  "kind": "independent_budget_sweep",
+  "replicate_seeds": [
+    17
+  ],
+  "runtime_contract_digest": "cea53371d323d09ae68eb45aa81e52ae2ac6d18cca6537e244687adf78b75578",
+  "schema_version": 1,
+  "scope": "Independently executed budget endpoints; oracle assumes perfect outcome selection. Not attained-success timestamps or counterfactual truncations of a longer run.",
+  "shared_config": {
+    "agent": {
+      "max_consecutive_errors": 4,
+      "require_executable": true
+    },
+    "checkpoint_after_tool_calls": null,
+    "engine": {
+      "backend": "transformers_hybrid",
+      "device_name": "NVIDIA L4",
+      "dtype": "bfloat16",
+      "max_context_tokens": 16384,
+      "model": "Qwen/Qwen3.5-9B",
+      "model_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+      "prefill_chunk_tokens": 128,
+      "tokenizer_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+      "workspace_reserve_bytes": 2147483648
+    },
+    "environment_warmup": {
+      "seed": 0,
+      "task_id": "82e2fac_1"
+    },
+    "frozen": null,
+    "max_attempts": 2,
+    "peak_vram_bytes": 22548578304,
+    "prompt": "You operate a live AppWorld task by executing Python. Return exactly one fenced Python code block per turn, with short executable code and no prose. Python variables persist. Print values needed for the next decision.\n\nThe Python object apis ALREADY EXISTS. Call its methods directly, for example apis.supervisor.show_profile(). NEVER import apis, api_docs, supervisor, or an app module. Do not use requests, HTTP URLs, api.call, or a client library.\n\nYour FIRST action must only inspect the available API names for an app relevant to the task. Example for a Spotify task:\n```python\nprint(apis.api_docs.show_api_descriptions(app_name=\"spotify\"))\n```\nReplace spotify with the relevant app name. Stop the code block and wait for the actual result. Before calling an unfamiliar API, inspect its complete documentation in a separate turn:\n```python\nprint(apis.api_docs.show_api_doc(app_name=\"spotify\", api_name=\"login\"))\n```\nUse the actual app and API names returned by the documentation. Read the documented argument names, return shape, authentication and pagination. Call APIs with keyword arguments. Do not guess names, arguments, IDs, passwords or response fields.\n\nObtain credentials with apis.supervisor.show_account_passwords(). Select the record whose account_name exactly equals the app name, such as spotify or file_system; do not look for a supervisor password. Use the app's documented username type from the supplied supervisor profile or apis.supervisor.show_profile(). Save the login result's access_token and pass access_token explicitly to endpoints that require it. Never invent a password or use the email address as a password.\n\nWork in short steps. After an error, inspect the relevant API documentation and fix the specific assumption. Never repeat the same failing block unchanged. Earlier calls in a failed block may already have taken effect. Inspect actual returned values, handle every documented page until exhausted, and follow all qualifiers and exclusions in the user instruction. Verify requested changes through ordinary APIs. Finally call apis.supervisor.complete_task(), or pass the computed answer through its documented answer argument for a question. Do not complete merely because a code block ran without an error. Tool observations appear in <tool_response> tags.\n\nFor login, username is the supervisor's email for file_system and Spotify, and the supervisor's phone_number for phone. An app name is never the username. A password is never an access_token. This is a working file_system login pattern; adapt the app and username type using its documentation:\n```python\nprofile = apis.supervisor.show_profile()\npasswords = apis.supervisor.show_account_passwords()\npassword = next(row[\"password\"] for row in passwords if row[\"account_name\"] == \"file_system\")\nlogin_result = apis.file_system.login(username=profile[\"email\"], password=password)\naccess_token = login_result[\"access_token\"]\nprint(\"Authenticated\")\n```\nKeep the returned access_token in a Python variable and reuse that variable. Do not copy long token strings into later code. For large collections, keep all records in Python variables, process all required pages, and print only counts, field names, small samples or selected relevant fields. Avoid filling the conversation with entire unfiltered collections. You can process and update all records without printing all of them.",
+    "sampling": {
+      "enable_thinking": false,
+      "max_new_tokens": 1024,
+      "temperature": 0.7,
+      "top_p": 0.8
+    },
+    "schema_version": 1,
+    "seeds": [
+      17
+    ],
+    "split": "train",
+    "stage": "pilot",
+    "task_ids": [
+      "34d9492_1",
+      "76f2c72_1"
+    ],
+    "triggers": {
+      "dynamic_context_tokens": 6144,
+      "dynamic_rule": "and",
+      "dynamic_tool_calls": 3,
+      "fixed_tool_calls": 4
+    }
+  },
+  "source_runs": [
+    {
+      "budget_seconds": 150,
+      "condition_ids": [
+        "full_once",
+        "full_best_of_n",
+        "streamingllm_25_never",
+        "rkv_25_never",
+        "agentkv_25_never",
+        "agentkv_25_fixed",
+        "agentkv_25_dynamic"
+      ],
+      "config_digest": "01c11bc58c5a256a15272452cb1b867272a63ee0631c142b30de7b5c52949c8d",
+      "environment_initialization": {
+        "charged_to_task_budget": false,
+        "launches": [
+          {
+            "artifact_dir": "initialization/launch-000",
+            "charged_to_task_budget": false,
+            "launch_index": 0,
+            "model_observations": 0,
+            "seconds": 17.618782032000126,
+            "seed": 0,
+            "split": "train",
+            "status": "completed",
+            "task_id": "82e2fac_1",
+            "tool_calls": 0
+          },
+          {
+            "artifact_dir": "initialization/launch-001",
+            "charged_to_task_budget": false,
+            "launch_index": 1,
+            "model_observations": 0,
+            "seconds": 16.972690338000575,
+            "seed": 0,
+            "split": "train",
+            "status": "completed",
+            "task_id": "82e2fac_1",
+            "tool_calls": 0
+          }
+        ],
+        "measured_launches": 2,
+        "measured_seconds": 34.5914723700007,
+        "recorded_launches": 2,
+        "scope": "Separate process setup; never amortized into task latency. Missing durations are not zero.",
+        "settings": {
+          "seed": 0,
+          "task_id": "82e2fac_1"
+        },
+        "status_counts": {
+          "completed": 2
+        },
+        "total_launches": 2
+      },
+      "execution_digest": "3b8bc11e5c80c30c814b34d0309cbe62144ef598dbd8d866f54cdc9682a04289",
+      "experiment_id": "qwen9b-train-compression-l4-v1",
+      "manifest_sha256": "66742232d9f88df56a1d12055528763802d0668ae6b0e25c05bb33bac2ca636f",
+      "run_id": "fe7bb663-429e-412f-a278-ac44b6d8fe81",
+      "scores_sha256": "c1e5c85b6c44f0261f6b6f88a407f35f3ad9b90542116cfafbd329926bd88128",
+      "artifact_id": "comet-run:fe7bb663-429e-412f-a278-ac44b6d8fe81"
+    },
+    {
+      "budget_seconds": 120,
+      "condition_ids": [
+        "full_once",
+        "full_best_of_n",
+        "streamingllm_25_never",
+        "rkv_25_never",
+        "agentkv_25_never",
+        "agentkv_25_fixed",
+        "agentkv_25_dynamic"
+      ],
+      "config_digest": "44cf5ede50c71cb2c1fc0e86c4c807f85e45fa1748ebe2c9c3fab2251b48299a",
+      "environment_initialization": {
+        "charged_to_task_budget": false,
+        "launches": [
+          {
+            "artifact_dir": "initialization/launch-000",
+            "charged_to_task_budget": false,
+            "launch_index": 0,
+            "model_observations": 0,
+            "seconds": 16.797428206000404,
+            "seed": 0,
+            "split": "train",
+            "status": "completed",
+            "task_id": "82e2fac_1",
+            "tool_calls": 0
+          },
+          {
+            "artifact_dir": "initialization/launch-001",
+            "charged_to_task_budget": false,
+            "launch_index": 1,
+            "model_observations": 0,
+            "seconds": 17.339997066999786,
+            "seed": 0,
+            "split": "train",
+            "status": "completed",
+            "task_id": "82e2fac_1",
+            "tool_calls": 0
+          }
+        ],
+        "measured_launches": 2,
+        "measured_seconds": 34.13742527300019,
+        "recorded_launches": 2,
+        "scope": "Separate process setup; never amortized into task latency. Missing durations are not zero.",
+        "settings": {
+          "seed": 0,
+          "task_id": "82e2fac_1"
+        },
+        "status_counts": {
+          "completed": 2
+        },
+        "total_launches": 2
+      },
+      "execution_digest": "1e5698cd32f9115b532b1f7c845924893d055cd65c6d16dde6158692458e2f59",
+      "experiment_id": "qwen9b-train-budget-120-l4-v1",
+      "manifest_sha256": "04e8713cac81280d930333b6c5a23b0559d16afe71d015ee96e2610730294c6c",
+      "run_id": "3555e1d1-d825-4252-8fda-4f9761e15925",
+      "scores_sha256": "891919d861b2d07df293bf095a88c460bf039cd3f00f0dfe9f3b19fba3d701a7",
+      "artifact_id": "comet-run:3555e1d1-d825-4252-8fda-4f9761e15925"
+    },
+    {
+      "budget_seconds": 90,
+      "condition_ids": [
+        "full_once",
+        "full_best_of_n",
+        "streamingllm_25_never",
+        "rkv_25_never",
+        "agentkv_25_never",
+        "agentkv_25_fixed",
+        "agentkv_25_dynamic"
+      ],
+      "config_digest": "0794e21b50437889c23dd4a909ee916ea6b9d8d9a369ffdbc3efe86ddc908277",
+      "environment_initialization": {
+        "charged_to_task_budget": false,
+        "launches": [
+          {
+            "artifact_dir": "initialization/launch-000",
+            "charged_to_task_budget": false,
+            "launch_index": 0,
+            "model_observations": 0,
+            "seconds": 16.775110851000136,
+            "seed": 0,
+            "split": "train",
+            "status": "completed",
+            "task_id": "82e2fac_1",
+            "tool_calls": 0
+          },
+          {
+            "artifact_dir": "initialization/launch-001",
+            "charged_to_task_budget": false,
+            "launch_index": 1,
+            "model_observations": 0,
+            "seconds": 16.785996332999275,
+            "seed": 0,
+            "split": "train",
+            "status": "completed",
+            "task_id": "82e2fac_1",
+            "tool_calls": 0
+          }
+        ],
+        "measured_launches": 2,
+        "measured_seconds": 33.56110718399941,
+        "recorded_launches": 2,
+        "scope": "Separate process setup; never amortized into task latency. Missing durations are not zero.",
+        "settings": {
+          "seed": 0,
+          "task_id": "82e2fac_1"
+        },
+        "status_counts": {
+          "completed": 2
+        },
+        "total_launches": 2
+      },
+      "execution_digest": "4d7eafa3798ae1b574ead9df2f94fa5efd23b6100cddd1340f836574c78ca1a9",
+      "experiment_id": "qwen9b-train-budget-90-l4-v1",
+      "manifest_sha256": "39dfcc6b28a9650f88021a75529fda356d1ebead75d30a6976ab7d93fa392b5b",
+      "run_id": "70f93ede-4b7c-4c9d-85e8-9b2d25f4e157",
+      "scores_sha256": "b60934f5237b203bbecc7a9ebd8f120d994a5c300a928a4ee7827a927427237f",
+      "artifact_id": "comet-run:70f93ede-4b7c-4c9d-85e8-9b2d25f4e157"
+    }
+  ],
+  "stage": "pilot",
+  "task_count": 2,
+  "tasks": [
+    "34d9492_1",
+    "76f2c72_1"
+  ],
+  "uncertainty": {
+    "assumption": "independent sampled tasks; seeds do not increase task count",
+    "bounded_mean_method": "Hoeffding, clipped to [0,1] for task success means",
+    "interval_scope": "pointwise 95%; not simultaneous across budgets or conditions",
+    "method": "paired task bootstrap, percentile 95% CI",
+    "resampling_unit": "task, retaining every seed and budget/condition",
+    "samples": 2000,
+    "seed": 0,
+    "task_draws_sha256": "ca9749d40a1b1d8f25980eb379dfefb737993368999491da928d5fb153a64b3b"
+  }
+}

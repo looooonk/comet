@@ -1,0 +1,151 @@
+{
+  "branches": [
+    {
+      "independent_environment_restore": true,
+      "memory": {
+        "estimated_peak_total_vram_upper_bytes": 19172360192,
+        "logical_cached_tokens": 137,
+        "memory_sample_interval_seconds": 0.01,
+        "occupied_kv_bytes": 1146880,
+        "peak_kv_bytes": 4489216,
+        "peak_kv_cache_bytes": 4489216,
+        "peak_recurrent_state_bytes": 51904512,
+        "peak_torch_allocated_bytes": 18905296896,
+        "peak_torch_reserved_bytes": 18920505344,
+        "peak_total_vram_bytes": 19172360192,
+        "peak_total_vram_sampled_bytes": 19172360192,
+        "physical_cached_tokens": 35,
+        "recurrent_state_bytes": 51904512,
+        "reserved_kv_bytes": 0,
+        "reserved_kv_pool_bytes": 0,
+        "retention_target_tokens": 35,
+        "total_peak_kind": "device-wide samples every 10ms and at forward boundaries"
+      },
+      "method": "streamingllm",
+      "recovery_seconds": 0.21101979099967139,
+      "rng_unchanged": true,
+      "tool_effects_unchanged": true
+    },
+    {
+      "independent_environment_restore": true,
+      "memory": {
+        "estimated_peak_total_vram_upper_bytes": 19172360192,
+        "logical_cached_tokens": 137,
+        "memory_sample_interval_seconds": 0.01,
+        "occupied_kv_bytes": 1146880,
+        "peak_kv_bytes": 4489216,
+        "peak_kv_cache_bytes": 4489216,
+        "peak_recurrent_state_bytes": 51904512,
+        "peak_torch_allocated_bytes": 18905296896,
+        "peak_torch_reserved_bytes": 18920505344,
+        "peak_total_vram_bytes": 19172360192,
+        "peak_total_vram_sampled_bytes": 19172360192,
+        "physical_cached_tokens": 35,
+        "recurrent_state_bytes": 51904512,
+        "reserved_kv_bytes": 0,
+        "reserved_kv_pool_bytes": 0,
+        "retention_target_tokens": 35,
+        "total_peak_kind": "device-wide samples every 10ms and at forward boundaries"
+      },
+      "method": "rkv",
+      "recovery_seconds": 0.22647508200043376,
+      "rng_unchanged": true,
+      "tool_effects_unchanged": true
+    },
+    {
+      "independent_environment_restore": true,
+      "memory": {
+        "estimated_peak_total_vram_upper_bytes": 19172360192,
+        "logical_cached_tokens": 137,
+        "memory_sample_interval_seconds": 0.01,
+        "occupied_kv_bytes": 1146880,
+        "peak_kv_bytes": 4489216,
+        "peak_kv_cache_bytes": 4489216,
+        "peak_recurrent_state_bytes": 51904512,
+        "peak_torch_allocated_bytes": 18905296896,
+        "peak_torch_reserved_bytes": 18920505344,
+        "peak_total_vram_bytes": 19172360192,
+        "peak_total_vram_sampled_bytes": 19172360192,
+        "physical_cached_tokens": 35,
+        "recurrent_state_bytes": 51904512,
+        "reserved_kv_bytes": 0,
+        "reserved_kv_pool_bytes": 0,
+        "retention_target_tokens": 35,
+        "total_peak_kind": "device-wide samples every 10ms and at forward boundaries"
+      },
+      "method": "agentkv",
+      "recovery_seconds": 0.2131776060004995,
+      "rng_unchanged": true,
+      "tool_effects_unchanged": true
+    }
+  ],
+  "engine": {
+    "allocator_headroom_bytes": 1073741824,
+    "attention_backend": "torch_sdpa",
+    "backend": "transformers_hybrid",
+    "cuda_graphs": false,
+    "cuda_runtime": "12.8",
+    "device_name": "NVIDIA L4",
+    "device_total_bytes": 23570219008,
+    "dtype": "bfloat16",
+    "estimated_flops_exclusions": [
+      "recurrent_state_updates",
+      "eviction",
+      "elementwise",
+      "vision"
+    ],
+    "estimated_flops_method": "2P_text_per_token_plus_4LHD_per_full_attention_pair",
+    "memory": {
+      "estimated_peak_total_vram_upper_bytes": 19172360192,
+      "logical_cached_tokens": 137,
+      "memory_sample_interval_seconds": 0.01,
+      "occupied_kv_bytes": 1146880,
+      "peak_kv_bytes": 4489216,
+      "peak_kv_cache_bytes": 4489216,
+      "peak_recurrent_state_bytes": 51904512,
+      "peak_torch_allocated_bytes": 18905296896,
+      "peak_torch_reserved_bytes": 18920505344,
+      "peak_total_vram_bytes": 19172360192,
+      "peak_total_vram_sampled_bytes": 19172360192,
+      "physical_cached_tokens": 35,
+      "recurrent_state_bytes": 51904512,
+      "reserved_kv_bytes": 0,
+      "reserved_kv_pool_bytes": 0,
+      "retention_target_tokens": 35,
+      "total_peak_kind": "device-wide samples every 10ms and at forward boundaries"
+    },
+    "memory_accounting": "device_peak_10ms_and_forward_boundaries_v1",
+    "model": "Qwen/Qwen3.5-9B",
+    "model_parameter_count": 9653104368,
+    "model_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "packages": {
+      "comet-agentkv-selectors": "0.1.0",
+      "flash-linear-attention": "0.4.1",
+      "torch": "2.9.1",
+      "transformers": "5.22.2"
+    },
+    "retention_state": "full_attention_kv_only; recurrent_and_conv_state_uncompressed",
+    "rkv_redundancy_backend": "query_row_tiles_256mib_v1",
+    "sampling_rng": "torch_cuda_default_generator_v1",
+    "selector_revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
+    "text_parameter_count": 8953803264,
+    "tokenizer_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "warmup": {
+      "methods": [
+        "full",
+        "streamingllm",
+        "rkv",
+        "agentkv"
+      ],
+      "seconds": 4.46516816500025,
+      "tokens": 128
+    }
+  },
+  "integration_only": true,
+  "source_tokens": 137,
+  "status": "passed",
+  "artifact_id": "comet-check:gpu-20261109-074439-b5e235:07-hybrid-tool-effects:hybrid-appworld",
+  "source_commit": "0d438bf",
+  "fixture_commit": "2a07bbc",
+  "raw_sha256": "6bedffa8fceaff59230ff8662a3329e218c372e38d74eec5a4d1963c9841fbfa"
+}

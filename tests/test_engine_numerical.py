@@ -12,7 +12,7 @@ LayerEvictionView, create_eviction_plan = eviction.LayerEvictionView, eviction.c
 
 
 @pytest.mark.parametrize("method", ["streamingllm", "rkv", "agentkv"])
-@pytest.mark.parametrize("retention", [0.8, 0.5, 0.25])
+@pytest.mark.parametrize("retention", [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.25])
 def test_existing_algorithms_select_exact_relative_budgets_per_head(method, retention):
     torch.manual_seed(21)
     plan = create_eviction_plan(method)

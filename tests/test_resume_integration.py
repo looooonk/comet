@@ -10,6 +10,7 @@ import pytest
 
 from comet.artifacts import read_json, write_json
 from comet.config import Experiment, attempt_seed
+from comet.evaluation import evaluate_run
 from comet.runner import cell_id
 
 
@@ -64,7 +65,7 @@ def test_live_process_interruption_and_resume():
         "--model-path", os.environ["COMET_MODEL_PATH"],
         "--appworld-root", os.environ["COMET_APPWORLD_ROOT"], "--integration-smoke",
     ]
-    timeout = float(os.environ.get("COMET_RESUME_TIMEOUT_SECONDS", 2 * config.budget_seconds + 600))
+    timeout = float(os.environ.get("COMET_RESUME_TIMEOUT_SECONDS", 3 * config.budget_seconds + 600))
     assert 0 < timeout <= 3600, "Bound the validation to at most one hour."
     deadline = time.monotonic() + timeout
     task, seed = config.task_ids[0], config.seeds[0]
@@ -76,8 +77,31 @@ def test_live_process_interruption_and_resume():
               "interruption_signal": "SIGKILL", "cells": [str(d) for d in directories]}
     write_json(root / "report.json", report)
     try:
+        segmented = _run(command + ["--max-cells", "1"], root / "segment.log", deadline)
+        assert segmented == 0, "Clean segment failed; inspect segment.log."
+        manifest = read_json(output / "manifest.json")
+        assert manifest["status"] == "running" and "finished_at_unix" not in manifest
+        assert manifest["config_digest"] == config.digest
+        assert manifest["config"] == config.to_dict()
+        assert len(manifest["launches"]) == 1
+        launch = manifest["launches"][0]
+        assert launch["max_cells"] == launch["completed_cells"] == 1
+        assert launch["stop_reason"] == "max_cells"
+        before_cell = read_json(before_dir / "cell.json")
+        assert before_cell["completed"] and not before_cell.get("infeasible", False), before_cell
+        assert before_cell["attempts"], "Resume validation must execute a real attempt."
+        assert not target_dir.exists() and not after_dir.exists()
+        preserved = _fingerprints(before_dir)
+        snapshot = _fingerprints(output)
+        with pytest.raises(ValueError, match="completed.*manifest"):
+            evaluate_run(output, scorer=lambda _: pytest.fail("Incomplete execution was scored"))
+        assert _fingerprints(output) == snapshot
+        report["clean_segment"] = {"returncode": segmented, "launch": launch,
+                                   "incomplete_scoring_rejected": True}
+        report["completed_cell_before"] = preserved
+        write_json(root / "report.json", report)
         with (root / "initial.log").open("w") as stream:
-            process = subprocess.Popen(command, stdout=stream, stderr=subprocess.STDOUT,
+            process = subprocess.Popen(command + ["--resume"], stdout=stream, stderr=subprocess.STDOUT,
                                        start_new_session=True)
             try:
                 while True:
@@ -101,7 +125,7 @@ def test_live_process_interruption_and_resume():
                 _kill(process)
         assert process.returncode == -signal.SIGKILL
         trajectory = read_json(target_trajectory)
-        preserved = _fingerprints(before_dir)
+        assert _fingerprints(before_dir) == preserved
         interrupted_trajectory = hashlib.sha256(target_trajectory.read_bytes()).hexdigest()
         report["interrupted"] = {
             "pid": process.pid, "returncode": process.returncode,
@@ -109,7 +133,6 @@ def test_live_process_interruption_and_resume():
             "raw_token_count": len(trajectory["raw_token_ids"]),
             "trajectory_sha256": interrupted_trajectory,
         }
-        report["completed_cell_before"] = preserved
         write_json(root / "report.json", report)
 
         incompatible = config.to_dict()
@@ -129,7 +152,10 @@ def test_live_process_interruption_and_resume():
         resumed = _run(command + ["--resume"], root / "resume.log", deadline)
         assert resumed == 0, "Resume failed; inspect resume.log."
         manifest = read_json(output / "manifest.json")
-        assert manifest["status"] == "completed" and len(manifest["launches"]) == 2
+        assert manifest["status"] == "completed" and len(manifest["launches"]) == 3
+        assert manifest["launches"][0] == report["clean_segment"]["launch"]
+        assert manifest["launches"][-1]["completed_cells"] == 2
+        assert manifest["launches"][-1]["stop_reason"] == "all_cells_completed"
         assert manifest["config_digest"] == config.digest
         assert _fingerprints(before_dir) == preserved
         target_cell = read_json(target_dir / "cell.json")
@@ -149,7 +175,11 @@ def test_live_process_interruption_and_resume():
         assert after_cell["completed"] and len(after_cell["attempts"]) == 1
         later = after_cell["attempts"][0]
         assert later["attempt_index"] == 0 and later["seed"] == attempt_seed(seed, 0)
-        assert later["status"] in {"completed", "context_limit", "timeout"}
+        protocol_failure = (
+            later["status"] == "error"
+            and later.get("failure_reason", "").startswith("AgentProtocolError:")
+        )
+        assert later["status"] in {"completed", "context_limit", "timeout"} or protocol_failure
         original = read_json(before_dir / "attempt-000" / "trajectory.json")
         fresh = read_json(after_dir / "attempt-000" / "trajectory.json")
         assert original["turns"][0] == trajectory["turns"][0] == fresh["turns"][0]

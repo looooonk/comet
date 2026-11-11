@@ -1,0 +1,123 @@
+{
+  "source_commit": "ae801bc2b8470037da7cbaa9ceace7a2f227c361",
+  "artifact_id": "hybrid-third",
+  "hardware": "NVIDIA RTX A6000",
+  "qualification_only": true,
+  "reference": {
+    "greedy_text": "7391",
+    "logit_cosine": 0.9987637400627136,
+    "prompt_tokens": 263,
+    "top10_overlap": 1.0
+  },
+  "condition_count": 24,
+  "retentions": [
+    0.25,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9
+  ],
+  "methods": [
+    "agentkv",
+    "rkv",
+    "streamingllm"
+  ],
+  "cap_refusal": true,
+  "capacity": [
+    {
+      "memory": {
+        "logical_cached_tokens": 8192,
+        "memory_sample_interval_seconds": 0.01,
+        "occupied_kv_bytes": 268435456,
+        "peak_kv_bytes": 268435456,
+        "peak_kv_cache_bytes": 268435456,
+        "peak_recurrent_state_bytes": 51904512,
+        "peak_torch_allocated_bytes": 19701639680,
+        "peak_torch_reserved_bytes": 31807504384,
+        "peak_total_vram_bytes": 32156745728,
+        "peak_total_vram_sampled_bytes": 32156745728,
+        "physical_cached_tokens": 8192,
+        "recurrent_state_bytes": 51904512,
+        "reserved_kv_bytes": 0,
+        "reserved_kv_pool_bytes": 0,
+        "retention_target_tokens": 8192,
+        "total_peak_kind": "max(sampled device use, allocator peak plus maximum external use)"
+      },
+      "method": "full"
+    },
+    {
+      "memory": {
+        "logical_cached_tokens": 8192,
+        "memory_sample_interval_seconds": 0.01,
+        "occupied_kv_bytes": 67108864,
+        "peak_kv_bytes": 70189056,
+        "peak_kv_cache_bytes": 70189056,
+        "peak_recurrent_state_bytes": 51904512,
+        "peak_torch_allocated_bytes": 19105228800,
+        "peak_torch_reserved_bytes": 19688062976,
+        "peak_total_vram_bytes": 20037304320,
+        "peak_total_vram_sampled_bytes": 20037304320,
+        "physical_cached_tokens": 2048,
+        "recurrent_state_bytes": 51904512,
+        "reserved_kv_bytes": 0,
+        "reserved_kv_pool_bytes": 0,
+        "retention_target_tokens": 2048,
+        "total_peak_kind": "max(sampled device use, allocator peak plus maximum external use)"
+      },
+      "method": "streamingllm"
+    },
+    {
+      "memory": {
+        "logical_cached_tokens": 8192,
+        "memory_sample_interval_seconds": 0.01,
+        "occupied_kv_bytes": 67108864,
+        "peak_kv_bytes": 70189056,
+        "peak_kv_cache_bytes": 70189056,
+        "peak_recurrent_state_bytes": 51904512,
+        "peak_torch_allocated_bytes": 19313800704,
+        "peak_torch_reserved_bytes": 25555894272,
+        "peak_total_vram_bytes": 25905135616,
+        "peak_total_vram_sampled_bytes": 25905135616,
+        "physical_cached_tokens": 2048,
+        "recurrent_state_bytes": 51904512,
+        "reserved_kv_bytes": 0,
+        "reserved_kv_pool_bytes": 0,
+        "retention_target_tokens": 2048,
+        "total_peak_kind": "max(sampled device use, allocator peak plus maximum external use)"
+      },
+      "method": "rkv"
+    },
+    {
+      "memory": {
+        "logical_cached_tokens": 8192,
+        "memory_sample_interval_seconds": 0.01,
+        "occupied_kv_bytes": 67108864,
+        "peak_kv_bytes": 70189056,
+        "peak_kv_cache_bytes": 70189056,
+        "peak_recurrent_state_bytes": 51904512,
+        "peak_torch_allocated_bytes": 19105228800,
+        "peak_torch_reserved_bytes": 19688062976,
+        "peak_total_vram_bytes": 20037304320,
+        "peak_total_vram_sampled_bytes": 20037304320,
+        "physical_cached_tokens": 2048,
+        "recurrent_state_bytes": 51904512,
+        "reserved_kv_bytes": 0,
+        "reserved_kv_pool_bytes": 0,
+        "retention_target_tokens": 2048,
+        "total_peak_kind": "max(sampled device use, allocator peak plus maximum external use)"
+      },
+      "method": "agentkv"
+    }
+  ],
+  "raw_evidence": {
+    "file": "gpu.json",
+    "sha256": "c9d8f1332406746bed86c80820047d30003d158f6e7aeaa07e500568b38b1d86"
+  },
+  "limitations": [
+    "Chat-template integration failed in this run; correction is separately pending validation.",
+    "No AppWorld task-success or final-comparison claim."
+  ]
+}

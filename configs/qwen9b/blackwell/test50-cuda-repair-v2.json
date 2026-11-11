@@ -1,0 +1,54 @@
+{
+  "extends": "test50-v1.json",
+  "conditions": [
+    {
+      "id": "agentkv_90_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.9
+    },
+    {
+      "id": "agentkv_80_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.8
+    },
+    {
+      "id": "rkv_90_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.9
+    },
+    {
+      "id": "rkv_80_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.8
+    },
+    {
+      "id": "full_best_of_n",
+      "max_attempts": 2,
+      "method": "full",
+      "recovery": "never",
+      "retention": 1.0
+    }
+  ],
+  "experiment_id": "qwen9b-test50-cuda-repair-v2",
+  "frozen": {
+    "frozen_at_unix": 1794371012.3812249,
+    "pilot_evidence": [
+      {
+        "artifact_id": "comet-run:990b7b02-2b84-4ccb-80ff-ead6c6562b2e",
+        "config_digest": "a3bd223c552a716224963f6687163a0201466e0666a6bb23f07394f78c0b1bfd",
+        "manifest_digest": "724bcf7e89c30c8227b7d375ac591a245f579b7ba438cd99344deed8375f1002",
+        "run_id": "990b7b02-2b84-4ccb-80ff-ead6c6562b2e"
+      }
+    ],
+    "settings_digest": "4826185c6078bf97a05c838d254204ad905c1d18b66010455dfd4dc298adaab2"
+  },
+  "notes": "Corrective replication after CUDA-context cascade and retained exception-frame bugs. Same 50 tasks and five conditions as the unexecuted v1 proposal; AgentKV is scheduled first. Each worker passes its two-task dev gate and retains its GPU allocation for its complete 50-task condition. Four host CPU threads per worker, original numerical settings and 24 GiB cap. Separate cohort on previously inspected held-out tasks; preserve original results and all new failures. See documents/records/qwen9b/agentkv90-investigation.md."
+}

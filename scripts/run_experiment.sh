@@ -7,15 +7,16 @@ set -euo pipefail
 : "${COMET_RUN:?Set COMET_RUN to a unique output directory}"
 : "${COMET_MODEL:?Set COMET_MODEL to the pinned local model snapshot}"
 
-export PATH="$COMET_ENV/bin:/usr/local/cuda/bin:$PATH"
-export CUDA_HOME=${CUDA_HOME:-/usr/local/cuda}
-source "$COMET_REPO/scripts/runtime_caches.sh"
-export APPWORLD_ROOT="$COMET_STORAGE/appworld"
-export PYTHONUNBUFFERED=1
+source "$COMET_REPO/scripts/activate_runtime.sh" "${COMET_RUNTIME_PROFILE:-gpu}"
 cd "$COMET_REPO"
 launch_dir="$COMET_RUN/launch/$(date -u +%Y%m%dT%H%M%SZ)-${SLURM_JOB_ID:-$$}"
 mkdir -p "$launch_dir"
-for cache_name in XDG_CACHE_HOME HF_HOME UV_CACHE_DIR TRITON_CACHE_DIR TORCH_HOME \
+if [[ "${COMET_LOCAL_MODEL:-0}" == 1 ]]; then
+    model_destination="${SLURM_TMPDIR:-${TMPDIR:?Set a job-local TMPDIR}}/comet-model/$(basename "$COMET_MODEL")"
+    python scripts/stage_model.py "$COMET_MODEL" "$model_destination" > "$launch_dir/model-staging.json"
+    export COMET_MODEL="$model_destination"
+fi
+for cache_name in XDG_CACHE_HOME APPWORLD_CACHE HF_HOME UV_CACHE_DIR TRITON_CACHE_DIR TORCH_HOME \
     TORCHINDUCTOR_CACHE_DIR TORCH_EXTENSIONS_DIR PYTORCH_KERNEL_CACHE_PATH \
     CUDA_CACHE_PATH FLASHINFER_WORKSPACE_BASE TVM_FFI_CACHE_DIR; do
     printf '%s=%s\n' "$cache_name" "${!cache_name}"
@@ -51,6 +52,13 @@ if [[ -n "${SLURM_JOB_ID:-}" ]]; then
 fi
 args=(run "$COMET_CONFIG" --output "$COMET_RUN" --model-path "$COMET_MODEL"
     --appworld-root "$APPWORLD_ROOT")
-if [[ "${COMET_RESUME:-0}" == 1 ]]; then args+=(--resume); fi
-if [[ "${COMET_INTEGRATION_SMOKE:-0}" == 1 ]]; then args+=(--integration-smoke); fi
+if [[ "${COMET_RESUME:-0}" == 1 ]]; then
+    args+=(--resume)
+fi
+if [[ -n "${COMET_MAX_CELLS:-}" ]]; then
+    args+=(--max-cells "$COMET_MAX_CELLS")
+fi
+if [[ "${COMET_INTEGRATION_SMOKE:-0}" == 1 ]]; then
+    args+=(--integration-smoke)
+fi
 exec comet "${args[@]}"

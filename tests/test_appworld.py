@@ -2,12 +2,14 @@ import contextlib
 import io
 import json
 import random
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
-from comet.appworld import AppWorldAdapter, parse_action
+import comet.appworld as appworld_module
+from comet.appworld import AppWorldAdapter, configure_appworld_database_paths, parse_action
 from comet.errors import UnsupportedPath
 
 
@@ -81,6 +83,14 @@ def test_action_requires_one_nonempty_python_block():
             parse_action(response)
 
 
+def test_bounded_protocol_rejects_comment_only_actions_without_changing_legacy():
+    response = "```python\n# login would happen here\n```"
+    assert parse_action(response) == "# login would happen here"
+    with pytest.raises(ValueError, match="comment-only"):
+        parse_action(response, require_executable=True)
+    assert parse_action("```python\nprint(1)\n```", require_executable=True) == "print(1)"
+
+
 def test_fresh_attempt_and_saved_outcome_are_isolated(adapter, tmp_path):
     adapter.reset("task1", 17, tmp_path / "first")
     first = adapter.world
@@ -146,3 +156,42 @@ def test_checkpoint_identity_and_integrity_checked(adapter, tmp_path):
     (tmp_path / "checkpoint/execution.pkl").write_bytes(b"changed")
     with pytest.raises(ValueError, match="checksum"):
         adapter.restore(tmp_path / "checkpoint")
+
+
+def test_checkpoint_rejects_pre_normalization_counters(adapter, tmp_path):
+    adapter.reset("task1", 3, tmp_path / "first")
+    adapter.checkpoint(tmp_path / "checkpoint")
+    path = tmp_path / "checkpoint/checkpoint.json"
+    metadata = json.loads(path.read_text())
+    del metadata["database_path_version"]
+    path.write_text(json.dumps(metadata))
+    with pytest.raises(ValueError, match="database_path_version"):
+        adapter.restore(tmp_path / "checkpoint")
+
+
+def test_appworld_database_path_fix_uses_structured_url_and_is_idempotent(monkeypatch):
+    connection = object()
+
+    class Database:
+        @staticmethod
+        def _get_engine_to_details(engine):
+            return ("rendered", "path", ":memory:file%3Atask_output-id", "memory", connection)
+
+    checks = []
+    monkeypatch.setattr(appworld_module, "_DATABASE_PATHS_CONFIGURED", False)
+    monkeypatch.setattr(appworld_module, "verify_appworld_revision", lambda: checks.append(True))
+    monkeypatch.setitem(sys.modules, "appworld.apps.lib.models.db", SimpleNamespace(Database=Database))
+    configure_appworld_database_paths()
+    configured = Database._get_engine_to_details
+    configure_appworld_database_paths()
+    assert Database._get_engine_to_details is configured
+    assert checks == [True]
+    memory = SimpleNamespace(url=SimpleNamespace(
+        database="file:task_output-id/phone.db", query={"mode": "memory"}))
+    assert configured(memory) == (
+        "rendered", "path", ":memory:task_output-id", "memory", connection)
+    disk = SimpleNamespace(url=SimpleNamespace(database="/data/phone.db", query={}))
+    assert configured(disk)[2] == ":memory:file%3Atask_output-id"
+    memory.url.database = "file:nested/task_output-id/phone.db"
+    with pytest.raises(UnsupportedPath, match="Unsupported AppWorld memory database"):
+        configured(memory)

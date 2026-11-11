@@ -3,10 +3,10 @@ from __future__ import annotations
 import hashlib
 import json
 import math
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
-from comet.engine.contracts import validate_model
+from comet.engine.contracts import retention_target, validate_model
 
 
 def digest(value: object) -> str:
@@ -45,6 +45,8 @@ class Engine:
     max_context_tokens: int
     workspace_reserve_bytes: int
     prefill_chunk_tokens: int
+    device_name: str | None = None
+    backend: str = "native_minisgl"
 
 
 @dataclass(frozen=True)
@@ -54,6 +56,18 @@ class Condition:
     retention: float
     recovery: str
     max_attempts: int
+
+
+@dataclass(frozen=True)
+class AgentProtocol:
+    max_consecutive_errors: int = 0
+    require_executable: bool = False
+
+
+@dataclass(frozen=True)
+class EnvironmentWarmup:
+    task_id: str
+    seed: int
 
 
 @dataclass(frozen=True)
@@ -75,6 +89,8 @@ class Experiment:
     checkpoint_after_tool_calls: int | None
     frozen: dict | None
     notes: str
+    agent: AgentProtocol = field(default_factory=AgentProtocol)
+    environment_warmup: EnvironmentWarmup | None = None
 
     @classmethod
     def load(cls, path: str | Path, *, allow_unfrozen: bool = False) -> Experiment:
@@ -85,6 +101,9 @@ class Experiment:
         data = dict(data)
         for name, kind in (("engine", Engine), ("sampling", Sampling), ("triggers", Triggers)):
             data[name] = kind(**data[name])
+        data["agent"] = AgentProtocol(**data.get("agent", {}))
+        if data.get("environment_warmup") is not None:
+            data["environment_warmup"] = EnvironmentWarmup(**data["environment_warmup"])
         data["conditions"] = [Condition(**c) for c in data["conditions"]]
         result = cls(**data)
         result.validate(allow_unfrozen=allow_unfrozen)
@@ -137,13 +156,43 @@ class Experiment:
         _number(self.sampling.top_p, "top_p", 1e-9, 1)
         if not isinstance(self.sampling.enable_thinking, bool):
             raise ValueError("enable_thinking must be boolean")
+        _number(self.agent.max_consecutive_errors, "max_consecutive_errors", 0)
+        if not isinstance(self.agent.max_consecutive_errors, int):
+            raise ValueError("max_consecutive_errors must be an integer")
+        if not isinstance(self.agent.require_executable, bool):
+            raise ValueError("require_executable must be boolean")
+        if self.environment_warmup is not None:
+            task_id = self.environment_warmup.task_id
+            if (
+                not isinstance(task_id, str)
+                or not task_id
+                or not task_id.replace("_", "").isalnum()
+            ):
+                raise ValueError("Invalid environment_warmup task ID")
+            seed = self.environment_warmup.seed
+            _number(seed, "environment_warmup seed", 0, 2**32 - 1)
+            if not isinstance(seed, int):
+                raise ValueError("environment_warmup seed must be an integer")
         if self.triggers.dynamic_rule not in {"and", "or"}:
             raise ValueError("dynamic_rule must be and or or")
         if self.engine.dtype != "bfloat16":
             raise ValueError("All supported models require BF16")
-        validate_model(self.engine.model, self.engine.model_revision, self.engine.tokenizer_revision)
-        if self.engine.model != "Qwen/Qwen3-8B" and self.stage != "pilot":
-            raise ValueError("Qwen3-14B is an exploratory pilot model; the research contract uses Qwen3-8B")
+        if self.engine.device_name is not None and (
+            not isinstance(self.engine.device_name, str) or not self.engine.device_name.strip()
+        ):
+            raise ValueError("device_name must be an explicit GPU model name")
+        profile = validate_model(
+            self.engine.model, self.engine.model_revision, self.engine.tokenizer_revision
+        )
+        if self.engine.backend != profile.get("backend", "native_minisgl"):
+            raise ValueError("model architecture does not match the selected backend")
+        if self.engine.model not in {"Qwen/Qwen3-8B", "Qwen/Qwen3.5-9B"} and self.stage != "pilot":
+            raise ValueError(
+                f"{self.engine.model} is an exploratory pilot model; "
+                "the research contract uses Qwen3-8B"
+            )
+        if self.sampling.enable_thinking and not profile["supports_thinking"]:
+            raise ValueError(f"{self.engine.model} requires enable_thinking=false")
         if self.engine.workspace_reserve_bytes >= self.peak_vram_bytes:
             raise ValueError("Workspace reserve must fit inside the total VRAM cap")
         if self.sampling.max_new_tokens > self.engine.max_context_tokens:
@@ -157,11 +206,10 @@ class Experiment:
                 raise ValueError(f"Unknown eviction method: {c.method}")
             if c.recovery not in {"never", "fixed", "dynamic"}:
                 raise ValueError(f"Unknown recovery policy: {c.recovery}")
+            retention_target(0, c.retention, c.method)
             if c.method == "full":
                 if c.retention != 1 or c.recovery != "never":
                     raise ValueError("Full-cache controls disable eviction and recovery")
-            elif c.retention not in {0.8, 0.5, 0.25}:
-                raise ValueError("Compressed retention must be 0.8, 0.5, or 0.25")
             if (
                 isinstance(c.max_attempts, bool)
                 or not isinstance(c.max_attempts, int)
@@ -178,7 +226,16 @@ class Experiment:
             raise ValueError("A diagnostic cell is one continuation of its shared checkpoint")
 
     def to_dict(self) -> dict:
-        return asdict(self)
+        data = asdict(self)
+        if self.engine.device_name is None:
+            del data["engine"]["device_name"]
+        if self.engine.backend == "native_minisgl":
+            del data["engine"]["backend"]
+        if not self.agent.require_executable:
+            del data["agent"]["require_executable"]
+        if self.environment_warmup is None:
+            del data["environment_warmup"]
+        return data
 
     @property
     def settings_digest(self) -> str:

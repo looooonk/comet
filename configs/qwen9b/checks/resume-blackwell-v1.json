@@ -1,0 +1,49 @@
+{
+  "extends": "../base.json",
+  "experiment_id": "qwen9b-resume-check-blackwell-v1",
+  "stage": "pilot",
+  "split": "train",
+  "task_ids": [
+    "34d9492_1"
+  ],
+  "budget_seconds": 120,
+  "peak_vram_bytes": 42949672960,
+  "max_attempts": 2,
+  "engine": {
+    "max_context_tokens": 8192,
+    "workspace_reserve_bytes": 4294967296,
+    "device_name": "NVIDIA RTX PRO 6000 Blackwell Server Edition"
+  },
+  "triggers": {
+    "fixed_tool_calls": 2,
+    "dynamic_context_tokens": 2048,
+    "dynamic_tool_calls": 2
+  },
+  "conditions": [
+    {
+      "id": "preserved",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "interrupted",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "fresh",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    }
+  ],
+  "prompt": "You are an agent solving an AppWorld task using a persistent Python environment and its apis object. Return exactly one executable fenced Python block per response, with short code and no prose. Read API documentation before using unfamiliar functions. Use the supervisor account credentials to log in to each required app; pass the returned access_token to authenticated endpoints. Inspect real response types and fields. When listing objects, handle all pages until the API returns no more items. Follow the complete user instruction, including qualifiers and exclusions. Print concise observations needed for your next step. Check the effects through ordinary app APIs before completing. For a question, give the computed answer through the supervisor completion API. Never invent API names, arguments, object IDs, or data. Tool output appears in <tool_response> tags. Python variables persist across turns.",
+  "checkpoint_after_tool_calls": null,
+  "frozen": null,
+  "notes": "The declared process interruption check on the qualified Blackwell configuration; integration-smoke only, with the same 40 GiB cap. Not a research comparison or freeze evidence."
+}

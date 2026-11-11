@@ -10,7 +10,7 @@ from comet.config import Experiment, digest
 
 @pytest.fixture
 def freeze_files(tmp_path):
-    pilot = Experiment.load(Path(__file__).parents[1] / "configs/pilot-smoke.json").to_dict()
+    pilot = Experiment.load(Path(__file__).parents[1] / "configs/examples/pilot-smoke.json").to_dict()
     candidate = deepcopy(pilot)
     candidate.update(experiment_id="fixture-final", stage="final", split="test_normal",
                      task_ids=["fixture_test_1"], notes="Unit test fixture; no experiment was run.")
@@ -46,7 +46,7 @@ def test_freeze_accepts_matching_pilot_and_preserves_evidence(freeze_files):
     assert frozen.frozen == record
     assert record["settings_digest"] == frozen.settings_digest
     assert record["pilot_evidence"] == [{
-        "run_id": "fixture-pilot", "path": str(run.resolve()),
+        "run_id": "fixture-pilot", "artifact_id": "comet-run:fixture-pilot",
         "manifest_digest": digest(read_json(run / "manifest.json")),
         "config_digest": read_json(run / "manifest.json")["config_digest"],
     }]
@@ -55,14 +55,15 @@ def test_freeze_accepts_matching_pilot_and_preserves_evidence(freeze_files):
 
 
 @pytest.mark.parametrize(("keys", "value", "message"), [
-    (("integration_smoke",), True, "completed A100"),
-    (("status",), "running", "completed A100"),
+    (("integration_smoke",), True, "completed qualified-hardware"),
+    (("status",), "running", "completed qualified-hardware"),
     (("config", "split"), "test_normal", "Test outcomes"),
     (("config", "budget_seconds"), 121, "numerical settings"),
     (("config", "peak_vram_bytes"), 35_000_000_000, "numerical settings"),
     (("config", "engine", "max_context_tokens"), 8192, "numerical settings"),
     (("config", "sampling", "temperature"), 0.9, "numerical settings"),
     (("config", "triggers", "fixed_tool_calls"), 7, "numerical settings"),
+    (("config", "agent", "max_consecutive_errors"), 5, "numerical settings"),
     (("cells",), [], "incomplete"),
 ])
 def test_freeze_rejects_ineligible_or_mismatched_evidence(freeze_files, keys, value, message):
@@ -114,3 +115,12 @@ def test_final_configuration_rejects_training_splits(freeze_files, split):
     with pytest.raises(ValueError, match="explicit test split"):
         freeze(candidate, output, [run])
     assert not output.exists()
+
+
+def test_freeze_accepts_legacy_disabled_agent_protocol(freeze_files):
+    candidate, run, output = freeze_files
+    manifest = read_json(run / "manifest.json")
+    del manifest["config"]["agent"]
+    write_json(run / "manifest.json", manifest)
+    freeze(candidate, output, [run])
+    assert Experiment.load(output).agent.max_consecutive_errors == 0

@@ -1,0 +1,49 @@
+{
+  "extends": "test50-v1.json",
+  "experiment_id": "qwen9b-cuda-repair-dev-v1",
+  "stage": "pilot",
+  "split": "dev",
+  "task_ids": [
+    "4ec8de5_1",
+    "396c5a2_1"
+  ],
+  "conditions": [
+    {
+      "id": "full_best_of_n",
+      "max_attempts": 2,
+      "method": "full",
+      "recovery": "never",
+      "retention": 1.0
+    },
+    {
+      "id": "rkv_90_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.9
+    },
+    {
+      "id": "rkv_80_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.8
+    },
+    {
+      "id": "agentkv_90_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.9
+    },
+    {
+      "id": "agentkv_80_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.8
+    }
+  ],
+  "frozen": null,
+  "notes": "Predeclared dev integration gate for runner CUDA-context and exception-frame repairs. Same numerical settings and 24 GiB cap as the frozen test50 study. Every declared condition must finish without CUDA, OOM or infeasibility before corrective replication."
+}

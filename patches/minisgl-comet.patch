@@ -3,15 +3,15 @@ index b37e1b3..81e9f04 100644
 --- a/python/minisgl/engine/engine.py
 +++ b/python/minisgl/engine/engine.py
 @@ -32,7 +32,6 @@ class ForwardOutput(NamedTuple):
- 
+
  class Engine:
      def __init__(self, config: EngineConfig):
 -        assert not torch.cuda.is_initialized()
          set_tp_info(rank=config.tp_info.rank, size=config.tp_info.size)
          _adjust_config(config)
- 
+
 @@ -78,7 +77,7 @@ class Engine:
- 
+
          # ======================= Page table initialization ========================
          # NOTE: 1. aligned to 128 bytes; 2. store raw locations instead of pages
 -        self.max_seq_len = min(config.max_seq_len, num_tokens)
@@ -22,7 +22,7 @@ index b37e1b3..81e9f04 100644
 @@ -221,7 +220,12 @@ class Engine:
              else:
                  req.complete_one()
- 
+
 -        next_tokens_gpu = self.sampler.sample(logits[: batch.size], args).to(torch.int32)
 +        if all(req.prefill_only for req in batch.reqs):
 +            self.comet_last_prefill_logits = logits[:batch.size].detach().clone()
@@ -38,12 +38,12 @@ index 6fefc3d..ec876e4 100644
 --- a/python/minisgl/eviction/manager.py
 +++ b/python/minisgl/eviction/manager.py
 @@ -2,6 +2,7 @@ from __future__ import annotations
- 
+
  import time
  from pathlib import Path
 +from dataclasses import replace
  from typing import TYPE_CHECKING
- 
+
  import torch
 @@ -51,6 +52,11 @@ class EvictionManager:
          self.device = device
@@ -80,7 +80,7 @@ index 6fefc3d..ec876e4 100644
 +                return None
          keep_by_layer: list[torch.Tensor] = []
          compact_len: int | None = None
- 
+
 @@ -210,7 +233,13 @@ class EvictionManager:
                  selection_profile=selection_profile,
              )
@@ -98,7 +98,7 @@ index 6fefc3d..ec876e4 100644
 @@ -421,7 +450,7 @@ class EvictionManager:
          )
          prepare_step_start = time.perf_counter() if profile_timing else None
- 
+
 -        needs_position_state = self.compact_debug
 +        needs_position_state = True
          old_positions_by_layer_head = None
@@ -137,14 +137,14 @@ index 272740a..1ace5fa 100644
 +        self.peak_used_pages = 0
          self.page_table = page_table
          self.page_size = page_size
- 
+
 @@ -91,6 +92,7 @@ class CacheManager:
              )
          allocated = self.free_slots[:needed_pages]
          self.free_slots = self.free_slots[needed_pages:]
 +        self.peak_used_pages = max(self.peak_used_pages, self.num_pages - len(self.free_slots))
          return allocated
- 
+
      def _free(self, indices: torch.Tensor) -> None:
 diff --git a/python/minisgl/scheduler/config.py b/python/minisgl/scheduler/config.py
 index 700868c..15bbe62 100644
@@ -158,3 +158,31 @@ index 700868c..15bbe62 100644
      compact_interval: int = 128
      compact_after_prefill: bool = False
      compact_before_park: bool = False
+diff --git a/python/minisgl/engine/sample.py b/python/minisgl/engine/sample.py
+--- a/python/minisgl/engine/sample.py
++++ b/python/minisgl/engine/sample.py
+@@ -30,19 +30,20 @@
+     import flashinfer.sampling as sampling
+
+     probs = sampling.softmax(logits, temperatures, enable_pdl=is_sm90_supported())
++    generator = torch.cuda.default_generators[probs.device.index]
+     if top_k is None and top_p is None:
+-        return sampling.sampling_from_probs(probs)
++        return sampling.sampling_from_probs(probs, generator=generator)
+
+     if top_p is None:
+         assert top_k is not None
+-        return sampling.top_k_sampling_from_probs(probs, top_k)
++        return sampling.top_k_sampling_from_probs(probs, top_k, generator=generator)
+
+     if top_k is None:
+         assert top_p is not None
+-        return sampling.top_p_sampling_from_probs(probs, top_p)
++        return sampling.top_p_sampling_from_probs(probs, top_p, generator=generator)
+
+     assert top_k is not None and top_p is not None
+-    return sampling.top_k_top_p_sampling_from_probs(probs, top_k, top_p)
++    return sampling.top_k_top_p_sampling_from_probs(probs, top_k, top_p, generator=generator)
+
+
+ @dataclass

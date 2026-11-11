@@ -1,0 +1,45 @@
+{
+  "conditions": [
+    {
+      "id": "streamingllm_70_never",
+      "max_attempts": 2,
+      "method": "streamingllm",
+      "recovery": "never",
+      "retention": 0.7
+    },
+    {
+      "id": "rkv_70_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.7
+    },
+    {
+      "id": "agentkv_70_never",
+      "max_attempts": 2,
+      "method": "agentkv",
+      "recovery": "never",
+      "retention": 0.7
+    }
+  ],
+  "extends": "../test50-v1.json",
+  "frozen": {
+    "condition_partition_of": "c90f3b78e107c74429bd9940a4905c1b1d86b5679ba6bec9e3d83456704a09b7",
+    "frozen_at_unix": 1794257426.758632,
+    "pilot_evidence": [
+      {
+        "artifact_id": "comet-run:d4dcbbba-3768-45fa-b490-1d6219eb6efa",
+        "config_digest": "efa3fd46a0557015770e665a0ad96fc45ffe010904dd1a42554223683f176d18",
+        "manifest_digest": "79a6db86804390fa975cb7bed8c8796249d35b623a1777363e6511ad68d42ae6",
+        "run_id": "d4dcbbba-3768-45fa-b490-1d6219eb6efa"
+      },
+      {
+        "artifact_id": "comet-run:86afcd9a-c4d9-4a25-8ea8-6b89a038814b",
+        "config_digest": "1ac182b934163609fddbfb21ce8a447be1aad55fc131d01ea6de1078df9af6f5",
+        "manifest_digest": "5ace9b5c316e4f0dc767b87e2a0aae27a1a6d96def291c4eff26a41c459fd13e",
+        "run_id": "86afcd9a-c4d9-4a25-8ea8-6b89a038814b"
+      }
+    ],
+    "settings_digest": "5a6dab9b370a5bb29542c66a4e2c007b792dcb688066f09702d9528d7cfe9d8c"
+  }
+}

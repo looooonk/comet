@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "status": "completed_and_scored",
+  "artifact_id": "qwen9b-test50-finegrid-blackwell-v1-launch3",
+  "recorded_date": "2026-11-10",
+  "execution_and_evaluator_commit": "f2413b4ce49c9851cc9f32a1a40cc37a67f57284",
+  "study_config_digest": "c90f3b78e107c74429bd9940a4905c1b1d86b5679ba6bec9e3d83456704a09b7",
+  "source_runs": [
+    {
+      "artifact_id": "comet-run:4f5cf163-5606-46bb-93fa-332a68d1c52b",
+      "partition": "part-00",
+      "config_digest": "1177344f0fd34be1be7616c3b8b1903e59059bf5be85baea3f8c892d8227a35b",
+      "manifest_sha256": "0179e0f00427ccfafe8bfe2f6bedd44ef54c686ae705049548d15b14be49292e",
+      "scores_sha256": "d044925e21a636abcc46713cd18c8976ef8da594f362741f252e7c936411cd37",
+      "cell_count": 200
+    },
+    {
+      "artifact_id": "comet-run:cb0205c7-4656-424d-8197-fa1769e0c70b",
+      "partition": "part-01",
+      "config_digest": "853fec1a69e74fd733b5b169397bfc9c032f02f6ff567767485590c17952c740",
+      "manifest_sha256": "03f8c94903945be16959fd49b31f6f6a464b142af4067630d1506cd3ca13179d",
+      "scores_sha256": "4590f57aa935737b361add1d888bc56b1d862b9894ba825509bf61abb93098a7",
+      "cell_count": 200
+    },
+    {
+      "artifact_id": "comet-run:58b28412-9520-4b7d-96b8-39aeb136b0de",
+      "partition": "part-02",
+      "config_digest": "98bf32a8ab812487be31ee23d08b8c8538da48ec4597f2ea2dd414c61511b2d1",
+      "manifest_sha256": "bc82088bac8fb8cbc2a27d856aa1d681eb22cd901cb774e78ce4dfed6f5efe14",
+      "scores_sha256": "cc71153bf582006ccf9269760ad9ae3016a937ca76e44c2be7033179c4b68124",
+      "cell_count": 150
+    },
+    {
+      "artifact_id": "comet-run:c8b27e30-b649-44ca-aa32-402490eac608",
+      "partition": "part-03",
+      "config_digest": "4b0637f46af3b4e04978e545a328ed817fc5bb00f4d69930a8883bb6af3e0846",
+      "manifest_sha256": "e769c312a17677c086e2e80672f583284b204cdabc592ca3f088966bb54be035",
+      "scores_sha256": "17cf87b5b28709461c322b7d2fe8f3e11a9ab4ad90dd7ef71d8d8877a667138c",
+      "cell_count": 150
+    },
+    {
+      "artifact_id": "comet-run:a6f718bf-418c-4283-a3ba-1b571d4d9064",
+      "partition": "part-04",
+      "config_digest": "4e2b773663dc16a1b769216fbdeef51d5e0512146b7d3b1666e0d948e1e6b9fd",
+      "manifest_sha256": "66f725b5c10b06d3c35cdf22d368853edd3393ca956fbadbacf7149da96ef665",
+      "scores_sha256": "2f4b3363dddc2608b3afc84ca57d18326dd2a62e7a4a7637df4f0688c242b6db",
+      "cell_count": 150
+    },
+    {
+      "artifact_id": "comet-run:8cc8f032-002e-4b0b-aa90-be70aa8a9965",
+      "partition": "part-05",
+      "config_digest": "fcf40a651f4ff17709b9ba1839dcfdc8bff66bf33e1f42b0dd58457df237d236",
+      "manifest_sha256": "64fcf7f4997b3686c0e913bfd600436a13362c00343651c3158250d262fa40c1",
+      "scores_sha256": "37c480fad9acb222110fc09f34eed9173abd40c18a60eac385070d0e03fbc30d",
+      "cell_count": 150
+    },
+    {
+      "artifact_id": "comet-run:4ebdfaff-25ab-4434-a568-662a1f6ed808",
+      "partition": "part-06",
+      "config_digest": "845deeefdcf7fea895d30c4caf184b01bd8a528a58acd957919cfbef264fa011",
+      "manifest_sha256": "607d1c8eafc3c86eb8bac449aab71f30409ced55675c9f54e347a664f5f28572",
+      "scores_sha256": "c514ff1cb666ad7ea19a1de47f9aa577e3ca577c133e98bb95515ce6697cd5bc",
+      "cell_count": 150
+    },
+    {
+      "artifact_id": "comet-run:594441be-669a-4da9-af6d-034a3f73c1a0",
+      "partition": "part-07",
+      "config_digest": "6cdb67511be3f4e089ab6947b68ce6bdb5f072182232de9d2b2e1dab32234c41",
+      "manifest_sha256": "7abfebbcc5605e7b3f367ed482c7cbd43ec251a173876d79ef2ac101d8c9f94c",
+      "scores_sha256": "b3d9d85b018e8c1fa69839e59ae68e4f8342d30258a2e7a7bfa0088815ddc4c4",
+      "cell_count": 150
+    }
+  ],
+  "task_count": 50,
+  "condition_count": 26,
+  "cell_count": 1300,
+  "attempt_count": 2026,
+  "attempt_status_counts": {
+    "completed": 437,
+    "context_limit": 174,
+    "error": 529,
+    "interrupted": 5,
+    "oom": 59,
+    "timeout": 822
+  },
+  "error_types": {
+    "agent_protocol": 470,
+    "cuda_illegal_access": 59
+  },
+  "interrupted_cells": [
+    "7847649_2-agentkv_25_never-17",
+    "522e5e5_1-agentkv_70_never-17",
+    "9dabbc9_3-agentkv_60_never-17",
+    "024c982_2-agentkv_50_never-17",
+    "6b6ca61_3-agentkv_40_never-17"
+  ],
+  "interruption_accounting": "Each of the five interrupted attempts retains its original 120-second reservation; no replacement attempt.",
+  "cell_budget_seconds": 120,
+  "cell_overshoot": {
+    "definition": "max(0, recorded elapsed_seconds minus the 120-second budget)",
+    "cells_above_budget": 827,
+    "cells_over_one_second": 462,
+    "maximum_seconds": 3914.055104757892,
+    "maximum_credited_success_completion_seconds": 119.07371138501912,
+    "late_successes_credited": 0,
+    "interpretation": "Observed wall time includes in-flight work, saving and cleanup. Long storage stalls prevent treating it as GPU-only compute cost."
+  },
+  "completion": {
+    "timezone": "America/New_York",
+    "resume_array_job": 13853125,
+    "resume_indices": [
+      1,
+      4,
+      5,
+      6,
+      7
+    ],
+    "resume_started": "2026-11-10T16:06:05-05:00",
+    "inference_finished": "2026-11-10T16:29:59-05:00",
+    "scoring_job": 13853128,
+    "scoring_started": "2026-11-10T16:30:00-05:00",
+    "scoring_finished": "2026-11-10T16:59:29-05:00",
+    "all_job_exit_codes": "0:0"
+  },
+  "validation": {
+    "downloaded_source_files_sha256_verified": 21,
+    "frozen_parent_coverage": "1300 unique task/condition/seed cells; all terminal and scored",
+    "partition_manifests_completed": 8,
+    "execution_and_evaluator_source_consistent": true,
+    "evaluator_source_hashes_and_packages_match": true,
+    "previous_fully_scored_conditions_success_counts_unchanged": 21,
+    "execution_failures_remain_unsuccessful": true,
+    "frozen_configuration_changed": false,
+    "plotting_cpu_checks_passed": 2,
+    "lint_and_shell_syntax": "passed",
+    "y_axis_views": "Both panels verified at 0-50; point coordinates identical to the default view.",
+    "compact_analysis_matches_source": "All 26 condition aggregates and all 325 paired comparisons are unchanged.",
+    "plots_rendered_and_visually_inspected": [
+      "full-range PNG/PDF",
+      "0-50 percent PNG/PDF",
+      "resources PNG/PDF"
+    ]
+  },
+  "source_files_sha256": {
+    "analysis.json": "f011241762768959190ae7684cf0cc3257775032ac1be6efe465ef3035acb6d5",
+    "aggressivity.png": "900d19d322aef8c972e9224061f37075d8b28d0ee3fa881adbc8095f90e69584",
+    "aggressivity.pdf": "0592e65b167e45b6840d1c03f48d1e0a7151d4be24060771b58db50ba851d623",
+    "resources.png": "1a37eca7166cfa334d3c91eb7025dbea42911cd72634cba91deea7a436f85ef8",
+    "resources.pdf": "30f84d620965baa2f8335db1e944ea99c11bd820db5bd02209285ec55c267037",
+    "part-00/manifest.json": "0179e0f00427ccfafe8bfe2f6bedd44ef54c686ae705049548d15b14be49292e",
+    "part-01/manifest.json": "03f8c94903945be16959fd49b31f6f6a464b142af4067630d1506cd3ca13179d",
+    "part-02/manifest.json": "bc82088bac8fb8cbc2a27d856aa1d681eb22cd901cb774e78ce4dfed6f5efe14",
+    "part-03/manifest.json": "e769c312a17677c086e2e80672f583284b204cdabc592ca3f088966bb54be035",
+    "part-04/manifest.json": "66f725b5c10b06d3c35cdf22d368853edd3393ca956fbadbacf7149da96ef665",
+    "part-05/manifest.json": "64fcf7f4997b3686c0e913bfd600436a13362c00343651c3158250d262fa40c1",
+    "part-06/manifest.json": "607d1c8eafc3c86eb8bac449aab71f30409ced55675c9f54e347a664f5f28572",
+    "part-07/manifest.json": "7abfebbcc5605e7b3f367ed482c7cbd43ec251a173876d79ef2ac101d8c9f94c",
+    "part-00/scores.json": "d044925e21a636abcc46713cd18c8976ef8da594f362741f252e7c936411cd37",
+    "part-01/scores.json": "4590f57aa935737b361add1d888bc56b1d862b9894ba825509bf61abb93098a7",
+    "part-02/scores.json": "cc71153bf582006ccf9269760ad9ae3016a937ca76e44c2be7033179c4b68124",
+    "part-03/scores.json": "17cf87b5b28709461c322b7d2fe8f3e11a9ab4ad90dd7ef71d8d8877a667138c",
+    "part-04/scores.json": "2f4b3363dddc2608b3afc84ca57d18326dd2a62e7a4a7637df4f0688c242b6db",
+    "part-05/scores.json": "37c480fad9acb222110fc09f34eed9173abd40c18a60eac385070d0e03fbc30d",
+    "part-06/scores.json": "c514ff1cb666ad7ea19a1de47f9aa577e3ca577c133e98bb95515ce6697cd5bc",
+    "part-07/scores.json": "b3d9d85b018e8c1fa69839e59ae68e4f8342d30258a2e7a7bfa0088815ddc4c4"
+  },
+  "export_files_sha256": {
+    "analysis/test50-final-analysis.json": "380c917994a5c298b098506020e849612d85fab4311a3da2cca91235f4b89e7f",
+    "test50-final.csv": "36f5f05e16c59a3a5e54659185c3a4b98eca53c85c0b0c32936925d4eb368f11",
+    "figures/test50-final-aggressivity.png": "900d19d322aef8c972e9224061f37075d8b28d0ee3fa881adbc8095f90e69584",
+    "figures/test50-final-aggressivity.pdf": "0592e65b167e45b6840d1c03f48d1e0a7151d4be24060771b58db50ba851d623",
+    "figures/test50-final-aggressivity-y50.png": "71c4f15d5ab9c7c3106dd201a13885ff4069f49513552c6860042ae8511a9271",
+    "figures/test50-final-aggressivity-y50.pdf": "d0a5e43ae06c1c5a50959b2dc7fca1316c668a8b6095e1aa2433344001365e5c",
+    "figures/test50-final-resources.png": "1a37eca7166cfa334d3c91eb7025dbea42911cd72634cba91deea7a436f85ef8",
+    "figures/test50-final-resources.pdf": "30f84d620965baa2f8335db1e944ea99c11bd820db5bd02209285ec55c267037"
+  },
+  "gcp_resources_launched": false
+}

@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    {
+      "id": "rkv_80_never",
+      "max_attempts": 2,
+      "method": "rkv",
+      "recovery": "never",
+      "retention": 0.8
+    }
+  ],
+  "extends": "../test50-cuda-repair-v2.json",
+  "frozen": {
+    "condition_partition_of": "fa55a51eb3ddb38e8e482a088ac0e8aa19d2f49c7645cb17655f333a396c76b0",
+    "frozen_at_unix": 1794371012.3812249,
+    "pilot_evidence": [
+      {
+        "artifact_id": "comet-run:990b7b02-2b84-4ccb-80ff-ead6c6562b2e",
+        "config_digest": "a3bd223c552a716224963f6687163a0201466e0666a6bb23f07394f78c0b1bfd",
+        "manifest_digest": "724bcf7e89c30c8227b7d375ac591a245f579b7ba438cd99344deed8375f1002",
+        "run_id": "990b7b02-2b84-4ccb-80ff-ead6c6562b2e"
+      }
+    ],
+    "settings_digest": "0bdbaa8d00e7c2f2d913ed12ec321a306cf8c125ad55cabe76cdf512d6eb2fe4"
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "status": "completed_and_scored",
+  "recorded_date": "2026-11-10",
+  "timezone": "America/New_York",
+  "study_artifact_id": "qwen9b-test50-finegrid-blackwell-v1-launch3",
+  "execution_source_commit": "f2413b4ce49c9851cc9f32a1a40cc37a67f57284",
+  "study_config_digest": "c90f3b78e107c74429bd9940a4905c1b1d86b5679ba6bec9e3d83456704a09b7",
+  "scientific_settings_changed": false,
+  "completed_cells_before_resume": 1246,
+  "expected_cells": 1300,
+  "unstarted_cells": 49,
+  "inflight_cells_requiring_original_budget_accounting": 5,
+  "remaining_condition_completed_cells": {
+    "agentkv_25_never": 46,
+    "agentkv_40_never": 37,
+    "agentkv_50_never": 36,
+    "agentkv_60_never": 35,
+    "agentkv_70_never": 42
+  },
+  "prior_jobs": {
+    "completed_partitions": [
+      0,
+      2,
+      3
+    ],
+    "interrupted_partitions": [
+      1,
+      4,
+      5,
+      6,
+      7
+    ],
+    "final_scorer": 13847761,
+    "final_scorer_status": "failed because eligible inference remained"
+  },
+  "resume_array": {
+    "job_id": 13853125,
+    "indices": [
+      1,
+      4,
+      5,
+      6,
+      7
+    ],
+    "concurrency": 5,
+    "status": "completed",
+    "partition": "short",
+    "qos": "h012",
+    "gpus_per_worker": 1,
+    "gpu_model": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "cpus_per_worker": 4,
+    "host_memory_gib": 24,
+    "allocation_seconds": 7200,
+    "automatic_requeue": false,
+    "resume": true
+  },
+  "validation": {
+    "source_checkout_clean_and_pinned": true,
+    "launcher_shell_syntax": "passed",
+    "qualification_artifact": "validation/test50-launch3/worker-2",
+    "qualification_reuse_checks": "Each worker checks source, runtime and allocated GPU before compatible resume. Execution also rejects a changed saved runtime contract.",
+    "live_resume_started": true,
+    "storage_available_tib": 5.2,
+    "live_resume_completed": true,
+    "all_final_cells_scored": true
+  },
+  "resume_semantics": "Skip completed cells, settle interrupted cells with their original reserved budget and durable attempt journals, and execute only eligible unfinished work. No free task retries.",
+  "report_jobs": {
+    "partial_snapshot": 13853126,
+    "partial_status": "completed",
+    "fully_scored_conditions": 26,
+    "final_score": 13853128,
+    "final_dependency": "afterany:13853125",
+    "final_status": "completed",
+    "final_completed_at": "2026-11-10T16:59:29-05:00",
+    "partial_fully_scored_conditions": 21
+  },
+  "submitted_script_sha256": "6c3dc72ac6bfdac2332da4b2656cb98fec6abc159aff4ded53087b0bce9e19d7",
+  "gcp_resources_launched": false,
+  "completed_cells_after_resume": 1300,
+  "availability_at_submission": {
+    "ins046": "All 8 PRO 6000 GPUs allocated; two existing four-GPU jobs have scheduled end times on November 12 around 14:02 ET.",
+    "ins047": "DOWN+NOT_RESPONDING after maintenance."
+  },
+  "eta_at_submission": {
+    "scheduler_start_forecast": "2026-11-12T14:30:00-05:00",
+    "inference_after_last_worker_start_minutes": [
+      45,
+      75
+    ],
+    "scoring_allowance_minutes": [
+      15,
+      45
+    ],
+    "qualification": "Queue forecast is not a reservation; an earlier GPU release or return of ins047 can move the start forward."
+  },
+  "completion": {
+    "workers_started_at": "2026-11-10T16:06:05-05:00",
+    "last_worker_finished_at": "2026-11-10T16:29:59-05:00",
+    "final_scoring_finished_at": "2026-11-10T16:59:29-05:00",
+    "all_job_exit_codes": "0:0",
+    "unstarted_cells_executed": 49,
+    "interrupted_cells_settled_without_replacement_budget": 5,
+    "remaining_cells": 0,
+    "remaining_conditions": 0,
+    "evidence": "test50-final-summary.json"
+  }
+}

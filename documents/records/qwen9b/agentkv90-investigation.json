@@ -1,0 +1,409 @@
+{
+  "artifact_id": "qwen9b-test50-agentkv90-failure-audit-v1",
+  "source_run_id": "58b28412-9520-4b7d-96b8-39aeb136b0de",
+  "source_scores_sha256": "cc71153bf582006ccf9269760ad9ae3016a937ca76e44c2be7033179c4b68124",
+  "condition": "agentkv_90_never",
+  "tasks": 50,
+  "attempts": 100,
+  "attempt_status_counts": {
+    "completed": 10,
+    "oom": 31,
+    "error": 59
+  },
+  "task_status_groups": {
+    "completed+oom": 2,
+    "oom": 14,
+    "completed": 4,
+    "error+oom": 1,
+    "error": 29
+  },
+  "first_illegal_access": {
+    "task_id": "fd1f8fa_3",
+    "task_execution_index": 20,
+    "attempt_index": 1,
+    "generated_tokens": 140
+  },
+  "subsequent_poisoned_attempts": 58,
+  "subsequent_tasks_without_usable_attempts": 29,
+  "cuda_context_reference": "https://docs.nvidia.com/cuda/archive/12.6.0/cuda-driver-api/group__CUDA__TYPES.html",
+  "allocator_reference": "https://docs.pytorch.org/docs/main/generated/torch.cuda.memory.set_per_process_memory_fraction.html",
+  "allocator_cap_observed_gib": 22.46,
+  "experimental_total_vram_cap_gib": 24,
+  "physical_vram_gib": 94.97,
+  "physical_vram_free_in_first_oom_gib": 71.96,
+  "accuracy_interpretation": "Keep the original 2/50 measured success, but do not interpret the 90 percent retention point as an isolated accuracy effect; no failure-filtered success estimate is substituted.",
+  "task_groups": {
+    "completed+oom": [
+      "3aa1a22_2",
+      "c77c005_2"
+    ],
+    "oom": [
+      "9ef798c_2",
+      "32616b5_1",
+      "8ce6779_1",
+      "31dc501_2",
+      "634f342_1",
+      "0de03ea_3",
+      "d18139b_1",
+      "cef9191_1",
+      "29a7b7e_1",
+      "f861c32_3",
+      "6f4b9a5_2",
+      "dac78d9_3",
+      "8749218_2",
+      "ff58e36_3"
+    ],
+    "completed": [
+      "552869a_2",
+      "2c544f9_3",
+      "ffe6d5e_1",
+      "d6ac34d_2"
+    ],
+    "error+oom": [
+      "fd1f8fa_3"
+    ],
+    "error": [
+      "ccf4b82_2",
+      "bde252e_1",
+      "425a494_1",
+      "83a7951_2",
+      "5a83b05_1",
+      "986aa4e_1",
+      "21abae1_2",
+      "afc4005_2",
+      "3d9a636_1",
+      "d194965_2",
+      "652485c_3",
+      "b9c5c9a_1",
+      "166f4ff_1",
+      "a30375d_3",
+      "9dabbc9_3",
+      "024c982_2",
+      "6b6ca61_3",
+      "9016950_2",
+      "90adc3f_1",
+      "1150ed6_2",
+      "325d6ec_3",
+      "522e5e5_1",
+      "09b0ee6_3",
+      "2d9f728_2",
+      "3b8fb7a_2",
+      "7847649_2",
+      "270f1ff_1",
+      "f323bae_2",
+      "0a9d82a_1"
+    ]
+  },
+  "repairs": [
+    "22f97ea",
+    "49740e2",
+    "d97c49d"
+  ],
+  "diagnostics": [
+    {
+      "artifact_id": "agentkv90-debug-v2/case-0",
+      "slurm_job": "13857295_0",
+      "source_commit": "f2413b4",
+      "report_sha256": "71bac6f0730202803cbd6309c16f8c41b12ddb190ca5f6ed8bc537a1a9d958f7",
+      "method": "agentkv",
+      "retention": 0.9,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 24308285440,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": []
+    },
+    {
+      "artifact_id": "agentkv90-debug-v2/case-1",
+      "slurm_job": "13857295_1",
+      "source_commit": "f2413b4",
+      "report_sha256": "e4b4fa27520a0cb003c39deb3b163df9979e38acfe8a034547452006ab256155",
+      "method": "agentkv",
+      "retention": 0.8,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 24759173120,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": []
+    },
+    {
+      "artifact_id": "agentkv90-debug-v2/case-2",
+      "slurm_job": "13857295_2",
+      "source_commit": "f2413b4",
+      "report_sha256": "6aba9ac33a85eecb3709969ee909f563bdcc7608b724e7584df4814e6f7e3d70",
+      "method": "rkv",
+      "retention": 0.9,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 24589303808,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": []
+    },
+    {
+      "artifact_id": "agentkv90-debug-v2/case-3",
+      "slurm_job": "13857295_3",
+      "source_commit": "f2413b4",
+      "report_sha256": "376e783f76c6f76875fb12ec313b04a64a00d2fdc0f7bf6d8dc8b01dde959e18",
+      "method": "full",
+      "retention": 1.0,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 24591400960,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": []
+    },
+    {
+      "artifact_id": "agentkv90-debug-v3/case-0",
+      "slurm_job": "13857321_0",
+      "source_commit": "f2413b4",
+      "report_sha256": "56cd837c1f657e7f384d3d9cb616951534b2d733604896d547edadd84cc83dec",
+      "method": "agentkv",
+      "retention": 0.9,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 23437967360,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": [
+        20315283456,
+        20315283456
+      ]
+    },
+    {
+      "artifact_id": "agentkv90-debug-v3/case-1",
+      "slurm_job": "13857321_1",
+      "source_commit": "f2413b4",
+      "report_sha256": "963a3fcc097022a50bb1a283e59bf0f981f83e8cc4accc66825cc762d4aa44c5",
+      "method": "agentkv",
+      "retention": 0.8,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 23555407872,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": [
+        20160003584,
+        20160003584
+      ]
+    },
+    {
+      "artifact_id": "agentkv90-debug-v3/case-2",
+      "slurm_job": "13857321_2",
+      "source_commit": "f2413b4",
+      "report_sha256": "7e180e68ea0f86775819971a4c94aa8b1c6494e9d099ae55a7ed7a7707025948",
+      "method": "agentkv",
+      "retention": 0.9,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 22861250560,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": [
+        19526033408,
+        19526033408
+      ]
+    },
+    {
+      "artifact_id": "agentkv90-debug-v3/case-3",
+      "slurm_job": "13857321_3",
+      "source_commit": "f2413b4",
+      "report_sha256": "4d474d739e43d1cc0ba1978fbecc403d9e7d4507be843c3bd10238483e8ad549",
+      "method": "agentkv",
+      "retention": 0.8,
+      "completed_passes": 2,
+      "failures": 0,
+      "cap_bytes": 25769803776,
+      "max_sampled_device_bytes": 21290483712,
+      "reset_allocated_bytes": [
+        18828228608,
+        18828228608
+      ],
+      "peak_allocated_bytes": [
+        19459073024,
+        19459073024
+      ]
+    }
+  ],
+  "limitations": [
+    "Original first illegal-access kernel remains unidentified.",
+    "Fresh-process probes explicitly collect garbage; they are not task-success evaluation.",
+    "Saved-history replay uses approximate forward boundaries and synchronous CUDA.",
+    "Historical OOM count attributable to retained exception frames is not known."
+  ],
+  "cpu_checks": {
+    "passed": 363,
+    "optional_torch_skipped": 2,
+    "live_deselected": 17,
+    "stack_trace_followup_pipeline_passed": 45
+  },
+  "corrective_replication": {
+    "status": "frozen_and_queued",
+    "tasks": 50,
+    "conditions": [
+      "agentkv_90_never",
+      "agentkv_80_never",
+      "rkv_90_never",
+      "rkv_80_never",
+      "full_best_of_n"
+    ],
+    "source_commit": "d97c49d",
+    "setup_job": "13857525",
+    "original_results_preserved": true,
+    "freeze_job": "13857620",
+    "study_job": "13857623",
+    "scoring_job": "13857624",
+    "gpu_count": 5,
+    "nominal_seconds_per_worker": 6000,
+    "planned_cells": 250,
+    "effective_qos": "burst",
+    "experiment_id": "qwen9b-test50-cuda-repair-v2",
+    "configuration_digest": "fa55a51eb3ddb38e8e482a088ac0e8aa19d2f49c7645cb17655f333a396c76b0",
+    "dev_reference_job": "13857529",
+    "partition": "burst",
+    "cpu_threads_per_worker": 4,
+    "qualification": "each worker must pass its matching two-task dev gate before its 50-task condition within the same allocation"
+  },
+  "launch_replacements": {
+    "diagnostic_harness_pre_inference_failure": "13857261",
+    "cancelled_unstarted_dev_for_stack_trace_capture": "13857370",
+    "cancelled_setup_gpfs_cache_reads": "13857341",
+    "cancelled_dependent_jobs_before_execution": [
+      "13857376",
+      "13857380",
+      "13857382",
+      "13857384"
+    ],
+    "cancelled_setup_gpfs_build_cache": "13857395",
+    "superseded_local_runtime_trial": {
+      "setup": "13857514",
+      "status": "completed",
+      "unstarted_dependents_cancelled": [
+        "13857516",
+        "13857517",
+        "13857518",
+        "13857519"
+      ]
+    },
+    "unstarted_seeded_dependents_cancelled": [
+      "13857397",
+      "13857398",
+      "13857399",
+      "13857400"
+    ],
+    "unexecuted_v1_corrective_jobs_cancelled": [
+      "13857597",
+      "13857530",
+      "13857531",
+      "13857605",
+      "13857532"
+    ],
+    "unstarted_two_cpu_queue_probe_cancelled": "13857609",
+    "cancelled_agent_gates_replaced_by_combined_workers": [
+      "13857529_3",
+      "13857529_4"
+    ]
+  },
+  "setup_notes": "Every final worker has a job-local owned checkout, runtime and generated AppWorld code cache. Canonical setup_runtime.sh verifies the seeded pinned archive; other persistent caches and the original AppWorld dataset are reused. Shared-cache setup attempts preceded this qualification.",
+  "launch_scripts": [
+    {
+      "artifact_id": "agentkv90-repair-v4/bootstrap-cache-local.sh",
+      "sha256": "803a325baf5d184e6d6470b3e4633691c628a70ed0989bd7e310baafca72eab0"
+    },
+    {
+      "artifact_id": "agentkv90-repair-v4/qualify-and-study.sh",
+      "sha256": "63946ba9a3b167b5d4d1ef88ed8c4b50bf19d5ce2106189a0babd6d368e721ab"
+    },
+    {
+      "artifact_id": "agentkv90-repair-v4/freeze-v2.sh",
+      "sha256": "715c719c8bac90c49e8eda8498019ad80c496d9c202639e464fc965f78f1913c"
+    },
+    {
+      "artifact_id": "agentkv90-repair-v4/score-v2.sh",
+      "sha256": "7f856c1eafd013951953a026eb05b6874b006a817c5263c6fa455e960b26858a"
+    }
+  ],
+  "completed_dev_gates": [
+    {
+      "artifact_id": "comet-run:990b7b02-2b84-4ccb-80ff-ead6c6562b2e",
+      "condition": "full_best_of_n",
+      "tasks": 2,
+      "status_counts": {
+        "timeout": 2,
+        "completed": 1
+      },
+      "peak_total_vram_bytes": 24803213312,
+      "source_commit": "d97c49d01f8dd3cb2750679f6342eae014bf5e6f",
+      "config_digest": "a3bd223c552a716224963f6687163a0201466e0666a6bb23f07394f78c0b1bfd"
+    },
+    {
+      "artifact_id": "comet-run:8c951d14-b103-46d9-a8f0-c30ab2f81c5f",
+      "condition": "rkv_90_never",
+      "tasks": 2,
+      "status_counts": {
+        "timeout": 2,
+        "completed": 1
+      },
+      "peak_total_vram_bytes": 24436211712,
+      "source_commit": "d97c49d01f8dd3cb2750679f6342eae014bf5e6f",
+      "config_digest": "041a8280f6bffd5d0931331bf7a826178fa62f1374e8e44f5f415f109852c7ac"
+    },
+    {
+      "artifact_id": "comet-run:b2965af4-a88a-4682-a9eb-22d353e0b846",
+      "condition": "rkv_80_never",
+      "tasks": 2,
+      "status_counts": {
+        "timeout": 2
+      },
+      "peak_total_vram_bytes": 21701525504,
+      "source_commit": "d97c49d01f8dd3cb2750679f6342eae014bf5e6f",
+      "config_digest": "e18633632e272fbf963db6cf063415d16dae1788d4f718871ea75023e978204e"
+    }
+  ],
+  "queue_snapshot": {
+    "at": "2026-11-10T23:27:12-05:00",
+    "unavailable_node": "ins047",
+    "node_state": "MIXED+DRAIN",
+    "node_drain_at": "2026-11-10T22:58:20-05:00",
+    "node_drain_reason": "Kill task failed",
+    "worker_start_forecasts": [
+      "2026-11-11T05:41:14-05:00",
+      "2026-11-11T08:15:00-05:00",
+      "2026-11-11T10:45:00-05:00",
+      "2026-11-11T13:15:00-05:00",
+      "2026-11-11T15:45:00-05:00"
+    ],
+    "first_point_planning_window": [
+      "2026-11-11T07:30:00-05:00",
+      "2026-11-11T08:00:00-05:00"
+    ],
+    "all_scored_planning_eta": "2026-11-11T18:00:00-05:00",
+    "not_a_reservation": true,
+    "dependent_on_queue_storage_and_preemption": true
+  },
+  "setup_cleanup_job": "13857644"
+}

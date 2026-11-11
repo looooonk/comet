@@ -12,7 +12,7 @@
       "url": "https://github.com/LiuTaowen-Tony/kv-management-minisgl.git",
       "revision": "254c57bc84e4a7895159ba1062bd46c83626f511",
       "patch": "patches/minisgl-comet.patch",
-      "patch_sha256": "2c8fe1390178cb83b6b0a252599c69b6ad8d7040822619d5ddd5a3e88bc00e46",
+      "patch_sha256": "7997786346ee813e00f21e6b23fa0b1a7a289ac512f1f5142c5baf64423676b4",
       "role": "inference engine"
     },
     "appworld": {
@@ -40,11 +40,30 @@
       "parameters": 14768307200,
       "allowed_stage": "pilot",
       "decision": "documents/experimental-models.md"
+    },
+    "Qwen/Qwen3-4B-Instruct-2507": {
+      "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "tokenizer_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "dtype": "bfloat16",
+      "parameters": 4022468096,
+      "allowed_stage": "pilot",
+      "supports_thinking": false,
+      "decision": "documents/experimental-models.md"
     }
   },
   "profiles": {
     "cpu": "uv.lock",
     "appworld": "infra/requirements/appworld.lock",
-    "gpu": "infra/requirements/gpu.lock"
+    "gpu": "infra/requirements/gpu.lock",
+    "hybrid": "infra/requirements/hybrid.lock"
+  },
+  "hybrid_model": {
+    "repository": "Qwen/Qwen3.5-9B",
+    "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "tokenizer_revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+    "dtype": "bfloat16",
+    "backend": "transformers_hybrid",
+    "transformers": "5.22.2",
+    "decision": "documents/hybrid-backend.md"
   }
 }

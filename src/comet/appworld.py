@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 import copy
 import datetime
 import hashlib
@@ -25,9 +26,25 @@ from comet.errors import UnsupportedPath
 
 APPWORLD_REVISION = "42b5bcf3cd334fee33f0c37c02070a9f5807add5"
 APPWORLD_DATA_VERSION = "0.2.0"
+APPWORLD_DATABASE_PATH_VERSION = "structured-memory-v1"
+_DATABASE_PATHS_CONFIGURED = False
 _BOOKKEEPING = {"In", "Out", "_ih", "_oh", "_dh", "_", "__", "___"}
-_ATOMS = (type(None), bool, int, float, complex, str, bytes, bytearray, range,
-          datetime.date, datetime.time, datetime.timedelta, Decimal, Fraction)
+_ATOMS = (
+    type(None),
+    bool,
+    int,
+    float,
+    complex,
+    str,
+    bytes,
+    bytearray,
+    range,
+    datetime.date,
+    datetime.time,
+    datetime.timedelta,
+    Decimal,
+    Fraction,
+)
 
 
 def verify_appworld_revision() -> None:
@@ -38,6 +55,29 @@ def verify_appworld_revision() -> None:
         raise UnsupportedPath(
             f"Install AppWorld from commit {APPWORLD_REVISION}; found {actual!r}."
         )
+
+
+def configure_appworld_database_paths() -> None:
+    global _DATABASE_PATHS_CONFIGURED
+    if _DATABASE_PATHS_CONFIGURED:
+        return
+    verify_appworld_revision()
+    from appworld.apps.lib.models.db import Database
+
+    original = Database._get_engine_to_details
+
+    def engine_details(engine: Any) -> tuple[Any, ...]:
+        url, path, home, storage, connection = original(engine)
+        if engine.url.query.get("mode") == "memory":
+            database = engine.url.database
+            if not database or not database.startswith("file:") or database.count("/") != 1:
+                raise UnsupportedPath(f"Unsupported AppWorld memory database: {database!r}")
+            # SQLAlchemy's rendered URL escapes file:, splitting mutation and export counters.
+            home = ":memory:" + database.removeprefix("file:").rsplit("/", 1)[0]
+        return url, path, home, storage, connection
+
+    Database._get_engine_to_details = staticmethod(engine_details)
+    _DATABASE_PATHS_CONFIGURED = True
 
 
 def validate_tasks(split: str, task_ids: list[str]) -> None:
@@ -51,17 +91,28 @@ def validate_tasks(split: str, task_ids: list[str]) -> None:
         raise ValueError(f"Tasks do not belong to {split}: {sorted(unknown)}")
 
 
-def parse_action(response: str) -> str:
+def parse_action(response: str, *, require_executable: bool = False) -> str:
     """One model turn is one Python execution, even if it calls several APIs."""
     if "</think>" in response:
         response = response.rsplit("</think>", 1)[1]
     elif "<think>" in response:
         raise ValueError("Finish reasoning before returning the action block.")
-    blocks = re.findall(r"^```(?:python|py)[ \t]*\n(.*?)^```[ \t]*$", response,
-                        flags=re.MULTILINE | re.DOTALL)
+    blocks = re.findall(
+        r"^```(?:python|py)[ \t]*\n(.*?)^```[ \t]*$", response, flags=re.MULTILINE | re.DOTALL
+    )
     if len(blocks) != 1 or not blocks[0].strip():
         raise ValueError("Return exactly one nonempty fenced Python block.")
-    return blocks[0].strip()
+    action = blocks[0].strip()
+    if require_executable:
+        try:
+            tree = ast.parse(action)
+        except SyntaxError:
+            return action
+        if not tree.body:
+            raise ValueError(
+                "A comment-only block cannot advance the task; return executable Python"
+            )
+    return action
 
 
 def _checkpoint_value(value: Any, seen: set[int]) -> None:
@@ -76,7 +127,15 @@ def _checkpoint_value(value: Any, seen: set[int]) -> None:
         return
     if type(value) in (dict, Counter, defaultdict):
         if isinstance(value, defaultdict) and value.default_factory not in (
-            None, int, float, str, list, dict, set, tuple, bool
+            None,
+            int,
+            float,
+            str,
+            list,
+            dict,
+            set,
+            tuple,
+            bool,
         ):
             raise UnsupportedPath("Checkpoint requires a builtin defaultdict factory.")
         for key, item in value.items():
@@ -103,7 +162,7 @@ class AppWorldAdapter:
         if (self.artifact_dir / "reference.json").exists():
             raise FileExistsError(f"Completed environment already exists: {self.artifact_dir}")
         if self._factory is None:
-            verify_appworld_revision()
+            configure_appworld_database_paths()
             from appworld import AppWorld, update_root
 
             update_root(str(self.root))
@@ -114,11 +173,17 @@ class AppWorldAdapter:
         self.experiment_name = f"comet/{uuid.uuid4().hex}"
         try:
             self.world = factory(
-                task_id=task_id, experiment_name=self.experiment_name,
-                random_seed=seed, load_ground_truth=False,
-                remote_apis_url=None, remote_environment_url=None, remote_mcp_url=None,
-                remote_docker=False, timeout_seconds=None,
-                max_interactions=sys.maxsize, max_api_calls_per_interaction=sys.maxsize,
+                task_id=task_id,
+                experiment_name=self.experiment_name,
+                random_seed=seed,
+                load_ground_truth=False,
+                remote_apis_url=None,
+                remote_environment_url=None,
+                remote_mcp_url=None,
+                remote_docker=False,
+                timeout_seconds=None,
+                max_interactions=sys.maxsize,
+                max_api_calls_per_interaction=sys.maxsize,
             )
         except BaseException:
             if hasattr(factory, "close_all"):
@@ -129,11 +194,19 @@ class AppWorldAdapter:
             raise UnsupportedPath(f"Expected AppWorld data {APPWORLD_DATA_VERSION}.")
         self._baseline = dict(self.world.shell.user_ns)
         self.artifact_dir.mkdir(parents=True, exist_ok=True)
-        (self.artifact_dir / "live.json").write_text(json.dumps({
-            "task_id": task_id, "seed": seed, "appworld_root": str(self.root),
-            "experiment_name": self.experiment_name,
-            "output_directory": str(self.world.output_directory),
-        }, indent=2) + "\n")
+        (self.artifact_dir / "live.json").write_text(
+            json.dumps(
+                {
+                    "task_id": task_id,
+                    "seed": seed,
+                    "appworld_root": str(self.root),
+                    "experiment_name": self.experiment_name,
+                    "output_directory": str(self.world.output_directory),
+                },
+                indent=2,
+            )
+            + "\n"
+        )
 
     def _active(self) -> Any:
         if self.world is None:
@@ -173,10 +246,15 @@ class AppWorldAdapter:
         path.mkdir(parents=True, exist_ok=True)
         shutil.copytree(world.output_directory, path / "task", dirs_exist_ok=True)
         reference = {
-            "schema_version": 1, "task_id": self.task_id, "seed": self.seed,
-            "appworld_root": str(self.root), "experiment_name": self.experiment_name,
+            "schema_version": 1,
+            "task_id": self.task_id,
+            "seed": self.seed,
+            "appworld_root": str(self.root),
+            "experiment_name": self.experiment_name,
             "appworld_revision": APPWORLD_REVISION,
-            "data_version": APPWORLD_DATA_VERSION, "task_directory": "task",
+            "data_version": APPWORLD_DATA_VERSION,
+            "task_directory": "task",
+            "database_path_version": APPWORLD_DATABASE_PATH_VERSION,
         }
         (path / "reference.json").write_text(json.dumps(reference, indent=2) + "\n")
         return reference
@@ -203,9 +281,13 @@ class AppWorldAdapter:
                 namespace[key] = value
         tracker = world.requester.request_tracker
         state = {
-            "namespace": namespace, "modules": modules, "removed": removed,
+            "namespace": namespace,
+            "modules": modules,
+            "removed": removed,
             "random_state": random.getstate(),
-            "numpy_state": sys.modules["numpy"].random.get_state() if "numpy" in sys.modules else None,
+            "numpy_state": sys.modules["numpy"].random.get_state()
+            if "numpy" in sys.modules
+            else None,
             "environment_io": world.environment_io,
             "num_interactions": world.num_interactions,
             "num_sub_interactions": world.num_sub_interactions,
@@ -220,8 +302,12 @@ class AppWorldAdapter:
         shutil.copytree(Path(world.output_checkpoints_directory) / checkpoint_id, path / "dbs")
         (path / "execution.pkl").write_bytes(payload)
         metadata = {
-            "schema_version": 1, "task_id": self.task_id, "seed": self.seed,
-            "appworld_revision": APPWORLD_REVISION, "data_version": APPWORLD_DATA_VERSION,
+            "schema_version": 1,
+            "task_id": self.task_id,
+            "seed": self.seed,
+            "appworld_revision": APPWORLD_REVISION,
+            "data_version": APPWORLD_DATA_VERSION,
+            "database_path_version": APPWORLD_DATABASE_PATH_VERSION,
             "execution_sha256": hashlib.sha256(payload).hexdigest(),
         }
         (path / "checkpoint.json").write_text(json.dumps(metadata, indent=2) + "\n")
@@ -230,9 +316,14 @@ class AppWorldAdapter:
         world = self._active()
         path = Path(path)
         metadata = json.loads((path / "checkpoint.json").read_text())
-        for key, value in {"schema_version": 1, "task_id": self.task_id, "seed": self.seed,
-                           "appworld_revision": APPWORLD_REVISION,
-                           "data_version": APPWORLD_DATA_VERSION}.items():
+        for key, value in {
+            "schema_version": 1,
+            "task_id": self.task_id,
+            "seed": self.seed,
+            "appworld_revision": APPWORLD_REVISION,
+            "data_version": APPWORLD_DATA_VERSION,
+            "database_path_version": APPWORLD_DATABASE_PATH_VERSION,
+        }.items():
             if metadata.get(key) != value:
                 raise ValueError(f"Incompatible AppWorld checkpoint: {key}.")
         payload = (path / "execution.pkl").read_bytes()
@@ -250,8 +341,9 @@ class AppWorldAdapter:
                 del world.shell.user_ns[key]
         self._baseline = dict(world.shell.user_ns)
         world.shell.user_ns.update(state["namespace"])
-        world.shell.user_ns.update({key: importlib.import_module(name)
-                                    for key, name in state["modules"].items()})
+        world.shell.user_ns.update(
+            {key: importlib.import_module(name) for key, name in state["modules"].items()}
+        )
         for key in state["removed"]:
             world.shell.user_ns.pop(key, None)
         world.environment_io = copy.deepcopy(state["environment_io"])

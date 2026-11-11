@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "ceiling_usd": 40,
+  "historical_reserve_usd": 10,
+  "failed_launch_allowances_usd": 12,
+  "active_reservation_usd": 0,
+  "uncommitted_usd": 4.25,
+  "cost_kind": "planning allowances and reservations, not billed charges",
+  "short_failed_launch_assumptions": {
+    "compute_usd_per_hour": 1,
+    "maximum_lifetime_hours": 0.3333333333333333,
+    "nat_processed_gib": 50,
+    "nat_usd_per_gib": 0.045,
+    "storage_network_other_allowance_usd": 0.4
+  },
+  "observed_public_spot_price": {
+    "machine": "g2-standard-4",
+    "usd_per_hour": 0.423016,
+    "caveat": "Displayed default-region table; use the larger $1/hour planning allowance, not an exact regional billing claim"
+  },
+  "pricing_sources": [
+    "https://cloud.google.com/spot-vms/pricing",
+    "https://cloud.google.com/nat/pricing"
+  ],
+  "runs": [
+    {
+      "run_id": "gpu-20261109-060734-d05896",
+      "status": "failed_before_task_attempts",
+      "lifetime_upper_seconds": 649.5,
+      "allowance_usd": 3,
+      "compute_cleanup_verified": true,
+      "live_artifacts_purged": true
+    },
+    {
+      "run_id": "gpu-20261109-061851-5d856b",
+      "status": "failed_before_task_attempts",
+      "lifetime_upper_seconds": 795.4,
+      "allowance_usd": 3,
+      "compute_cleanup_verified": true,
+      "live_artifacts_purged": true
+    },
+    {
+      "run_id": "gpu-20261109-063527-7c75c0",
+      "status": "failed_before_task_attempts",
+      "lifetime_upper_seconds": 929.7,
+      "allowance_usd": 3,
+      "compute_cleanup_verified": true,
+      "live_artifacts_purged": true
+    },
+    {
+      "run_id": "gpu-20261109-065347-42f701",
+      "status": "failed_before_task_attempts",
+      "lifetime_upper_seconds": 917.2,
+      "allowance_usd": 3,
+      "compute_cleanup_verified": true,
+      "live_artifacts_purged": true
+    },
+    {
+      "run_id": "gpu-20261109-071607-51dbc9",
+      "status": "completed_qualification_and_four_task_baseline",
+      "lifetime_upper_seconds": 1422.5,
+      "allowance_usd": 3.25,
+      "compute_cleanup_verified": true,
+      "live_artifacts_purged": true
+    },
+    {
+      "run_id": "gpu-20261109-074144-380cde",
+      "status": "canceled_before_task_start_after_unnecessary_mount_audit",
+      "allowance_usd": 0.5,
+      "compute_cleanup_verified": true,
+      "live_artifacts_purged": true
+    },
+    {
+      "run_id": "gpu-20261109-074439-b5e235",
+      "status": "scientific_plans_completed_final_directory_upload_timed_out",
+      "workload_limit_seconds": 25200,
+      "max_gpus": 1,
+      "max_retries": 0,
+      "allowance_usd": 10,
+      "compute_cleanup_verified": true,
+      "live_artifacts_purged": false,
+      "backup_retention_reason": "Final directory transfer has no UPLOAD_COMPLETE marker; complete per-plan archives were retrieved independently.",
+      "compute_cleanup_checked_at_utc": "2026-11-09T14:58:45Z"
+    }
+  ],
+  "completed_launch_allowances_usd": 13.25,
+  "canceled_launch_allowances_usd": 0.5,
+  "long_session_allowance": {
+    "compute_usd_per_hour": 1,
+    "maximum_lifetime_hours": 7.25,
+    "nat_processed_gib": 50,
+    "nat_usd_per_gib": 0.045,
+    "storage_network_other_allowance_usd": 0.4
+  }
+}

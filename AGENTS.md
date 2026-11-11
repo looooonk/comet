@@ -1,136 +1,117 @@
 # Agent instructions
 
-## Scope and source of truth
+## Before changing experiments
 
-These instructions apply throughout this repository. Read [README.md](README.md) for the overview and [documents/proposal.pdf](documents/proposal.pdf), especially sections 5-8, before changing experimental behavior. The proposal defines the research scope; the implementation and collaboration conventions below keep the four contributors on one pipeline.
+Read [README.md](README.md), [the research contract](documents/research-direction.md)
+and sections 5-8 of [the proposal](documents/proposal.pdf). The selected
+Qwen3.5-9B hybrid backend and qualified alternative GPUs supersede the proposal's
+original model, engine and hardware assumptions. Other architectures remain
+unsupported; do not weaken the model/backend guards or resume legacy pilots.
 
-The repository now has the shared pipeline described in [documents/experiments.md](documents/experiments.md). Inspect the implementation, [validation guide](documents/validation.md), and applicable evidence in [documents/records/](documents/records/README.md) before assuming an integration or experiment has been validated. Add verified setup and execution instructions alongside changes. Keep the README human-facing and free of dense technical details.
+Inspect the implementation, [workflow](documents/experiments.md),
+[validation guide](documents/validation/README.md) and applicable
+[evidence](documents/records/README.md). Recorded qualification applies only to
+its source, runtime, device, cap and workload. Passing fixtures alone does not
+establish live integration or research results.
 
-General documents must be independent of individual accounts, workspaces, and run history; put personal notes and run-specific observations in `documents/records/`. Omit account-specific access details and unshared storage locations from committed records; use portable artifact identifiers and hashes instead.
+Implement the agreed study before expanding it. Changes to models, benchmarks,
+engines, methods, metrics or budget semantics require an explicit research
+decision, recorded with rationale and affected comparisons. Routine implementation
+choices do not. Do not change active or frozen configurations; changed settings
+require a new version.
 
-Implement the agreed experiments before expanding scope. Do not silently replace the model, benchmark, inference engine, methods, metrics, or budget semantics. Record any user- or team-authorized departure from the proposal in `documents/`, with its rationale and affected comparisons, and update the corresponding instructions and configs. Routine implementation choices do not need a new research decision.
+## Experimental invariants
 
-The user authorized a pinned Qwen3-14B exploratory train/dev pilot if Qwen3-8B is inadequate for the requested retention comparison. Follow [documents/experimental-models.md](documents/experimental-models.md): keep these results separate, use the same engine and BF16 methods, and retain Qwen3-8B for the main research contract and final evaluation. Qwen3.5-9B is unsupported by the pinned engine.
+- Use one configuration-driven pipeline for full KV, StreamingLLM, R-KV and
+  AgentKV. Attempts are sequential, batch size one. Keep device model/count,
+  runtime, precision, tasks, prompts, sampling, paired seeds and caps matched.
+- Retention is the fraction of full-cache attention KV at the same raw-token
+  step. Preserve the documented rounding and mandatory-entry floors. Report
+  realized KV and uncompressed recurrent state separately from total VRAM.
+- Keep the full raw transcript independently of compressed model state. Preserve
+  every state type across turns and checkpoints; never silently re-prefill.
+- Recovery re-prefills the full transcript and reapplies retention at most once
+  per attempt. It never replays tools, rolls back the environment, restarts a
+  task, summarizes or truncates history. Log inputs, decisions, cost and refusals.
+- Enforce the same peak total-VRAM cap, including transient rebuild allocations.
+  Refuse recovery that cannot fit; do not change precision or temporarily bypass
+  the cap. Occupied KV and total GPU memory are different metrics.
+- All attempts within a task/condition/seed share one wall-clock budget. Charge
+  resets, tools, checkpoints, rebuilds, saving and cleanup. Exclude model loading
+  and offline scoring consistently. An explicitly configured isolated train
+  environment initialization/close may run once per launch outside task timing;
+  record it separately, without model observations or tool calls.
+- Checkpoint diagnostics branch from identical saved agent, environment, model
+  and RNG state, then evolve independently. Charge preparation to each branch.
+  Final evaluation always starts every attempt from the initial task state.
+- Keep evaluation offline. Evaluator feedback cannot guide actions, triggers,
+  attempt ranking or early stopping. Timeouts, OOM, interruptions and infeasibility
+  remain in comparisons; never grant replacement budgets or free retries.
+- Report oracle success within budget as a perfect-selection upper bound, plus
+  first-attempt success, attempt counts, latency, throughput, estimated FLOPs,
+  memory and recovery costs. Bootstrap tasks with their paired conditions and
+  attempts; attempts are not independent tasks.
+- Select tasks, operating regimes, finer retention/runtime grids and triggers
+  on train/dev, confirm on separate dev coverage, then freeze before test.
+  Preserve all declared points and failures, including flat curves. Do not select
+  favorable test outcomes or imply unmeasured points are evidence.
 
-## Research contract
-
-COMET tests whether recovering cached history improves agent task success beyond further compressed attempts under a fixed runtime budget and memory cap.
-
-- **Q1:** Within each eviction method and retention setting, compare a context-length/tool-call-count recovery trigger against never-rebuild and fixed-tool-count rebuild policies.
-- **Q2:** Compare compressed oracle best-of-N with and without recovery at 80%, 50%, and 25% retention against full-cache best-of-N under the same runtime budget and peak VRAM cap.
-
-The initial dynamic policy decides when to recover. It does not adapt the retention level or attempt limit during evaluation. Additional models, benchmarks, eviction methods, text summarization, quantization, training, and alternative search strategies are outside the main experiment matrix unless the team changes the plan. Papers in the proposal's literature review are context, not additional implementation requirements.
-
-### Fixed setup
-
-| Component | Required setup |
-| --- | --- |
-| Model | Qwen3-8B in BF16 |
-| Benchmark | AppWorld |
-| Inference engine | AgentKV Mini-SGLang for every method, including the full-cache baseline |
-| Hardware | One NVIDIA A100 80GB GPU |
-| Execution | Sequential attempts, batch size 1 |
-| Baseline | Full KV with eviction disabled; one attempt and budget-matched oracle best-of-N |
-| Eviction methods | StreamingLLM, R-KV, and AgentKV using the existing AgentKV engine implementations |
-| Retention | 100% full-cache control; 80%, 50%, and 25% compressed conditions |
-| Recovery policies | Never rebuild; fixed tool-count trigger; context-length/tool-count threshold trigger |
-| Recovery limit | At most one full-history rebuild per attempt |
-
-Retention is the fraction of KV entries that full-cache inference would store at the same step, not a fraction of GPU capacity or a shortened text prompt. Record the rounding and accounting conventions, including any mandatory retained entries, so all methods use the same denominator. Keep the full-cache control separate from compressed conditions.
-
-The proposal cites these implementation revisions as starting points:
-
-- [AgentKV](https://github.com/LiuTaowen-Tony/agentkv/tree/b5280b7c42bd90962712c19f8e0047c89ca40d6d): `b5280b7c42bd90962712c19f8e0047c89ca40d6d`.
-- [kv-management-minisgl](https://github.com/LiuTaowen-Tony/kv-management-minisgl/tree/254c57bc84e4a7895159ba1062bd46c83626f511): `254c57bc84e4a7895159ba1062bd46c83626f511`.
-- Within that engine, the cited eviction implementations are `python/minisgl/eviction/streamingllm.py` and `python/minisgl/eviction/r1kv.py`.
-
-Pin and record actual dependency revisions and local patches. Do not silently track upstream main branches or substitute a different serving engine to make one method easier to run.
-
-## Shared pipeline
-
-Use one configuration-driven pipeline for all methods. Method and recovery-policy selection must not create separate copies of task execution, budget enforcement, or evaluation logic.
-
-1. **Integration checks:** Validate AppWorld execution and reset, full-cache inference, each eviction implementation, compressed KV persistence across turns and checkpoints, and full-history recovery. Surface unsupported paths instead of silently falling back to full KV.
-2. **Train/dev pilot:** Measure feasibility and cost, tune triggers, and freeze the experiment settings before test evaluation. The provisional compute estimate is 50-100 GPU-hours, not a measured requirement. If necessary, reduce tasks, samples, or configurations during the pilot while preserving comparable budgets; record any scope reduction.
-3. **Checkpoint diagnostic:** Branch from identical saved pre-compression agent and environment checkpoints. Preserve the state needed to reproduce each branch, including transcript, KV state, and random state. After branching, let each trajectory evolve independently. Compare recovery policies within each method and retention condition, with the 100% control available for reference.
-4. **Final evaluation:** Start every attempt from the task's initial environment state. Use the same task subset, prompts, sampling settings, and paired seeds across methods. Do not reuse diagnostic continuation checkpoints as final-evaluation starting states or carry state between attempts.
-5. **Post-hoc scoring and analysis:** After all attempts for a task/configuration have finished, run the AppWorld evaluator on saved outcomes. Aggregate results through a shared analysis path. Keep pilot, diagnostic, and final-evaluation outputs distinguishable.
-
-### Settings to freeze
-
-The proposal does not supply numerical values for the following. Establish them on train/dev, store them in a versioned configuration, and do not invent defaults presented as settled experiment choices:
-
-- Per-task wall-clock budget and peak VRAM cap. The GPU's 80GB capacity is not itself a chosen experimental cap.
-- Maximum context length and the behavior when that limit is reached.
-- Sampling settings, prompts, maximum attempts N, and the seed schedule.
-- Task count, split identifiers, and exact task subset.
-- Fixed tool-count threshold and dynamic context-length/tool-count thresholds, including the trigger rule and when it is checked.
-
-Define observable context length and tool-call count consistently, including whether counts are cumulative or measured since a checkpoint. Tune thresholds only on train/dev tasks. Freeze these definitions with the settings. Do not use test outcomes to retune policies or choose a favorable subset. A changed frozen setting defines a new experiment version; do not mix its results into the old comparison.
-
-## Recovery and state semantics
-
-- Retain the current attempt's full raw token transcript independently of the compressed KV cache. Recovery re-prefills that transcript and then reapplies the configured retention policy.
-- Recovery does not summarize or truncate history, restart the task, roll back the environment, or replay tool actions. Historical tool calls are transcript content during re-prefill, not commands to execute again.
-- Allow at most one rebuild per attempt. Log the trigger inputs, decision, rebuild cost, and whether recovery was disallowed by the cap.
-- Disallow a rebuild that cannot fit the peak VRAM cap, including its transient allocation. Do not temporarily bypass the cap or switch precision to make recovery fit.
-- Preserve KV state across agent turns. An unintended full re-prefill on every turn would introduce unrecorded recovery and invalidate the comparison.
-- Keep each attempt's environment and agent state isolated. A retry or resumed job must not inherit tool effects from a different attempt.
-
-## Budget and evaluation invariants
-
-- All attempts for a task/configuration share one wall-clock budget. N is an upper limit, not a promise that N attempts will fit. Do not grant each attempt a fresh per-task budget.
-- Charge attempts, tool calls, environment resets, checkpoint preparation, and rebuilds to that same budget. Exclude model loading and post-hoc evaluation consistently across methods. Record timings by component so the accounting can be checked.
-- Enforce the same peak VRAM cap across comparisons, including transient rebuild peaks. Track peak total VRAM separately from peak KV-cache memory; they are not interchangeable.
-- Count timeout and out-of-memory attempts as failures. Report infeasibility separately without silently dropping failed tasks/configurations from comparisons or giving them free replacement attempts.
-- The primary metric is **oracle task success rate within budget**: the fraction of tasks solved by any of up to N attempts. Label this as an upper bound assuming perfect outcome selection, not an online selection policy.
-- AppWorld evaluator feedback must never select actions, trigger recovery, rank attempts during execution, or stop further attempts after a successful score. Keep the evaluator outside the online runner. Ordinary task observations and tool responses remain available to the agent.
-- Also report single-attempt success, actual attempt counts, estimated inference FLOPs, end-to-end latency, decoding throughput, and peak KV-cache memory. Document metric units, timing boundaries, and the FLOPs estimation method; do not present estimates as measurements.
-- Use paired comparisons across seeds and task-bootstrap confidence intervals. Resample tasks, preserving their associated attempts and paired conditions, rather than treating attempts as independent tasks.
-
-## Implementation and collaboration conventions
-
-These are repository conventions for implementing the proposal, not claims that the directories already exist. Add them as needed:
+## Implementation
 
 | Location | Purpose |
 | --- | --- |
-| `src/comet/` | Shared engine integration, AppWorld adapter, recovery policies, runner, evaluator, and analysis |
-| `configs/` | Versioned pilot and frozen experiment configurations |
-| `scripts/` | Thin entry points that call shared package code |
-| `tests/` | Focused tests of state, recovery, budgets, and evaluation behavior |
-| `documents/` | General proposal, implementation, setup/run instructions, and shared experimental decisions |
-| `documents/records/` | Personal notes, dated execution/validation records, and artifact inventories |
+| `src/comet/` | Shared execution, engines, scoring and analysis |
+| `configs/` | Versioned studies, reusable bases and regression inputs |
+| `scripts/`, `infra/` | Thin launchers, managed runtime and deployment setup |
+| `tests/` | State, recovery, budget and evaluation checks |
+| `documents/` | Shared decisions and operating guides |
+| `documents/records/` | Compact results, validation evidence and selected figures |
 
-Keep execution, scoring, and analysis separately callable while sharing configuration and artifact definitions. A notebook may explore recorded outputs; it must not become the only implementation of a required experiment or metric. Avoid adding a general framework or unrelated dependencies when a small explicit interface suffices.
+Inspect callers before changing shared interfaces. Update affected consumers
+and documentation together; preserve configuration hashes, checkpoint formats
+and result schemas unless the task explicitly changes them. Preserve others'
+uncommitted work. Keep one shared runner and analysis path, with execution,
+scoring and analysis separately callable. Avoid unrelated dependencies or a
+framework when a small explicit interface suffices.
 
-Before changing a shared interface, inspect its callers and existing work. Keep configuration fields, checkpoint formats, and result schemas consistent across contributors; document changes and update affected consumers together. Use the planned roles in the README for coordination, not as exclusive ownership of files. Preserve others' uncommitted changes and keep patches scoped to the task.
+Use clear, succinct code. Expand dense expressions when that improves readability.
+Comments should explain non-obvious reasoning or experimental constraints, use
+only ASCII, and avoid delimiter lines and narration of obvious operations.
 
-For every run, preserve enough information to reproduce and audit it:
+Keep the README short and human-oriented. General guides must be independent
+of accounts, workspaces and run history. Put dated evidence in records, using
+portable artifact IDs and hashes rather than private access/storage paths.
+Delete obsolete plans and duplicate exports; Git preserves tracked history.
+Keep unique completed run data outside tracked source. Do not retain temporary
+logs, copied runtimes or generated archives just to document their existence.
 
-- Run ID, stage, code commit and local changes, dependency/model/tokenizer revisions, hardware, and resolved configuration.
-- Task/split ID, seed, attempt index, method, retention, and recovery policy.
-- Raw token transcript, tool observations/actions, recoverable checkpoints where needed, and final environment state or an equivalent evaluator-compatible artifact.
-- Trigger decisions, component timings, memory measurements, attempt status/failure reason, and separately produced evaluator outcomes.
+## Setup, validation and handoff
 
-Save intermediate trajectories and completed results so interrupted work can resume without rerunning completed computation. Resume only compatible configurations and preserve accumulated budget accounting; a resume must not grant extra time or attempts. Keep outputs from distinct runs separate. Store large trajectories, model files, caches, and checkpoints outside tracked source or in explicitly ignored paths; commit small configs and summaries that identify the underlying artifacts.
+Use `scripts/setup_runtime.sh` and `scripts/run_checks.sh`. Before direct runtime
+commands, source `scripts/activate_runtime.sh` with the matching profile. Never
+synchronize a GPU environment with `uv run`. Keep a separate owned environment
+per checkout/profile, reuse persistent caches, and preserve pinned dependencies
+and local engine patches. Slurm and GCP share the experiment launcher.
 
-## Validation and handoff
+Before launches, qualify the intended device/cap and audit storage. Keep jobs
+bounded; use small fixtures and train/dev smoke runs before sweeps. The cloud
+ceiling and unreconciled allowances are in the [cloud ledger](documents/records/qwen9b/cloud-ledger.json).
+Do not treat scheduler limits or GPU capacity as experimental budgets.
 
-When implementation exists, run the checks relevant to the change. For changes to the experimental pipeline, prioritize checks that demonstrate:
+For pipeline changes, run the applicable checks for eviction/counts, persistent
+state and checkpoint replay, fresh resets, one-time recovery without tool effects,
+shared budget/resume accounting, transient memory caps and offline evaluation.
+Use fresh evidence directories. Report which checks ran and which require
+unavailable GPU or AppWorld infrastructure. Documentation-only changes do not
+need behavioral tests.
 
-- Full KV disables eviction and compressed retention follows the configured policy.
-- Checkpoint round-trips preserve agent/environment/KV state, and fresh attempts reset state correctly.
-- Recovery uses the full transcript once at most, reapplies retention, and leaves tool effects unchanged.
-- Shared budgets include tool/reset/checkpoint/rebuild costs, and transient memory limits are enforced.
-- Evaluator feedback cannot enter execution; failures remain in aggregation and oracle success is computed per task.
+Preserve each run's source and local changes, dependency/model/tokenizer revisions,
+hardware, resolved configuration, task/split/seed/attempt/condition identifiers,
+raw transcripts, actions/observations, needed checkpoints, evaluator-compatible
+outcomes, timings, memory and failures. Resume only compatible runs, preserving
+consumed budget and completed work. Keep different runs and stages separate.
 
-Use small fixtures and train/dev smoke runs before launching sweeps. Report which checks ran and which require unavailable GPU or AppWorld infrastructure; passing mocks alone does not validate the integration. Do not add behavioral tests for documentation-only edits.
-
-In handoffs and PR descriptions, state what changed, the affected experiment or interface, validation performed, and any unresolved limitation or decision. Do not claim an experiment succeeded without saved results. Human contributors review generated code and its behavior. When checking research prose, preserve the authors' intended meaning and distinguish evidence from hypotheses.
-
-## Code and comments
-
-- Keep code succinct without over-simplifying it. Prefer clear, direct code over verbose scaffolding or obscure tricks.
-- Keep comments succinct. Explain non-obvious reasoning or experimental constraints, not operations already clear from the code.
-- Use only ASCII characters in code comments; use LaTeX notation if needed.
-- Do not add delimiter comments. Split files when structure requires it.
+Handoffs should state the change, affected interface/experiment, validation and
+remaining limitations. Never claim success without saved results. Human
+contributors review generated code and behavior; preserve authors' meaning in
+research prose and distinguish observations from hypotheses.

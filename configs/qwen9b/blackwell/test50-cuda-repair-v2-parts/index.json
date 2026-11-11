@@ -1,0 +1,36 @@
+{
+  "partitions": [
+    {
+      "budget_seconds": 6000,
+      "cells": 50,
+      "config": "part-00.json",
+      "digest": "4d148a705662aa4977082840a9b203ff61afc45d00730877ada4a0f53e454cbc"
+    },
+    {
+      "budget_seconds": 6000,
+      "cells": 50,
+      "config": "part-01.json",
+      "digest": "4a09a8e15410b27fbb67e82b8adcca8145a7ed4f4ed7470b8951b191fe47febe"
+    },
+    {
+      "budget_seconds": 6000,
+      "cells": 50,
+      "config": "part-02.json",
+      "digest": "29bfacec74a4fc541fe513313d0b6813ae13c628dabb982aa93431f4a99bc729"
+    },
+    {
+      "budget_seconds": 6000,
+      "cells": 50,
+      "config": "part-03.json",
+      "digest": "6c2c4eb0008d8e528c8e516071e02b128eb07bfe89e0a3be29d90e5823a1743f"
+    },
+    {
+      "budget_seconds": 6000,
+      "cells": 50,
+      "config": "part-04.json",
+      "digest": "8b4a32c4c21a43853d4a9b0aa8bf99096f4be2361e4f47bdae3bcb33698b85d8"
+    }
+  ],
+  "study_config": "../test50-cuda-repair-v2.json",
+  "study_digest": "fa55a51eb3ddb38e8e482a088ac0e8aa19d2f49c7645cb17655f333a396c76b0"
+}
