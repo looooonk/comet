@@ -639,7 +639,8 @@ class Runner:
                             )
                         )
                 except BaseException as failure:
-                    error = failure
+                    # Keeping the exception retains its traceback and failed GPU tensors.
+                    error = f"{type(failure).__name__}: {failure}"
                     raise
                 finally:
                     progress = getattr(engine, "last_recovery", {}) if called else {}
@@ -656,7 +657,7 @@ class Runner:
                     recovery.setdefault("allowance_consumed", recovery["admitted"])
                     recovery.setdefault("seconds", budget.elapsed - started)
                     if error is not None:
-                        recovery.setdefault("failure_reason", f"{type(error).__name__}: {error}")
+                        recovery.setdefault("failure_reason", error)
                     event["result"] = recovery
                     if recovery["allowance_consumed"]:
                         state["rebuilds"] += 1
@@ -683,7 +684,7 @@ class Runner:
                         )
                     )
             except BaseException as failure:
-                error = failure
+                error = f"{type(failure).__name__}: {failure}"
                 raise
             finally:
                 progress = getattr(engine, "last_generation", {}) if called else {}
@@ -691,7 +692,7 @@ class Runner:
                 recorded.setdefault("status", "failed" if error else "completed")
                 self._record_operation(attempt, recorded)
                 if error is not None:
-                    recorded.setdefault("failure_reason", f"{type(error).__name__}: {error}")
+                    recorded.setdefault("failure_reason", error)
                     attempt.setdefault("generation_failures", []).append(recorded)
                     write_json(directory / "attempt.json", attempt)
             response = engine.tokenizer.decode(result["token_ids"], skip_special_tokens=True)

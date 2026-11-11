@@ -1,3 +1,5 @@
+import gc
+import weakref
 from dataclasses import asdict, replace
 from pathlib import Path
 from types import SimpleNamespace
@@ -242,6 +244,37 @@ def test_matrix_and_seed_pairing():
     assert {c.retention for c in matrix if c.method != "full"} == {0.25, 0.5, 0.8}
     assert len({attempt_seed(42, i) for i in range(4)}) == 4
     assert attempt_seed(42, 0) == attempt_seed(42, 0)
+
+
+@pytest.mark.parametrize("operation", ["generate", "recover"])
+def test_failed_inference_releases_frame_objects_without_cyclic_gc(config, tmp_path, operation):
+    clock, environments, references = Clock(), [], []
+
+    class TemporaryTensor:
+        pass
+
+    class FailingEngine(FakeEngine):
+        def fail(self, *args, **kwargs):
+            temporary = TemporaryTensor()
+            references.append(weakref.ref(temporary))
+            raise MemoryError("fixture allocation failed")
+
+    engine = FailingEngine(clock)
+    setattr(engine, operation, engine.fail)
+    runner = Runner(
+        config, tmp_path, lambda condition: engine,
+        lambda: FakeEnvironment(clock, environments), clock=clock,
+    )
+    was_enabled = gc.isenabled()
+    gc.disable()
+    try:
+        runner.run()
+        assert references
+        assert all(reference() is None for reference in references)
+    finally:
+        if was_enabled:
+            gc.enable()
+        gc.collect()
 
 
 @pytest.mark.parametrize(
