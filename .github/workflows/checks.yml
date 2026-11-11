@@ -14,8 +14,8 @@ jobs:
           version: "0.13.0"
           enable-cache: true
       - run: uv sync --frozen --python 3.11
-      - run: uv run --frozen ruff check .
-      - run: uv run --frozen pytest -m "not gpu and not appworld"
+      - run: uv run --frozen --python 3.11 ruff check .
+      - run: uv run --frozen --python 3.11 python -m pytest -m "not gpu and not appworld"
       - run: |
           for script in scripts/*.sh infra/slurm/*.sh infra/gcp/*.sh; do
             bash -n "$script"
