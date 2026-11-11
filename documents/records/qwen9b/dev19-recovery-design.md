@@ -124,3 +124,35 @@ never-rebuild arm. All four points are reported whether or not this holds.
 Each configuration has its own trigger and is analyzed as a separate run;
 comparisons across thresholds are paired by task and descriptive. Status:
 declared, not yet executed.
+
+## Voided launches on November 11, 2026
+
+The seed replicate, the trigger-timing study and the retention frontier were
+launched together on November 11 and all three launches are void. Up to 16
+workers ran at once on two nodes (4, 8 and 4), against four in the first study.
+AppWorld resets, which are charged to the cell budget, stalled as workers were
+added:
+
+| Workers running | Cells | Median reset per cell (s) |
+| --- | ---: | ---: |
+| 2 (first ten trigger cells) | 10 | 1.0 |
+| 12 | about 400 | 57 to 117 |
+| 16 | about 190 | 180 to 1,480 |
+| First study, 4 workers | 551 | 0.9 (mean) |
+
+Trajectory saves and tool calls stayed fast (under one second per cell), unlike
+the first voided replicate launch. In the replicate 224 attempts ended with the
+budget expiring during reset. The 152 trigger, 438 replicate and 57 frontier
+cells written before the jobs were cancelled are kept outside project
+comparisons and are not resumed or scored. That the stalls come from the
+workers contending on the shared AppWorld data is a hypothesis the worker
+counts fit; storage latency outside these jobs was also above its morning level.
+
+The three studies are relaunched with unchanged configurations into fresh run
+directories, one study at a time in the order trigger timing, replicate,
+frontier, with at most four workers and scoring only after a study's workers
+finish, as in the first study. A guard job reads the saved cell timings every
+four minutes and cancels the running study and everything queued behind it when
+the ten most recent cells have a median reset above 5 seconds or a median save
+or tool time above 8 seconds. The guard never excludes individual cells: a
+study it stops is void as a whole.
