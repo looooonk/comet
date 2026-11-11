@@ -30,7 +30,16 @@ def aggressivity_series(analysis):
     return controls[0], {key: sorted(points) for key, points in series.items()}, ceiling
 
 
-def plot_aggressivity(analysis_path: Path, output: Path, *, title="Compaction and task success"):
+def plot_aggressivity(
+    analysis_path: Path,
+    output: Path,
+    *,
+    title="Compaction and task success",
+    y_limits=None,
+):
+    if y_limits is not None and not (0 <= y_limits[0] < y_limits[1] <= 100):
+        raise ValueError("Success-axis limits must satisfy 0 <= lower < upper <= 100")
+
     import matplotlib
 
     matplotlib.use("Agg")
@@ -112,7 +121,7 @@ def plot_aggressivity(analysis_path: Path, output: Path, *, title="Compaction an
                     xlabel="Eligible KV entries removed (%)",
                     ylabel=ylabel if column == 0 else "",
                     xticks=ticks,
-                    ylim=(-3, 103),
+                    ylim=y_limits if y_limits is not None else (-3, 103),
                     xlim=(-3, max(ticks) + 3),
                 )
                 if len(ticks) > 7:

@@ -128,7 +128,9 @@ def main(argv: list[str] | None = None) -> None:
     elif args.command == "plot-aggressivity":
         from comet.aggressivity_plots import plot_aggressivity
 
-        plot_aggressivity(args.analysis, args.output, title=args.title)
+        plot_aggressivity(
+            args.analysis, args.output, title=args.title, y_limits=args.y_limits
+        )
         _print({"figure": str(args.output)})
     elif args.command in {"plot-recovery", "plot-triggers", "plot-attempts", "plot-success-time"}:
         from comet.policy_plots import (

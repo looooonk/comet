@@ -116,7 +116,9 @@ For a multi-method aggressivity figure, use `comet plot-aggressivity ANALYSIS
 separates single-attempt success from oracle best-of-N, with a column for each
 measured recovery policy. Compressed conditions must share one attempt ceiling;
 the matching full-cache control is shown at zero removal. Only measured points
-are connected. Output extensions select PNG, SVG or PDF.
+are connected. Output extensions select PNG, SVG or PDF. Add `--y-limits 0 50`
+to export a second view with a 0-50% success axis; the default keeps the full
+percentage range. Axis limits do not change observations or uncertainty.
 `comet plot-resources ANALYSIS --policy never --output COSTS.svg` supplies the
 corresponding latency, attempts, memory, throughput, estimated FLOPs, compaction
 and recovery panels. Repeat with `fixed` or `dynamic` for those measured policies.

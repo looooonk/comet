@@ -165,6 +165,11 @@ def build_parser():
         figure.add_argument("analysis", type=Path)
         figure.add_argument("--output", type=Path, required=True)
         figure.add_argument("--title", default=title)
+        if command == "plot-aggressivity":
+            figure.add_argument(
+                "--y-limits", type=float, nargs=2, metavar=("LOWER", "UPPER"),
+                help="Success-axis bounds in percent (for example: 0 50)",
+            )
     plot = commands.add_parser("plot", help="Plot paired retention means and uncertainty")
     plot.add_argument("analysis", type=Path)
     plot.add_argument("--output", type=Path, required=True)
