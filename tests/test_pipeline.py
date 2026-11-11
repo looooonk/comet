@@ -268,9 +268,12 @@ def test_failed_inference_releases_frame_objects_without_cyclic_gc(config, tmp_p
     was_enabled = gc.isenabled()
     gc.disable()
     try:
-        runner.run()
+        manifest = runner.run()
         assert references
         assert all(reference() is None for reference in references)
+        cell = read_json(tmp_path / manifest["cells"][0]["path"])
+        for attempt in cell["attempts"]:
+            assert "MemoryError: fixture allocation failed" in attempt["failure_traceback"]
     finally:
         if was_enabled:
             gc.enable()

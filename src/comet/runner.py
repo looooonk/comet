@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import traceback
 import uuid
 from pathlib import Path
 from typing import Callable
@@ -641,6 +642,7 @@ class Runner:
                 except BaseException as failure:
                     # Keeping the exception retains its traceback and failed GPU tensors.
                     error = f"{type(failure).__name__}: {failure}"
+                    attempt["failure_traceback"] = traceback.format_exc()
                     raise
                 finally:
                     progress = getattr(engine, "last_recovery", {}) if called else {}
@@ -685,6 +687,7 @@ class Runner:
                     )
             except BaseException as failure:
                 error = f"{type(failure).__name__}: {failure}"
+                attempt["failure_traceback"] = traceback.format_exc()
                 raise
             finally:
                 progress = getattr(engine, "last_generation", {}) if called else {}
