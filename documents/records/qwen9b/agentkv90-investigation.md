@@ -8,6 +8,11 @@ No success estimate is computed by discarding failed tasks.
 
 ## What failed
 
+![Attempt failure timeline](figures/agentkv90-failure-timeline.png)
+
+[Vector PDF](figures/agentkv90-failure-timeline.pdf). Task order is the original
+execution order; blue means execution completed, not necessarily task success.
+
 The original partition executed StreamingLLM 90%, R-KV 90%, then AgentKV 90%
 in the same process. AgentKV's 100 attempts comprise ten completed executions,
 31 allocator OOMs and 59 CUDA illegal-memory-access errors. Completed execution
@@ -46,6 +51,8 @@ not established; fragmentation and transient working memory remain possible.
   handling remains separate.
 - `49740e2`: store failure text instead of exception objects, releasing failed
   inference/recovery frames without waiting for cyclic garbage collection.
+- `d97c49d`: save inference/recovery stack traces as text for any recurrence;
+  45 pipeline checks pass, including preserved trace text and released frames.
 - CPU checks: 363 passed, two optional Torch modules skipped, 17 live checks
   deselected. Tests cover fatal failures during generation, synchronization
   and memory measurement, preserved journals on resume, normal OOM handling,
@@ -66,7 +73,10 @@ Blackwell Server Edition, original 24 GiB total cap, and synchronous CUDA
 launches to expose error locations. They explicitly clear state and collect
 garbage between passes. Consequently, these passes establish fresh-process
 feasibility but do not reproduce the original long-lived process, asynchronous
-launch timing, or AppWorld workload. The first illegal access has not recurred.
+launch timing, or AppWorld workload. The first illegal access has not recurred. The approximate first-OOM history
+replay peaks at 18.92 GiB allocated, compared with 21.86 GiB recorded for the
+original failed attempt. This supports accumulated memory pressure as a
+contributor without identifying the cause of every OOM.
 Initial diagnostic array `13857261` failed before inference because its helper
 passed an unsupported settings field; the replacement uses a separate version.
 

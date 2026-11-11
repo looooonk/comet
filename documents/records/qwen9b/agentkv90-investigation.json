@@ -96,7 +96,8 @@
   },
   "repairs": [
     "22f97ea",
-    "49740e2"
+    "49740e2",
+    "d97c49d"
   ],
   "diagnostics": [
     {
@@ -257,10 +258,11 @@
   "cpu_checks": {
     "passed": 363,
     "optional_torch_skipped": 2,
-    "live_deselected": 17
+    "live_deselected": 17,
+    "stack_trace_followup_pipeline_passed": 45
   },
   "corrective_replication": {
-    "status": "dev_gate_prepared",
+    "status": "submitted_waiting_for_setup_and_dev_gate",
     "tasks": 50,
     "conditions": [
       "full_best_of_n",
@@ -269,8 +271,26 @@
       "agentkv_90_never",
       "agentkv_80_never"
     ],
-    "source_commit": "49740e2",
-    "setup_job": "13857341",
-    "original_results_preserved": true
+    "source_commit": "d97c49d",
+    "setup_job": "13857395",
+    "original_results_preserved": true,
+    "dev_job": "13857397",
+    "freeze_job": "13857398",
+    "study_job": "13857399",
+    "scoring_job": "13857400",
+    "gpu_count": 5,
+    "scored_cells": 250,
+    "nominal_seconds_per_worker": 6000
+  },
+  "launch_replacements": {
+    "diagnostic_harness_pre_inference_failure": "13857261",
+    "cancelled_unstarted_dev_for_stack_trace_capture": "13857370",
+    "cancelled_setup_gpfs_cache_reads": "13857341",
+    "cancelled_dependent_jobs_before_execution": [
+      "13857376",
+      "13857380",
+      "13857382",
+      "13857384"
+    ]
   }
 }
