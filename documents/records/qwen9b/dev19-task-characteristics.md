@@ -93,7 +93,9 @@ Over all 29 conditions, 104 of the 113 passing attempts opened with the
 listing: 104 of 336 listing openings passed and 9 of 627 others. The share of
 attempts opening on protocol and tasks solved have rank correlation +0.91
 across conditions; the three policies of a method and retention share their
-first actions, so this is about 11 distinct points, not 29.
+first actions, so this is about 11 distinct points, not 29. At 80% and at 25% the
+first action does not vary across tasks, so there it separates conditions, not
+tasks.
 
 ## Where the rebuild helped
 
@@ -114,6 +116,26 @@ opened with the search were not rescued: eight reached the context limit before
 the fourth tool call, so no rebuild happened, and those that were rebuilt
 already held one or two search results. After the rebuild the agent issued as
 many searches as without it (18 in each arm across the 30 rebuilt pairs).
+
+Opening on protocol at 50% is not independent of the task. The 13 on-protocol
+attempts cover nine tasks, six of them Spotify-only (the prompt's own example
+is a Spotify call) and one of the six Phone and Venmo tasks. On the same 13
+task-attempt pairs and on the other 25:
+
+| Condition | Passed, 13 on-protocol pairs | Passed, other 25 pairs |
+| --- | ---: | ---: |
+| Full cache (N=2) | 7 | 2 |
+| AgentKV 80% never | 6 | 5 |
+| AgentKV 50% never | 3 | 1 |
+| AgentKV 50% fixed | 8 | 2 |
+| AgentKV 50% dynamic | 6 | 2 |
+
+Full cache itself passed only 2 of the 25 pairs on which AgentKV 50% opened off
+protocol, so most of those search-opened attempts were on tasks with little to
+lose. The measurable loss at 50% is on the pairs within the model's reach, 7
+passes down to 3, and the rebuild restored it (8). The first-action counts
+describe how the compressed agent fails; they overstate how much success that
+failure costs.
 
 In the hybrid engine a rebuild prefills the whole raw transcript without
 intermediate eviction and then applies retention once, so the kept half is
