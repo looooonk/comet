@@ -192,6 +192,6 @@ were read for three of the 29 conditions; the other 26 were read for first
 actions and endings only. Task metadata was read for dev
 tasks only. The correlations are exploratory and uncorrected. The summaries
 come from `comet.task_characteristics`, which reads saved artifacts and runs no
-model, tool or evaluator. A seed replicate and the supplemental studies in the
-[design](dev19-recovery-design.md) are queued; this record will be extended
-with them rather than rewritten.
+model, tool or evaluator. The [design](dev19-recovery-design.md#status) records
+the seed replicate and supplemental studies, including voided launches and the
+latest storage decision. No completed followup results are included here.

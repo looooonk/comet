@@ -1,4 +1,10 @@
-# COMET midpoint evidence
+# Historical midpoint evidence: November 8, 2026
+
+This report preserves the Qwen3-8B/A6000 midpoint analysis and separate legacy
+diagnostics. Its measurements apply to the recorded implementations and are not
+results for the current Qwen3.5-9B hybrid backend. The
+[research contract](../research-direction.md) and [results index](README.md)
+describe the current study and subsequent evidence.
 
 ## Study design
 
@@ -62,13 +68,15 @@ That breakdown identifies where the budget expired. The old sampler defect and
 the aggregate failure labels limit attribution of why the trajectories ran out
 of time.
 
-## Follow-up experiment
+## Historical follow-up plan
 
-Use the team's declared full-cache dev schedule to qualify an operating point
-before measuring recovery quality. Require useful corrected AppWorld outcomes
-across multiple task families, verified model/runtime support and measured
-budget feasibility. Record the decision and freeze numerical settings on dev
-before opening the test split.
+The midpoint proposed qualifying an operating point with the team's declared
+full-cache dev schedule before measuring recovery quality. It required useful
+corrected AppWorld outcomes across multiple task families, verified model/runtime
+support and measured budget feasibility, with numerical settings frozen on dev
+before opening the test split. The design below is retained as historical context;
+the current research contract and Qwen3.5-9B studies supersede this execution plan.
+These legacy pilots are not pending work.
 
 - **Checkpoint diagnostic for Q1.** Select checkpoints using observable dev
   criteria, such as context length and completed tool-call count. Branch from
@@ -87,12 +95,19 @@ before opening the test split.
 
 From a COMET checkout containing source commit
 `772b7e8247faf004e92731d4779b06e1368ba8f0` (the November 8 `dev/yenna` snapshot),
-run the standard-library analysis. If the source object is absent, fetch the
-development ref with `git fetch origin dev/yenna` first.
+run the standard-library analysis in the managed CPU environment described in
+[setup](../setup.md). The script reads its pinned inputs directly from Git history;
+the retired source files do not need to be restored to the working tree. A shallow
+checkout must first retrieve that history with `git fetch --unshallow origin`.
 
 ```sh
-python3 scripts/analyze_midpoint.py . > /tmp/comet-midpoint.json
-cmp /tmp/comet-midpoint.json documents/records/midpoint-analysis-2026-11-08.json
+export COMET_REPO="$PWD"
+export COMET_ENV="$COMET_REPO/.venv-cpu"
+source scripts/activate_runtime.sh cpu
+midpoint_output=$(mktemp /tmp/comet-midpoint.XXXXXX)
+python scripts/analyze_midpoint.py "$COMET_REPO" > "$midpoint_output"
+cmp "$midpoint_output" documents/records/midpoint-analysis-2026-11-08.json
+rm "$midpoint_output"
 ```
 
 Slurm CPU job `13840199` completed with exit code 0 in five seconds. The

@@ -2,7 +2,8 @@
 
 Declared on November 9, 2026, before any execution. The
 [fifty-family test study](test50-design.md) measures the never-rebuild fine grid;
-recovery has so far been measured on two test tasks and three train families.
+at declaration, recovery had been measured on two test tasks and three train
+families.
 This study runs the core comparison matrix, including both recovery policies,
 on every dev family. It is train/dev evidence: it does not open the test split,
 change any frozen configuration, or pool with another cohort.
@@ -54,8 +55,23 @@ test study.
 
 ## Status
 
-Completed on November 10, 2026, without changes to the declared configuration.
-See the [findings](dev19-recovery.md) and [compact evidence](dev19-recovery-summary.json).
+The seed-17 study completed on November 10, 2026, without changes to the declared
+configuration. See the [findings](dev19-recovery.md) and
+[compact evidence](dev19-recovery-summary.json).
+
+The latest saved followup update is from November 11. It records the following
+status, not a live scheduler check:
+
+| Study | Recorded status |
+| --- | --- |
+| Recovery matrix, seed 17 | Completed: 551 cells, scored offline |
+| Seed replicate, seeds 29 and 31 | Initial and concurrent launches voided; next queued run cancelled before starting; no valid completed results recorded |
+| Supplemental retention frontier | Concurrent launch voided; next queued run cancelled before starting; no valid completed results recorded |
+| Supplemental trigger timing | Concurrent launch and guarded relaunch voided; two-cell node-local smoke kept outside the study; no valid completed results recorded |
+
+The final section declares node-local execution storage for the next launches
+and preserves the smoke evidence and changed I/O conditions. No followup result
+is pooled with the completed seed-17 study.
 
 ## Seed replicate
 
@@ -73,7 +89,8 @@ first study, with the new configuration files staged verbatim beside that
 checkout so their resolved digests are unchanged. Analyze the two new seeds
 through the shared analysis, bootstrapping tasks with their paired seeds, and
 report seed 17 alongside them descriptively; the shared analysis does not pool
-runs with different seed lists. Status: declared, not yet executed.
+runs with different seed lists. No valid completed results are recorded; the
+voided launches and subsequent storage decision are documented below.
 
 A first launch on November 10-11, 2026 was stopped after 28 cells and is void.
 Shared-storage stalls were being charged to the cell budgets: the 24 completed
@@ -96,11 +113,12 @@ never and fixed recovery, with the full-cache N=2 control: 21 conditions and 399
 fresh-start cells in [seven condition groups](../../../configs/qwen9b/blackwell/dev19-frontier-v1-parts/).
 The research contract authorizes finer train/dev retention grids declared as
 new versions. Its purpose is to locate the range of compression over which a
-single rebuild restores success; the first study showed an effect at 50% and
-none at 80% or 25%. StreamingLLM and the dynamic trigger are omitted to bound
+single rebuild restores success; the first study showed larger gains at 50%
+than at 80% or 25%. StreamingLLM and the dynamic trigger are omitted to bound
 the grid. The 50% conditions repeat the first study with the same seed as a
 consistency check. All points are reported, including flat ones; no threshold
-is tuned from these outcomes. Status: declared, not yet executed.
+is tuned from these outcomes. No valid completed results are recorded; the
+voided launch and subsequent storage decision are documented below.
 
 ## Supplemental trigger timing
 
@@ -122,8 +140,9 @@ prompt's lookup protocol, thresholds 1 and 2 should end fewer attempts at the
 context limit than threshold 4, and thresholds 6 and 8 should approach the
 never-rebuild arm. All four points are reported whether or not this holds.
 Each configuration has its own trigger and is analyzed as a separate run;
-comparisons across thresholds are paired by task and descriptive. Status:
-declared, not yet executed.
+comparisons across thresholds are paired by task and descriptive. No valid
+completed results are recorded; the voided launches and subsequent storage
+decision are documented below.
 
 ## Voided launches on November 11, 2026
 
@@ -148,14 +167,14 @@ comparisons and are not resumed or scored. That the stalls come from the
 workers contending on the shared AppWorld data is a hypothesis the worker
 counts fit; storage latency outside these jobs was also above its morning level.
 
-The three studies are relaunched with unchanged configurations into fresh run
+The relaunch plan kept the configurations unchanged and used fresh run
 directories, one study at a time in the order trigger timing, replicate,
 frontier, with at most four workers and scoring only after a study's workers
-finish, as in the first study. A guard job reads the saved cell timings every
-four minutes and cancels the running study and everything queued behind it when
-the ten most recent cells have a median reset above 5 seconds or a median save
-or tool time above 8 seconds. The guard never excludes individual cells: a
-study it stops is void as a whole.
+finished, as in the first study. A guard job read the saved cell timings every
+four minutes and cancelled the running study and everything queued behind it when
+the ten most recent cells had a median reset above 5 seconds or a median save
+or tool time above 8 seconds. The guard never excluded individual cells: a
+study it stopped was void as a whole.
 
 The guard stopped that relaunch of the trigger-timing study at 16:22 on
 November 11 after 38 cells, and that launch is void. The ten most recent cells

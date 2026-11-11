@@ -1,8 +1,9 @@
 # Qwen3.5-9B: nineteen-family dev recovery findings
 
-On 19 dev families, recovery raised success at 50% retention and changed
-nothing at 80% or 25%. AgentKV at 50% went from 3/19 without recovery to 7/19
-with the fixed trigger, matching or exceeding the full-cache controls (6/19).
+On 19 dev families, recovery's largest success gains were at 50% retention;
+changes at 80% and 25% were at most one task. AgentKV at 50% went from 3/19
+without recovery to 7/19 with the fixed trigger, matching or exceeding the
+full-cache controls (6/19).
 R-KV and AgentKV at 80% were at full-cache level with or without recovery.
 StreamingLLM solved nothing at any retention or policy. These are train/dev
 observations with one seed; they do not open or retune the frozen test study.

@@ -13,13 +13,18 @@ history without undoing the agent's actions.
 
 ## Results
 
-The completed compression study covers **50 held-out tasks per condition and
-26 conditions**. The [final results and plots](documents/records/qwen9b/test50-final.md)
-show first-attempt and oracle success, resource costs and all execution failures.
-Both full-range and 0-50% success-axis figures are available.
+The completed [compression study](documents/records/qwen9b/test50-final.md)
+covers **50 held-out tasks per condition and 26 conditions**, without recovery.
+Its results retain every execution failure, including the
+[CUDA failures affecting AgentKV at 90% retention](documents/records/qwen9b/agentkv90-investigation.md).
 
-The [results index](documents/records/README.md) also preserves the earlier small
-recovery studies and the limitations of each comparison.
+A separate [recovery study](documents/records/qwen9b/dev19-recovery.md) covers
+**19 dev task families and 29 conditions**. At 50% retention, fixed recovery
+raised AgentKV oracle success from 3/19 to 7/19 in this one-seed study.
+This is preliminary dev evidence; the cohorts are reported separately.
+
+The [results index](documents/records/README.md) collects both studies, their
+plots and evidence, earlier pilots, and the recorded status of followups.
 
 ## Getting started
 
