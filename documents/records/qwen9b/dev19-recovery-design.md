@@ -225,3 +225,17 @@ not be launched there and wrote no cells. The four completed cells averaged
 0.04 seconds of saving and 1.2 of reset. The eight cells are kept outside
 project comparisons and are not resumed. The workers still loaded their Python
 libraries from shared storage; the cause of the node fault was not established.
+
+Declared after that launch and before the next: workers also unpack the managed
+runtime onto the node's local disk, through the packed-runtime option in the
+[setup guide](../../setup.md), and stage the model and scratch beside it. The
+archive was packed from the same qualified environment and activation verifies
+its identity and lock digests. The library read added after the first smoke run
+is removed as redundant. Compiled-kernel caches and the once-a-minute mirror
+are the remaining uses of shared storage during execution.
+
+A second two-cell smoke run of the same cells repeated every check of the
+first: all 23 turns identical to the two shared-storage launches, first actions
+identical to the first study, three of three saved environments scored. Per
+cell it averaged 0.03 seconds of saving, 0.75 of tools and 1.1 of reset, and
+the first cell no longer carried a library-loading charge.
