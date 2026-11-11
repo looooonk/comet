@@ -25,7 +25,8 @@ recovery benefit. One seed, 19 dev tasks, read offline from the
 Read from every saved attempt of full cache (N=2), AgentKV 50% never and
 AgentKV 50% fixed: 38 attempts each.
 
-The system prompt is 3,360 tokens and tells the agent that its first action
+The system prompt with the task is about 3,400 tokens (3,360 in the attempt
+inspected) and tells the agent that its first action
 must list one app's API names (`show_api_descriptions`) and that it should then
 read one API's documentation at a time (`show_api_doc`). Retention is applied
 every 128 tokens as the prompt is prefilled, so at 50% half of the prompt's

@@ -89,6 +89,9 @@ other two (`50e1ac9_3`, `b119b1f_1`). That the rebuild restores instructions
 the compressed cache had lost is a hypothesis consistent with these counts, not
 something this study isolates.
 
+The [failure reading](dev19-task-characteristics.md) shows what those context
+limits contain and which attempts the rebuild rescued.
+
 ## Cost and failures
 
 All 427 requested rebuilds were admitted; none was refused by the memory cap.
