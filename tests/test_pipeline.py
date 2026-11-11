@@ -8,7 +8,7 @@ from comet.artifacts import read_json, write_json
 from comet.budget import Budget
 from comet.config import AgentProtocol, Condition, Experiment, attempt_seed, comparison_matrix
 from comet.engine.contracts import MODEL_REVISION
-from comet.errors import BudgetExpired, MemoryCapExceeded
+from comet.errors import BudgetExpired, FatalAcceleratorError, MemoryCapExceeded
 from comet.policies import decide
 from comet.runner import Runner
 
@@ -171,6 +171,68 @@ def run_fixture(config, output):
     manifest = runner.run()
     cells = [read_json(output / item["path"]) for item in manifest["cells"]]
     return runner, cells, engines, environments
+
+
+@pytest.mark.parametrize("failure_site", ["generate", "synchronize", "memory_stats"])
+def test_fatal_cuda_failure_preserves_cell_and_leaves_later_tasks_unstarted(
+    config, tmp_path, failure_site
+):
+    config = replace(config, task_ids=["fixture_1", "fixture_2"])
+    clock, environments = Clock(), []
+
+    class PoisonedEngine(FakeEngine):
+        pass
+
+    def fail(*args, **kwargs):
+        raise RuntimeError("CUDA error: an illegal memory access was encountered")
+
+    setattr(PoisonedEngine, failure_site, fail)
+    engine = PoisonedEngine(clock)
+    runner = Runner(
+        config, tmp_path, lambda _: engine,
+        lambda: FakeEnvironment(clock, environments), clock=clock,
+    )
+    with pytest.raises(FatalAcceleratorError, match="remaining cells left unstarted"):
+        runner.run()
+    manifest = read_json(tmp_path / "manifest.json")
+    first_path = tmp_path / manifest["cells"][0]["path"]
+    first = read_json(first_path)
+    assert first["completed"] and not first["inflight"]
+    assert len(first["attempts"]) == len(engine.starts) == 1
+    assert first["attempts"][0]["status"] == "error"
+    assert first["elapsed_seconds"] == config.budget_seconds
+    assert first["reserved_budget_seconds"] > 0
+    assert not (tmp_path / manifest["cells"][1]["path"]).exists()
+    saved = first_path.read_bytes()
+
+    healthy = FakeEngine(clock)
+    resumed = Runner(
+        config, tmp_path, lambda _: healthy,
+        lambda: FakeEnvironment(clock, environments), clock=clock,
+    ).run(resume=True)
+    assert resumed["status"] == "completed"
+    assert first_path.read_bytes() == saved
+    assert len(healthy.starts) == config.conditions[0].max_attempts
+
+
+def test_allocator_oom_does_not_poison_following_cells(config, tmp_path):
+    config = replace(config, task_ids=["fixture_1", "fixture_2"])
+    clock, environments = Clock(), []
+
+    class LimitedEngine(FakeEngine):
+        def generate(self, *args, **kwargs):
+            raise MemoryCapExceeded("CUDA allocator out of memory at the configured cap")
+
+    engine = LimitedEngine(clock)
+    manifest = Runner(
+        config, tmp_path, lambda _: engine,
+        lambda: FakeEnvironment(clock, environments), clock=clock,
+    ).run()
+    assert manifest["status"] == "completed"
+    assert len(engine.starts) == 4
+    for reference in manifest["cells"]:
+        cell = read_json(tmp_path / reference["path"])
+        assert [attempt["status"] for attempt in cell["attempts"]] == ["oom", "oom"]
 
 
 def test_matrix_and_seed_pairing():

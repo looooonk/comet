@@ -182,6 +182,12 @@ process died inside an attempt, its remaining cell
 budget is conservatively consumed and the attempt becomes `interrupted`. This
 avoids granting free compute when an operation has no reliable end timestamp.
 Resume continues other unfinished cells; it does not replay completed attempts.
+An illegal CUDA memory access, device assertion or similar fatal kernel error
+invalidates the process. The runner saves the affected cell as failed, reserves
+its remaining budget and stops before starting later cells. Resume compatible
+unfinished work in a fresh process; the failed cell receives no replacement
+attempt. Ordinary allocator OOMs remain failed attempts under the existing cap
+and do not by themselves imply an unusable CUDA context.
 The interrupted failure is finalized in both the cell and attempt records;
 `reserved_budget_seconds` distinguishes the unobserved reservation from measured
 component timings. See [resume-validation.md](validation/resume.md) for the

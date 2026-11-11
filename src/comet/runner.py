@@ -10,7 +10,7 @@ from comet.artifacts import provenance, read_json, run_lock, write_json
 from comet.budget import Budget
 from comet.clocks import monotonic, wall_time
 from comet.config import Condition, Experiment, attempt_seed
-from comet.errors import BudgetExpired, MemoryCapExceeded, UnsupportedPath
+from comet.errors import BudgetExpired, FatalAcceleratorError, MemoryCapExceeded, UnsupportedPath
 from comet.policies import decide
 
 
@@ -24,6 +24,23 @@ def _plain(value):
 
 def _runtime_contract(metadata: dict) -> dict:
     return {k: v for k, v in metadata.items() if k not in {"model_path", "memory", "warmup"}}
+
+
+def _fatal_cuda_failure(attempt: dict) -> bool:
+    messages = [
+        attempt.get("failure_reason"),
+        attempt.get("metrics", {}).get("memory_error"),
+        *attempt.get("cleanup_errors", []),
+    ]
+    fatal_errors = (
+        "illegal memory access", "device-side assert", "unspecified launch failure",
+        "misaligned address", "illegal instruction",
+    )
+    return any(
+        message and "cuda" in message.lower()
+        and any(error in message.lower() for error in fatal_errors)
+        for message in messages
+    )
 
 
 class Runner:
@@ -278,6 +295,26 @@ class Runner:
                 write_json(attempt_dir / "attempt.json", attempt)
             attempt["budget_elapsed_seconds"] = budget.elapsed
             cell.update(elapsed_seconds=budget.elapsed, inflight=False)
+            if _fatal_cuda_failure(attempt):
+                # A poisoned CUDA context must not consume attempts in later cells.
+                # Retire this cell without a free retry; a fresh process can resume others.
+                reserved = max(0.0, self.config.budget_seconds - budget.elapsed)
+                cell.update(
+                    completed=True, observed_elapsed_seconds=budget.elapsed,
+                    reserved_budget_seconds=reserved,
+                    elapsed_seconds=max(self.config.budget_seconds, budget.elapsed),
+                )
+                attempt.update(
+                    reserved_budget_seconds=reserved,
+                    budget_elapsed_seconds=cell["elapsed_seconds"],
+                )
+                write_json(attempt_dir / "attempt.json", attempt)
+                self._persist_cell(path, cell, budget)
+                raise FatalAcceleratorError(
+                    f"Fatal CUDA failure in {cell['task_id']}/{condition.id}; "
+                    "failed cell saved and remaining cells left unstarted. "
+                    "Resume compatible unfinished work in a fresh process."
+                )
             self._persist_cell(path, cell, budget)
         cell.update(completed=True, elapsed_seconds=budget.elapsed)
         self._persist_cell(path, cell, budget)

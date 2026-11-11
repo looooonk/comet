@@ -8,3 +8,7 @@ class MemoryCapExceeded(MemoryError):
 
 class UnsupportedPath(RuntimeError):
     """An integration cannot preserve the required experimental semantics."""
+
+
+class FatalAcceleratorError(RuntimeError):
+    """The GPU process cannot safely execute another attempt."""
