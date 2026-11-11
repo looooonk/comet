@@ -5,7 +5,7 @@ The current study uses Qwen3.5-9B through the shared hybrid backend.
 | Directory | Contents |
 | --- | --- |
 | `qwen9b/l4/` | Capability baseline, compression and budget pilots, fine grid, diagnostic, dev confirmation and frozen test |
-| `qwen9b/blackwell/` | Three-family train grid, diagnostic, dev confirmation and frozen fifty-family fine grid with eight condition partitions |
+| `qwen9b/blackwell/` | Three-family train grid, diagnostic, dev confirmation, frozen fifty-family fine grid with eight condition partitions, and the nineteen-family dev recovery matrix with four condition groups |
 | `qwen9b/checks/` | Process-interruption validation inputs |
 | `examples/` | Legacy schema/integration examples used by regression tests |
 | `diagnostics/` | Pinned numerical-reference inputs for the legacy backend |

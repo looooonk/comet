@@ -1,0 +1,154 @@
+{
+  "extends": "dev19-recovery-v1.json",
+  "experiment_id": "qwen9b-dev19-frontier-blackwell-v1",
+  "conditions": [
+    {
+      "id": "full_best_of_n",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_70_never",
+      "method": "rkv",
+      "retention": 0.7,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_70_fixed",
+      "method": "rkv",
+      "retention": 0.7,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_60_never",
+      "method": "rkv",
+      "retention": 0.6,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_60_fixed",
+      "method": "rkv",
+      "retention": 0.6,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_never",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_fixed",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_40_never",
+      "method": "rkv",
+      "retention": 0.4,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_40_fixed",
+      "method": "rkv",
+      "retention": 0.4,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_30_never",
+      "method": "rkv",
+      "retention": 0.3,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_30_fixed",
+      "method": "rkv",
+      "retention": 0.3,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_70_never",
+      "method": "agentkv",
+      "retention": 0.7,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_70_fixed",
+      "method": "agentkv",
+      "retention": 0.7,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_60_never",
+      "method": "agentkv",
+      "retention": 0.6,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_60_fixed",
+      "method": "agentkv",
+      "retention": 0.6,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_40_never",
+      "method": "agentkv",
+      "retention": 0.4,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_40_fixed",
+      "method": "agentkv",
+      "retention": 0.4,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_30_never",
+      "method": "agentkv",
+      "retention": 0.3,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_30_fixed",
+      "method": "agentkv",
+      "retention": 0.3,
+      "recovery": "fixed",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Supplemental finer retention grid for the recovery comparison, declared after the seed-17 core matrix and before any execution of this grid: R-KV and AgentKV at 70, 60, 50, 40 and 30 percent retention, each under never and fixed recovery, N=2, plus the full-cache N=2 control. Same 19 dev tasks, seed 17 and every numerical setting and threshold of qwen9b-dev19-recovery-blackwell-v1. Purpose: locate the range of compression over which a single rebuild restores success. StreamingLLM and the dynamic trigger are omitted to bound the grid; the 50 percent conditions repeat the first study as a same-seed consistency check. 399 fresh-start cells. Train/dev evidence; never pooled with test or other cohorts. See documents/records/qwen9b/dev19-recovery-design.md."
+}

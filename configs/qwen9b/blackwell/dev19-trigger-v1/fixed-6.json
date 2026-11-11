@@ -1,0 +1,24 @@
+{
+  "extends": "../dev19-recovery-v1.json",
+  "experiment_id": "qwen9b-dev19-trigger-fixed6-blackwell-v1",
+  "triggers": {
+    "fixed_tool_calls": 6
+  },
+  "conditions": [
+    {
+      "id": "agentkv_50_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_fixed",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Supplemental dev trigger-timing study: AgentKV and R-KV at 50% retention with the single rebuild after 6 tool calls instead of 4; tasks, seed and every other setting are inherited unchanged. Train/dev evidence only; does not retune the frozen test study."
+}

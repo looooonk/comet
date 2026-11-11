@@ -1,0 +1,231 @@
+{
+  "extends": "dev-v1.json",
+  "experiment_id": "qwen9b-dev19-recovery-blackwell-v1",
+  "task_ids": [
+    "0d8a4ee_2",
+    "23cf851_2",
+    "37a8675_1",
+    "383cbac_1",
+    "396c5a2_3",
+    "3ab5b8b_2",
+    "4ec8de5_3",
+    "4fab96f_3",
+    "50e1ac9_3",
+    "530b157_2",
+    "57c3486_1",
+    "6171bbc_2",
+    "68ee2c9_2",
+    "6bdbc26_3",
+    "6c2c621_1",
+    "b119b1f_1",
+    "d4e9306_1",
+    "df61dc5_3",
+    "fac291d_3"
+  ],
+  "conditions": [
+    {
+      "id": "full_once",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "full_best_of_n",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_80_never",
+      "method": "streamingllm",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_80_fixed",
+      "method": "streamingllm",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_80_dynamic",
+      "method": "streamingllm",
+      "retention": 0.8,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_never",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_fixed",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_dynamic",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_25_never",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_25_fixed",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_25_dynamic",
+      "method": "streamingllm",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_80_never",
+      "method": "rkv",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_80_fixed",
+      "method": "rkv",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_80_dynamic",
+      "method": "rkv",
+      "retention": 0.8,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_never",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_fixed",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_dynamic",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_25_never",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_25_fixed",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_25_dynamic",
+      "method": "rkv",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_80_never",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_80_fixed",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_80_dynamic",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_dynamic",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_never",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_fixed",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_dynamic",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Fresh-start core comparison matrix on all 19 dev families: full-cache N=1 and N=2 controls plus StreamingLLM, R-KV and AgentKV at 80, 50 and 25 percent retention under never, fixed and dynamic recovery, N=2. One variant per family chosen from split identifiers only by the rule in documents/records/qwen9b/dev19-recovery-selection.json. Model, hybrid backend, v4 prompt, sampling, seed 17, 16K context, 120-second shared budget, 24 GiB cap and recovery thresholds are inherited unchanged from the qualified Blackwell dev confirmation. Complements the fifty-family test fine grid, which has no recovery arms; this is train/dev evidence and is never pooled with test or other cohorts. Families 4ec8de5 and 396c5a2 were already used for dev confirmation. See documents/records/qwen9b/dev19-recovery-design.md."
+}
