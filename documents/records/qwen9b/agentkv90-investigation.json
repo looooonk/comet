@@ -262,25 +262,31 @@
     "stack_trace_followup_pipeline_passed": 45
   },
   "corrective_replication": {
-    "status": "submitted_waiting_for_setup_and_dev_gate",
+    "status": "frozen_and_queued",
     "tasks": 50,
     "conditions": [
-      "full_best_of_n",
+      "agentkv_90_never",
+      "agentkv_80_never",
       "rkv_90_never",
       "rkv_80_never",
-      "agentkv_90_never",
-      "agentkv_80_never"
+      "full_best_of_n"
     ],
     "source_commit": "d97c49d",
-    "setup_job": "13857395",
+    "setup_job": "13857525",
     "original_results_preserved": true,
-    "dev_job": "13857397",
-    "freeze_job": "13857398",
-    "study_job": "13857399",
-    "scoring_job": "13857400",
+    "freeze_job": "13857620",
+    "study_job": "13857623",
+    "scoring_job": "13857624",
     "gpu_count": 5,
-    "scored_cells": 250,
-    "nominal_seconds_per_worker": 6000
+    "nominal_seconds_per_worker": 6000,
+    "planned_cells": 250,
+    "effective_qos": "burst",
+    "experiment_id": "qwen9b-test50-cuda-repair-v2",
+    "configuration_digest": "fa55a51eb3ddb38e8e482a088ac0e8aa19d2f49c7645cb17655f333a396c76b0",
+    "dev_reference_job": "13857529",
+    "partition": "burst",
+    "cpu_threads_per_worker": 4,
+    "qualification": "each worker must pass its matching two-task dev gate before its 50-task condition within the same allocation"
   },
   "launch_replacements": {
     "diagnostic_harness_pre_inference_failure": "13857261",
@@ -291,6 +297,113 @@
       "13857380",
       "13857382",
       "13857384"
+    ],
+    "cancelled_setup_gpfs_build_cache": "13857395",
+    "superseded_local_runtime_trial": {
+      "setup": "13857514",
+      "status": "completed",
+      "unstarted_dependents_cancelled": [
+        "13857516",
+        "13857517",
+        "13857518",
+        "13857519"
+      ]
+    },
+    "unstarted_seeded_dependents_cancelled": [
+      "13857397",
+      "13857398",
+      "13857399",
+      "13857400"
+    ],
+    "unexecuted_v1_corrective_jobs_cancelled": [
+      "13857597",
+      "13857530",
+      "13857531",
+      "13857605",
+      "13857532"
+    ],
+    "unstarted_two_cpu_queue_probe_cancelled": "13857609",
+    "cancelled_agent_gates_replaced_by_combined_workers": [
+      "13857529_3",
+      "13857529_4"
     ]
-  }
+  },
+  "setup_notes": "Every final worker has a job-local owned checkout, runtime and generated AppWorld code cache. Canonical setup_runtime.sh verifies the seeded pinned archive; other persistent caches and the original AppWorld dataset are reused. Shared-cache setup attempts preceded this qualification.",
+  "launch_scripts": [
+    {
+      "artifact_id": "agentkv90-repair-v4/bootstrap-cache-local.sh",
+      "sha256": "803a325baf5d184e6d6470b3e4633691c628a70ed0989bd7e310baafca72eab0"
+    },
+    {
+      "artifact_id": "agentkv90-repair-v4/qualify-and-study.sh",
+      "sha256": "63946ba9a3b167b5d4d1ef88ed8c4b50bf19d5ce2106189a0babd6d368e721ab"
+    },
+    {
+      "artifact_id": "agentkv90-repair-v4/freeze-v2.sh",
+      "sha256": "715c719c8bac90c49e8eda8498019ad80c496d9c202639e464fc965f78f1913c"
+    },
+    {
+      "artifact_id": "agentkv90-repair-v4/score-v2.sh",
+      "sha256": "7f856c1eafd013951953a026eb05b6874b006a817c5263c6fa455e960b26858a"
+    }
+  ],
+  "completed_dev_gates": [
+    {
+      "artifact_id": "comet-run:990b7b02-2b84-4ccb-80ff-ead6c6562b2e",
+      "condition": "full_best_of_n",
+      "tasks": 2,
+      "status_counts": {
+        "timeout": 2,
+        "completed": 1
+      },
+      "peak_total_vram_bytes": 24803213312,
+      "source_commit": "d97c49d01f8dd3cb2750679f6342eae014bf5e6f",
+      "config_digest": "a3bd223c552a716224963f6687163a0201466e0666a6bb23f07394f78c0b1bfd"
+    },
+    {
+      "artifact_id": "comet-run:8c951d14-b103-46d9-a8f0-c30ab2f81c5f",
+      "condition": "rkv_90_never",
+      "tasks": 2,
+      "status_counts": {
+        "timeout": 2,
+        "completed": 1
+      },
+      "peak_total_vram_bytes": 24436211712,
+      "source_commit": "d97c49d01f8dd3cb2750679f6342eae014bf5e6f",
+      "config_digest": "041a8280f6bffd5d0931331bf7a826178fa62f1374e8e44f5f415f109852c7ac"
+    },
+    {
+      "artifact_id": "comet-run:b2965af4-a88a-4682-a9eb-22d353e0b846",
+      "condition": "rkv_80_never",
+      "tasks": 2,
+      "status_counts": {
+        "timeout": 2
+      },
+      "peak_total_vram_bytes": 21701525504,
+      "source_commit": "d97c49d01f8dd3cb2750679f6342eae014bf5e6f",
+      "config_digest": "e18633632e272fbf963db6cf063415d16dae1788d4f718871ea75023e978204e"
+    }
+  ],
+  "queue_snapshot": {
+    "at": "2026-11-10T23:27:12-05:00",
+    "unavailable_node": "ins047",
+    "node_state": "MIXED+DRAIN",
+    "node_drain_at": "2026-11-10T22:58:20-05:00",
+    "node_drain_reason": "Kill task failed",
+    "worker_start_forecasts": [
+      "2026-11-11T05:41:14-05:00",
+      "2026-11-11T08:15:00-05:00",
+      "2026-11-11T10:45:00-05:00",
+      "2026-11-11T13:15:00-05:00",
+      "2026-11-11T15:45:00-05:00"
+    ],
+    "first_point_planning_window": [
+      "2026-11-11T07:30:00-05:00",
+      "2026-11-11T08:00:00-05:00"
+    ],
+    "all_scored_planning_eta": "2026-11-11T18:00:00-05:00",
+    "not_a_reservation": true,
+    "dependent_on_queue_storage_and_preemption": true
+  },
+  "setup_cleanup_job": "13857644"
 }

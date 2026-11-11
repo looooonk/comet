@@ -88,11 +88,22 @@ R-KV 90% and 80%, and full-cache N=2. Every condition uses repaired runner code,
 the same model/runtime/device, BF16, seed 17, prompt, sampling, 16K context,
 24 GiB cap and 120-second shared two-attempt budget. Each condition receives a
 separate process and GPU. This removes condition-order carryover uniformly.
+Each worker uses an owned job-local checkout, runtime and generated AppWorld
+code cache, while reusing the pinned package archive, shared model/kernel
+caches and the original dataset. This avoids observed shared-filesystem setup
+stalls; the cache-placement change is another reason historical before/after
+differences cannot be attributed solely to the runner repairs.
 
 A [two-task dev gate](../../../configs/qwen9b/blackwell/cuda-repair-dev-v1.json)
-uses the two previously declared dev families for all five conditions. It must
-finish without OOM, CUDA errors or infeasibility before freezing and launching
-the [proposed replication](../../../configs/qwen9b/blackwell/test50-cuda-repair-proposed-v1.json).
+uses the two previously declared dev families for all five conditions. The
+full-cache and both R-KV gates completed without CUDA errors, OOMs or
+infeasibility. The [replication](../../../configs/qwen9b/blackwell/test50-cuda-repair-v2.json)
+is frozen from the completed full-cache pilot. Each worker independently repeats
+its matching two-task gate and must pass before starting its 50-task condition.
+Validation and final execution use separate processes within one GPU allocation,
+so a successful gate does not relinquish scarce GPU capacity. AgentKV 90% and
+80% are scheduled first. This v2 orchestration supersedes the unexecuted v1
+proposal; numerical settings and all five comparisons are unchanged.
 Ordinary task errors and timeouts remain observations. No method, retention,
 prompt or budget is selected using the new success scores.
 
@@ -107,3 +118,22 @@ attributed entirely to either code change.
 Compact audit and launch evidence are in [the investigation record](agentkv90-investigation.json).
 Raw trajectories, diagnostic reports and source snapshots remain in external
 project storage under their recorded portable artifact IDs.
+
+## Submitted jobs and planning ETA
+
+The frozen [five partitions](../../../configs/qwen9b/blackwell/test50-cuda-repair-v2-parts/index.json)
+cover 250 task/condition cells. Source is pinned to `d97c49d`; each worker uses
+one RTX PRO 6000, four host CPU threads and the original 24 GiB cap. Array
+`13857623` runs qualification and final execution; CPU job `13857624` scores
+saved outcomes and verifies complete parent coverage after all workers finish.
+No corrected 50-task results have been produced yet.
+
+At 23:27 ET on November 10, `ins047` was drained after a failed task cleanup
+at 22:58:20, making its spare GPUs unavailable. The actual burst-queue forecasts
+for the five workers were November 11 at 05:41, 08:15, 10:45, 13:15 and 15:45 ET,
+in order: AgentKV 90%, AgentKV 80%, R-KV 90%, R-KV 80%, full KV. These are scheduler
+forecasts, not reservations. Each point has 100 minutes of nominal final task
+budget plus its dev gate, setup and saving. The planning target is the first
+point around 07:30-08:00 ET and complete scored results around **18:00 ET on
+November 11**. Node restoration, early completions, storage stalls and preemption
+can change this estimate. No GCP resources were launched.
