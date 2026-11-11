@@ -156,3 +156,62 @@ four minutes and cancels the running study and everything queued behind it when
 the ten most recent cells have a median reset above 5 seconds or a median save
 or tool time above 8 seconds. The guard never excludes individual cells: a
 study it stops is void as a whole.
+
+The guard stopped that relaunch of the trigger-timing study at 16:22 on
+November 11 after 38 cells, and that launch is void. The ten most recent cells
+had a median 9.0 seconds of trajectory saving (4.3 in tools, 1.1 in reset). Only
+two workers had produced cells, and saves were slow from the first cell, so
+worker count does not explain it. On the same conditions:
+
+| Run | Cells | Median save per cell (s) | Median tool time per call (s) |
+| --- | ---: | ---: | ---: |
+| First study, 50% fixed conditions | 57 | 0.22 | 0.013 |
+| Stopped relaunch, AgentKV 50% fixed | 38 | 5.58 | 0.209 |
+
+The runner writes the trajectory after every turn and syncs the file and its
+directory, about 35 synced writes per cell on the shared filesystem. The
+replicate and the frontier had not started and were cancelled with it. In the
+first study itself the save limit was exceeded in 7 of 542 ten-cell windows
+(largest median 10.1 seconds), and 9 of its 963 attempts ended with the budget
+expiring during a save, so the limit is tighter than the reference run it
+protects.
+
+## Node-local execution storage
+
+Declared on November 11, 2026, after the voided launches above and before the
+next relaunch. Workers for the trigger-timing study, the seed replicate and the
+retention frontier keep the run directory and the AppWorld root on the compute
+node's local disk. A background copy mirrors the run directory to shared
+storage every minute and again at exit. The AppWorld data is unpacked on each
+node from one archive of the pinned 0.2.0 installation, checked against its
+SHA-256 (`f577ec02e4a9...`) before every use, and offline scoring recreates each
+part's recorded root on the scoring node from the same archive. The source
+commit, runtime, model, device, cap, configurations and their digests are
+unchanged; the change is in job scripts outside the checkout. Resets, tool calls
+and saves are still charged to the cell budget and now measure local disk.
+
+A two-cell smoke run on November 11 (AgentKV 50%, rebuild after one tool call,
+seed 17, kept outside the studies) checked the change:
+
+| Check | Result |
+| --- | --- |
+| Trajectory save per cell | 0.03 s (5.58 in the stopped relaunch, 0.22 in the first study) |
+| Reset per attempt | 0.5 s |
+| Actions against the same cells in two shared-storage launches | all 23 turns of 4 attempts identical |
+| First action against the first study's never arm | identical in 4 of 4 attempts |
+| Offline scoring through a recreated root | 3 of 3 saved environments scored |
+
+Tool time was 11.3 seconds in the first smoke cell and 0.7 in the second: the
+first cell of a worker loads tool libraries from the shared runtime
+environment. Replayed on local disk the same calls took 0.03 to 0.4 seconds
+each. Workers now read those libraries once before their first cell; that step
+was added after the smoke run and reads files only.
+
+The first study ran on shared storage while it was healthy (0.9 seconds of
+reset, 2.2 of saving and 1.4 of tools per cell on average), so the relaunched
+studies charge a few seconds less I/O per 120-second cell. Per-cell I/O times
+are reported beside every comparison with seed 17. The frontier's 50%
+conditions repeat the first study, and each trigger-timing attempt shares its
+actions with the first study up to its rebuild; both are checked action for
+action. The order (trigger timing, replicate, frontier), the four-worker limit
+and the guard are as declared above.
