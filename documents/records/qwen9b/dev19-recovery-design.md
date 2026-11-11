@@ -75,6 +75,17 @@ through the shared analysis, bootstrapping tasks with their paired seeds, and
 report seed 17 alongside them descriptively; the shared analysis does not pool
 runs with different seed lists. Status: declared, not yet executed.
 
+A first launch on November 10-11, 2026 was stopped after 28 cells and is void.
+Shared-storage stalls were being charged to the cell budgets: the 24 completed
+cells averaged 29.2 seconds saving trajectories and 18.6 seconds in tools,
+against 2.2 and 1.4 in the first study, and full-cache cells that had finished
+in 16-18 seconds were reaching the 120-second budget. A small atomic write on
+the shared filesystem took a median 3.6 seconds at the time. The partial run is
+kept outside project comparisons and is not resumed; the replicate will be
+launched unchanged into a fresh run directory once storage is healthy, and the
+first cells' save and tool times checked against the first study before it is
+allowed to continue.
+
 ## Supplemental retention frontier
 
 Declared on November 10, 2026, before any execution of this grid. The
