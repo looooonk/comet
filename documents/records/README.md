@@ -18,6 +18,9 @@ selection among attempts; these small samples do not establish a general ranking
 - [Dev failure reading and task characteristics](qwen9b/dev19-task-characteristics.md):
   what fills the context at 50% retention, where the rebuild helped, and which
   task properties go with tolerating compression. Offline, one seed.
+- [Dev trigger timing](qwen9b/dev19-trigger-timing.md): the single rebuild
+  after 1, 2, 6 or 8 tool calls at 50% retention, beside the first study's 4
+  and never. One seed, descriptive.
 - [Validation evidence](qwen9b/validation/): live state, memory, AppWorld and
   interruption checks, including the failed Blackwell 21 GiB qualification.
 - [Cloud ledger](qwen9b/cloud-ledger.json): the existing spending ceiling and

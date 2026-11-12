@@ -123,7 +123,9 @@ context limit than threshold 4, and thresholds 6 and 8 should approach the
 never-rebuild arm. All four points are reported whether or not this holds.
 Each configuration has its own trigger and is analyzed as a separate run;
 comparisons across thresholds are paired by task and descriptive. Status:
-declared, not yet executed.
+completed on November 11, 2026 on node-local storage, without changes to the
+declared configurations. See the [findings](dev19-trigger-timing.md) and
+[compact evidence](dev19-trigger-timing.json).
 
 ## Voided launches on November 11, 2026
 
@@ -239,3 +241,13 @@ first: all 23 turns identical to the two shared-storage launches, first actions
 identical to the first study, three of three saved environments scored. Per
 cell it averaged 0.03 seconds of saving, 0.75 of tools and 1.1 of reset, and
 the first cell no longer carried a library-loading charge.
+
+The relaunch at 18:33 on November 11 completed the trigger-timing study: 152
+cells with means of 0.9 seconds of reset, 0.1 of saving and 0.7 of tools per
+cell, and no worker failure. Its guard was queued to start once every worker
+of the study had started, so it began at 19:11, 34 minutes after the first
+cell; timings over that interval were checked by hand and are inside the
+limits. For the replicate and the frontier, whose workers start in two rounds,
+a second guard with the same limits was started at 20:22, after the
+replicate's first 44 cells (medians of 0.5 seconds of reset, 0.04 of saving and
+0.4 of tools), and another is queued to start with the frontier's first worker.

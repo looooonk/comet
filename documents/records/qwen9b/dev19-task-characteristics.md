@@ -116,6 +116,9 @@ opened with the search were not rescued: eight reached the context limit before
 the fourth tool call, so no rebuild happened, and those that were rebuilt
 already held one or two search results. After the rebuild the agent issued as
 many searches as without it (18 in each arm across the 30 rebuilt pairs).
+The [trigger-timing study](dev19-trigger-timing.md) later moved the rebuild to
+the first tool call: 13 of the 20 search-opened attempts searched again on
+their next action and one passed.
 
 Opening on protocol at 50% is not independent of the task. The 13 on-protocol
 attempts cover nine tasks, six of them Spotify-only (the prompt's own example

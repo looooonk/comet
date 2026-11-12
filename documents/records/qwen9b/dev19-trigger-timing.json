@@ -1,0 +1,1353 @@
+{
+ "after_rebuild": [
+  {
+   "by_opening": {
+    "listing": {
+     "listing_later": 2,
+     "next": {
+      "other": 13
+     },
+     "passed": 7,
+     "rebuilt": 13,
+     "unscored": 0
+    },
+    "other": {
+     "listing_later": 5,
+     "next": {
+      "listing": 5
+     },
+     "passed": 3,
+     "rebuilt": 5,
+     "unscored": 0
+    },
+    "search": {
+     "listing_later": 2,
+     "next": {
+      "listing": 1,
+      "other": 6,
+      "search": 13
+     },
+     "passed": 1,
+     "rebuilt": 20,
+     "unscored": 0
+    }
+   },
+   "method": "agentkv",
+   "threshold": 1
+  },
+  {
+   "by_opening": {
+    "listing": {
+     "listing_later": 2,
+     "next": {
+      "other": 13
+     },
+     "passed": 10,
+     "rebuilt": 13,
+     "unscored": 0
+    },
+    "other": {
+     "listing_later": 2,
+     "next": {
+      "listing": 2,
+      "other": 2,
+      "search": 1
+     },
+     "passed": 2,
+     "rebuilt": 5,
+     "unscored": 0
+    },
+    "search": {
+     "listing_later": 2,
+     "next": {
+      "none": 1,
+      "other": 12,
+      "search": 4
+     },
+     "passed": 1,
+     "rebuilt": 17,
+     "unscored": 0
+    }
+   },
+   "method": "agentkv",
+   "threshold": 2
+  },
+  {
+   "by_opening": {
+    "listing": {
+     "listing_later": 1,
+     "next": {
+      "other": 13
+     },
+     "passed": 8,
+     "rebuilt": 13,
+     "unscored": 0
+    },
+    "other": {
+     "listing_later": 0,
+     "next": {
+      "other": 3,
+      "search": 2
+     },
+     "passed": 1,
+     "rebuilt": 5,
+     "unscored": 0
+    },
+    "search": {
+     "listing_later": 0,
+     "next": {
+      "none": 1,
+      "other": 8,
+      "search": 3
+     },
+     "passed": 1,
+     "rebuilt": 12,
+     "unscored": 0
+    }
+   },
+   "method": "agentkv",
+   "threshold": 4
+  },
+  {
+   "by_opening": {
+    "listing": {
+     "listing_later": 1,
+     "next": {
+      "other": 13
+     },
+     "passed": 5,
+     "rebuilt": 13,
+     "unscored": 0
+    },
+    "other": {
+     "listing_later": 0,
+     "next": {
+      "other": 3,
+      "search": 1
+     },
+     "passed": 1,
+     "rebuilt": 4,
+     "unscored": 0
+    },
+    "search": {
+     "listing_later": 0,
+     "next": {
+      "other": 5,
+      "search": 1
+     },
+     "passed": 0,
+     "rebuilt": 6,
+     "unscored": 0
+    }
+   },
+   "method": "agentkv",
+   "threshold": 6
+  },
+  {
+   "by_opening": {
+    "listing": {
+     "listing_later": 1,
+     "next": {
+      "other": 11
+     },
+     "passed": 5,
+     "rebuilt": 11,
+     "unscored": 0
+    },
+    "other": {
+     "listing_later": 0,
+     "next": {
+      "other": 3,
+      "search": 1
+     },
+     "passed": 1,
+     "rebuilt": 4,
+     "unscored": 0
+    },
+    "search": {
+     "listing_later": 0,
+     "next": {
+      "other": 4
+     },
+     "passed": 0,
+     "rebuilt": 4,
+     "unscored": 0
+    }
+   },
+   "method": "agentkv",
+   "threshold": 8
+  },
+  {
+   "by_opening": {
+    "listing": {
+     "listing_later": 3,
+     "next": {
+      "listing": 2,
+      "other": 7
+     },
+     "passed": 1,
+     "rebuilt": 9,
+     "unscored": 0
+    },
+    "other": {
+     "listing_later": 21,
+     "next": {
+      "listing": 14,
+      "none": 1,
+      "other": 10
+     },
+     "passed": 4,
+     "rebuilt": 25,
+     "unscored": 0
+    }
+   },
+   "method": "rkv",
+   "threshold": 1
+  },
+  {
+   "by_opening": {
+    "listing": {
+     "listing_later": 2,
+     "next": {
+      "other": 7,
+      "search": 1
+     },
+     "passed": 0,
+     "rebuilt": 8,
+     "unscored": 0
+    },
+    "other": {
+     "listing_later": 20,
+     "next": {
+      "listing": 11,
+      "other": 12
+     },
+     "passed": 3,
+     "rebuilt": 23,
+     "unscored": 0
+    }
+   },
+   "method": "rkv",
+   "threshold": 2
+  },
+  {
+   "by_opening": {
+    "listing": {
+     "listing_later": 3,
+     "next": {
+      "listing": 1,
+      "other": 6,
+      "search": 1
+     },
+     "passed": 1,
+     "rebuilt": 8,
+     "unscored": 0
+    },
+    "other": {
+     "listing_later": 10,
+     "next": {
+      "listing": 6,
+      "other": 13,
+      "search": 2
+     },
+     "passed": 1,
+     "rebuilt": 21,
+     "unscored": 0
+    }
+   },
+   "method": "rkv",
+   "threshold": 4
+  },
+  {
+   "by_opening": {
+    "listing": {
+     "listing_later": 0,
+     "next": {
+      "other": 1
+     },
+     "passed": 0,
+     "rebuilt": 1,
+     "unscored": 0
+    },
+    "other": {
+     "listing_later": 6,
+     "next": {
+      "listing": 3,
+      "other": 12
+     },
+     "passed": 1,
+     "rebuilt": 15,
+     "unscored": 0
+    }
+   },
+   "method": "rkv",
+   "threshold": 6
+  },
+  {
+   "by_opening": {
+    "listing": {
+     "listing_later": 0,
+     "next": {
+      "other": 1
+     },
+     "passed": 0,
+     "rebuilt": 1,
+     "unscored": 0
+    },
+    "other": {
+     "listing_later": 4,
+     "next": {
+      "listing": 2,
+      "other": 9,
+      "search": 1
+     },
+     "passed": 0,
+     "rebuilt": 12,
+     "unscored": 0
+    }
+   },
+   "method": "rkv",
+   "threshold": 8
+  }
+ ],
+ "arms": [
+  {
+   "attempts": 38,
+   "by_opening": {
+    "listing": {
+     "attempts": 13,
+     "context_limit": 0,
+     "passed": 7
+    },
+    "other": {
+     "attempts": 5,
+     "context_limit": 0,
+     "passed": 3
+    },
+    "search": {
+     "attempts": 20,
+     "context_limit": 14,
+     "passed": 1
+    }
+   },
+   "cells": 19,
+   "context_limit_attempts": 14,
+   "context_limit_without_rebuild": 0,
+   "first_attempt_solved": 6,
+   "method": "agentkv",
+   "passing_attempts": 11,
+   "per_cell_io": {
+    "cells_at_budget": 0,
+    "elapsed_seconds": 56.1,
+    "reset_seconds": 1.13,
+    "save_seconds": 0.08,
+    "tool_seconds": 0.74
+   },
+   "rebuilt_attempts": 38,
+   "rebuilt_passing_attempts": 11,
+   "shared_analysis": {
+    "latency_seconds": 56.1,
+    "oracle_ci95": [
+     0.21052631578947367,
+     0.631578947368421
+    ],
+    "oracle_success_rate": 0.42105263157894735,
+    "peak_total_vram_bytes": 24813699072,
+    "recovery_admitted": 38,
+    "recovery_mean_cell_budget_fraction": 0.03549,
+    "recovery_requested": 38,
+    "recovery_seconds": 80.9,
+    "single_attempt_success_rate": 0.3157894736842105
+   },
+   "status": {
+    "completed": 24,
+    "context_limit": 14
+   },
+   "tasks_solved": 8,
+   "threshold": 1,
+   "unscored_attempts": 0,
+   "unscored_cells": 0
+  },
+  {
+   "attempts": 38,
+   "by_opening": {
+    "listing": {
+     "attempts": 13,
+     "context_limit": 0,
+     "passed": 10
+    },
+    "other": {
+     "attempts": 5,
+     "context_limit": 1,
+     "passed": 2
+    },
+    "search": {
+     "attempts": 20,
+     "context_limit": 18,
+     "passed": 1
+    }
+   },
+   "cells": 19,
+   "context_limit_attempts": 19,
+   "context_limit_without_rebuild": 3,
+   "first_attempt_solved": 7,
+   "method": "agentkv",
+   "passing_attempts": 13,
+   "per_cell_io": {
+    "cells_at_budget": 0,
+    "elapsed_seconds": 49.1,
+    "reset_seconds": 1.02,
+    "save_seconds": 0.05,
+    "tool_seconds": 0.55
+   },
+   "rebuilt_attempts": 35,
+   "rebuilt_passing_attempts": 13,
+   "shared_analysis": {
+    "latency_seconds": 49.1,
+    "oracle_ci95": [
+     0.21052631578947367,
+     0.631578947368421
+    ],
+    "oracle_success_rate": 0.42105263157894735,
+    "peak_total_vram_bytes": 24811601920,
+    "recovery_admitted": 35,
+    "recovery_mean_cell_budget_fraction": 0.04185,
+    "recovery_requested": 35,
+    "recovery_seconds": 95.4,
+    "single_attempt_success_rate": 0.3684210526315789
+   },
+   "status": {
+    "completed": 19,
+    "context_limit": 19
+   },
+   "tasks_solved": 8,
+   "threshold": 2,
+   "unscored_attempts": 0,
+   "unscored_cells": 0
+  },
+  {
+   "attempts": 38,
+   "by_opening": {
+    "listing": {
+     "attempts": 13,
+     "context_limit": 0,
+     "passed": 8
+    },
+    "other": {
+     "attempts": 5,
+     "context_limit": 2,
+     "passed": 1
+    },
+    "search": {
+     "attempts": 20,
+     "context_limit": 17,
+     "passed": 1
+    }
+   },
+   "cells": 19,
+   "context_limit_attempts": 19,
+   "context_limit_without_rebuild": 8,
+   "first_attempt_solved": 5,
+   "method": "agentkv",
+   "passing_attempts": 10,
+   "per_cell_io": {
+    "cells_at_budget": 1,
+    "elapsed_seconds": 56.6,
+    "reset_seconds": 0.96,
+    "save_seconds": 0.93,
+    "tool_seconds": 0.63
+   },
+   "rebuilt_attempts": 30,
+   "rebuilt_passing_attempts": 10,
+   "status": {
+    "completed": 16,
+    "context_limit": 19,
+    "error": 2,
+    "timeout": 1
+   },
+   "tasks_solved": 7,
+   "threshold": 4,
+   "unscored_attempts": 0,
+   "unscored_cells": 0
+  },
+  {
+   "attempts": 38,
+   "by_opening": {
+    "listing": {
+     "attempts": 13,
+     "context_limit": 0,
+     "passed": 5
+    },
+    "other": {
+     "attempts": 5,
+     "context_limit": 2,
+     "passed": 1
+    },
+    "search": {
+     "attempts": 20,
+     "context_limit": 19,
+     "passed": 0
+    }
+   },
+   "cells": 19,
+   "context_limit_attempts": 21,
+   "context_limit_without_rebuild": 15,
+   "first_attempt_solved": 3,
+   "method": "agentkv",
+   "passing_attempts": 6,
+   "per_cell_io": {
+    "cells_at_budget": 1,
+    "elapsed_seconds": 52.3,
+    "reset_seconds": 1.0,
+    "save_seconds": 0.07,
+    "tool_seconds": 0.36
+   },
+   "rebuilt_attempts": 23,
+   "rebuilt_passing_attempts": 6,
+   "shared_analysis": {
+    "latency_seconds": 52.3,
+    "oracle_ci95": [
+     0.05263157894736842,
+     0.42105263157894735
+    ],
+    "oracle_success_rate": 0.21052631578947367,
+    "peak_total_vram_bytes": 24811601920,
+    "recovery_admitted": 23,
+    "recovery_mean_cell_budget_fraction": 0.03172,
+    "recovery_requested": 23,
+    "recovery_seconds": 72.3,
+    "single_attempt_success_rate": 0.15789473684210525
+   },
+   "status": {
+    "completed": 16,
+    "context_limit": 21,
+    "timeout": 1
+   },
+   "tasks_solved": 4,
+   "threshold": 6,
+   "unscored_attempts": 0,
+   "unscored_cells": 0
+  },
+  {
+   "attempts": 37,
+   "by_opening": {
+    "listing": {
+     "attempts": 12,
+     "context_limit": 1,
+     "passed": 5
+    },
+    "other": {
+     "attempts": 5,
+     "context_limit": 2,
+     "passed": 1
+    },
+    "search": {
+     "attempts": 20,
+     "context_limit": 18,
+     "passed": 0
+    }
+   },
+   "cells": 19,
+   "context_limit_attempts": 21,
+   "context_limit_without_rebuild": 17,
+   "first_attempt_solved": 3,
+   "method": "agentkv",
+   "passing_attempts": 6,
+   "per_cell_io": {
+    "cells_at_budget": 2,
+    "elapsed_seconds": 58.2,
+    "reset_seconds": 1.03,
+    "save_seconds": 0.09,
+    "tool_seconds": 0.39
+   },
+   "rebuilt_attempts": 19,
+   "rebuilt_passing_attempts": 6,
+   "shared_analysis": {
+    "latency_seconds": 58.2,
+    "oracle_ci95": [
+     0.05263157894736842,
+     0.42105263157894735
+    ],
+    "oracle_success_rate": 0.21052631578947367,
+    "peak_total_vram_bytes": 24822087680,
+    "recovery_admitted": 19,
+    "recovery_mean_cell_budget_fraction": 0.02841,
+    "recovery_requested": 19,
+    "recovery_seconds": 64.8,
+    "single_attempt_success_rate": 0.15789473684210525
+   },
+   "status": {
+    "completed": 14,
+    "context_limit": 21,
+    "timeout": 2
+   },
+   "tasks_solved": 4,
+   "threshold": 8,
+   "unscored_attempts": 0,
+   "unscored_cells": 0
+  },
+  {
+   "attempts": 38,
+   "by_opening": {
+    "listing": {
+     "attempts": 13,
+     "context_limit": 3,
+     "passed": 3
+    },
+    "other": {
+     "attempts": 5,
+     "context_limit": 3,
+     "passed": 1
+    },
+    "search": {
+     "attempts": 20,
+     "context_limit": 18,
+     "passed": 0
+    }
+   },
+   "cells": 19,
+   "context_limit_attempts": 24,
+   "context_limit_without_rebuild": 24,
+   "first_attempt_solved": 2,
+   "method": "agentkv",
+   "passing_attempts": 4,
+   "per_cell_io": {
+    "cells_at_budget": 3,
+    "elapsed_seconds": 57.6,
+    "reset_seconds": 1.1,
+    "save_seconds": 0.12,
+    "tool_seconds": 0.42
+   },
+   "rebuilt_attempts": 0,
+   "rebuilt_passing_attempts": 0,
+   "status": {
+    "completed": 11,
+    "context_limit": 24,
+    "timeout": 3
+   },
+   "tasks_solved": 3,
+   "threshold": "never",
+   "unscored_attempts": 0,
+   "unscored_cells": 0
+  },
+  {
+   "attempts": 34,
+   "by_opening": {
+    "listing": {
+     "attempts": 9,
+     "context_limit": 0,
+     "passed": 1
+    },
+    "other": {
+     "attempts": 25,
+     "context_limit": 1,
+     "passed": 4
+    }
+   },
+   "cells": 19,
+   "context_limit_attempts": 1,
+   "context_limit_without_rebuild": 0,
+   "first_attempt_solved": 3,
+   "method": "rkv",
+   "passing_attempts": 5,
+   "per_cell_io": {
+    "cells_at_budget": 6,
+    "elapsed_seconds": 94.3,
+    "reset_seconds": 0.97,
+    "save_seconds": 0.12,
+    "tool_seconds": 0.83
+   },
+   "rebuilt_attempts": 34,
+   "rebuilt_passing_attempts": 5,
+   "shared_analysis": {
+    "latency_seconds": 94.3,
+    "oracle_ci95": [
+     0.0,
+     0.3157894736842105
+    ],
+    "oracle_success_rate": 0.15789473684210525,
+    "peak_total_vram_bytes": 24803213312,
+    "recovery_admitted": 34,
+    "recovery_mean_cell_budget_fraction": 0.02283,
+    "recovery_requested": 34,
+    "recovery_seconds": 52.1,
+    "single_attempt_success_rate": 0.15789473684210525
+   },
+   "status": {
+    "completed": 13,
+    "context_limit": 1,
+    "error": 14,
+    "timeout": 6
+   },
+   "tasks_solved": 3,
+   "threshold": 1,
+   "unscored_attempts": 0,
+   "unscored_cells": 0
+  },
+  {
+   "attempts": 31,
+   "by_opening": {
+    "listing": {
+     "attempts": 8,
+     "context_limit": 0,
+     "passed": 0
+    },
+    "other": {
+     "attempts": 23,
+     "context_limit": 1,
+     "passed": 3
+    }
+   },
+   "cells": 19,
+   "context_limit_attempts": 1,
+   "context_limit_without_rebuild": 0,
+   "first_attempt_solved": 2,
+   "method": "rkv",
+   "passing_attempts": 3,
+   "per_cell_io": {
+    "cells_at_budget": 12,
+    "elapsed_seconds": 100.9,
+    "reset_seconds": 0.88,
+    "save_seconds": 0.15,
+    "tool_seconds": 0.96
+   },
+   "rebuilt_attempts": 31,
+   "rebuilt_passing_attempts": 3,
+   "shared_analysis": {
+    "latency_seconds": 100.9,
+    "oracle_ci95": [
+     0.0,
+     0.2631578947368421
+    ],
+    "oracle_success_rate": 0.10526315789473684,
+    "peak_total_vram_bytes": 24813699072,
+    "recovery_admitted": 31,
+    "recovery_mean_cell_budget_fraction": 0.02104,
+    "recovery_requested": 31,
+    "recovery_seconds": 48.0,
+    "single_attempt_success_rate": 0.10526315789473684
+   },
+   "status": {
+    "completed": 9,
+    "context_limit": 1,
+    "error": 9,
+    "timeout": 12
+   },
+   "tasks_solved": 2,
+   "threshold": 2,
+   "unscored_attempts": 0,
+   "unscored_cells": 0
+  },
+  {
+   "attempts": 32,
+   "by_opening": {
+    "listing": {
+     "attempts": 8,
+     "context_limit": 1,
+     "passed": 1
+    },
+    "other": {
+     "attempts": 24,
+     "context_limit": 0,
+     "passed": 1
+    }
+   },
+   "cells": 19,
+   "context_limit_attempts": 1,
+   "context_limit_without_rebuild": 0,
+   "first_attempt_solved": 2,
+   "method": "rkv",
+   "passing_attempts": 2,
+   "per_cell_io": {
+    "cells_at_budget": 11,
+    "elapsed_seconds": 99.6,
+    "reset_seconds": 0.88,
+    "save_seconds": 0.37,
+    "tool_seconds": 3.04
+   },
+   "rebuilt_attempts": 29,
+   "rebuilt_passing_attempts": 2,
+   "status": {
+    "completed": 7,
+    "context_limit": 1,
+    "error": 13,
+    "timeout": 11
+   },
+   "tasks_solved": 2,
+   "threshold": 4,
+   "unscored_attempts": 0,
+   "unscored_cells": 0
+  },
+  {
+   "attempts": 28,
+   "by_opening": {
+    "listing": {
+     "attempts": 7,
+     "context_limit": 1,
+     "passed": 0
+    },
+    "other": {
+     "attempts": 21,
+     "context_limit": 0,
+     "passed": 1
+    }
+   },
+   "cells": 19,
+   "context_limit_attempts": 1,
+   "context_limit_without_rebuild": 0,
+   "first_attempt_solved": 1,
+   "method": "rkv",
+   "passing_attempts": 1,
+   "per_cell_io": {
+    "cells_at_budget": 14,
+    "elapsed_seconds": 102.7,
+    "reset_seconds": 0.74,
+    "save_seconds": 0.15,
+    "tool_seconds": 0.89
+   },
+   "rebuilt_attempts": 16,
+   "rebuilt_passing_attempts": 1,
+   "shared_analysis": {
+    "latency_seconds": 102.7,
+    "oracle_ci95": [
+     0.0,
+     0.15789473684210525
+    ],
+    "oracle_success_rate": 0.05263157894736842,
+    "peak_total_vram_bytes": 24813699072,
+    "recovery_admitted": 16,
+    "recovery_mean_cell_budget_fraction": 0.01416,
+    "recovery_requested": 16,
+    "recovery_seconds": 32.3,
+    "single_attempt_success_rate": 0.05263157894736842
+   },
+   "status": {
+    "completed": 4,
+    "context_limit": 1,
+    "error": 9,
+    "timeout": 14
+   },
+   "tasks_solved": 1,
+   "threshold": 6,
+   "unscored_attempts": 0,
+   "unscored_cells": 0
+  },
+  {
+   "attempts": 28,
+   "by_opening": {
+    "listing": {
+     "attempts": 7,
+     "context_limit": 0,
+     "passed": 0
+    },
+    "other": {
+     "attempts": 21,
+     "context_limit": 0,
+     "passed": 0
+    }
+   },
+   "cells": 19,
+   "context_limit_attempts": 0,
+   "context_limit_without_rebuild": 0,
+   "first_attempt_solved": 0,
+   "method": "rkv",
+   "passing_attempts": 0,
+   "per_cell_io": {
+    "cells_at_budget": 15,
+    "elapsed_seconds": 103.9,
+    "reset_seconds": 0.74,
+    "save_seconds": 0.2,
+    "tool_seconds": 0.84
+   },
+   "rebuilt_attempts": 13,
+   "rebuilt_passing_attempts": 0,
+   "shared_analysis": {
+    "latency_seconds": 103.9,
+    "oracle_ci95": [
+     0.0,
+     0.0
+    ],
+    "oracle_success_rate": 0.0,
+    "peak_total_vram_bytes": 24784338944,
+    "recovery_admitted": 13,
+    "recovery_mean_cell_budget_fraction": 0.01207,
+    "recovery_requested": 13,
+    "recovery_seconds": 27.5,
+    "single_attempt_success_rate": 0.0
+   },
+   "status": {
+    "completed": 4,
+    "error": 9,
+    "timeout": 15
+   },
+   "tasks_solved": 0,
+   "threshold": 8,
+   "unscored_attempts": 0,
+   "unscored_cells": 0
+  },
+  {
+   "attempts": 30,
+   "by_opening": {
+    "listing": {
+     "attempts": 7,
+     "context_limit": 0,
+     "passed": 0
+    },
+    "other": {
+     "attempts": 23,
+     "context_limit": 0,
+     "passed": 0
+    }
+   },
+   "cells": 19,
+   "context_limit_attempts": 0,
+   "context_limit_without_rebuild": 0,
+   "first_attempt_solved": 0,
+   "method": "rkv",
+   "passing_attempts": 0,
+   "per_cell_io": {
+    "cells_at_budget": 10,
+    "elapsed_seconds": 92.6,
+    "reset_seconds": 0.78,
+    "save_seconds": 0.81,
+    "tool_seconds": 1.36
+   },
+   "rebuilt_attempts": 0,
+   "rebuilt_passing_attempts": 0,
+   "status": {
+    "completed": 4,
+    "error": 16,
+    "timeout": 10
+   },
+   "tasks_solved": 0,
+   "threshold": "never",
+   "unscored_attempts": 0,
+   "unscored_cells": 0
+  }
+ ],
+ "full_cache_reference": {
+  "condition": "full_best_of_n",
+  "source": "dev19-recovery-v1",
+  "tasks_solved": 6
+ },
+ "method": "Offline read of saved attempts and offline scores; thresholds compared task-paired and descriptively.",
+ "paired_oracle": [
+  {
+   "both": 3,
+   "method": "agentkv",
+   "neither": 11,
+   "pairs": 19,
+   "reference": "never",
+   "reference_only": [],
+   "sign_test_p": 0.0625,
+   "threshold": 1,
+   "threshold_only": [
+    "396c5a2_3",
+    "6c2c621_1",
+    "b119b1f_1",
+    "d4e9306_1",
+    "fac291d_3"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 6,
+   "method": "agentkv",
+   "neither": 10,
+   "pairs": 19,
+   "reference": 4,
+   "reference_only": [
+    "50e1ac9_3"
+   ],
+   "sign_test_p": 1.0,
+   "threshold": 1,
+   "threshold_only": [
+    "d4e9306_1",
+    "fac291d_3"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 3,
+   "method": "agentkv",
+   "neither": 11,
+   "pairs": 19,
+   "reference": "never",
+   "reference_only": [],
+   "sign_test_p": 0.0625,
+   "threshold": 2,
+   "threshold_only": [
+    "396c5a2_3",
+    "50e1ac9_3",
+    "6c2c621_1",
+    "b119b1f_1",
+    "fac291d_3"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 7,
+   "method": "agentkv",
+   "neither": 11,
+   "pairs": 19,
+   "reference": 4,
+   "reference_only": [],
+   "sign_test_p": 1.0,
+   "threshold": 2,
+   "threshold_only": [
+    "fac291d_3"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 3,
+   "method": "agentkv",
+   "neither": 12,
+   "pairs": 19,
+   "reference": "never",
+   "reference_only": [],
+   "sign_test_p": 0.125,
+   "threshold": 4,
+   "threshold_only": [
+    "396c5a2_3",
+    "50e1ac9_3",
+    "6c2c621_1",
+    "b119b1f_1"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 3,
+   "method": "agentkv",
+   "neither": 15,
+   "pairs": 19,
+   "reference": "never",
+   "reference_only": [],
+   "sign_test_p": 1.0,
+   "threshold": 6,
+   "threshold_only": [
+    "396c5a2_3"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 4,
+   "method": "agentkv",
+   "neither": 12,
+   "pairs": 19,
+   "reference": 4,
+   "reference_only": [
+    "50e1ac9_3",
+    "6c2c621_1",
+    "b119b1f_1"
+   ],
+   "sign_test_p": 0.25,
+   "threshold": 6,
+   "threshold_only": [],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 3,
+   "method": "agentkv",
+   "neither": 15,
+   "pairs": 19,
+   "reference": "never",
+   "reference_only": [],
+   "sign_test_p": 1.0,
+   "threshold": 8,
+   "threshold_only": [
+    "396c5a2_3"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 4,
+   "method": "agentkv",
+   "neither": 12,
+   "pairs": 19,
+   "reference": 4,
+   "reference_only": [
+    "50e1ac9_3",
+    "6c2c621_1",
+    "b119b1f_1"
+   ],
+   "sign_test_p": 0.25,
+   "threshold": 8,
+   "threshold_only": [],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 0,
+   "method": "rkv",
+   "neither": 16,
+   "pairs": 19,
+   "reference": "never",
+   "reference_only": [],
+   "sign_test_p": 0.25,
+   "threshold": 1,
+   "threshold_only": [
+    "23cf851_2",
+    "6bdbc26_3",
+    "fac291d_3"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 2,
+   "method": "rkv",
+   "neither": 16,
+   "pairs": 19,
+   "reference": 4,
+   "reference_only": [],
+   "sign_test_p": 1.0,
+   "threshold": 1,
+   "threshold_only": [
+    "6bdbc26_3"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 0,
+   "method": "rkv",
+   "neither": 17,
+   "pairs": 19,
+   "reference": "never",
+   "reference_only": [],
+   "sign_test_p": 0.5,
+   "threshold": 2,
+   "threshold_only": [
+    "23cf851_2",
+    "6bdbc26_3"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 1,
+   "method": "rkv",
+   "neither": 16,
+   "pairs": 19,
+   "reference": 4,
+   "reference_only": [
+    "fac291d_3"
+   ],
+   "sign_test_p": 1.0,
+   "threshold": 2,
+   "threshold_only": [
+    "6bdbc26_3"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 0,
+   "method": "rkv",
+   "neither": 17,
+   "pairs": 19,
+   "reference": "never",
+   "reference_only": [],
+   "sign_test_p": 0.5,
+   "threshold": 4,
+   "threshold_only": [
+    "23cf851_2",
+    "fac291d_3"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 0,
+   "method": "rkv",
+   "neither": 18,
+   "pairs": 19,
+   "reference": "never",
+   "reference_only": [],
+   "sign_test_p": 1.0,
+   "threshold": 6,
+   "threshold_only": [
+    "23cf851_2"
+   ],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 1,
+   "method": "rkv",
+   "neither": 17,
+   "pairs": 19,
+   "reference": 4,
+   "reference_only": [
+    "fac291d_3"
+   ],
+   "sign_test_p": 1.0,
+   "threshold": 6,
+   "threshold_only": [],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 0,
+   "method": "rkv",
+   "neither": 19,
+   "pairs": 19,
+   "reference": "never",
+   "reference_only": [],
+   "sign_test_p": 1.0,
+   "threshold": 8,
+   "threshold_only": [],
+   "unscored_pairs": 0
+  },
+  {
+   "both": 0,
+   "method": "rkv",
+   "neither": 17,
+   "pairs": 19,
+   "reference": 4,
+   "reference_only": [
+    "23cf851_2",
+    "fac291d_3"
+   ],
+   "sign_test_p": 0.5,
+   "threshold": 8,
+   "threshold_only": [],
+   "unscored_pairs": 0
+  }
+ ],
+ "prefix_checks": [
+  {
+   "attempts_compared": 38,
+   "consistent": 38,
+   "divergent": [],
+   "method": "agentkv",
+   "reference": "never",
+   "threshold": 1,
+   "tool_call_mismatches": 0
+  },
+  {
+   "attempts_compared": 38,
+   "consistent": 38,
+   "divergent": [],
+   "method": "agentkv",
+   "reference": "never",
+   "threshold": 2,
+   "tool_call_mismatches": 0
+  },
+  {
+   "attempts_compared": 38,
+   "consistent": 38,
+   "divergent": [],
+   "method": "agentkv",
+   "reference": "never",
+   "threshold": 4,
+   "tool_call_mismatches": 0
+  },
+  {
+   "attempts_compared": 38,
+   "consistent": 38,
+   "divergent": [],
+   "method": "agentkv",
+   "reference": "never",
+   "threshold": 6,
+   "tool_call_mismatches": 0
+  },
+  {
+   "attempts_compared": 37,
+   "consistent": 37,
+   "divergent": [],
+   "method": "agentkv",
+   "reference": "never",
+   "threshold": 8,
+   "tool_call_mismatches": 0
+  },
+  {
+   "attempts_compared": 29,
+   "consistent": 29,
+   "divergent": [],
+   "method": "rkv",
+   "reference": "never",
+   "threshold": 1,
+   "tool_call_mismatches": 0
+  },
+  {
+   "attempts_compared": 29,
+   "consistent": 29,
+   "divergent": [],
+   "method": "rkv",
+   "reference": "never",
+   "threshold": 2,
+   "tool_call_mismatches": 1
+  },
+  {
+   "attempts_compared": 29,
+   "consistent": 29,
+   "divergent": [],
+   "method": "rkv",
+   "reference": "never",
+   "threshold": 4,
+   "tool_call_mismatches": 1
+  },
+  {
+   "attempts_compared": 28,
+   "consistent": 28,
+   "divergent": [],
+   "method": "rkv",
+   "reference": "never",
+   "threshold": 6,
+   "tool_call_mismatches": 0
+  },
+  {
+   "attempts_compared": 27,
+   "consistent": 27,
+   "divergent": [],
+   "method": "rkv",
+   "reference": "never",
+   "threshold": 8,
+   "tool_call_mismatches": 0
+  }
+ ],
+ "provenance": {
+  "compact_export": "dev19-trigger-v1-slim.json.gz",
+  "compact_export_sha256": "86e39a69ca4c0ac29ca3765beb1afd7d4125fbb03ee2848a7adf8b5667f5c015",
+  "contents": "per-attempt actions, observation sizes, statuses, rebuild triggers and offline scores; complete run directories remain in external project storage",
+  "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "executed": "2026-11-11",
+  "runs": [
+   {
+    "config_digest": "4b1e3009faf6db6c3f68c96bb85562002d1bf24e3a66814d7916aa809de505c0",
+    "fixed_tool_calls": 1,
+    "group": "part-00",
+    "run_id": "ad5373fa-5125-4885-85bf-d40f74e872b3"
+   },
+   {
+    "config_digest": "5aaae14933cd9c0d4017e9d017eca3b4334d65345c43c693689df6982fde4180",
+    "fixed_tool_calls": 2,
+    "group": "part-01",
+    "run_id": "1fe5b7c0-e78f-41cc-93e0-1f1ed8f18c1a"
+   },
+   {
+    "config_digest": "7132e452f4a5ca08f6e30a6ebb0edccb102e5bc7b3fd6df5557ff1c6891ae512",
+    "fixed_tool_calls": 6,
+    "group": "part-02",
+    "run_id": "87887b21-8956-4f94-82d1-8e2e56f2e616"
+   },
+   {
+    "config_digest": "b8ea4825c9fc493842f45c1296fe315f38904660c36d6808c9cafa93ad42f6df",
+    "fixed_tool_calls": 8,
+    "group": "part-03",
+    "run_id": "6ab56fa0-4d5a-4c1c-a332-df2a3737ed89"
+   }
+  ],
+  "scheduler_jobs": {
+   "export": "13864756",
+   "scoring": "13864755",
+   "workers": "13864754_[0-3]"
+  },
+  "source_commit": "6164ba9047348c7a270589a386648d34de5373fc",
+  "storage": "node-local run directory and AppWorld root, mirrored to shared storage"
+ },
+ "retention": 0.5,
+ "schema_version": 1,
+ "seed": 17,
+ "sources": {
+  "threshold_4_and_never": "dev19-recovery-v1",
+  "thresholds_1_2_6_8": "dev19-trigger-v1"
+ },
+ "split": "dev",
+ "study": "dev19-trigger-v1",
+ "tasks": 19
+}
