@@ -8,10 +8,11 @@ from __future__ import annotations
 
 from collections import Counter
 
-from comet.task_characteristics import opening_api
+from comet.task_characteristics import API_CALL, opening_api
 
+LISTING_API = "api_docs.show_api_descriptions"
 OPENINGS = {
-    "api_docs.show_api_descriptions": "listing",
+    LISTING_API: "listing",
     "api_docs.search_api_docs": "search",
 }
 
@@ -106,6 +107,14 @@ def _opening(attempt: dict) -> str:
     return OPENINGS.get(opening_api(attempt) or "", "other")
 
 
+def _rebuilt(attempt: dict) -> bool:
+    return (attempt.get("rebuilds") or 0) > 0
+
+
+def _calls_listing(action: str) -> bool:
+    return any(f"{app}.{name}" == LISTING_API for app, name in API_CALL.findall(action))
+
+
 def _solved(cells: list[dict], field: str) -> int | None:
     """Count of cells solved on `field`; None when any cell is unscored on it."""
     values = [cell.get(field) for cell in cells]
@@ -128,11 +137,18 @@ def arm_summary(cells: list[dict]) -> dict:
         "cells": len(cells),
         "attempts": len(attempts),
         "unscored_cells": sum(cell.get("oracle_success") is None for cell in cells),
+        "unscored_attempts": sum(attempt.get("success") is None for attempt in attempts),
         "tasks_solved": _solved(cells, "oracle_success"),
         "first_attempt_solved": _solved(cells, "single_attempt_success"),
         "passing_attempts": sum(bool(attempt.get("success")) for attempt in attempts),
         "context_limit_attempts": sum(attempt.get("status") == "context_limit" for attempt in attempts),
-        "rebuilt_attempts": sum((attempt.get("rebuilds") or 0) > 0 for attempt in attempts),
+        "context_limit_without_rebuild": sum(
+            attempt.get("status") == "context_limit" and not _rebuilt(attempt) for attempt in attempts
+        ),
+        "rebuilt_attempts": sum(_rebuilt(attempt) for attempt in attempts),
+        "rebuilt_passing_attempts": sum(
+            _rebuilt(attempt) and bool(attempt.get("success")) for attempt in attempts
+        ),
         "status": dict(Counter(attempt.get("status") for attempt in attempts)),
         "by_opening": openings,
     }
@@ -155,3 +171,53 @@ def paired_tasks(left: list[dict], right: list[dict]) -> dict:
         "right_only": sorted(task for task, a, b in pairs if b and not a),
         "neither": sum(not a and not b for _, a, b in pairs),
     }
+
+
+def _rebuild_turn(attempt: dict, actions: list[str]) -> int:
+    """Index of the first turn generated after the attempt's recorded rebuild.
+
+    The recorded trigger is used, not the configured threshold: a rebuild
+    refused at the threshold may be admitted on a later turn.
+    """
+    calls = (attempt.get("recovery_trigger") or {}).get("tool_calls")
+    if calls is None:
+        raise ValueError(f"Rebuilt attempt {attempt.get('attempt_index')} has no recovery trigger")
+    if sum(bool(action) for action in actions) < calls:
+        raise ValueError(
+            f"Rebuilt attempt {attempt.get('attempt_index')} has fewer executed actions "
+            f"than the {calls} tool calls recorded at its rebuild"
+        )
+    return turns_before_rebuild(actions, calls)
+
+
+def after_rebuild(cells: list[dict]) -> dict:
+    """What rebuilt attempts did next, grouped by how they had opened.
+
+    `next` classifies the first executed action after the rebuild the same way
+    as an opening, or `none` when the attempt ended there; `listing_later`
+    counts attempts that called the compact listing at any point after it.
+    Attempts without a rebuild are left out, and unscored ones are counted
+    apart from failures.
+    """
+    report: dict[str, dict] = {}
+    for cell in cells:
+        for attempt in cell["attempts"]:
+            if not _rebuilt(attempt):
+                continue
+            actions = _actions(attempt)
+            later = [action for action in actions[_rebuild_turn(attempt, actions):] if action]
+            following = "none"
+            if later:
+                following = OPENINGS.get(opening_api({"turns": [{"action": later[0]}]}) or "", "other")
+            opening = _opening(attempt)
+            previous = report.get(
+                opening, {"rebuilt": 0, "passed": 0, "unscored": 0, "next": {}, "listing_later": 0}
+            )
+            report[opening] = {
+                "rebuilt": previous["rebuilt"] + 1,
+                "passed": previous["passed"] + int(bool(attempt.get("success"))),
+                "unscored": previous["unscored"] + int(attempt.get("success") is None),
+                "next": {**previous["next"], following: previous["next"].get(following, 0) + 1},
+                "listing_later": previous["listing_later"] + int(any(_calls_listing(a) for a in later)),
+            }
+    return report

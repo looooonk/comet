@@ -1,6 +1,7 @@
 import pytest
 
 from comet.trigger_timing import (
+    after_rebuild,
     arm_summary,
     paired_tasks,
     prefix_report,
@@ -12,9 +13,10 @@ LISTING = "print(apis.api_docs.show_api_descriptions(app_name='spotify'))"
 SEARCH = "print(apis.api_docs.search_api_docs(query='playlist'))"
 
 
-def _attempt(actions, status="completed", success=False, rebuilds=0, index=0):
+def _attempt(actions, status="completed", success=False, rebuilds=0, index=0, rebuilt_after=1):
+    trigger = {"tool_calls": rebuilt_after, "context_tokens": 5000} if rebuilds else None
     return {"attempt_index": index, "status": status, "success": success, "rebuilds": rebuilds,
-            "tool_calls": sum(bool(a) for a in actions),
+            "recovery_trigger": trigger, "tool_calls": sum(bool(a) for a in actions),
             "turns": [{"action": a, "obs_chars": 10, "obs_head": ""} for a in actions]}
 
 
@@ -138,3 +140,56 @@ def test_arm_summary_scores_each_metric_separately():
     assert summary["tasks_solved"] == 1 and summary["first_attempt_solved"] is None
     unscored = arm_summary([{**_cell("t1", []), "oracle_success": None, "single_attempt_success": None}])
     assert unscored["tasks_solved"] is None and unscored["first_attempt_solved"] is None
+
+
+def test_arm_summary_separates_context_limits_reached_without_a_rebuild():
+    cells = [
+        _cell("t1", [_attempt([SEARCH], status="context_limit"),
+                     _attempt([SEARCH, SEARCH], status="context_limit", rebuilds=1, index=1)]),
+        _cell("t2", [_attempt([LISTING, "x"], success=True, rebuilds=1)], oracle=True),
+    ]
+    summary = arm_summary(cells)
+    assert summary["context_limit_attempts"] == 2
+    assert summary["context_limit_without_rebuild"] == 1
+    assert summary["rebuilt_passing_attempts"] == 1
+
+
+def test_after_rebuild_reports_the_next_lookup_by_opening():
+    cells = [
+        _cell("t1", [_attempt([SEARCH, SEARCH, "x"], status="context_limit", rebuilds=1),
+                     _attempt([SEARCH, "x = 1", LISTING], success=True, rebuilds=1, index=1)]),
+        _cell("t2", [_attempt([LISTING, "x"], success=True, rebuilds=1),
+                     _attempt([SEARCH], rebuilds=1, index=1)]),
+        _cell("t3", [_attempt([SEARCH, LISTING], status="context_limit")]),
+    ]
+    report = after_rebuild(cells)
+    assert report == {
+        "search": {"rebuilt": 3, "passed": 1, "unscored": 0,
+                   "next": {"search": 1, "other": 1, "none": 1}, "listing_later": 1},
+        "listing": {"rebuilt": 1, "passed": 1, "unscored": 0, "next": {"other": 1}, "listing_later": 0},
+    }
+
+
+def test_after_rebuild_starts_from_the_recorded_rebuild_not_the_threshold():
+    # A rebuild refused at the threshold can be admitted later; the record says when.
+    late = _attempt([SEARCH, "", SEARCH, "x = 1", LISTING], rebuilds=1, rebuilt_after=3)
+    assert after_rebuild([_cell("t1", [late])])["search"]["next"] == {"listing": 1}
+    on_time = _attempt([SEARCH, "", SEARCH, LISTING], rebuilds=1, rebuilt_after=2)
+    assert after_rebuild([_cell("t1", [on_time])])["search"]["next"] == {"listing": 1}
+
+
+def test_after_rebuild_rejects_rebuilt_attempts_it_cannot_place():
+    untraced = {**_attempt([SEARCH, "x"], rebuilds=1), "recovery_trigger": None}
+    with pytest.raises(ValueError, match="no recovery trigger"):
+        after_rebuild([_cell("t1", [untraced])])
+    short = _attempt([SEARCH], rebuilds=1, rebuilt_after=2)
+    with pytest.raises(ValueError, match="fewer executed actions"):
+        after_rebuild([_cell("t1", [short])])
+
+
+def test_unscored_attempts_are_counted_apart_from_failures():
+    unscored = {**_attempt([SEARCH, "x"], rebuilds=1), "success": None}
+    cells = [_cell("t1", [unscored, _attempt([LISTING], success=True, index=1)], oracle=True)]
+    assert after_rebuild(cells)["search"] == {"rebuilt": 1, "passed": 0, "unscored": 1,
+                                              "next": {"other": 1}, "listing_later": 0}
+    assert arm_summary(cells)["unscored_attempts"] == 1
