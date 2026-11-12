@@ -15,6 +15,10 @@ uncertainty and runtime failures limit claims of a general ranking.
   This never-rebuild study retains the CUDA-contaminated AgentKV 90% result.
 - [Fifty-family study design](qwen9b/test50-design.md): frozen task selection,
   matched settings, qualification and execution history.
+- [Fifty-task corrective replication](qwen9b/test50-cuda-repair.md): five
+  conditions, 250 scored cells and no CUDA errors or OOMs, completed November 11.
+  AgentKV 90% reaches 20%, versus 18% at 80%; shared-storage delays limit
+  accuracy comparisons. Separate from the original compression grid.
 - [Nineteen-family dev recovery findings](qwen9b/dev19-recovery.md): the core
   29-condition matrix with both recovery policies, 551 cells and 963 attempts,
   completed November 10, 2026. [Design](qwen9b/dev19-recovery-design.md).
@@ -30,9 +34,9 @@ uncertainty and runtime failures limit claims of a general ranking.
 ## Investigations and followups
 
 - [AgentKV 90% investigation](qwen9b/agentkv90-investigation.md): confirmed CUDA
-  cascade, retained exception frames, bounded GPU checks and a separate
-  five-condition corrective replication. The last saved launch update is from
-  November 10; no corrected fifty-task results are committed here.
+  cascade, retained exception frames, bounded GPU checks and the completed
+  five-condition corrective replication. The original 90% collapse did not
+  recur; the first illegal-access kernel remains unidentified.
 - [Dev recovery followups](qwen9b/dev19-recovery-design.md#status): the seed
   replicate, retention frontier and trigger-timing studies. The November 11
   record preserves voided launches, a stopped relaunch and a node-local storage

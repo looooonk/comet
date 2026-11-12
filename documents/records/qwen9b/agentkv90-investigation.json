@@ -262,7 +262,7 @@
     "stack_trace_followup_pipeline_passed": 45
   },
   "corrective_replication": {
-    "status": "frozen_and_queued",
+    "status": "completed_and_scored",
     "tasks": 50,
     "conditions": [
       "agentkv_90_never",
@@ -277,7 +277,7 @@
     "freeze_job": "13857620",
     "study_job": "13857623",
     "scoring_job": "13857624",
-    "gpu_count": 5,
+    "gpu_count": 1,
     "nominal_seconds_per_worker": 6000,
     "planned_cells": 250,
     "effective_qos": "burst",
@@ -286,7 +286,27 @@
     "dev_reference_job": "13857529",
     "partition": "burst",
     "cpu_threads_per_worker": 4,
-    "qualification": "each worker must pass its matching two-task dev gate before its 50-task condition within the same allocation"
+    "qualification": "All five matching two-task dev gates passed before their final runs; two timeout attempts lack peak-memory samples.",
+    "completed_cells": 250,
+    "attempt_count": 383,
+    "cuda_errors": 0,
+    "oom_attempts": 0,
+    "summary": "test50-cuda-repair-summary.json",
+    "report": "test50-cuda-repair.md",
+    "completion": {
+      "timezone": "America/New_York",
+      "study_array_job": 13857623,
+      "scoring_job": 13857624,
+      "first_four_workers_started": "2026-11-11T00:32:40-05:00",
+      "full_cache_worker_started": "2026-11-11T02:32:33-05:00",
+      "inference_finished": "2026-11-11T03:52:40-05:00",
+      "scoring_started": "2026-11-11T03:53:08-05:00",
+      "scoring_finished": "2026-11-11T04:02:54-05:00",
+      "all_six_study_and_score_job_states": "COMPLETED",
+      "all_six_exit_codes": "0:0"
+    },
+    "gpu_count_scope": "per worker; five allocations, at most four concurrent",
+    "accuracy_interpretation": "AgentKV 90% is 10/50 (20%), 80% is 9/50 (18%); paired difference +2 percentage points, 95% interval [-10,14]. Shared-storage timing confounds method and historical comparisons."
   },
   "launch_replacements": {
     "diagnostic_harness_pre_inference_failure": "13857261",
@@ -403,7 +423,14 @@
     ],
     "all_scored_planning_eta": "2026-11-11T18:00:00-05:00",
     "not_a_reservation": true,
-    "dependent_on_queue_storage_and_preemption": true
+    "dependent_on_queue_storage_and_preemption": true,
+    "superseded_by": "Completed scoring on 2026-11-11T04:02:54-05:00; see corrective_replication.completion."
   },
-  "setup_cleanup_job": "13857644"
+  "setup_cleanup_job": "13857644",
+  "setup_cleanup_status": {
+    "job": "13857644",
+    "state": "TIMEOUT",
+    "scope": "Cleanup of unused setup environments only; unrelated to the completed study/scoring jobs.",
+    "remaining_at_audit": "Two owned setup directories remain, one partially removed; cleanup not claimed complete."
+  }
 }

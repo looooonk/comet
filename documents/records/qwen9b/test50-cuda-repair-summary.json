@@ -475,7 +475,13 @@
     "execution_failures_remain_unsuccessful": true,
     "current_refactored_analysis_reproduces_saved_aggregates_and_all_paired_comparisons": true,
     "offline_evaluation_repeated": false,
-    "source_execution_digests": "Recorded by the pinned remote scorer; full raw environments were not downloaded or rehashed locally."
+    "source_execution_digests": "Recorded by the pinned remote scorer; full raw environments were not downloaded or rehashed locally.",
+    "plots_rendered_and_visually_inspected": [
+      "full-range PNG/PDF",
+      "0-50 percent PNG/PDF",
+      "resource PNG/PDF"
+    ],
+    "reporting_only": "No inference, runtime source or frozen configuration changed; no behavioral tests rerun."
   },
   "limitations": [
     "Corrective replication on previously inspected held-out IDs, not a fresh blind test; never pooled with the original cohort.",
@@ -489,6 +495,14 @@
   "exports": {
     "full_analysis_sha256": "1f09be6425619e7ada3f6d90a0c3d0cb7edf0a270c9419d81aa49af5caa6b5f6",
     "compact_analysis_sha256": "ff0d08fa5301faf4b688fac150d03e22c3f2363e2cffaf2355f21922c323b706",
-    "csv_sha256": "68af6c27b6127c156ed256034268cd957db229d18450aefd884d672cb1092d99"
+    "csv_sha256": "63e2079d42d1ef18c50661e2af1ebb019265b6fd0fc185ab8d7f806726371a82",
+    "figures": {
+      "test50-cuda-repair-aggressivity-y50.pdf": "74447e86ffe6c55cb0adb6a0a056b1364295f928a7151a32f58250b8bc289c8b",
+      "test50-cuda-repair-aggressivity-y50.png": "6a7af934556872d4ec4bc4a0a2e383ff6e84ca3ed03e87af40c048f9ab3c7d93",
+      "test50-cuda-repair-aggressivity.pdf": "e124babe8bfbcf07bf53763831a6c5267acf1700ea61ca822947d8be9ecff3fd",
+      "test50-cuda-repair-aggressivity.png": "7d047b40b617beca367faa6e5c8eb4199f096824c32352fd73d4dd839ac0b7bd",
+      "test50-cuda-repair-resources.pdf": "6cae17c324163503ff7d626c39f2a524e58010e07534706895ad91c7a96a61e2",
+      "test50-cuda-repair-resources.png": "173ba6d18a8281768cd554bc32c6ce0ec67dd202c1a1703bdeb2dbe9a3db7c92"
+    }
   }
 }

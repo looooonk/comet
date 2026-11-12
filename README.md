@@ -17,6 +17,9 @@ The completed [compression study](documents/records/qwen9b/test50-final.md)
 covers **50 held-out tasks per condition and 26 conditions**, without recovery.
 Its results retain every execution failure, including the
 [CUDA failures affecting AgentKV at 90% retention](documents/records/qwen9b/agentkv90-investigation.md).
+A [five-condition corrective replication](documents/records/qwen9b/test50-cuda-repair.md)
+measured 20% at that point, versus the original 4%, with no CUDA errors or OOMs.
+Storage delays still limit accuracy comparisons; its results are reported separately.
 
 A separate [recovery study](documents/records/qwen9b/dev19-recovery.md) covers
 **19 dev task families and 29 conditions**. At 50% retention, fixed recovery

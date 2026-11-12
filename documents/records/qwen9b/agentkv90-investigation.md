@@ -6,6 +6,12 @@ be interpreted as a clean accuracy effect of retaining more KV. The original
 measurement and all failures remain in the [final study](test50-final.md).
 No success estimate is computed by discarding failed tasks.
 
+**November 11 update:** the [five-condition corrective replication](test50-cuda-repair.md)
+is complete. AgentKV 90% scores **10/50 (20%)**, versus 9/50 (18%) at 80%, with
+zero CUDA errors or OOMs across all 383 attempts. The collapse did not recur;
+the paired difference is +2 percentage points with a 95% interval of [-10, +14].
+Shared-storage delays still limit method comparisons and historical attribution.
+
 ## What failed
 
 ![Attempt failure timeline](figures/agentkv90-failure-timeline.png)
@@ -119,21 +125,31 @@ Compact audit and launch evidence are in [the investigation record](agentkv90-in
 Raw trajectories, diagnostic reports and source snapshots remain in external
 project storage under their recorded portable artifact IDs.
 
-## Submitted jobs and planning ETA
+## Completed corrective jobs
 
 The frozen [five partitions](../../../configs/qwen9b/blackwell/test50-cuda-repair-v2-parts/index.json)
 cover 250 task/condition cells. Source is pinned to `d97c49d`; each worker uses
 one RTX PRO 6000, four host CPU threads and the original 24 GiB cap. Array
 `13857623` runs qualification and final execution; CPU job `13857624` scores
 saved outcomes and verifies complete parent coverage after all workers finish.
-No corrected 50-task results have been produced yet.
+All five matching dev gates and final workers completed. Four workers started
+at 00:32:40 ET on November 11; full cache started at 02:32:33. Final execution
+finished at 03:52:40 and scoring at **04:02:54 ET**, superseding the previous
+18:00 planning estimate. All study/scoring jobs exited successfully. No GCP
+resources were launched and no corrective study jobs remain queued.
 
-At 23:27 ET on November 10, `ins047` was drained after a failed task cleanup
-at 22:58:20, making its spare GPUs unavailable. The actual burst-queue forecasts
-for the five workers were November 11 at 05:41, 08:15, 10:45, 13:15 and 15:45 ET,
-in order: AgentKV 90%, AgentKV 80%, R-KV 90%, R-KV 80%, full KV. These are scheduler
-forecasts, not reservations. Each point has 100 minutes of nominal final task
-budget plus its dev gate, setup and saving. The planning target is the first
-point around 07:30-08:00 ET and complete scored results around **18:00 ET on
-November 11**. Node restoration, early completions, storage stalls and preemption
-can change this estimate. No GCP resources were launched.
+The [completed report](test50-cuda-repair.md) preserves all 250 scored cells,
+success and failure counts, paired uncertainty, timing audit and plots. Seven
+of the ten new AgentKV 90% successes were previously unusable tasks in the CUDA
+cascade. However, shared run storage still cost the compressed conditions
+38-43 seconds per cell in trajectory saving, versus 15 seconds for full cache,
+which ran later. Consequently these results establish that the CUDA/OOM
+collapse did not recur, without establishing a clean method ranking or the
+isolated accuracy benefit of either repair. The original first CUDA kernel
+fault and the fraction of original OOMs attributable to retained frames remain
+unresolved.
+
+The later repository refactor did not change these completed runs: execution
+and scoring stayed pinned to `d97c49d`. The current analysis API reproduces
+their saved aggregates and paired comparisons. Reporting from the refactored
+checkout does not constitute GPU qualification of its newer execution code.
