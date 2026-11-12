@@ -1,0 +1,3279 @@
+{
+  "conditions": {
+    "agentkv_80_never": {
+      "actual_attempts": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          1.3,
+          1.58
+        ],
+        "standard_error": 0.07091242083423346,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 1.44
+      },
+      "attempt_status_counts": {
+        "completed": 22,
+        "timeout": 50
+      },
+      "condition": {
+        "id": "agentkv_80_never",
+        "max_attempts": 2,
+        "method": "agentkv",
+        "recovery": "never",
+        "retention": 0.8
+      },
+      "infeasible_cells": 0,
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          129.3907640282069,
+          133.02118366520082
+        ],
+        "standard_error": 0.8976300096360043,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 131.04046787978018
+      },
+      "mean_peak_kv_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          232628000.768,
+          270947084.288
+        ],
+        "coverage": {
+          "complete_cells": 50,
+          "complete_tasks": 50,
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "total_cells": 50,
+          "total_tasks": 50
+        },
+        "standard_error": 10020491.673204018,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 251314749.44
+      },
+      "mean_peak_total_vram_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          24532636663.808,
+          24692279214.08
+        ],
+        "coverage": {
+          "complete_cells": 50,
+          "complete_tasks": 50,
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "total_cells": 50,
+          "total_tasks": 50
+        },
+        "standard_error": 43459391.057436846,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 24622564638.72
+      },
+      "metrics": {
+        "compaction_seconds": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 61,
+            "partial": 11
+          },
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "unit": "seconds",
+          "value": 55.85794889256067
+        },
+        "decode_throughput": {
+          "aggregation": "ratio of sums",
+          "coverage": {
+            "complete": 61,
+            "partial": 11
+          },
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "unit": "decode tokens / decode second",
+          "value": 41.01509313813008
+        },
+        "estimated_flops": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 61,
+            "lower_bound": 11
+          },
+          "methods": [
+            "2P_text_per_token_plus_4LHD_per_full_attention_pair"
+          ],
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "unit": "estimated FLOPs",
+          "value": 11318878638272512
+        },
+        "generated_tokens": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 72
+          },
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "unit": "tokens",
+          "value": 43199
+        },
+        "peak_kv_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 72
+          },
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "unit": "bytes",
+          "value": 418938880
+        },
+        "peak_recurrent_state_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 72
+          },
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "unit": "bytes",
+          "value": 51904512
+        },
+        "peak_total_vram_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 72
+          },
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "unit": "bytes",
+          "value": 24815796224
+        },
+        "prefill_tokens": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 61,
+            "lower_bound": 11
+          },
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "unit": "tokens",
+          "value": 571781
+        }
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          0,
+          0.37206455826398416
+        ],
+        "ci95": [
+          0.08,
+          0.28
+        ],
+        "standard_error": 0.0548839220351387,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.18
+      },
+      "recovery": {
+        "admission_rate": {
+          "observed_requests": 0,
+          "total_requests": 0,
+          "value": null
+        },
+        "admitted_count": 0,
+        "allowance_consumed_count": 0,
+        "coverage": {
+          "attempts_with_decisions": 72,
+          "interrupted_attempts": 0,
+          "requests_with_allowance_state": 0,
+          "total_attempts": 72,
+          "unknown_admission_requests": 0
+        },
+        "decision_count": 682,
+        "failure_reasons": {},
+        "mean_cell_budget_fraction": {
+          "complete_cells": 50,
+          "total_cells": 50,
+          "value": 0.0
+        },
+        "recorded_seconds": {
+          "includes": "admission checks and admitted rebuilds, including observed failure time",
+          "observed_requests": 0,
+          "total_requests": 0,
+          "value": null
+        },
+        "refusal_reasons": {},
+        "requested_count": 0,
+        "result_status_counts": {}
+      },
+      "reserved_budget_seconds": {
+        "bootstrap_degenerate": true,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 50,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0
+      },
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          0,
+          0.37206455826398416
+        ],
+        "ci95": [
+          0.08,
+          0.28
+        ],
+        "standard_error": 0.0548839220351387,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.18
+      },
+      "zero_attempt_cells": 0
+    },
+    "agentkv_90_never": {
+      "actual_attempts": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          1.28,
+          1.56
+        ],
+        "standard_error": 0.07050835816716038,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 1.42
+      },
+      "attempt_status_counts": {
+        "completed": 23,
+        "context_limit": 2,
+        "timeout": 46
+      },
+      "condition": {
+        "id": "agentkv_90_never",
+        "max_attempts": 2,
+        "method": "agentkv",
+        "recovery": "never",
+        "retention": 0.9
+      },
+      "infeasible_cells": 0,
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          126.7773985876138,
+          133.39006644032003
+        ],
+        "standard_error": 1.6481809606290672,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 130.03184656765995
+      },
+      "mean_peak_kv_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          259088633.856,
+          296788281.344
+        ],
+        "coverage": {
+          "complete_cells": 50,
+          "complete_tasks": 50,
+          "observed_attempts": 71,
+          "total_attempts": 71,
+          "total_cells": 50,
+          "total_tasks": 50
+        },
+        "standard_error": 9662468.503143286,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 276976762.88
+      },
+      "mean_peak_total_vram_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          24656286842.88,
+          24699909701.632
+        ],
+        "coverage": {
+          "complete_cells": 50,
+          "complete_tasks": 50,
+          "observed_attempts": 71,
+          "total_attempts": 71,
+          "total_cells": 50,
+          "total_tasks": 50
+        },
+        "standard_error": 11339834.351094516,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 24677971394.56
+      },
+      "metrics": {
+        "compaction_seconds": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 59,
+            "partial": 12
+          },
+          "observed_attempts": 71,
+          "total_attempts": 71,
+          "unit": "seconds",
+          "value": 35.86083683895413
+        },
+        "decode_throughput": {
+          "aggregation": "ratio of sums",
+          "coverage": {
+            "complete": 59,
+            "partial": 12
+          },
+          "observed_attempts": 71,
+          "total_attempts": 71,
+          "unit": "decode tokens / decode second",
+          "value": 41.43069767937124
+        },
+        "estimated_flops": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 59,
+            "lower_bound": 12
+          },
+          "methods": [
+            "2P_text_per_token_plus_4LHD_per_full_attention_pair"
+          ],
+          "observed_attempts": 71,
+          "total_attempts": 71,
+          "unit": "estimated FLOPs",
+          "value": 11022870292648960
+        },
+        "generated_tokens": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 71
+          },
+          "observed_attempts": 71,
+          "total_attempts": 71,
+          "unit": "tokens",
+          "value": 40673
+        },
+        "peak_kv_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 71
+          },
+          "observed_attempts": 71,
+          "total_attempts": 71,
+          "unit": "bytes",
+          "value": 459046912
+        },
+        "peak_recurrent_state_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 71
+          },
+          "observed_attempts": 71,
+          "total_attempts": 71,
+          "unit": "bytes",
+          "value": 51904512
+        },
+        "peak_total_vram_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 71
+          },
+          "observed_attempts": 71,
+          "total_attempts": 71,
+          "unit": "bytes",
+          "value": 24819990528
+        },
+        "prefill_tokens": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 59,
+            "lower_bound": 12
+          },
+          "observed_attempts": 71,
+          "total_attempts": 71,
+          "unit": "tokens",
+          "value": 556837
+        }
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          0.007935441736015847,
+          0.3920645582639842
+        ],
+        "ci95": [
+          0.1,
+          0.32
+        ],
+        "standard_error": 0.05714285714285715,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.2
+      },
+      "recovery": {
+        "admission_rate": {
+          "observed_requests": 0,
+          "total_requests": 0,
+          "value": null
+        },
+        "admitted_count": 0,
+        "allowance_consumed_count": 0,
+        "coverage": {
+          "attempts_with_decisions": 71,
+          "interrupted_attempts": 0,
+          "requests_with_allowance_state": 0,
+          "total_attempts": 71,
+          "unknown_admission_requests": 0
+        },
+        "decision_count": 672,
+        "failure_reasons": {},
+        "mean_cell_budget_fraction": {
+          "complete_cells": 50,
+          "total_cells": 50,
+          "value": 0.0
+        },
+        "recorded_seconds": {
+          "includes": "admission checks and admitted rebuilds, including observed failure time",
+          "observed_requests": 0,
+          "total_requests": 0,
+          "value": null
+        },
+        "refusal_reasons": {},
+        "requested_count": 0,
+        "result_status_counts": {}
+      },
+      "reserved_budget_seconds": {
+        "bootstrap_degenerate": true,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 50,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0
+      },
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          0.007935441736015847,
+          0.3920645582639842
+        ],
+        "ci95": [
+          0.1,
+          0.32
+        ],
+        "standard_error": 0.05714285714285715,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.2
+      },
+      "zero_attempt_cells": 0
+    },
+    "full_best_of_n": {
+      "actual_attempts": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          1.82,
+          1.98
+        ],
+        "standard_error": 0.04285714285714286,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 1.9
+      },
+      "attempt_status_counts": {
+        "completed": 68,
+        "context_limit": 12,
+        "error": 2,
+        "timeout": 13
+      },
+      "condition": {
+        "id": "full_best_of_n",
+        "max_attempts": 2,
+        "method": "full",
+        "recovery": "never",
+        "retention": 1.0
+      },
+      "infeasible_cells": 0,
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          75.84545507034706,
+          94.27064056342748
+        ],
+        "standard_error": 4.829353648943794,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 84.8881686400593
+      },
+      "mean_peak_kv_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          336090120.192,
+          399558901.76000005
+        ],
+        "coverage": {
+          "complete_cells": 50,
+          "complete_tasks": 50,
+          "observed_attempts": 95,
+          "total_attempts": 95,
+          "total_cells": 50,
+          "total_tasks": 50
+        },
+        "standard_error": 15481506.135497263,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 367980707.84
+      },
+      "mean_peak_total_vram_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          24685391118.336,
+          24736996786.176
+        ],
+        "coverage": {
+          "complete_cells": 50,
+          "complete_tasks": 50,
+          "observed_attempts": 95,
+          "total_attempts": 95,
+          "total_cells": 50,
+          "total_tasks": 50
+        },
+        "standard_error": 13077573.905915312,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 24710896680.96
+      },
+      "metrics": {
+        "compaction_seconds": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 89,
+            "partial": 6
+          },
+          "observed_attempts": 95,
+          "total_attempts": 95,
+          "unit": "seconds",
+          "value": 0.0
+        },
+        "decode_throughput": {
+          "aggregation": "ratio of sums",
+          "coverage": {
+            "complete": 89,
+            "partial": 6
+          },
+          "observed_attempts": 95,
+          "total_attempts": 95,
+          "unit": "decode tokens / decode second",
+          "value": 42.67809831024177
+        },
+        "estimated_flops": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 89,
+            "lower_bound": 6
+          },
+          "methods": [
+            "2P_text_per_token_plus_4LHD_per_full_attention_pair"
+          ],
+          "observed_attempts": 95,
+          "total_attempts": 95,
+          "unit": "estimated FLOPs",
+          "value": 18074581772983296
+        },
+        "generated_tokens": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 95
+          },
+          "observed_attempts": 95,
+          "total_attempts": 95,
+          "unit": "tokens",
+          "value": 82069
+        },
+        "peak_kv_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 95
+          },
+          "observed_attempts": 95,
+          "total_attempts": 95,
+          "unit": "bytes",
+          "value": 536248320
+        },
+        "peak_recurrent_state_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 95
+          },
+          "observed_attempts": 95,
+          "total_attempts": 95,
+          "unit": "bytes",
+          "value": 51904512
+        },
+        "peak_total_vram_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 95
+          },
+          "observed_attempts": 95,
+          "total_attempts": 95,
+          "unit": "bytes",
+          "value": 24822087680
+        },
+        "prefill_tokens": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 89,
+            "lower_bound": 6
+          },
+          "observed_attempts": 95,
+          "total_attempts": 95,
+          "unit": "tokens",
+          "value": 887359
+        }
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          0.16793544173601582,
+          0.5520645582639842
+        ],
+        "ci95": [
+          0.24,
+          0.5
+        ],
+        "standard_error": 0.06857142857142857,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.36
+      },
+      "recovery": {
+        "admission_rate": {
+          "observed_requests": 0,
+          "total_requests": 0,
+          "value": null
+        },
+        "admitted_count": 0,
+        "allowance_consumed_count": 0,
+        "coverage": {
+          "attempts_with_decisions": 95,
+          "interrupted_attempts": 0,
+          "requests_with_allowance_state": 0,
+          "total_attempts": 95,
+          "unknown_admission_requests": 0
+        },
+        "decision_count": 1271,
+        "failure_reasons": {},
+        "mean_cell_budget_fraction": {
+          "complete_cells": 50,
+          "total_cells": 50,
+          "value": 0.0
+        },
+        "recorded_seconds": {
+          "includes": "admission checks and admitted rebuilds, including observed failure time",
+          "observed_requests": 0,
+          "total_requests": 0,
+          "value": null
+        },
+        "refusal_reasons": {},
+        "requested_count": 0,
+        "result_status_counts": {}
+      },
+      "reserved_budget_seconds": {
+        "bootstrap_degenerate": true,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 50,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0
+      },
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          0.10793544173601582,
+          0.49206455826398415
+        ],
+        "ci95": [
+          0.18,
+          0.42
+        ],
+        "standard_error": 0.06546536707079771,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.3
+      },
+      "zero_attempt_cells": 0
+    },
+    "rkv_80_never": {
+      "actual_attempts": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          1.32,
+          1.6
+        ],
+        "standard_error": 0.07119963311072636,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 1.46
+      },
+      "attempt_status_counts": {
+        "completed": 21,
+        "context_limit": 2,
+        "error": 2,
+        "timeout": 48
+      },
+      "condition": {
+        "id": "rkv_80_never",
+        "max_attempts": 2,
+        "method": "rkv",
+        "recovery": "never",
+        "retention": 0.8
+      },
+      "infeasible_cells": 0,
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          131.14920118136808,
+          134.04076703617616
+        ],
+        "standard_error": 0.7345455637495745,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 132.57743796818016
+      },
+      "mean_peak_kv_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          221993828.352,
+          255344844.79999998
+        ],
+        "coverage": {
+          "complete_cells": 50,
+          "complete_tasks": 50,
+          "observed_attempts": 73,
+          "total_attempts": 73,
+          "total_cells": 50,
+          "total_tasks": 50
+        },
+        "standard_error": 8657517.104569722,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 238545633.28
+      },
+      "mean_peak_total_vram_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          21646989066.24,
+          22544706437.12
+        ],
+        "coverage": {
+          "complete_cells": 50,
+          "complete_tasks": 50,
+          "observed_attempts": 73,
+          "total_attempts": 73,
+          "total_cells": 50,
+          "total_tasks": 50
+        },
+        "standard_error": 224228469.50647545,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 22083123281.92
+      },
+      "metrics": {
+        "compaction_seconds": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 58,
+            "partial": 14,
+            "unavailable": 1
+          },
+          "observed_attempts": 72,
+          "total_attempts": 73,
+          "unit": "seconds",
+          "value": 339.3276242095817
+        },
+        "decode_throughput": {
+          "aggregation": "ratio of sums",
+          "coverage": {
+            "complete": 58,
+            "partial": 14
+          },
+          "observed_attempts": 72,
+          "total_attempts": 73,
+          "unit": "decode tokens / decode second",
+          "value": 33.91921857280988
+        },
+        "estimated_flops": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 58,
+            "lower_bound": 14,
+            "unavailable": 1
+          },
+          "methods": [
+            "2P_text_per_token_plus_4LHD_per_full_attention_pair"
+          ],
+          "observed_attempts": 72,
+          "total_attempts": 73,
+          "unit": "estimated FLOPs",
+          "value": 10768656067154944
+        },
+        "generated_tokens": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 72,
+            "unavailable": 1
+          },
+          "observed_attempts": 72,
+          "total_attempts": 73,
+          "unit": "tokens",
+          "value": 40512
+        },
+        "peak_kv_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 73
+          },
+          "observed_attempts": 73,
+          "total_attempts": 73,
+          "unit": "bytes",
+          "value": 398524416
+        },
+        "peak_recurrent_state_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 73
+          },
+          "observed_attempts": 73,
+          "total_attempts": 73,
+          "unit": "bytes",
+          "value": 51904512
+        },
+        "peak_total_vram_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 73
+          },
+          "observed_attempts": 73,
+          "total_attempts": 73,
+          "unit": "bytes",
+          "value": 24794824704
+        },
+        "prefill_tokens": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 58,
+            "lower_bound": 14,
+            "unavailable": 1
+          },
+          "observed_attempts": 72,
+          "total_attempts": 73,
+          "unit": "tokens",
+          "value": 545515
+        }
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          0.007935441736015847,
+          0.3920645582639842
+        ],
+        "ci95": [
+          0.1,
+          0.32
+        ],
+        "standard_error": 0.05714285714285715,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.2
+      },
+      "recovery": {
+        "admission_rate": {
+          "observed_requests": 0,
+          "total_requests": 0,
+          "value": null
+        },
+        "admitted_count": 0,
+        "allowance_consumed_count": 0,
+        "coverage": {
+          "attempts_with_decisions": 73,
+          "interrupted_attempts": 0,
+          "requests_with_allowance_state": 0,
+          "total_attempts": 73,
+          "unknown_admission_requests": 0
+        },
+        "decision_count": 651,
+        "failure_reasons": {},
+        "mean_cell_budget_fraction": {
+          "complete_cells": 50,
+          "total_cells": 50,
+          "value": 0.0
+        },
+        "recorded_seconds": {
+          "includes": "admission checks and admitted rebuilds, including observed failure time",
+          "observed_requests": 0,
+          "total_requests": 0,
+          "value": null
+        },
+        "refusal_reasons": {},
+        "requested_count": 0,
+        "result_status_counts": {}
+      },
+      "reserved_budget_seconds": {
+        "bootstrap_degenerate": true,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 50,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0
+      },
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          0.007935441736015847,
+          0.3920645582639842
+        ],
+        "ci95": [
+          0.1,
+          0.32
+        ],
+        "standard_error": 0.05714285714285715,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.2
+      },
+      "zero_attempt_cells": 0
+    },
+    "rkv_90_never": {
+      "actual_attempts": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          1.3195000000000001,
+          1.58
+        ],
+        "standard_error": 0.07091242083423346,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 1.44
+      },
+      "attempt_status_counts": {
+        "completed": 21,
+        "context_limit": 2,
+        "error": 1,
+        "timeout": 48
+      },
+      "condition": {
+        "id": "rkv_90_never",
+        "max_attempts": 2,
+        "method": "rkv",
+        "recovery": "never",
+        "retention": 0.9
+      },
+      "infeasible_cells": 0,
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          129.87970057008903,
+          133.37615978367504
+        ],
+        "standard_error": 0.8880531879870323,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 131.61337821932
+      },
+      "mean_peak_kv_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          259379511.296,
+          297127772.16
+        ],
+        "coverage": {
+          "complete_cells": 50,
+          "complete_tasks": 50,
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "total_cells": 50,
+          "total_tasks": 50
+        },
+        "standard_error": 9497257.048269605,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 277486632.96
+      },
+      "mean_peak_total_vram_bytes": {
+        "aggregation": "maximum across attempts per cell, mean across seeds per task, mean across tasks",
+        "bootstrap_degenerate": false,
+        "ci95": [
+          22808733679.615997,
+          23696474898.432
+        ],
+        "coverage": {
+          "complete_cells": 50,
+          "complete_tasks": 50,
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "total_cells": 50,
+          "total_tasks": 50
+        },
+        "standard_error": 229384140.13630733,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 23266923642.88
+      },
+      "metrics": {
+        "compaction_seconds": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 57,
+            "partial": 14,
+            "unavailable": 1
+          },
+          "observed_attempts": 71,
+          "total_attempts": 72,
+          "unit": "seconds",
+          "value": 260.1895966554657
+        },
+        "decode_throughput": {
+          "aggregation": "ratio of sums",
+          "coverage": {
+            "complete": 57,
+            "partial": 14
+          },
+          "observed_attempts": 71,
+          "total_attempts": 72,
+          "unit": "decode tokens / decode second",
+          "value": 36.249609399431804
+        },
+        "estimated_flops": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 57,
+            "lower_bound": 14,
+            "unavailable": 1
+          },
+          "methods": [
+            "2P_text_per_token_plus_4LHD_per_full_attention_pair"
+          ],
+          "observed_attempts": 71,
+          "total_attempts": 72,
+          "unit": "estimated FLOPs",
+          "value": 11038075822340096
+        },
+        "generated_tokens": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 71,
+            "unavailable": 1
+          },
+          "observed_attempts": 71,
+          "total_attempts": 72,
+          "unit": "tokens",
+          "value": 40138
+        },
+        "peak_kv_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 72
+          },
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "unit": "bytes",
+          "value": 478674944
+        },
+        "peak_recurrent_state_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 72
+          },
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "unit": "bytes",
+          "value": 51904512
+        },
+        "peak_total_vram_bytes": {
+          "aggregation": "max",
+          "coverage": {
+            "unspecified": 72
+          },
+          "observed_attempts": 72,
+          "total_attempts": 72,
+          "unit": "bytes",
+          "value": 24822087680
+        },
+        "prefill_tokens": {
+          "aggregation": "sum",
+          "coverage": {
+            "complete": 57,
+            "lower_bound": 14,
+            "unavailable": 1
+          },
+          "observed_attempts": 71,
+          "total_attempts": 72,
+          "unit": "tokens",
+          "value": 558127
+        }
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          0.007935441736015847,
+          0.3920645582639842
+        ],
+        "ci95": [
+          0.1,
+          0.32
+        ],
+        "standard_error": 0.05714285714285715,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.2
+      },
+      "recovery": {
+        "admission_rate": {
+          "observed_requests": 0,
+          "total_requests": 0,
+          "value": null
+        },
+        "admitted_count": 0,
+        "allowance_consumed_count": 0,
+        "coverage": {
+          "attempts_with_decisions": 72,
+          "interrupted_attempts": 0,
+          "requests_with_allowance_state": 0,
+          "total_attempts": 72,
+          "unknown_admission_requests": 0
+        },
+        "decision_count": 672,
+        "failure_reasons": {},
+        "mean_cell_budget_fraction": {
+          "complete_cells": 50,
+          "total_cells": 50,
+          "value": 0.0
+        },
+        "recorded_seconds": {
+          "includes": "admission checks and admitted rebuilds, including observed failure time",
+          "observed_requests": 0,
+          "total_requests": 0,
+          "value": null
+        },
+        "refusal_reasons": {},
+        "requested_count": 0,
+        "result_status_counts": {}
+      },
+      "reserved_budget_seconds": {
+        "bootstrap_degenerate": true,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "standard_error": 0.0,
+        "task_count": 50,
+        "uncertainty_notes": [
+          "A degenerate bootstrap interval does not establish zero population uncertainty."
+        ],
+        "value": 0
+      },
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          0.007935441736015847,
+          0.3920645582639842
+        ],
+        "ci95": [
+          0.1,
+          0.32
+        ],
+        "standard_error": 0.05714285714285715,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.2
+      },
+      "zero_attempt_cells": 0
+    }
+  },
+  "environment_initialization": [
+    {
+      "charged_to_task_budget": false,
+      "launches": [
+        {
+          "artifact_dir": "initialization/launch-000",
+          "charged_to_task_budget": false,
+          "launch_index": 0,
+          "model_observations": 0,
+          "seconds": 10.175210608998896,
+          "seed": 0,
+          "split": "train",
+          "status": "completed",
+          "task_id": "82e2fac_1",
+          "tool_calls": 0
+        }
+      ],
+      "measured_launches": 1,
+      "measured_seconds": 10.175210608998896,
+      "recorded_launches": 1,
+      "run_id": "96428fd4-f396-43dc-906d-f04b2f196085",
+      "scope": "Separate process setup; never amortized into task latency. Missing durations are not zero.",
+      "settings": {
+        "seed": 0,
+        "task_id": "82e2fac_1"
+      },
+      "status_counts": {
+        "completed": 1
+      },
+      "total_launches": 1
+    },
+    {
+      "charged_to_task_budget": false,
+      "launches": [
+        {
+          "artifact_dir": "initialization/launch-000",
+          "charged_to_task_budget": false,
+          "launch_index": 0,
+          "model_observations": 0,
+          "seconds": 11.584401993997744,
+          "seed": 0,
+          "split": "train",
+          "status": "completed",
+          "task_id": "82e2fac_1",
+          "tool_calls": 0
+        }
+      ],
+      "measured_launches": 1,
+      "measured_seconds": 11.584401993997744,
+      "recorded_launches": 1,
+      "run_id": "f496b57d-0e4b-4a20-bcfc-44b8a474c536",
+      "scope": "Separate process setup; never amortized into task latency. Missing durations are not zero.",
+      "settings": {
+        "seed": 0,
+        "task_id": "82e2fac_1"
+      },
+      "status_counts": {
+        "completed": 1
+      },
+      "total_launches": 1
+    },
+    {
+      "charged_to_task_budget": false,
+      "launches": [
+        {
+          "artifact_dir": "initialization/launch-000",
+          "charged_to_task_budget": false,
+          "launch_index": 0,
+          "model_observations": 0,
+          "seconds": 10.892114711998147,
+          "seed": 0,
+          "split": "train",
+          "status": "completed",
+          "task_id": "82e2fac_1",
+          "tool_calls": 0
+        }
+      ],
+      "measured_launches": 1,
+      "measured_seconds": 10.892114711998147,
+      "recorded_launches": 1,
+      "run_id": "0fb0c7c8-f686-4d22-8e57-fd271963f9de",
+      "scope": "Separate process setup; never amortized into task latency. Missing durations are not zero.",
+      "settings": {
+        "seed": 0,
+        "task_id": "82e2fac_1"
+      },
+      "status_counts": {
+        "completed": 1
+      },
+      "total_launches": 1
+    },
+    {
+      "charged_to_task_budget": false,
+      "launches": [
+        {
+          "artifact_dir": "initialization/launch-000",
+          "charged_to_task_budget": false,
+          "launch_index": 0,
+          "model_observations": 0,
+          "seconds": 7.889311452003312,
+          "seed": 0,
+          "split": "train",
+          "status": "completed",
+          "task_id": "82e2fac_1",
+          "tool_calls": 0
+        }
+      ],
+      "measured_launches": 1,
+      "measured_seconds": 7.889311452003312,
+      "recorded_launches": 1,
+      "run_id": "7b7ea37d-7766-4741-984f-ce6fccc12e69",
+      "scope": "Separate process setup; never amortized into task latency. Missing durations are not zero.",
+      "settings": {
+        "seed": 0,
+        "task_id": "82e2fac_1"
+      },
+      "status_counts": {
+        "completed": 1
+      },
+      "total_launches": 1
+    },
+    {
+      "charged_to_task_budget": false,
+      "launches": [
+        {
+          "artifact_dir": "initialization/launch-000",
+          "charged_to_task_budget": false,
+          "launch_index": 0,
+          "model_observations": 0,
+          "seconds": 9.296733237002627,
+          "seed": 0,
+          "split": "train",
+          "status": "completed",
+          "task_id": "82e2fac_1",
+          "tool_calls": 0
+        }
+      ],
+      "measured_launches": 1,
+      "measured_seconds": 9.296733237002627,
+      "recorded_launches": 1,
+      "run_id": "00f9316e-957d-48ff-848f-453f3933c2a4",
+      "scope": "Separate process setup; never amortized into task latency. Missing durations are not zero.",
+      "settings": {
+        "seed": 0,
+        "task_id": "82e2fac_1"
+      },
+      "status_counts": {
+        "completed": 1
+      },
+      "total_launches": 1
+    }
+  ],
+  "integration_smoke": false,
+  "paired_comparisons": [
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -3.9229773672344663,
+          1.5708592031498034
+        ],
+        "standard_error": 1.3817637628618695,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": -1.0086213121202308
+      },
+      "left": "agentkv_80_never",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          9120342.016,
+          41730265.087999985
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 8292698.158986762,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 25662013.44
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -20438843.392,
+          150914203.64799997
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 43789413.098860204,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 55406755.84
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.3641291165279683,
+          0.40412911652796835
+        ],
+        "ci95": [
+          -0.1,
+          0.14
+        ],
+        "standard_error": 0.0605417717154774,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.02
+      },
+      "right": "agentkv_90_never",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.3641291165279683,
+          0.40412911652796835
+        ],
+        "ci95": [
+          -0.1,
+          0.14
+        ],
+        "standard_error": 0.0605417717154774,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.02
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -55.463652698968815,
+          -36.586827597942616
+        ],
+        "standard_error": 4.940027896361658,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": -46.15229923972089
+      },
+      "left": "agentkv_80_never",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          92768401.408,
+          139909771.264
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 11932561.236285135,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 116665958.4
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          11867783.168,
+          188704882.688
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 45417713.36196743,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 88332042.24
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.20412911652796834,
+          0.5641291165279683
+        ],
+        "ci95": [
+          0.08000000000000002,
+          0.2804999999999973
+        ],
+        "standard_error": 0.0548839220351387,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.18
+      },
+      "right": "full_best_of_n",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.26412911652796833,
+          0.5041291165279683
+        ],
+        "ci95": [
+          0.01999999999999999,
+          0.24
+        ],
+        "standard_error": 0.05451081150953975,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.12
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -0.9310294588158996,
+          3.5958265358831016
+        ],
+        "standard_error": 1.1690328865033934,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 1.5369700883999757
+      },
+      "left": "agentkv_80_never",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -27766153.216,
+          794707.9679999924
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 7323335.143117185,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -12769116.16
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -2979795042.304,
+          -2115846012.928
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 220741327.54508048,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -2539441356.8
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.3641291165279683,
+          0.40412911652796835
+        ],
+        "ci95": [
+          -0.06,
+          0.10000000000000003
+        ],
+        "standard_error": 0.045084953823027143,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.02
+      },
+      "right": "rkv_80_never",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.3641291165279683,
+          0.40412911652796835
+        ],
+        "ci95": [
+          -0.06,
+          0.10000000000000003
+        ],
+        "standard_error": 0.045084953823027143,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.02
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -1.7924245764703195,
+          2.6655971915241237
+        ],
+        "standard_error": 1.1422086432668086,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.5729103395398124
+      },
+      "left": "agentkv_80_never",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          10408239.104,
+          41618438.143999994
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 8114503.821817676,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 26171883.52
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -1809844273.152,
+          -939519901.6960002
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 219460785.53618202,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -1355640995.84
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.3641291165279683,
+          0.40412911652796835
+        ],
+        "ci95": [
+          -0.04000000000000001,
+          0.08049999999999728
+        ],
+        "standard_error": 0.03487587318781058,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.02
+      },
+      "right": "rkv_90_never",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.3641291165279683,
+          0.40412911652796835
+        ],
+        "ci95": [
+          -0.04000000000000001,
+          0.08049999999999728
+        ],
+        "standard_error": 0.03487587318781058,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.02
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -54.26939788472913,
+          -36.09215009120697
+        ],
+        "standard_error": 4.681791664601939,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": -45.143677927600656
+      },
+      "left": "agentkv_90_never",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          70481272.832,
+          111438868.47999999
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 10549211.20999195,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 91003944.96
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          9729736.704,
+          55073308.67199999
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 11656637.516037883,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 32925286.4
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.22412911652796833,
+          0.5441291165279684
+        ],
+        "ci95": [
+          0.03999999999999998,
+          0.28
+        ],
+        "standard_error": 0.06614763944451557,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.16
+      },
+      "right": "full_best_of_n",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.28412911652796835,
+          0.4841291165279683
+        ],
+        "ci95": [
+          -0.020000000000000018,
+          0.22000000000000003
+        ],
+        "standard_error": 0.06546536707079771,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.1
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -1.2326481801977878,
+          6.050298718803137
+        ],
+        "standard_error": 1.8033596426331366,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 2.5455914005202067
+      },
+      "left": "agentkv_90_never",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -55628929.024,
+          -21917073.408000004
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 8697049.82457712,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -38431129.6
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -3005853204.48,
+          -2145702117.376
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 221381546.32155564,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -2594848112.64
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.38412911652796833,
+          0.38412911652796833
+        ],
+        "ci95": [
+          -0.12,
+          0.12
+        ],
+        "standard_error": 0.05714285714285715,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.0
+      },
+      "right": "rkv_80_never",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.38412911652796833,
+          0.38412911652796833
+        ],
+        "ci95": [
+          -0.12,
+          0.12
+        ],
+        "standard_error": 0.05714285714285715,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.0
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -2.1634581641197017,
+          5.106579711647594
+        ],
+        "standard_error": 1.8396582131970236,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 1.5815316516600433
+      },
+      "left": "agentkv_90_never",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -15456675.84,
+          15899076.607999997
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 8032687.359158789,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 509870.08
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -1851704475.648,
+          -967863959.5520004
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 225500439.9543487,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -1411047751.68
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.38412911652796833,
+          0.38412911652796833
+        ],
+        "ci95": [
+          -0.1,
+          0.09999999999999998
+        ],
+        "standard_error": 0.049487165930539354,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.0
+      },
+      "right": "rkv_90_never",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.38412911652796833,
+          0.38412911652796833
+        ],
+        "ci95": [
+          -0.1,
+          0.09999999999999998
+        ],
+        "standard_error": 0.049487165930539354,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.0
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          38.22543611100838,
+          57.01529323642827
+        ],
+        "standard_error": 4.91201055208869,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 47.689269328120865
+      },
+      "left": "full_best_of_n",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -151953164.28800002,
+          -108807301.12
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 11562592.535339281,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -129435074.56
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -3047128301.5680003,
+          -2181084217.3440003
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 221180578.1820219,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -2627773399.04
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.5441291165279684,
+          0.22412911652796833
+        ],
+        "ci95": [
+          -0.28,
+          -0.06
+        ],
+        "standard_error": 0.05965889433663171,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": -0.16
+      },
+      "right": "rkv_80_never",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.4841291165279683,
+          0.28412911652796835
+        ],
+        "ci95": [
+          -0.24,
+          0.020000000000000018
+        ],
+        "standard_error": 0.06546536707079771,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": -0.1
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          37.07933981672087,
+          56.56963960868818
+        ],
+        "standard_error": 5.065912201282407,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 46.7252095792607
+      },
+      "left": "full_best_of_n",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -114671468.544,
+          -67177447.42400001
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 12654863.613756942,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -90494074.88
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -1890384347.136,
+          -1033635889.1520001
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 225914162.19940987,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": -1443973038.08
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.5441291165279684,
+          0.22412911652796833
+        ],
+        "ci95": [
+          -0.26,
+          -0.06
+        ],
+        "standard_error": 0.05237229365663817,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": -0.16
+      },
+      "right": "rkv_90_never",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.4841291165279683,
+          0.28412911652796835
+        ],
+        "ci95": [
+          -0.22,
+          0.019999999999999962
+        ],
+        "standard_error": 0.05890150893739515,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": -0.1
+      }
+    },
+    {
+      "direction": "right minus left",
+      "latency_seconds": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          -2.9984043226800616,
+          1.0514858401953862
+        ],
+        "standard_error": 1.0545356515625897,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": -0.9640597488601634
+      },
+      "left": "rkv_80_never",
+      "mean_peak_kv_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          25849219.071999997,
+          51700811.775999986
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 6625905.109892804,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 38940999.68
+      },
+      "mean_peak_total_vram_bytes": {
+        "bootstrap_degenerate": false,
+        "ci95": [
+          793438584.832,
+          1610581278.72
+        ],
+        "paired_tasks": [
+          "024c982_2",
+          "09b0ee6_3",
+          "0a9d82a_1",
+          "0de03ea_3",
+          "1150ed6_2",
+          "166f4ff_1",
+          "21abae1_2",
+          "270f1ff_1",
+          "29a7b7e_1",
+          "2c544f9_3",
+          "2d9f728_2",
+          "31dc501_2",
+          "325d6ec_3",
+          "32616b5_1",
+          "3aa1a22_2",
+          "3b8fb7a_2",
+          "3d9a636_1",
+          "425a494_1",
+          "522e5e5_1",
+          "552869a_2",
+          "5a83b05_1",
+          "634f342_1",
+          "652485c_3",
+          "6b6ca61_3",
+          "6f4b9a5_2",
+          "7847649_2",
+          "83a7951_2",
+          "8749218_2",
+          "8ce6779_1",
+          "9016950_2",
+          "90adc3f_1",
+          "986aa4e_1",
+          "9dabbc9_3",
+          "9ef798c_2",
+          "a30375d_3",
+          "afc4005_2",
+          "b9c5c9a_1",
+          "bde252e_1",
+          "c77c005_2",
+          "ccf4b82_2",
+          "cef9191_1",
+          "d18139b_1",
+          "d194965_2",
+          "d6ac34d_2",
+          "dac78d9_3",
+          "f323bae_2",
+          "f861c32_3",
+          "fd1f8fa_3",
+          "ff58e36_3",
+          "ffe6d5e_1"
+        ],
+        "standard_error": 211118441.08354574,
+        "task_count": 50,
+        "total_tasks": 50,
+        "uncertainty_notes": [],
+        "unit": "bytes",
+        "value": 1183800360.96
+      },
+      "oracle_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.38412911652796833,
+          0.38412911652796833
+        ],
+        "ci95": [
+          -0.08,
+          0.07999999999999999
+        ],
+        "standard_error": 0.04040610178208843,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.0
+      },
+      "right": "rkv_90_never",
+      "single_attempt_success_rate": {
+        "bootstrap_degenerate": false,
+        "bounded_mean_ci95": [
+          -0.38412911652796833,
+          0.38412911652796833
+        ],
+        "ci95": [
+          -0.08,
+          0.07999999999999999
+        ],
+        "standard_error": 0.04040610178208843,
+        "task_count": 50,
+        "uncertainty_notes": [],
+        "value": 0.0
+      }
+    }
+  ],
+  "partition_study": {
+    "config_digest": "fa55a51eb3ddb38e8e482a088ac0e8aa19d2f49c7645cb17655f333a396c76b0",
+    "partition_count": 5,
+    "settings_digest": "4826185c6078bf97a05c838d254204ad905c1d18b66010455dfd4dc298adaab2"
+  },
+  "primary_metric": "oracle task success within budget (perfect-selection upper bound)",
+  "replicate_seeds": [
+    17
+  ],
+  "schema_version": 1,
+  "source_runs": [
+    {
+      "artifact_id": "comet-run:96428fd4-f396-43dc-906d-f04b2f196085",
+      "partition": "part-00",
+      "config_digest": "4d148a705662aa4977082840a9b203ff61afc45d00730877ada4a0f53e454cbc",
+      "manifest_sha256": "9db5fe27275ecdf6d37efb7278cf8b1a5cdfcee4017020998ab1bca0bdccc543",
+      "scores_sha256": "a78a35ac002a036c46210b63849d35cc737e96ea2abd718a0a9c8aacfc6364ee",
+      "execution_digest": "eead17e0fd5dbb92c2ebeb13ec797d12d04126e31a937b22a8956be90aea7e9e",
+      "cell_count": 50
+    },
+    {
+      "artifact_id": "comet-run:f496b57d-0e4b-4a20-bcfc-44b8a474c536",
+      "partition": "part-01",
+      "config_digest": "4a09a8e15410b27fbb67e82b8adcca8145a7ed4f4ed7470b8951b191fe47febe",
+      "manifest_sha256": "0c52ced043a5120c63e80750d0c8c1e3904adeab195638863bafdcee80738573",
+      "scores_sha256": "a8e2ffedf8c7725bcd3273e82560ece2d903a5feb81acda0336e37a8daf18524",
+      "execution_digest": "12587a1b248ef9830df8abbfe16be7d0a11bbb42f418fd90671497ef9409de40",
+      "cell_count": 50
+    },
+    {
+      "artifact_id": "comet-run:0fb0c7c8-f686-4d22-8e57-fd271963f9de",
+      "partition": "part-02",
+      "config_digest": "29bfacec74a4fc541fe513313d0b6813ae13c628dabb982aa93431f4a99bc729",
+      "manifest_sha256": "4db41e86a709ceadb440ed924b938c02f4a6646afa43e755fd2038eb9966ed8d",
+      "scores_sha256": "de7cad2599590ca3fe6d4dac7f93c4db19fabc5f51e63bfea3d91fcb38a6b29d",
+      "execution_digest": "7e1fac7b2b4e47e082329afde0d2091369e43993600f773ffbb340eea216a4ef",
+      "cell_count": 50
+    },
+    {
+      "artifact_id": "comet-run:7b7ea37d-7766-4741-984f-ce6fccc12e69",
+      "partition": "part-03",
+      "config_digest": "6c2c4eb0008d8e528c8e516071e02b128eb07bfe89e0a3be29d90e5823a1743f",
+      "manifest_sha256": "705fe8052b26c983cce2c849f173e013037965aaed62cee8074713e937a440a1",
+      "scores_sha256": "02a748540236698440b620cc0a57bc1c09d77fe88e24b6471e17e553af4019f6",
+      "execution_digest": "629657ee83a9f45b5feb29157fbd396e50bf5af5b47c9d992e96d5bb2222e50d",
+      "cell_count": 50
+    },
+    {
+      "artifact_id": "comet-run:00f9316e-957d-48ff-848f-453f3933c2a4",
+      "partition": "part-04",
+      "config_digest": "8b4a32c4c21a43853d4a9b0aa8bf99096f4be2361e4f47bdae3bcb33698b85d8",
+      "manifest_sha256": "b235fca78ccf999bb0532a81701ca6010f8254bb9737e4a09c45c459888cb088",
+      "scores_sha256": "a8299b50e43aea008e234dbae203376e484a2d3600830fd421329eb216f40a67",
+      "execution_digest": "a5d7daec978fa2698e9f1816751dccaa13ceebf295cbdce1234cb57bd718b90d",
+      "cell_count": 50
+    }
+  ],
+  "stage": "final",
+  "task_count": 50,
+  "tasks": [
+    "024c982_2",
+    "09b0ee6_3",
+    "0a9d82a_1",
+    "0de03ea_3",
+    "1150ed6_2",
+    "166f4ff_1",
+    "21abae1_2",
+    "270f1ff_1",
+    "29a7b7e_1",
+    "2c544f9_3",
+    "2d9f728_2",
+    "31dc501_2",
+    "325d6ec_3",
+    "32616b5_1",
+    "3aa1a22_2",
+    "3b8fb7a_2",
+    "3d9a636_1",
+    "425a494_1",
+    "522e5e5_1",
+    "552869a_2",
+    "5a83b05_1",
+    "634f342_1",
+    "652485c_3",
+    "6b6ca61_3",
+    "6f4b9a5_2",
+    "7847649_2",
+    "83a7951_2",
+    "8749218_2",
+    "8ce6779_1",
+    "9016950_2",
+    "90adc3f_1",
+    "986aa4e_1",
+    "9dabbc9_3",
+    "9ef798c_2",
+    "a30375d_3",
+    "afc4005_2",
+    "b9c5c9a_1",
+    "bde252e_1",
+    "c77c005_2",
+    "ccf4b82_2",
+    "cef9191_1",
+    "d18139b_1",
+    "d194965_2",
+    "d6ac34d_2",
+    "dac78d9_3",
+    "f323bae_2",
+    "f861c32_3",
+    "fd1f8fa_3",
+    "ff58e36_3",
+    "ffe6d5e_1"
+  ],
+  "uncertainty": {
+    "assumption": "independent sampled tasks; repeats do not increase task count",
+    "bounded_mean_method": "Hoeffding, clipped to [0,1] for success and [-1,1] for differences",
+    "interval_scope": "pointwise 95%; not simultaneous across conditions, metrics or time",
+    "method": "paired task bootstrap, percentile 95% CI",
+    "resampling_unit": "task, retaining all attempts and paired replicate seeds",
+    "samples": 2000,
+    "seed": 0,
+    "standard_error_method": "sample standard deviation of task means / sqrt(tasks)"
+  },
+  "artifact_export": {
+    "kind": "aggregate analysis with all paired comparisons",
+    "source_artifact_id": "qwen9b-test50-cuda-repair-v2",
+    "source_sha256": "1f09be6425619e7ada3f6d90a0c3d0cb7edf0a270c9419d81aa49af5caa6b5f6",
+    "omitted": [
+      "conditions.*.observations"
+    ],
+    "retention": "Full observations, raw transcripts and evaluator environments remain in external project storage."
+  }
+}

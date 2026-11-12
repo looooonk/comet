@@ -1,0 +1,6 @@
+condition,method,retention_percent,tasks,first_attempt_successes,oracle_successes,first_attempt_success_percent,first_ci95_low_percent,first_ci95_high_percent,oracle_success_percent,oracle_ci95_low_percent,oracle_ci95_high_percent,attempts,completed_attempts,timeout_attempts,error_attempts,oom_attempts,context_limit_attempts,interrupted_attempts
+agentkv_90_never,agentkv,90,50,10,10,20,10.0,32.0,20,10.0,32.0,71,23,46,0,0,2,0
+agentkv_80_never,agentkv,80,50,9,9,18,8.0,28.000000000000004,18,8.0,28.000000000000004,72,22,50,0,0,0,0
+rkv_90_never,rkv,90,50,10,10,20,10.0,32.0,20,10.0,32.0,72,21,48,1,0,2,0
+rkv_80_never,rkv,80,50,10,10,20,10.0,32.0,20,10.0,32.0,73,21,48,2,0,2,0
+full_best_of_n,full,100,50,15,18,30,18.0,42.0,36,24.0,50.0,95,68,13,2,0,12,0

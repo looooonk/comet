@@ -1,0 +1,494 @@
+{
+  "schema_version": 1,
+  "status": "completed_and_scored",
+  "artifact_id": "qwen9b-test50-cuda-repair-v2",
+  "recorded_date": "2026-11-11",
+  "execution_and_evaluator_commit": "d97c49d01f8dd3cb2750679f6342eae014bf5e6f",
+  "study_config_digest": "fa55a51eb3ddb38e8e482a088ac0e8aa19d2f49c7645cb17655f333a396c76b0",
+  "source_runs": [
+    {
+      "artifact_id": "comet-run:96428fd4-f396-43dc-906d-f04b2f196085",
+      "partition": "part-00",
+      "config_digest": "4d148a705662aa4977082840a9b203ff61afc45d00730877ada4a0f53e454cbc",
+      "manifest_sha256": "9db5fe27275ecdf6d37efb7278cf8b1a5cdfcee4017020998ab1bca0bdccc543",
+      "scores_sha256": "a78a35ac002a036c46210b63849d35cc737e96ea2abd718a0a9c8aacfc6364ee",
+      "execution_digest": "eead17e0fd5dbb92c2ebeb13ec797d12d04126e31a937b22a8956be90aea7e9e",
+      "cell_count": 50
+    },
+    {
+      "artifact_id": "comet-run:f496b57d-0e4b-4a20-bcfc-44b8a474c536",
+      "partition": "part-01",
+      "config_digest": "4a09a8e15410b27fbb67e82b8adcca8145a7ed4f4ed7470b8951b191fe47febe",
+      "manifest_sha256": "0c52ced043a5120c63e80750d0c8c1e3904adeab195638863bafdcee80738573",
+      "scores_sha256": "a8e2ffedf8c7725bcd3273e82560ece2d903a5feb81acda0336e37a8daf18524",
+      "execution_digest": "12587a1b248ef9830df8abbfe16be7d0a11bbb42f418fd90671497ef9409de40",
+      "cell_count": 50
+    },
+    {
+      "artifact_id": "comet-run:0fb0c7c8-f686-4d22-8e57-fd271963f9de",
+      "partition": "part-02",
+      "config_digest": "29bfacec74a4fc541fe513313d0b6813ae13c628dabb982aa93431f4a99bc729",
+      "manifest_sha256": "4db41e86a709ceadb440ed924b938c02f4a6646afa43e755fd2038eb9966ed8d",
+      "scores_sha256": "de7cad2599590ca3fe6d4dac7f93c4db19fabc5f51e63bfea3d91fcb38a6b29d",
+      "execution_digest": "7e1fac7b2b4e47e082329afde0d2091369e43993600f773ffbb340eea216a4ef",
+      "cell_count": 50
+    },
+    {
+      "artifact_id": "comet-run:7b7ea37d-7766-4741-984f-ce6fccc12e69",
+      "partition": "part-03",
+      "config_digest": "6c2c4eb0008d8e528c8e516071e02b128eb07bfe89e0a3be29d90e5823a1743f",
+      "manifest_sha256": "705fe8052b26c983cce2c849f173e013037965aaed62cee8074713e937a440a1",
+      "scores_sha256": "02a748540236698440b620cc0a57bc1c09d77fe88e24b6471e17e553af4019f6",
+      "execution_digest": "629657ee83a9f45b5feb29157fbd396e50bf5af5b47c9d992e96d5bb2222e50d",
+      "cell_count": 50
+    },
+    {
+      "artifact_id": "comet-run:00f9316e-957d-48ff-848f-453f3933c2a4",
+      "partition": "part-04",
+      "config_digest": "8b4a32c4c21a43853d4a9b0aa8bf99096f4be2361e4f47bdae3bcb33698b85d8",
+      "manifest_sha256": "b235fca78ccf999bb0532a81701ca6010f8254bb9737e4a09c45c459888cb088",
+      "scores_sha256": "a8299b50e43aea008e234dbae203376e484a2d3600830fd421329eb216f40a67",
+      "execution_digest": "a5d7daec978fa2698e9f1816751dccaa13ceebf295cbdce1234cb57bd718b90d",
+      "cell_count": 50
+    }
+  ],
+  "task_count": 50,
+  "condition_count": 5,
+  "cell_count": 250,
+  "attempt_count": 383,
+  "attempt_status_counts": {
+    "completed": 155,
+    "context_limit": 18,
+    "error": 5,
+    "timeout": 205
+  },
+  "error_types": {
+    "agent_protocol": 5,
+    "cuda": 0
+  },
+  "oom_attempts": 0,
+  "conditions": [
+    {
+      "condition": "agentkv_90_never",
+      "method": "agentkv",
+      "retention_percent": 90,
+      "tasks": 50,
+      "first_attempt_successes": 10,
+      "oracle_successes": 10,
+      "first_attempt_success_percent": 20,
+      "first_ci95_low_percent": 10.0,
+      "first_ci95_high_percent": 32.0,
+      "oracle_success_percent": 20,
+      "oracle_ci95_low_percent": 10.0,
+      "oracle_ci95_high_percent": 32.0,
+      "attempts": 71,
+      "completed_attempts": 23,
+      "timeout_attempts": 46,
+      "error_attempts": 0,
+      "oom_attempts": 0,
+      "context_limit_attempts": 2,
+      "interrupted_attempts": 0
+    },
+    {
+      "condition": "agentkv_80_never",
+      "method": "agentkv",
+      "retention_percent": 80,
+      "tasks": 50,
+      "first_attempt_successes": 9,
+      "oracle_successes": 9,
+      "first_attempt_success_percent": 18,
+      "first_ci95_low_percent": 8.0,
+      "first_ci95_high_percent": 28.000000000000004,
+      "oracle_success_percent": 18,
+      "oracle_ci95_low_percent": 8.0,
+      "oracle_ci95_high_percent": 28.000000000000004,
+      "attempts": 72,
+      "completed_attempts": 22,
+      "timeout_attempts": 50,
+      "error_attempts": 0,
+      "oom_attempts": 0,
+      "context_limit_attempts": 0,
+      "interrupted_attempts": 0
+    },
+    {
+      "condition": "rkv_90_never",
+      "method": "rkv",
+      "retention_percent": 90,
+      "tasks": 50,
+      "first_attempt_successes": 10,
+      "oracle_successes": 10,
+      "first_attempt_success_percent": 20,
+      "first_ci95_low_percent": 10.0,
+      "first_ci95_high_percent": 32.0,
+      "oracle_success_percent": 20,
+      "oracle_ci95_low_percent": 10.0,
+      "oracle_ci95_high_percent": 32.0,
+      "attempts": 72,
+      "completed_attempts": 21,
+      "timeout_attempts": 48,
+      "error_attempts": 1,
+      "oom_attempts": 0,
+      "context_limit_attempts": 2,
+      "interrupted_attempts": 0
+    },
+    {
+      "condition": "rkv_80_never",
+      "method": "rkv",
+      "retention_percent": 80,
+      "tasks": 50,
+      "first_attempt_successes": 10,
+      "oracle_successes": 10,
+      "first_attempt_success_percent": 20,
+      "first_ci95_low_percent": 10.0,
+      "first_ci95_high_percent": 32.0,
+      "oracle_success_percent": 20,
+      "oracle_ci95_low_percent": 10.0,
+      "oracle_ci95_high_percent": 32.0,
+      "attempts": 73,
+      "completed_attempts": 21,
+      "timeout_attempts": 48,
+      "error_attempts": 2,
+      "oom_attempts": 0,
+      "context_limit_attempts": 2,
+      "interrupted_attempts": 0
+    },
+    {
+      "condition": "full_best_of_n",
+      "method": "full",
+      "retention_percent": 100,
+      "tasks": 50,
+      "first_attempt_successes": 15,
+      "oracle_successes": 18,
+      "first_attempt_success_percent": 30,
+      "first_ci95_low_percent": 18.0,
+      "first_ci95_high_percent": 42.0,
+      "oracle_success_percent": 36,
+      "oracle_ci95_low_percent": 24.0,
+      "oracle_ci95_high_percent": 50.0,
+      "attempts": 95,
+      "completed_attempts": 68,
+      "timeout_attempts": 13,
+      "error_attempts": 2,
+      "oom_attempts": 0,
+      "context_limit_attempts": 12,
+      "interrupted_attempts": 0
+    }
+  ],
+  "paired_agentkv_90_minus_80": {
+    "direction": "right minus left",
+    "left": "agentkv_80_never",
+    "right": "agentkv_90_never",
+    "single_attempt_success_rate": {
+      "bootstrap_degenerate": false,
+      "bounded_mean_ci95": [
+        -0.3641291165279683,
+        0.40412911652796835
+      ],
+      "ci95": [
+        -0.1,
+        0.14
+      ],
+      "standard_error": 0.0605417717154774,
+      "task_count": 50,
+      "uncertainty_notes": [],
+      "value": 0.02
+    },
+    "oracle_success_rate": {
+      "bootstrap_degenerate": false,
+      "bounded_mean_ci95": [
+        -0.3641291165279683,
+        0.40412911652796835
+      ],
+      "ci95": [
+        -0.1,
+        0.14
+      ],
+      "standard_error": 0.0605417717154774,
+      "task_count": 50,
+      "uncertainty_notes": [],
+      "value": 0.02
+    }
+  },
+  "agentkv90_successes_by_original_failure_group": {
+    "oom": 2,
+    "completed": 1,
+    "error": 7
+  },
+  "cell_budget_seconds": 120,
+  "peak_total_vram_bytes": 24822087680,
+  "peak_total_vram_cap_bytes": 25769803776,
+  "cell_overshoot": {
+    "definition": "max(0, recorded elapsed_seconds minus the 120-second budget)",
+    "cells_above_budget": 210,
+    "cells_over_one_second": 208,
+    "maximum_seconds": 59.13746630300011,
+    "maximum_credited_success_completion_seconds": 116.07857544700528,
+    "late_successes_credited": 0
+  },
+  "timings": {
+    "agentkv_90_never": {
+      "timing_coverage_attempts": 71,
+      "attempt_count": 71,
+      "mean_cell_seconds": 130.03184656765995,
+      "mean_seconds_per_cell": {
+        "agent_protocol": 0.00026460545981535686,
+        "cleanup": 0.019963173820142403,
+        "completion_observation": 0.03114676477809553,
+        "inference": 25.612503244940452,
+        "reset": 5.886488926419552,
+        "save_outcome": 1.3131117714196443,
+        "tool": 38.67743099322179,
+        "trajectory_save": 39.19571923132011
+      },
+      "median_seconds_per_cell": {
+        "agent_protocol": 0.000263684010860743,
+        "cleanup": 0.019141921504342463,
+        "completion_observation": 0.0310644139899523,
+        "inference": 22.88739813950815,
+        "reset": 3.820406702001492,
+        "save_outcome": 0.0,
+        "tool": 38.07408642650262,
+        "trajectory_save": 39.24732743450659
+      },
+      "timeout_reasons": {
+        "Shared task/configuration wall-clock budget expired": 9,
+        "Budget expired during inference": 12,
+        "Budget expired during tool": 8,
+        "Budget expired during trajectory_save": 15,
+        "Run journal finalization exceeded the shared budget": 1,
+        "Artifact finalization exceeded the shared budget": 1
+      }
+    },
+    "agentkv_80_never": {
+      "timing_coverage_attempts": 72,
+      "attempt_count": 72,
+      "mean_cell_seconds": 131.04046787978018,
+      "mean_seconds_per_cell": {
+        "agent_protocol": 0.00028557998215546833,
+        "cleanup": 0.022584322860057002,
+        "completion_observation": 0.03115399149872246,
+        "inference": 27.171962671701767,
+        "reset": 2.922905184540141,
+        "save_outcome": 1.614307136980642,
+        "tool": 36.89211629275873,
+        "trajectory_save": 43.161638535200616
+      },
+      "median_seconds_per_cell": {
+        "agent_protocol": 0.0002886795009544585,
+        "cleanup": 0.019963910002843477,
+        "completion_observation": 0.031032109985972056,
+        "inference": 23.776573334504064,
+        "reset": 1.8748333434996312,
+        "save_outcome": 0.0,
+        "tool": 37.5679345499957,
+        "trajectory_save": 40.483266210500005
+      },
+      "timeout_reasons": {
+        "Budget expired during tool": 14,
+        "Budget expired during inference": 11,
+        "Shared task/configuration wall-clock budget expired": 6,
+        "Budget expired during trajectory_save": 14,
+        "Run journal finalization exceeded the shared budget": 3,
+        "Artifact finalization exceeded the shared budget": 1,
+        "Budget expired during save_outcome": 1
+      }
+    },
+    "rkv_90_never": {
+      "timing_coverage_attempts": 72,
+      "attempt_count": 72,
+      "mean_cell_seconds": 131.61337821932,
+      "mean_seconds_per_cell": {
+        "agent_protocol": 0.0002754980220925063,
+        "cleanup": 0.02475513751953258,
+        "completion_observation": 0.030679224541236182,
+        "inference": 29.77204940070078,
+        "reset": 2.34406499884004,
+        "save_outcome": 1.3183545061592303,
+        "tool": 36.174235073621965,
+        "trajectory_save": 40.58590008001877
+      },
+      "median_seconds_per_cell": {
+        "agent_protocol": 0.00027935500111198053,
+        "cleanup": 0.02733336950041121,
+        "completion_observation": 0.031061095502082026,
+        "inference": 28.279119131995685,
+        "reset": 1.9025835100037511,
+        "save_outcome": 0.003626640998845687,
+        "tool": 34.866327499501494,
+        "trajectory_save": 40.55834084248636
+      },
+      "timeout_reasons": {
+        "Budget expired during trajectory_save": 11,
+        "Artifact finalization exceeded the shared budget": 4,
+        "Shared task/configuration wall-clock budget expired": 5,
+        "Budget expired during inference": 14,
+        "Budget expired during tool": 12,
+        "Run journal finalization exceeded the shared budget": 1,
+        "Budget expired during save_outcome": 1
+      }
+    },
+    "rkv_80_never": {
+      "timing_coverage_attempts": 73,
+      "attempt_count": 73,
+      "mean_cell_seconds": 132.57743796818016,
+      "mean_seconds_per_cell": {
+        "agent_protocol": 0.0002558511230745353,
+        "cleanup": 0.01645753716045874,
+        "completion_observation": 0.027586274899804267,
+        "inference": 30.754369038459554,
+        "reset": 2.375446514899959,
+        "save_outcome": 1.4193809438397875,
+        "tool": 38.44733036034013,
+        "trajectory_save": 37.73915114691801
+      },
+      "median_seconds_per_cell": {
+        "agent_protocol": 0.00026207300106761977,
+        "cleanup": 0.017572033502801787,
+        "completion_observation": 0.027446218493423657,
+        "inference": 28.139096291502938,
+        "reset": 1.0015689295032644,
+        "save_outcome": 0.0,
+        "tool": 37.581861304504855,
+        "trajectory_save": 37.089072090002446
+      },
+      "timeout_reasons": {
+        "Budget expired during trajectory_save": 14,
+        "Artifact finalization exceeded the shared budget": 2,
+        "Budget expired during tool": 10,
+        "Budget expired during inference": 14,
+        "Budget expired during reset": 1,
+        "Shared task/configuration wall-clock budget expired": 6,
+        "Budget expired during save_outcome": 1
+      }
+    },
+    "full_best_of_n": {
+      "timing_coverage_attempts": 95,
+      "attempt_count": 95,
+      "mean_cell_seconds": 84.8881686400593,
+      "mean_seconds_per_cell": {
+        "agent_protocol": 0.0004360244001145475,
+        "cleanup": 0.02117321229990921,
+        "completion_observation": 0.04614039311985835,
+        "inference": 48.05314664634148,
+        "reset": 1.178295911160094,
+        "save_outcome": 0.3584978407203744,
+        "tool": 15.12635789984226,
+        "trajectory_save": 14.844097912202997
+      },
+      "median_seconds_per_cell": {
+        "agent_protocol": 0.0003771299925574567,
+        "cleanup": 0.01897557100164704,
+        "completion_observation": 0.04009208849311108,
+        "inference": 43.37937177651111,
+        "reset": 0.9051668485044502,
+        "save_outcome": 0.015582406002067728,
+        "tool": 10.017360172991175,
+        "trajectory_save": 10.85921259749739
+      },
+      "timeout_reasons": {
+        "Budget expired during tool": 2,
+        "Budget expired during trajectory_save": 3,
+        "Budget expired during inference": 6,
+        "Shared task/configuration wall-clock budget expired": 2
+      }
+    }
+  },
+  "completion": {
+    "timezone": "America/New_York",
+    "study_array_job": 13857623,
+    "scoring_job": 13857624,
+    "first_four_workers_started": "2026-11-11T00:32:40-05:00",
+    "full_cache_worker_started": "2026-11-11T02:32:33-05:00",
+    "inference_finished": "2026-11-11T03:52:40-05:00",
+    "scoring_started": "2026-11-11T03:53:08-05:00",
+    "scoring_finished": "2026-11-11T04:02:54-05:00",
+    "all_six_study_and_score_job_states": "COMPLETED",
+    "all_six_exit_codes": "0:0"
+  },
+  "completed_matching_dev_gates": [
+    {
+      "partition": "part-00",
+      "artifact_id": "comet-run:519f12a0-bc1a-4b84-831d-2db63408f81f",
+      "manifest_sha256": "82e60bfcb40342d96922395f12921aa94a0943930985d7f52cdc8744ba420659",
+      "cells": 2,
+      "attempt_status_counts": {
+        "completed": 2,
+        "timeout": 2
+      },
+      "peak_total_vram_bytes": 24597692416,
+      "attempts_with_peak_memory": 3
+    },
+    {
+      "partition": "part-01",
+      "artifact_id": "comet-run:8869bf78-2f63-4acc-b3b0-63cb7d473125",
+      "manifest_sha256": "9829f199d2e5f1a1910255d4c4b545d6bf52ced680956eeb82849a3d484e3cb8",
+      "cells": 2,
+      "attempt_status_counts": {
+        "timeout": 2
+      },
+      "peak_total_vram_bytes": 24799019008,
+      "attempts_with_peak_memory": 2
+    },
+    {
+      "partition": "part-02",
+      "artifact_id": "comet-run:192f99ea-c3af-4ff1-b782-dfccd58b261c",
+      "manifest_sha256": "4b9cd361be5b6a7872428f1b530bbf2ffdc7410554b5e3002a38202bfcf3c7e6",
+      "cells": 2,
+      "attempt_status_counts": {
+        "completed": 2,
+        "timeout": 2
+      },
+      "peak_total_vram_bytes": 24436211712,
+      "attempts_with_peak_memory": 3
+    },
+    {
+      "partition": "part-03",
+      "artifact_id": "comet-run:5a6a9d10-e378-42ec-81e8-addb6d9692d8",
+      "manifest_sha256": "f0bd7b3b3f791b61c13b7267223aa6bf32c53a67c2f126cc89d913399b1372d7",
+      "cells": 2,
+      "attempt_status_counts": {
+        "timeout": 2,
+        "completed": 1
+      },
+      "peak_total_vram_bytes": 24446697472,
+      "attempts_with_peak_memory": 3
+    },
+    {
+      "partition": "part-04",
+      "artifact_id": "comet-run:7c237b8b-190a-4abe-9a2e-0c7491f5a0a4",
+      "manifest_sha256": "cb720ddac610caeabb80279817e1a0e4bd47e915b43a78ea4fa257dde90d1f0f",
+      "cells": 2,
+      "attempt_status_counts": {
+        "timeout": 1,
+        "completed": 2
+      },
+      "peak_total_vram_bytes": 24803213312,
+      "attempts_with_peak_memory": 3
+    }
+  ],
+  "validation": {
+    "downloaded_source_files_sha256_verified": 11,
+    "frozen_parent_coverage": "250 unique task/condition/seed cells; all terminal and scored",
+    "execution_and_evaluator_source_hashes_and_packages_match": true,
+    "hardware_runtime_and_dependencies_match_across_partitions": true,
+    "frozen_configuration_changed": false,
+    "execution_failures_remain_unsuccessful": true,
+    "current_refactored_analysis_reproduces_saved_aggregates_and_all_paired_comparisons": true,
+    "offline_evaluation_repeated": false,
+    "source_execution_digests": "Recorded by the pinned remote scorer; full raw environments were not downloaded or rehashed locally."
+  },
+  "limitations": [
+    "Corrective replication on previously inspected held-out IDs, not a fresh blind test; never pooled with the original cohort.",
+    "The 90-versus-80 AgentKV difference is 2 percentage points with paired 95% interval [-10, 14]; no retention ranking established.",
+    "Zero CUDA/OOM failures in this cohort does not identify the original first illegal-access kernel or assign every historical OOM to exception retention.",
+    "Run artifacts and AppWorld data remained on shared storage. Compressed workers ran concurrently; full cache ran later, mostly alone, with shorter observed I/O times.",
+    "Storage delays consume the 120-second budget and materially confound comparisons with full cache and historical runs.",
+    "Recorded wall time can overrun during in-flight work, saving and cleanup; no successful attempt was credited after its budget.",
+    "Execution used d97c49d before the repository refactor; reporting from the refactored checkout does not qualify its GPU execution."
+  ],
+  "exports": {
+    "full_analysis_sha256": "1f09be6425619e7ada3f6d90a0c3d0cb7edf0a270c9419d81aa49af5caa6b5f6",
+    "compact_analysis_sha256": "ff0d08fa5301faf4b688fac150d03e22c3f2363e2cffaf2355f21922c323b706",
+    "csv_sha256": "68af6c27b6127c156ed256034268cd957db229d18450aefd884d672cb1092d99"
+  }
+}
