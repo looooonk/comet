@@ -481,7 +481,8 @@
       "0-50 percent PNG/PDF",
       "resource PNG/PDF"
     ],
-    "reporting_only": "No inference, runtime source or frozen configuration changed; no behavioral tests rerun."
+    "reporting_only": "No inference, runtime source or frozen configuration changed; no behavioral tests rerun.",
+    "combined_plot": "26 original and five corrective conditions retained as distinct cohorts; no source analysis or success estimate changed. Lint, input coverage and visual inspection passed."
   },
   "limitations": [
     "Corrective replication on previously inspected held-out IDs, not a fresh blind test; never pooled with the original cohort.",
@@ -503,6 +504,16 @@
       "test50-cuda-repair-aggressivity.png": "7d047b40b617beca367faa6e5c8eb4199f096824c32352fd73d4dd839ac0b7bd",
       "test50-cuda-repair-resources.pdf": "6cae17c324163503ff7d626c39f2a524e58010e07534706895ad91c7a96a61e2",
       "test50-cuda-repair-resources.png": "173ba6d18a8281768cd554bc32c6ce0ec67dd202c1a1703bdeb2dbe9a3db7c92"
+    },
+    "combined_figures": {
+      "test50-combined-aggressivity-y50.pdf": "60e1c8366f24ee3f9cffa9f04a75efe6a3a04c924ca822dfb44c4033f3498623",
+      "test50-combined-aggressivity-y50.png": "0fb33bfe86957fd03912347fa84f96c8b4718c83f19d9592975f4a7ca979df1b",
+      "test50-combined-aggressivity.pdf": "0bc41c59c05ed731de0267f30c6bfa7f8a3a90889a11bce38a6e8ca3587e4a7b",
+      "test50-combined-aggressivity.png": "182fed16c8ad2245932c84dfaf80b239c08de0facead271c8d35a30559fdd708"
+    },
+    "combined_figure_inputs": {
+      "test50-final-analysis.json": "380c917994a5c298b098506020e849612d85fab4311a3da2cca91235f4b89e7f",
+      "test50-cuda-repair-analysis.json": "ff0d08fa5301faf4b688fac150d03e22c3f2363e2cffaf2355f21922c323b706"
     }
   }
 }

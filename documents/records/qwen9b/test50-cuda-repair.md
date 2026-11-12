@@ -18,8 +18,21 @@ its failures remain intact; the cohorts are not pooled or spliced into one curve
 
 ## Success and uncertainty
 
-![Corrective compression results, 0-50 percent success axis](figures/test50-cuda-repair-aggressivity-y50.png)
+![Full compression grid with corrective results, 0-50 percent success axis](figures/test50-combined-aggressivity-y50.png)
 
+The full-grid overview shows all 26 original conditions as dashed lines and
+hollow markers (plus the separate N=1 control), with the five corrective
+measurements as solid lines and filled markers. Lines connect observations
+within each cohort only. StreamingLLM and retention below 80% were not rerun;
+their original measurements remain visible. No original point is replaced.
+
+[Full-grid 0-50% PDF](figures/test50-combined-aggressivity-y50.pdf) |
+[Full-grid 0-100% PNG](figures/test50-combined-aggressivity.png) |
+[Full-grid 0-100% PDF](figures/test50-combined-aggressivity.pdf)
+
+The corrective cohort is also available by itself:
+
+[0-50% PNG](figures/test50-cuda-repair-aggressivity-y50.png) |
 [0-50% PDF](figures/test50-cuda-repair-aggressivity-y50.pdf) |
 [Full-range PNG](figures/test50-cuda-repair-aggressivity.png) |
 [Full-range PDF](figures/test50-cuda-repair-aggressivity.pdf) |
@@ -135,7 +148,20 @@ hashes; the committed analysis omits only detailed observations and replaces
 private source locations with portable run IDs. PNG and PDF plots use the
 current shared plotting commands and were visually inspected.
 
-After [activating the CPU runtime](../../setup.md), regenerate the main view:
+After [activating the CPU runtime](../../setup.md), regenerate the full-grid overview:
+
+```sh
+python scripts/plot_corrective_comparison.py \
+  documents/records/qwen9b/analysis/test50-final-analysis.json \
+  documents/records/qwen9b/analysis/test50-cuda-repair-analysis.json \
+  --output /path/to/figures/test50-combined-aggressivity-y50.png
+```
+
+Add `--y-max 100` for the 0-100% version. The script uses the shared series
+extraction and checks matching tasks, seeds, stage and condition settings; it
+does not combine success estimates or bootstrap across cohorts.
+
+To regenerate the corrective-only views:
 
 ```sh
 comet plot-aggressivity documents/records/qwen9b/analysis/test50-cuda-repair-analysis.json \
