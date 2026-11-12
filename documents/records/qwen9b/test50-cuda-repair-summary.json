@@ -482,7 +482,7 @@
       "resource PNG/PDF"
     ],
     "reporting_only": "No inference, runtime source or frozen configuration changed; no behavioral tests rerun.",
-    "combined_plot": "26 original and five corrective conditions retained as distinct cohorts; no source analysis or success estimate changed. Lint, input coverage and visual inspection passed."
+    "combined_plot": "All curves are solid. One AgentKV curve contains exactly one corrected point at 90% and 80%; all plotted AgentKV coordinates verified. Original analyses are unchanged. Lint and visual inspection passed."
   },
   "limitations": [
     "Corrective replication on previously inspected held-out IDs, not a fresh blind test; never pooled with the original cohort.",
@@ -506,14 +506,26 @@
       "test50-cuda-repair-resources.png": "173ba6d18a8281768cd554bc32c6ce0ec67dd202c1a1703bdeb2dbe9a3db7c92"
     },
     "combined_figures": {
-      "test50-combined-aggressivity-y50.pdf": "60e1c8366f24ee3f9cffa9f04a75efe6a3a04c924ca822dfb44c4033f3498623",
-      "test50-combined-aggressivity-y50.png": "0fb33bfe86957fd03912347fa84f96c8b4718c83f19d9592975f4a7ca979df1b",
-      "test50-combined-aggressivity.pdf": "0bc41c59c05ed731de0267f30c6bfa7f8a3a90889a11bce38a6e8ca3587e4a7b",
-      "test50-combined-aggressivity.png": "182fed16c8ad2245932c84dfaf80b239c08de0facead271c8d35a30559fdd708"
+      "test50-combined-aggressivity-y50.pdf": "133e24735497f79843d5868aee4c28e00f088ccb7797bce780c7c2d345419329",
+      "test50-combined-aggressivity-y50.png": "4052e0f35cf29fbbb90de0f5975e095ff1c99fb80eacc84db5e28c535b3ad316",
+      "test50-combined-aggressivity.pdf": "6aa5d3bdd925e56247947e30690416b07a14df59ec0dcb14b2514dfa5095b327",
+      "test50-combined-aggressivity.png": "4084af1146dc258a14c9fef1cbaea30eefa1a62f424c3cf91d7e496e20ecce2e"
     },
     "combined_figure_inputs": {
       "test50-final-analysis.json": "380c917994a5c298b098506020e849612d85fab4311a3da2cca91235f4b89e7f",
       "test50-cuda-repair-analysis.json": "ff0d08fa5301faf4b688fac150d03e22c3f2363e2cffaf2355f21922c323b706"
+    },
+    "combined_figure_selection": {
+      "requested_display": "Solid curves; replace original AgentKV 90% and 80% points with their corrective measurements.",
+      "omitted_original_condition_ids": [
+        "agentkv_90_never",
+        "agentkv_80_never"
+      ],
+      "original_measurements_shown": 24,
+      "corrective_measurements_shown": 5,
+      "agentkv_curve_control": "corrective full_best_of_n",
+      "source_analyses_changed": false,
+      "other_repeated_conditions": "Both original and corrective R-KV and full-cache controls remain visible."
     }
   }
 }

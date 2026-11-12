@@ -14,17 +14,22 @@ measurements, particularly comparisons with full cache, which ran later.
 
 This is a separate corrective cohort on previously inspected held-out tasks,
 not a new blind test. The [original 26-condition study](test50-final.md) and all
-its failures remain intact; the cohorts are not pooled or spliced into one curve.
+its failures remain intact; the cohorts remain separate in the analyses. The
+requested display below combines selected points without pooling observations.
 
 ## Success and uncertainty
 
 ![Full compression grid with corrective results, 0-50 percent success axis](figures/test50-combined-aggressivity-y50.png)
 
-The full-grid overview shows all 26 original conditions as dashed lines and
-hollow markers (plus the separate N=1 control), with the five corrective
-measurements as solid lines and filled markers. Lines connect observations
-within each cohort only. StreamingLLM and retention below 80% were not rerun;
-their original measurements remain visible. No original point is replaced.
+The full-grid overview uses solid lines throughout. At the user's request,
+the AgentKV curve uses the corrective 90% and 80% retention measurements in
+place of the original points, followed by the original measurements below 80%.
+It starts at the corrective full-cache N=2 control. The old AgentKV 90% and 80%
+points are omitted from this display, but remain in the original analysis and
+the table below. Original and corrective R-KV and full-cache measurements are
+both shown; StreamingLLM was not rerun. Hollow markers identify original
+measurements and filled markers identify corrective measurements. This is a
+mixed-run display, not a newly measured complete grid or a pooled estimate.
 
 [Full-grid 0-50% PDF](figures/test50-combined-aggressivity-y50.pdf) |
 [Full-grid 0-100% PNG](figures/test50-combined-aggressivity.png) |
@@ -159,7 +164,8 @@ python scripts/plot_corrective_comparison.py \
 
 Add `--y-max 100` for the 0-100% version. The script uses the shared series
 extraction and checks matching tasks, seeds, stage and condition settings; it
-does not combine success estimates or bootstrap across cohorts.
+selects the corrective AgentKV 90%/80% points for the display without combining
+success estimates or bootstrapping across cohorts.
 
 To regenerate the corrective-only views:
 

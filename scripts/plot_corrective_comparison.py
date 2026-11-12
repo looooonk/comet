@@ -1,4 +1,4 @@
-"""Overlay a corrective cohort on the original grid without replacing observations."""
+"""Draw solid curves, using corrective AgentKV points where they are available."""
 
 import argparse
 import json
@@ -47,32 +47,53 @@ def plot_comparison(original_path, corrective_path, output, y_max=50):
         for axis, (metric, title) in zip(axes, metrics, strict=True):
             for cohort_index, (control, series, _) in enumerate(cohorts):
                 repaired = cohort_index == 1
-                alpha = 1.0 if repaired else 0.48
+                alpha = 1.0 if repaired else 0.65
                 for method, (_, color, marker) in METHODS.items():
                     if ("never", method) not in series:
                         continue
+                    if method == "agentkv" and not repaired:
+                        continue
                     points = [(0, control), *series["never", method]]
+                    if method == "agentkv":
+                        # Replace only the repeated AgentKV conditions in this display.
+                        points.extend(
+                            (x, row)
+                            for x, row in cohorts[0][1]["never", method]
+                            if row["condition"]["id"] not in corrective["conditions"]
+                        )
+                        points.sort(key=lambda point: point[0])
                     axis.plot(
                         [x for x, _ in points],
                         [100 * row[metric]["value"] for _, row in points],
                         color=color,
-                        linestyle="-" if repaired else "--",
+                        linestyle="-",
                         linewidth=2.2 if repaired else 1.4,
                         alpha=alpha,
-                        marker=marker,
-                        markersize=8 if method == "rkv" else 7,
-                        markerfacecolor=color if repaired else "white",
-                        markeredgewidth=1.2,
                         zorder=4 if repaired else 2,
                     )
                     for x, row in points[1:]:
+                        corrected_point = (
+                            repaired and row["condition"]["id"] in corrective["conditions"]
+                        )
+                        axis.plot(
+                            x,
+                            100 * row[metric]["value"],
+                            linestyle="none",
+                            marker=marker,
+                            markersize=8 if method == "rkv" else 7,
+                            color=color,
+                            markerfacecolor=color if corrected_point else "white",
+                            markeredgewidth=1.2,
+                            alpha=alpha,
+                            zorder=5 if repaired else 3,
+                        )
                         low, high = row[metric]["ci95"]
                         axis.vlines(
                             x,
                             100 * low,
                             100 * high,
                             color=color,
-                            alpha=0.38 if repaired else 0.13,
+                            alpha=0.38 if corrected_point else 0.18,
                             linewidth=1.8,
                         )
                 estimate = control[metric]
@@ -128,17 +149,6 @@ def plot_comparison(original_path, corrective_path, output, y_max=50):
             axis.set_title(title, pad=65, fontsize=13)
         axes[0].set_ylabel("Tasks solved (%)")
 
-        old = original["conditions"]["agentkv_90_never"]["oracle_success_rate"]["value"] * 100
-        new = corrective["conditions"]["agentkv_90_never"]["oracle_success_rate"]["value"] * 100
-        axes[1].annotate(
-            f"AgentKV at 90% retention: {old:g}% → {new:g}%",
-            xy=(10, new),
-            xytext=(31, y_max * 0.84),
-            fontsize=10,
-            color="#176b29",
-            arrowprops={"arrowstyle": "->", "color": "#176b29", "lw": 1.2},
-            bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.88},
-        )
         method_handles = [
             Line2D([], [], color=color, marker=marker, label=name)
             for name, color, marker in METHODS.values()
@@ -165,17 +175,16 @@ def plot_comparison(original_path, corrective_path, output, y_max=50):
                 color="#666666",
                 marker="o",
                 markerfacecolor="white",
-                linestyle="--",
-                alpha=0.6,
-                label="Original grid",
+                linestyle="none",
+                label="Original measurement",
             ),
             Line2D(
                 [],
                 [],
                 color="#333333",
                 marker="o",
-                linewidth=2.2,
-                label="Corrective replication (five points)",
+                linestyle="none",
+                label="Corrective measurement",
             ),
         ]
         figure.legend(
@@ -200,9 +209,9 @@ def plot_comparison(original_path, corrective_path, output, y_max=50):
         figure.text(
             0.5,
             0.025,
-            "50 tasks per condition per cohort · seed 17 · 120-second shared budget · no recovery\n"
-            "Pointwise paired-task bootstrap 95% intervals. All failures retained; cohorts are not pooled or spliced.\n"
-            "Storage timing differs across runs. Oracle selection is an upper bound; zero-width intervals do not establish certainty.",
+            "AgentKV: corrective 90%/80% retention, original lower retentions. R-KV and full-cache results from both runs are shown.\n"
+            "50 tasks per point · seed 17 · 120-second shared budget · no recovery · pointwise task-bootstrap 95% intervals\n"
+            "Display connects measurements from different runs; analyses stay separate. Storage timing differs. Oracle selection is an upper bound.",
             ha="center",
             fontsize=9,
             linespacing=1.45,
