@@ -73,7 +73,9 @@ first study, with the new configuration files staged verbatim beside that
 checkout so their resolved digests are unchanged. Analyze the two new seeds
 through the shared analysis, bootstrapping tasks with their paired seeds, and
 report seed 17 alongside them descriptively; the shared analysis does not pool
-runs with different seed lists. Status: declared, not yet executed.
+runs with different seed lists. Status: completed on November 12, 2026 on
+node-local storage, without changes to the declared configuration. See the
+[findings](dev19-recovery.md#seed-replicate) and [compact evidence](dev19-recovery-summary.json).
 
 A first launch on November 10-11, 2026 was stopped after 28 cells and is void.
 Shared-storage stalls were being charged to the cell budgets: the 24 completed
@@ -100,7 +102,9 @@ single rebuild restores success; the first study showed an effect at 50% and
 none at 80% or 25%. StreamingLLM and the dynamic trigger are omitted to bound
 the grid. The 50% conditions repeat the first study with the same seed as a
 consistency check. All points are reported, including flat ones; no threshold
-is tuned from these outcomes. Status: declared, not yet executed.
+is tuned from these outcomes. Status: completed on November 12, 2026 on
+node-local storage, without changes to the declared configuration. See the
+[findings](dev19-frontier.md) and [compact evidence](dev19-frontier.json).
 
 ## Supplemental trigger timing
 
@@ -251,3 +255,21 @@ limits. For the replicate and the frontier, whose workers start in two rounds,
 a second guard with the same limits was started at 20:22, after the
 replicate's first 44 cells (medians of 0.5 seconds of reset, 0.04 of saving and
 0.4 of tools), and another is queued to start with the frontier's first worker.
+
+The replicate then ran from 20:10 on November 11 to 03:14 on November 12 and the
+frontier from 03:59 to 06:49, each with at most four workers on one node and no
+worker failure, preemption or requeue. Neither guard tripped. Read afterward
+from every saved cell:
+
+| Run | Cells | Mean reset (s) | Mean save (s) | Mean tools (s) | Ten-cell windows over a guard limit |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Seed replicate | 1,102 | 0.9 | 0.15 | 0.8 | 0 of 1,093 |
+| Retention frontier | 399 | 0.9 | 0.09 | 1.3 | 0 of 390 |
+| First study, shared storage | 551 | 0.9 | 2.2 | 1.4 | 7 of 542 (saving) |
+
+Each study was scored in one job after its workers finished and analyzed
+through the shared analysis. The frontier's repeated conditions solved the same
+tasks as the first study and matched it action for action, apart from attempts
+cut at a different turn by the deadline and one attempt whose observation
+printed a set in a different order; the [frontier record](dev19-frontier.md#consistency-with-the-first-study)
+has the counts.

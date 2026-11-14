@@ -13,14 +13,19 @@ selection among attempts; these small samples do not establish a general ranking
 - [Fifty-task provisional results](qwen9b/test50-partial.md): 12 fully covered
   conditions, 50 paired tasks per point, with missing comparisons and GPU failures explicit.
 - [Nineteen-family dev recovery findings](qwen9b/dev19-recovery.md): the core
-  matrix with both recovery policies on every dev family, and its
-  [design](qwen9b/dev19-recovery-design.md). Train/dev evidence only.
+  matrix with both recovery policies on every dev family, its seed replicate on
+  seeds 29 and 31, and its [design](qwen9b/dev19-recovery-design.md). Train/dev
+  evidence only.
 - [Dev failure reading and task characteristics](qwen9b/dev19-task-characteristics.md):
   what fills the context at 50% retention, where the rebuild helped, and which
-  task properties go with tolerating compression. Offline, one seed.
+  task properties go with tolerating compression. Offline, seed 17 with the
+  replicate seeds beside it.
 - [Dev trigger timing](qwen9b/dev19-trigger-timing.md): the single rebuild
   after 1, 2, 6 or 8 tool calls at 50% retention, beside the first study's 4
   and never. One seed, descriptive.
+- [Dev retention frontier](qwen9b/dev19-frontier.md): R-KV and AgentKV at 70%
+  to 30% retention with and without one rebuild, and the 50% consistency check
+  against the first study. One seed.
 - [Validation evidence](qwen9b/validation/): live state, memory, AppWorld and
   interruption checks, including the failed Blackwell 21 GiB qualification.
 - [Cloud ledger](qwen9b/cloud-ledger.json): the existing spending ceiling and
