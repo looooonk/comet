@@ -68,3 +68,15 @@ def test_inputs_that_cannot_give_a_family_interval_are_rejected():
         paired_family_difference(two, two, draws=10)
     with pytest.raises(ValueError, match="true or false"):
         paired_family_difference({**two, ("a_1", 17): 0.4}, two)
+
+
+def test_tail_counts_say_how_often_resampling_reaches_zero_on_each_side():
+    left = outcomes({"a_1": {17, 29}, "a_2": {17}, "b_1": set(), "b_2": set()})
+    right = outcomes({task: set() for task, _ in left})
+    gain = paired_family_difference(left, right, draws=2000, seed=3)
+    # Only the draw of family b twice gives zero; no draw is negative.
+    assert 0 < gain["draws_at_or_below_zero"] < 2000 * 0.4
+    assert gain["draws_at_or_above_zero"] == 2000
+    loss = paired_family_difference(right, left, draws=2000, seed=3)
+    assert loss["draws_at_or_above_zero"] == gain["draws_at_or_below_zero"]
+    assert loss["draws_at_or_below_zero"] == 2000

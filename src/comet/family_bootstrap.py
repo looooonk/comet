@@ -70,6 +70,8 @@ def paired_family_difference(
     return {
         "difference": sum(differences.values()) / len(differences),
         "ci95": [samples[tail - 1], samples[draws - tail]],
+        "draws_at_or_below_zero": sum(value <= 0 for value in samples),
+        "draws_at_or_above_zero": sum(value >= 0 for value in samples),
         "families": len(families),
         "tasks": len(differences),
         "seeds": seeds,
