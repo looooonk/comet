@@ -1,0 +1,18 @@
+{
+  "extends": "../dev19-trigger-v1/fixed-2.json",
+  "experiment_id": "qwen9b-dev19-trigger-fixed2-blackwell-v2",
+  "seeds": [
+    29,
+    31
+  ],
+  "conditions": [
+    {
+      "id": "agentkv_50_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Seed replicate of the AgentKV arm of qwen9b-dev19-trigger-fixed2-blackwell-v1: the single rebuild after 2 tool calls, the same 19 dev tasks and every other setting, with paired replicate seeds 29 and 31. Threshold 4 and never at these seeds are in qwen9b-dev19-recovery-blackwell-v2. Train/dev evidence only; does not retune the frozen test study."
+}

@@ -102,3 +102,61 @@ def test_dev19_trigger_timing_changes_only_the_fixed_threshold_at_half_retention
             if name not in changed:
                 assert study.to_dict()[name] == value, name
     assert sorted(thresholds) == [1, 2, 6, 8] and first.triggers.fixed_tool_calls == 4
+
+
+def test_dev38_confirmation_uses_the_unused_dev_tasks_and_first_study_conditions():
+    first = Experiment.load(BLACKWELL / "dev19-recovery-v1.json")
+    study = Experiment.load(BLACKWELL / "dev38-recovery-v1.json")
+    record = json.loads((RECORDS / "dev38-recovery-selection.json").read_text())
+    families = json.loads((RECORDS / "dev19-recovery-selection.json").read_text())["families"]
+    dev = sorted(f"{family}_{variant}" for family in families for variant in (1, 2, 3))
+    assert hashlib.sha256("\n".join(dev).encode()).hexdigest() == record["expected_split_ids_sha256"]
+    unused = [task for task in dev if task not in first.task_ids]
+    assert study.task_ids == unused == record["task_ids"] and len(unused) == 38
+    assert {task.rsplit("_", 1)[0] for task in unused} == set(families)
+    assert study.seeds == [17, 29, 31]
+    reference = {condition.id: condition for condition in first.conditions}
+    expected = ["full_best_of_n", "agentkv_50_never", "agentkv_50_fixed", "agentkv_50_dynamic"]
+    assert [condition.id for condition in study.conditions] == expected
+    assert all(condition == reference[condition.id] for condition in study.conditions)
+    changed = {"experiment_id", "task_ids", "seeds", "conditions", "notes"}
+    for name, value in first.to_dict().items():
+        if name not in changed:
+            assert study.to_dict()[name] == value, name
+    parent = {k: v for k, v in study.to_dict().items() if k not in ("conditions", "notes")}
+    seen = []
+    for path in sorted((BLACKWELL / "dev38-recovery-v1-parts").glob("part-*.json")):
+        part = Experiment.load(path)
+        assert {k: v for k, v in part.to_dict().items() if k not in ("conditions", "notes")} == parent
+        seen += [condition.id for condition in part.conditions]
+    assert seen == expected
+
+
+def test_dev19_followup_seed_replicates_change_only_seeds_and_keep_agentkv_conditions():
+    frontier = Experiment.load(BLACKWELL / "dev19-frontier-v1.json")
+    replicate = Experiment.load(BLACKWELL / "dev19-frontier-v2.json")
+    reference = {condition.id: condition for condition in frontier.conditions}
+    expected = [f"agentkv_{r}_{p}" for r in (70, 60, 40, 30) for p in ("never", "fixed")]
+    assert [condition.id for condition in replicate.conditions] == expected
+    assert all(condition == reference[condition.id] for condition in replicate.conditions)
+    assert replicate.seeds == [29, 31]
+    changed = {"experiment_id", "seeds", "conditions", "notes"}
+    for name, value in frontier.to_dict().items():
+        if name not in changed:
+            assert replicate.to_dict()[name] == value, name
+    parent = {k: v for k, v in replicate.to_dict().items() if k not in ("conditions", "notes")}
+    seen = []
+    for path in sorted((BLACKWELL / "dev19-frontier-v2-parts").glob("part-*.json")):
+        part = Experiment.load(path)
+        assert {k: v for k, v in part.to_dict().items() if k not in ("conditions", "notes")} == parent
+        seen += [condition.id for condition in part.conditions]
+    assert seen == expected
+    for threshold in (1, 2, 6, 8):
+        first = Experiment.load(BLACKWELL / "dev19-trigger-v1" / f"fixed-{threshold}.json")
+        study = Experiment.load(BLACKWELL / "dev19-trigger-v2" / f"fixed-{threshold}.json")
+        assert study.seeds == [29, 31] and study.triggers == first.triggers
+        assert [condition.id for condition in study.conditions] == ["agentkv_50_fixed"]
+        assert study.conditions[0] == first.conditions[0]
+        for name, value in first.to_dict().items():
+            if name not in changed:
+                assert study.to_dict()[name] == value, name

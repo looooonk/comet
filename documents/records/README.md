@@ -26,6 +26,11 @@ selection among attempts; these small samples do not establish a general ranking
 - [Dev retention frontier](qwen9b/dev19-frontier.md): R-KV and AgentKV at 70%
   to 30% retention with and without one rebuild, and the 50% consistency check
   against the first study. One seed.
+- [Thirty-eight-task dev confirmation design](qwen9b/dev38-recovery-design.md):
+  the declared confirmation of the 50% recovery result on the dev tasks the
+  first study did not use. A declaration, not completed-result evidence.
+- [Dev claims review](qwen9b/dev19-claims-review.md): an independent reading of
+  which claims the dev records support, and a prior-work check.
 - [Validation evidence](qwen9b/validation/): live state, memory, AppWorld and
   interruption checks, including the failed Blackwell 21 GiB qualification.
 - [Cloud ledger](qwen9b/cloud-ledger.json): the existing spending ceiling and

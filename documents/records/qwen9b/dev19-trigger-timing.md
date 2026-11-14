@@ -157,8 +157,8 @@ launches of this study were voided, as the design records, and are not used.
 ## Limits
 
 One seed and 19 tasks, and the thresholds differ by a handful of tasks at
-most; the seed replicate will show whether the threshold-4 gain itself is
-stable. Oracle success is a best-of-two upper bound. The split by first action
+most; the [seed replicate](dev19-recovery.md#seed-replicate) since found the
+threshold-4 gain at seeds 29 and 31 to be about half its seed-17 size. Oracle success is a best-of-two upper bound. The split by first action
 is post hoc, and opening on protocol is not independent of the task. No fixed
 threshold can change how an attempt opens, because the first action precedes
 every rebuild; keeping the prompt's protocol through compression would be a

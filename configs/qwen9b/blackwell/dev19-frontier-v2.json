@@ -1,0 +1,67 @@
+{
+  "extends": "dev19-frontier-v1.json",
+  "experiment_id": "qwen9b-dev19-frontier-blackwell-v2",
+  "seeds": [
+    29,
+    31
+  ],
+  "conditions": [
+    {
+      "id": "agentkv_70_never",
+      "method": "agentkv",
+      "retention": 0.7,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_70_fixed",
+      "method": "agentkv",
+      "retention": 0.7,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_60_never",
+      "method": "agentkv",
+      "retention": 0.6,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_60_fixed",
+      "method": "agentkv",
+      "retention": 0.6,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_40_never",
+      "method": "agentkv",
+      "retention": 0.4,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_40_fixed",
+      "method": "agentkv",
+      "retention": 0.4,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_30_never",
+      "method": "agentkv",
+      "retention": 0.3,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_30_fixed",
+      "method": "agentkv",
+      "retention": 0.3,
+      "recovery": "fixed",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Seed replicate of the AgentKV half of qwen9b-dev19-frontier-blackwell-v1, declared after its seed-17 results and before any execution: AgentKV at 70, 60, 40 and 30 percent retention under never and fixed recovery, the same 19 dev tasks and every numerical setting, with paired replicate seeds 29 and 31. The 50 percent arms and the full-cache control at these seeds are in qwen9b-dev19-recovery-blackwell-v2. 304 fresh-start cells. Train/dev evidence. See documents/records/qwen9b/dev19-recovery-design.md."
+}

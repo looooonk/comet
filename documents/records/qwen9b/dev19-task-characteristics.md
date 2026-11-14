@@ -1,6 +1,6 @@
 # Qwen3.5-9B: what fails at 50% retention, and which tasks tolerate compression
 
-At 50% retention the compressed agent stops following the prompt's
+At 50% retention the compressed agent often stops following the prompt's
 documentation protocol before its first action. Full cache opened all 38
 attempts with the compact API listing the prompt prescribes; AgentKV 50% did so
 in 13 of 38 and opened 20 with a wide full-specification search whose results
@@ -285,8 +285,9 @@ the [evidence](dev19-task-characteristics.json) under `seed_replicate`.
 
 ## Limits
 
-One seed, 19 tasks and two attempts per task; attempts within a task are not
-independent, and counts by first action are descriptive. Complete trajectories
+The sections before the replicate rest on one seed, 19 tasks and two attempts
+per task; attempts within a task are not independent, and counts by first
+action are descriptive. Complete trajectories
 were read for three of the 29 conditions; the other 26 were read for first
 actions and endings only. Task metadata was read for dev
 tasks only. The correlations are exploratory and uncorrected. The summaries

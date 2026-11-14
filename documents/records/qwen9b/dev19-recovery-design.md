@@ -273,3 +273,37 @@ tasks as the first study and matched it action for action, apart from attempts
 cut at a different turn by the deadline and one attempt whose observation
 printed a set in a different order; the [frontier record](dev19-frontier.md#consistency-with-the-first-study)
 has the counts.
+
+## Seed replicates of the frontier and the trigger timing
+
+Declared on November 14, 2026, after the seed-17 frontier and trigger-timing
+results and the seed replicate of the core matrix, and before any execution of
+these configurations. An [independent reading](dev19-claims-review.md) of the
+records found the retention band and the timing result to rest on seed 17
+alone, the seed with the largest recovery gain. Both replicates keep the 19 dev
+tasks and every numerical setting and change only the seeds, to 29 and 31, and
+the condition lists, to AgentKV. The research contract authorizes train/dev
+grids and neighboring trigger thresholds declared as new versions; no threshold
+or retention is chosen from these outcomes.
+
+The [frontier replicate](../../../configs/qwen9b/blackwell/dev19-frontier-v2.json)
+runs AgentKV at 70%, 60%, 40% and 30% retention under never and fixed recovery:
+eight conditions, 304 fresh-start cells in [four condition groups](../../../configs/qwen9b/blackwell/dev19-frontier-v2-parts/).
+The 50% arms and the full-cache control at these seeds are in the seed
+replicate of the core matrix. R-KV is omitted: its frontier showed no
+consistent range and it solved nothing below 50%. Expectation recorded before
+execution: if the seed-17 band holds, fixed minus never is positive at 60% and
+40% and near zero at 70% and 30% at both seeds.
+
+The [timing replicate](../../../configs/qwen9b/blackwell/dev19-trigger-v2/)
+runs AgentKV at 50% retention with the single rebuild after 1, 2, 6 or 8 tool
+calls: four configurations of 38 cells, 152 in total. Threshold 4 and never at
+these seeds are in the seed replicate of the core matrix. Expectation recorded
+before execution: thresholds 1 and 2 solve at least as many tasks as threshold
+4, and thresholds 6 and 8 fall between never and threshold 4. Attempts that end
+before their rebuild are reported separately from attempts that were rebuilt.
+
+Both are analyzed through the shared analysis on their own seeds, with seed 17
+beside them descriptively, and every point is reported. They run after the
+[thirty-eight-task confirmation](dev38-recovery-design.md) on the same
+node-local storage, worker limit and guard. Status: declared, not yet executed.
