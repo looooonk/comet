@@ -58,13 +58,51 @@ at the same hypotheses; a hypothesis confirmed in one and not the other is
 reported as such, not as confirmed. Earlier A6000 work in this project was a
 state check at another source revision and is not reused.
 
+## Retry curve
+
+Declared on November 14, 2026, before any A6000 study has executed. The
+project's question is whether, under a fixed budget, it is better to rebuild a
+compressed cache or to keep it compressed and spend the budget on more
+attempts. An exploratory reading of the Blackwell runs, taking first attempts
+at seeds 17, 29 and 31 as independent retries, gave AgentKV at 50% retention
+12%, 18% and 21% for the best of one, two and three attempts without a
+rebuild, against 28% for one attempt with the fixed rebuild, 33% with the
+dynamic rebuild and 35% for one full-cache attempt. Three seeds cannot show
+where a retry curve levels off.
+
+The [configuration](../../../configs/qwen9b/a6000/dev19-retry-v1.json) runs
+single attempts of full cache and of AgentKV at 50% retention under never,
+fixed and dynamic recovery on the 19 first-study tasks at five further seeds
+(37, 41, 43, 47 and 53): 380 fresh-start cells in
+[four condition groups](../../../configs/qwen9b/a6000/dev19-retry-v1-parts/).
+An attempt's sampling seed depends only on the cell seed and the attempt
+index, so with the first attempts of the reference arms this gives eight
+independent attempts per task and arm, each with its own 120-second budget.
+
+Analysis, recorded before execution. For each arm and each k from 1 to 8,
+success is the share of tasks solved by at least one of k attempts, averaged
+over every choice of k seeds, with paired task-bootstrap intervals. This is a
+perfect-selection upper bound and favours retrying. Three comparisons are
+read at equal occupied KV, taking two 50% attempts as one full-cache attempt
+and a rebuilt attempt at its full-size peak: one full-cache attempt, two
+never-rebuild attempts and one rebuilt attempt; then two, four and two; then
+four, eight and four. Mean seconds per attempt, occupied KV and total VRAM
+are reported beside them, because in the runs so far compression freed under
+100 MiB of a 24 GiB cap and did not shorten attempts. Expectations: one
+rebuilt attempt is at least as good as the best of two never-rebuild
+attempts, and the never-rebuild curve stays below one full-cache attempt
+through k = 8. Both are reported whether or not they hold. This study varies
+the number of independent attempts; it does not run attempts concurrently,
+which would need an engine change and a research decision.
+
 ## Execution
 
 Workers use the node-local run directory, AppWorld root, runtime and model
 declared for the Blackwell studies, with automatic requeue disabled and the
 same guard limits on charged reset, save and tool time. At most four workers
 run per study, and the reference arms and the prefill study may run at the
-same time on separate GPUs; the confirmation follows the reference arms. The
+same time on separate GPUs; the confirmation follows the reference arms and
+the retry curve follows the prefill study. The
 prefill study is preceded by its own two-cell smoke run, kept outside the
 studies, because a rebuild on an empty cache has not been exercised before.
 Each study is scored after its workers finish and analyzed through the shared

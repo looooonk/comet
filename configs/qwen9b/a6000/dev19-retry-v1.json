@@ -1,0 +1,45 @@
+{
+  "extends": "../blackwell/dev19-recovery-v1.json",
+  "experiment_id": "qwen9b-dev19-retry-curve-a6000-v1",
+  "engine": {
+    "device_name": "NVIDIA RTX A6000"
+  },
+  "seeds": [
+    37,
+    41,
+    43,
+    47,
+    53
+  ],
+  "conditions": [
+    {
+      "id": "full_once",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_50_never_once",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_50_fixed_once",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 1
+    },
+    {
+      "id": "agentkv_50_dynamic_once",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 1
+    }
+  ],
+  "notes": "Retry-curve study on the RTX A6000 cohort, declared before any execution: single attempts of full cache and of AgentKV at 50 percent retention under never, fixed and dynamic recovery, on the 19 dev tasks at five further seeds, every numerical setting unchanged. 380 fresh-start cells. With the first attempts of qwen9b-dev19-core-a6000-v1 at seeds 17, 29 and 31 this gives eight independent attempts per task and arm, each with its own 120-second budget, for best-of-k curves. Compared only within this cohort. See documents/records/qwen9b/a6000-cohort-design.md."
+}

@@ -45,7 +45,7 @@ def test_a6000_core_study_reruns_first_study_arms_on_the_same_tasks():
 
 
 def test_a6000_parts_cover_every_condition_once_without_changing_settings():
-    for name in ("dev19-core-v1", "dev19-prefill-v1", "dev38-recovery-v1"):
+    for name in ("dev19-core-v1", "dev19-prefill-v1", "dev38-recovery-v1", "dev19-retry-v1"):
         study = Experiment.load(CONFIGS / f"a6000/{name}.json")
         parent = {k: v for k, v in study.to_dict().items() if k not in ("conditions", "notes")}
         seen = []
@@ -56,3 +56,20 @@ def test_a6000_parts_cover_every_condition_once_without_changing_settings():
             assert {k: v for k, v in part.to_dict().items() if k not in ("conditions", "notes")} == parent
             seen += [condition.id for condition in part.conditions]
         assert sorted(seen) == sorted(condition.id for condition in study.conditions)
+
+
+def test_a6000_retry_study_runs_single_attempts_of_the_core_arms_at_new_seeds():
+    core = Experiment.load(CONFIGS / "a6000/dev19-core-v1.json")
+    retry = Experiment.load(CONFIGS / "a6000/dev19-retry-v1.json")
+    reference = {condition.id: condition for condition in core.conditions}
+    assert retry.task_ids == core.task_ids
+    assert retry.seeds == [37, 41, 43, 47, 53] and not set(retry.seeds) & set(core.seeds)
+    twins = {"full_once": "full_best_of_n", "agentkv_50_never_once": "agentkv_50_never",
+             "agentkv_50_fixed_once": "agentkv_50_fixed", "agentkv_50_dynamic_once": "agentkv_50_dynamic"}
+    assert [condition.id for condition in retry.conditions] == list(twins)
+    for condition in retry.conditions:
+        twin = reference[twins[condition.id]]
+        # Same arm as the core study, limited to its first attempt.
+        assert (condition.method, condition.retention, condition.recovery) == (twin.method, twin.retention, twin.recovery)
+        assert condition.max_attempts == 1 and twin.max_attempts == 2
+    assert differing(retry, core) == {"experiment_id", "notes", "seeds", "conditions"}
