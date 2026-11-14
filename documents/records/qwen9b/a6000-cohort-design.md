@@ -28,8 +28,20 @@ retention grid, recovery, capacity at the cap, AppWorld isolation and tool
 effects, environment warm-up and process interruption) and then the four-cell
 dev smoke, executed, scored and analyzed in research mode, using the
 node-local model, runtime and scratch that study workers use. The studies
-below are submitted to start only if that job succeeds. Its evidence is added
-here when it has run.
+below are submitted to start only if that job succeeds.
+
+The job ran on November 14, 2026 and passed in 23 minutes. All 24 live checks
+passed, 23 in process and the process-interruption check, with none skipped.
+The numerical reference matched (logit cosine 0.9993, top-10 overlap 1.0),
+the 24 method and retention combinations kept their targets, full cache and
+rebuilds at the 16,384-token limit peaked at 23.05 GiB under the 24 GiB cap,
+a request beyond the cap was refused, and the three recovery branches left
+tool effects and random state unchanged. The four-cell dev smoke then ran,
+was scored and analyzed; its one task was unsolved under all four conditions,
+which is integration evidence only. Decode throughput in the smoke was 21 to
+25 tokens per second, so this cohort completes less work per 120-second
+budget than the Blackwell cohort. The [compact evidence](validation/a6000-cap24.json)
+has the identifiers and hashes.
 
 ## Declared studies
 
@@ -110,4 +122,8 @@ analysis on its own. A study the guard stops is void as a whole.
 
 ## Status
 
-Declared; qualification submitted, not yet executed.
+Qualified on November 14, 2026. The prefill smoke rebuilt all four of its
+attempts at the first trigger check, in 1.6 to 3.3 seconds, with no later
+rebuild, and its saved environments were scored. The reference arms started
+at 17:04 and the prefill study at 18:41 the same day; the confirmation and
+the retry curve are queued behind them. No study result is reported yet.

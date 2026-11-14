@@ -1,0 +1,211 @@
+{
+  "artifact_id": "comet-check:slurm-13911100:a6000-study-24g",
+  "cap_refusal": true,
+  "capacity_at_context_limit": [
+    {
+      "logical_cached_tokens": 16384,
+      "method": "full",
+      "peak_total_vram_bytes": 24752357376,
+      "post_recovery_peak_total_vram_bytes": null,
+      "recovery_seconds": null
+    },
+    {
+      "logical_cached_tokens": 16384,
+      "method": "streamingllm",
+      "peak_total_vram_bytes": 22609068032,
+      "post_recovery_peak_total_vram_bytes": 24752357376,
+      "recovery_seconds": 10.217232769005932
+    },
+    {
+      "logical_cached_tokens": 16384,
+      "method": "rkv",
+      "peak_total_vram_bytes": 22275620864,
+      "post_recovery_peak_total_vram_bytes": 24752357376,
+      "recovery_seconds": 10.813155304989778
+    },
+    {
+      "logical_cached_tokens": 16384,
+      "method": "agentkv",
+      "peak_total_vram_bytes": 22606970880,
+      "post_recovery_peak_total_vram_bytes": 24752357376,
+      "recovery_seconds": 10.203372540010605
+    }
+  ],
+  "context_tokens": 16384,
+  "dev_smoke": {
+    "cells": 4,
+    "conditions": {
+      "agentkv_25_never": {
+        "attempt_status_counts": {
+          "error": 1,
+          "timeout": 1
+        },
+        "decode_tokens_per_second": 22.9,
+        "oracle": 0.0,
+        "peak_total_vram_bytes": 19566100480
+      },
+      "full_best_of_n": {
+        "attempt_status_counts": {
+          "completed": 1,
+          "timeout": 1
+        },
+        "decode_tokens_per_second": 24.7,
+        "oracle": 0.0,
+        "peak_total_vram_bytes": 24750260224
+      },
+      "rkv_25_never": {
+        "attempt_status_counts": {
+          "timeout": 1
+        },
+        "decode_tokens_per_second": 21.5,
+        "oracle": 0.0,
+        "peak_total_vram_bytes": 20816003072
+      },
+      "streamingllm_25_never": {
+        "attempt_status_counts": {
+          "timeout": 1
+        },
+        "decode_tokens_per_second": 24.2,
+        "oracle": 0.0,
+        "peak_total_vram_bytes": 19735969792
+      }
+    },
+    "config_digest": "beea1a81dd33b8cc3175556068896644e5c5b015547a9b116880b1765e25a012",
+    "configuration": "configs/qwen9b/a6000/smoke-v1.json",
+    "run_id": "8767b8e5-02c3-4324-a054-59ddb805841c",
+    "status": "completed",
+    "storage": "shared run directory; study workers use node-local storage",
+    "task_id": "4ec8de5_1"
+  },
+  "engine": {
+    "attention_backend": "torch_sdpa",
+    "backend": "transformers_hybrid",
+    "cuda_runtime": "12.8",
+    "device_name": "NVIDIA RTX A6000",
+    "device_total_bytes": 50897289216,
+    "dtype": "bfloat16"
+  },
+  "executed": "2026-11-14",
+  "execution": {
+    "elapsed": "00:23:14",
+    "node_local_runtime_model_and_scratch": true,
+    "scheduler_job": "13911100"
+  },
+  "interruption": {
+    "config_digest": "0a2d0d6ba93bcb3b7418339f9c65bee9932d8c7b6fe861f996079c0bd41a3cdb",
+    "evidence_fields": [
+      "cells",
+      "clean_segment",
+      "command",
+      "completed_cell_before",
+      "config_digest",
+      "distinct_environments",
+      "incompatible_config",
+      "integration_only",
+      "interrupted",
+      "interrupted_cell",
+      "interruption_signal",
+      "paired_first_turn_equal",
+      "paired_raw_prefix_tokens",
+      "preserved_completed_cell",
+      "preserved_interrupted_trajectory",
+      "remaining_cell",
+      "resume_returncode",
+      "run_id",
+      "status",
+      "timeout_seconds"
+    ],
+    "integration_only": true,
+    "interruption_signal": "SIGKILL",
+    "paired_first_turn_equal": true
+  },
+  "limitations": [
+    "One node and one job; the dev smoke task was unsolved under all four conditions, as integration evidence only.",
+    "Decode throughput in the smoke was 21 to 25 tokens per second; this cohort is not comparable in success with the Blackwell cohort."
+  ],
+  "live_checks": {
+    "failed": 0,
+    "in_process": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 23
+    },
+    "passed": 24,
+    "process_interruption": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 1
+    },
+    "skipped": 0
+  },
+  "peak_vram_cap_bytes": 25769803776,
+  "persistent_state_and_tool_effect_branches": [
+    {
+      "independent_environment_restore": true,
+      "method": "streamingllm",
+      "rng_unchanged": true,
+      "tool_effects_unchanged": true
+    },
+    {
+      "independent_environment_restore": true,
+      "method": "rkv",
+      "rng_unchanged": true,
+      "tool_effects_unchanged": true
+    },
+    {
+      "independent_environment_restore": true,
+      "method": "agentkv",
+      "rng_unchanged": true,
+      "tool_effects_unchanged": true
+    }
+  ],
+  "prefill_smoke": {
+    "attempts": 4,
+    "cells": 2,
+    "environments_scored": 4,
+    "later_rebuilds": 0,
+    "note": "AgentKV 50% with the rebuild before the first action, kept outside the studies.",
+    "rebuild_seconds": [
+      1.56,
+      3.31
+    ],
+    "rebuilt_at_first_trigger_check": 4,
+    "scheduler_jobs": {
+      "check": "13911169",
+      "run": "13911168"
+    }
+  },
+  "raw_sha256": {
+    "gpu_json": "fd39b2fb59960e475bf7b19e5477c40f87bd3215e9cbbfbaed83afa3722500c1",
+    "inprocess_pytest_xml": "77456cc9833978fc51e4dc7b4bd17f3018cc2d67ff8f8f91b639d577a1cc9bbb",
+    "resume_report_json": "dffa1fb00e8f2a8d78f68b7ce6b1bf848f13620aebe1eee885a98818558b5937"
+  },
+  "reference": {
+    "greedy_text": "7391",
+    "logit_cosine": 0.9992932677268982,
+    "prompt_tokens": 263,
+    "top10_overlap": 1.0
+  },
+  "retention_grid": {
+    "conditions": 24,
+    "methods": [
+      "agentkv",
+      "rkv",
+      "streamingllm"
+    ],
+    "retentions": [
+      0.25,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9
+    ]
+  },
+  "source_commit": "6164ba9047348c7a270589a386648d34de5373fc",
+  "status": "passed"
+}

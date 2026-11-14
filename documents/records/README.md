@@ -39,7 +39,8 @@ selection among attempts; these small samples do not establish a general ranking
   against its never-rebuild twin, and why StreamingLLM keeps none of the
   prompt. Offline, post hoc.
 - [Validation evidence](qwen9b/validation/): live state, memory, AppWorld and
-  interruption checks, including the failed Blackwell 21 GiB qualification.
+  interruption checks, including the failed Blackwell 21 GiB qualification and
+  the RTX A6000 qualification at 24 GiB.
 - [Cloud ledger](qwen9b/cloud-ledger.json): the existing spending ceiling and
   unreconciled allowances. These are planning amounts, not billed charges.
 
