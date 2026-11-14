@@ -107,6 +107,21 @@ through k = 8. Both are reported whether or not they hold. This study varies
 the number of independent attempts; it does not run attempts concurrently,
 which would need an engine change and a research decision.
 
+Added the same day, before any A6000 outcome had been read. Best-of-k assumes
+the passing attempt can be picked, which no deployed agent can do. Each curve
+is therefore also computed under a selector that uses only what the agent
+reports: attempts are taken in seed order and the first one that ends with a
+completion call reporting success is kept; if none does, the last attempt is
+kept. The share of such claims that pass is reported per arm. In the
+Blackwell runs full cache claimed success in 54 of 57 first attempts and
+passed 20, so this selector almost never let it retry (35% at one, two and
+three attempts), while AgentKV 50% with a rebuild rose from 28-33% at one
+attempt to 41-42% at three and AgentKV 50% without one stayed at 12-15%.
+Expectation: on this cohort the rebuilt arms gain more from retries under
+this selector than full cache does. Also reported per arm: the share of tasks
+solved in none of the eight attempts, the share solved in all of them, and
+mean GPU-seconds per solved task.
+
 ## Execution
 
 Workers use the node-local run directory, AppWorld root, runtime and model
