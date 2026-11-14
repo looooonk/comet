@@ -1,0 +1,45 @@
+{
+  "extends": "dev19-recovery-v1.json",
+  "experiment_id": "qwen9b-dev19-prefill-once-blackwell-v1",
+  "seeds": [
+    17,
+    29,
+    31
+  ],
+  "triggers": {
+    "dynamic_context_tokens": 1,
+    "dynamic_tool_calls": 1,
+    "dynamic_rule": "or"
+  },
+  "conditions": [
+    {
+      "id": "agentkv_50_dynamic",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_dynamic",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_dynamic",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_dynamic",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Supplemental dev trigger study, declared before any execution: the single rebuild happens before the first action. The dynamic trigger fires at one context token or one tool call, which is met at the first check, so the first turn is prefilled whole and retention is applied once instead of after every 128-token chunk. AgentKV, R-KV and StreamingLLM at 50 percent retention and AgentKV at 25 percent, the 19 dev tasks, seeds 17, 29 and 31, every other setting unchanged. 228 fresh-start cells. The first study and its seed replicate supply the never-rebuild arms. Train/dev evidence only; does not retune the frozen test study. See documents/records/qwen9b/dev19-recovery-design.md."
+}

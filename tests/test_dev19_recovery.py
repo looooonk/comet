@@ -160,3 +160,31 @@ def test_dev19_followup_seed_replicates_change_only_seeds_and_keep_agentkv_condi
         for name, value in first.to_dict().items():
             if name not in changed:
                 assert study.to_dict()[name] == value, name
+
+
+def test_dev19_prefill_study_rebuilds_before_the_first_action_and_changes_nothing_else():
+    from comet.policies import decide
+
+    first = Experiment.load(BLACKWELL / "dev19-recovery-v1.json")
+    study = Experiment.load(BLACKWELL / "dev19-prefill-v1.json")
+    reference = {condition.id: condition for condition in first.conditions}
+    expected = ["agentkv_50_dynamic", "rkv_50_dynamic", "streamingllm_50_dynamic", "agentkv_25_dynamic"]
+    assert [condition.id for condition in study.conditions] == expected
+    assert all(condition == reference[condition.id] for condition in study.conditions)
+    assert study.seeds == [17, 29, 31] and study.task_ids == first.task_ids
+    assert study.triggers.fixed_tool_calls == first.triggers.fixed_tool_calls
+    # The first trigger check sees the whole first turn pending and no tool call yet.
+    assert decide("dynamic", study.triggers, 3344, 0, 0).triggered
+    assert not decide("dynamic", first.triggers, 3344, 0, 0).triggered
+    assert not decide("dynamic", study.triggers, 9000, 5, 1).triggered
+    changed = {"experiment_id", "seeds", "triggers", "conditions", "notes"}
+    for name, value in first.to_dict().items():
+        if name not in changed:
+            assert study.to_dict()[name] == value, name
+    parent = {k: v for k, v in study.to_dict().items() if k not in ("conditions", "notes")}
+    seen = []
+    for path in sorted((BLACKWELL / "dev19-prefill-v1-parts").glob("part-*.json")):
+        part = Experiment.load(path)
+        assert {k: v for k, v in part.to_dict().items() if k not in ("conditions", "notes")} == parent
+        seen += [condition.id for condition in part.conditions]
+    assert seen == expected

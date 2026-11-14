@@ -66,6 +66,16 @@ only when both 95% intervals exclude zero in the expected direction. The five in
 with a Holm adjustment across H1 to H5. A difference that is positive with an
 interval including zero is reported as not confirmed, not as support.
 
+Two mechanism hypotheses were added on November 14, 2026, still before any
+execution, from the [instruction-error reading](dev19-instruction-errors.md)
+of the first 19 tasks. Among first attempts that were rebuilt, the share with
+a rejected login after the rebuild point is lower than among their
+never-rebuild twins over the same turns: M1 for the fixed trigger, where the
+19-task difference was -38 points [-54, -23], and M2 for the dynamic trigger,
+-33 [-47, -20]. Each is confirmed when its family-resampled 95% interval
+(`comet.instruction_errors`, 10,000 draws) excludes zero, reported unadjusted
+and with a Holm adjustment across the two. They are separate from H1 to H5.
+
 Reported descriptively, without a confirmation criterion: the same
 comparisons against full cache for the recovery arms; first actions
 and endings by condition and seed, read with `comet.task_characteristics` and
@@ -97,4 +107,7 @@ launch. Interrupted cells keep their failure and budget charge.
 
 ## Status
 
-Declared, not yet executed.
+Declared and submitted on November 14, 2026; not yet executed. The qualified
+Blackwell GPUs were fully allocated to their owner group that day and the
+scheduler estimated a start a week later. The [queue note](dev19-recovery-design.md#queue-on-november-14-2026)
+has the details.

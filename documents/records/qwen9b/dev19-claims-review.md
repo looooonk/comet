@@ -50,8 +50,17 @@ were kept, so an implementation fault is not excluded by this evidence.
 Three studies were declared the same day, in the order the review ranked them:
 the [confirmation on the 38 unused dev tasks](dev38-recovery-design.md), and
 seed replicates of the [frontier and the trigger timing](dev19-recovery-design.md#seed-replicates-of-the-frontier-and-the-trigger-timing).
-Logging which tokens each method keeps would test the StreamingLLM explanation
-directly; it needs an engine change and is not started.
+Logging which tokens each method keeps would test the R-KV and AgentKV
+explanations directly; it needs an engine change and is not started.
+
+Two readings made later the same day change the picture for two of the claims.
+For StreamingLLM the kept set follows from token positions, and the
+[instruction-error record](dev19-instruction-errors.md#streamingllm-keeps-none-of-the-prompts-rules)
+shows that it evicts 656 of the system prompt's 669 tokens before the first
+action at 80% retention; the fourth claim is therefore settled by construction
+for this configuration. The same record gives the rebuild a specific observed
+effect, the removal of rejected logins, which the confirmation now carries as a
+declared hypothesis.
 
 ## Prior work
 
@@ -65,7 +74,21 @@ before any of them is cited.
 | The Pitfalls of KV Cache Compression (arXiv 2510.00231) | Reports that KV compression can cause instructions to be ignored, with system-prompt leakage as the case study, and proposes eviction-policy changes. Single-turn instruction following, not agent task success |
 | Protection Is (Nearly) All You Need (arXiv 2605.18053) | Reports that eviction policies collapse without protecting prompt boundaries and that protection matters more than the scoring rule |
 | Practical Online KV Cache Compaction for LLM Agents (arXiv 2608.00902) | Agent tasks; immediate compaction hurts and delaying it recovers much of the gap. Delays compaction; does not rebuild from the transcript |
-| AgentKV: Phase-Aware KV Eviction for Agentic LLMs (arXiv 2609.14872) | The eviction method these studies run |
+| AgentKV: Phase-Aware KV Eviction for Agentic LLMs (arXiv 2609.14872) | The eviction method these studies run. As read from its web version, it compresses every 128 decode tokens under a fixed token budget and reports agent results on BFCL and tau2-bench |
+| R-KV: Redundancy-aware KV Cache Compression for Reasoning Models (arXiv 2505.24133) | The other attention-based method run here. Presented as a decode-stage method for long reasoning outputs, evaluated on math benchmarks |
+
+A second pass read the web versions of the agent-compaction, protection, R-KV
+and AgentKV papers for method details; long pages were partly read through
+automatic summaries. As read: the agent-compaction study keeps the system
+prompt, tool definitions and user query uncompressed and compacts each
+completed turn once; the protection study evicts during decoding and names
+streaming prefill and multi-turn use as untested; neither R-KV nor AgentKV
+describes applying its budget to a prompt chunk by chunk during prefill. None
+of them measures a one-time rebuild from the transcript, a wall-clock budget
+that charges recomputation, or chunk-by-chunk prefill eviction against a
+single selection at the same budget. Applying retention to the system prompt
+during prefill is therefore a choice of this project's pipeline, and the 50%
+and 25% results depend on it.
 
 Read against that work, protecting the prompt from eviction is an established
 control and not a contribution of this project, which bears on the open

@@ -307,3 +307,65 @@ Both are analyzed through the shared analysis on their own seeds, with seed 17
 beside them descriptively, and every point is reported. They run after the
 [thirty-eight-task confirmation](dev38-recovery-design.md) on the same
 node-local storage, worker limit and guard. Status: declared, not yet executed.
+
+## Rebuild before the first action
+
+Declared on November 14, 2026, before any execution of this configuration and
+after the [instruction-error reading](dev19-instruction-errors.md). In every
+study so far retention is applied after each 128-token chunk while the first
+turn is prefilled, so half of the system prompt's entries are gone at 50%
+before the task description has been read. A rebuild instead prefills the
+whole transcript and applies retention once. The
+[configuration](../../../configs/qwen9b/blackwell/dev19-prefill-v1.json) moves
+that single rebuild to the first trigger check: the dynamic trigger fires at
+one context token or one tool call, which the pending first turn already
+meets, so the first turn is prefilled whole and compacted once, before any
+action. No source change is involved; triggers are selected on train/dev under
+the research contract. Later turns are compacted chunk by chunk as usual and
+no second rebuild is allowed.
+
+The conditions are AgentKV, R-KV and StreamingLLM at 50% retention and AgentKV
+at 25%, on the 19 dev tasks at seeds 17, 29 and 31: 228 fresh-start cells in
+[four condition groups](../../../configs/qwen9b/blackwell/dev19-prefill-v1-parts/).
+The first study and its seed replicate supply the never, fixed and standard
+dynamic arms for the same tasks and seeds. Every other setting is unchanged.
+The published neighbours of this comparison do not make it: the closest agent
+study keeps the prompt uncompressed, and the eviction-protection study leaves
+streaming prefill untested.
+
+Expectations recorded before execution:
+
+- If chunk-by-chunk eviction during prefill is what removes the prompt's
+  rules, AgentKV 50% and R-KV 50% open with the prescribed listing in clearly
+  more attempts than their never arms (13 to 18 of 37 or 38, and 7 to 13 of 30
+  to 34, per seed), and AgentKV 50% has a login rejected in fewer attempts
+  than its never arm (12 to 17 per seed).
+- StreamingLLM keeps the same positions either way, the first 16 tokens and
+  the most recent ones, so the system prompt is still evicted. Its kept
+  entries and the recurrent state are however computed with the whole prompt
+  visible. If it still opens off protocol and solves nothing, what matters is
+  which entries are kept; if it improves, what the kept entries have seen
+  matters too.
+- AgentKV at 25% shows whether a single selection is enough at a retention
+  where no attempt has opened on protocol.
+- Tasks solved are compared with the never arm and with the rebuild after one
+  tool call, which solved 8 of 19 at seed 17. If the first action is what a
+  later rebuild cannot repair, this arm should do at least as well.
+
+All four conditions are reported whether or not these hold. First actions,
+prompt-rule violations, tasks solved, rebuild cost and peak memory are read as
+in the earlier studies; the rebuild's transient full-prompt peak is admitted
+under the same 24 GiB cap or refused. The study runs on the node-local storage,
+worker limit and guard declared above, after its own two-cell smoke run,
+because a rebuild on an empty cache has not been exercised before. Status:
+declared, not yet executed.
+
+## Queue on November 14, 2026
+
+The confirmation, the two seed replicates and the prefill study were submitted
+on November 14 and none has started. The two Blackwell nodes are fully
+allocated to their owner group, one by GPU and one by memory, and every other
+GPU node had either no free GPU or under 24 GB of unallocated memory. The
+scheduler's estimate for the first worker was November 21. The jobs stay
+queued on the qualified device; no other device has been qualified for these
+studies.

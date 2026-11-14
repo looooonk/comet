@@ -31,6 +31,10 @@ selection among attempts; these small samples do not establish a general ranking
   first study did not use. A declaration, not completed-result evidence.
 - [Dev claims review](qwen9b/dev19-claims-review.md): an independent reading of
   which claims the dev records support, and a prior-work check.
+- [Dev prompt-rule violations](qwen9b/dev19-instruction-errors.md): which
+  system-prompt rules each compressed method breaks, what a rebuild removes
+  against its never-rebuild twin, and why StreamingLLM keeps none of the
+  prompt. Offline, post hoc.
 - [Validation evidence](qwen9b/validation/): live state, memory, AppWorld and
   interruption checks, including the failed Blackwell 21 GiB qualification.
 - [Cloud ledger](qwen9b/cloud-ledger.json): the existing spending ceiling and

@@ -1,0 +1,5397 @@
+{
+ "after_rebuild_against_never_twin": [
+  {
+   "condition": "agentkv_50_fixed",
+   "never_passed": 7,
+   "pairs": 50,
+   "rebuilt_passed": 16,
+   "reference": "agentkv_50_never",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      -0.54,
+      -0.2292
+     ],
+     "difference": -0.38,
+     "never_share": 0.44,
+     "rebuilt_share": 0.06
+    },
+    "format": {
+     "ci95": [
+      -0.234,
+      -0.0377
+     ],
+     "difference": -0.12,
+     "never_share": 0.22,
+     "rebuilt_share": 0.1
+    },
+    "prohibited": {
+     "ci95": [
+      0.0,
+      0.0625
+     ],
+     "difference": 0.02,
+     "never_share": 0.0,
+     "rebuilt_share": 0.02
+    },
+    "unknown_api": {
+     "ci95": [
+      -0.0588,
+      0.0588
+     ],
+     "difference": 0.0,
+     "never_share": 0.06,
+     "rebuilt_share": 0.06
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.2453,
+      0.08
+     ],
+     "difference": -0.08,
+     "never_share": 0.24,
+     "rebuilt_share": 0.16
+    }
+   },
+   "source": "dev19-recovery-v1 and v2",
+   "tasks": 19,
+   "turns_after_rebuild": {
+    "never": 522,
+    "rebuilt": 416
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 35,
+     "rebuilt": 8
+    },
+    "format": {
+     "never": 13,
+     "rebuilt": 6
+    },
+    "prohibited": {
+     "never": 0,
+     "rebuilt": 1
+    },
+    "unknown_api": {
+     "never": 3,
+     "rebuilt": 3
+    },
+    "wrong_arguments": {
+     "never": 16,
+     "rebuilt": 11
+    }
+   }
+  },
+  {
+   "condition": "agentkv_50_dynamic",
+   "never_passed": 7,
+   "pairs": 51,
+   "rebuilt_passed": 19,
+   "reference": "agentkv_50_never",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      -0.4717,
+      -0.1961
+     ],
+     "difference": -0.3333,
+     "never_share": 0.3922,
+     "rebuilt_share": 0.0588
+    },
+    "format": {
+     "ci95": [
+      -0.2407,
+      0.0208
+     ],
+     "difference": -0.098,
+     "never_share": 0.2157,
+     "rebuilt_share": 0.1176
+    },
+    "prohibited": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0
+    },
+    "unknown_api": {
+     "ci95": [
+      -0.0588,
+      0.1633
+     ],
+     "difference": 0.0588,
+     "never_share": 0.0588,
+     "rebuilt_share": 0.1176
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.283,
+      0.04
+     ],
+     "difference": -0.1176,
+     "never_share": 0.2941,
+     "rebuilt_share": 0.1765
+    }
+   },
+   "source": "dev19-recovery-v1 and v2",
+   "tasks": 19,
+   "turns_after_rebuild": {
+    "never": 535,
+    "rebuilt": 460
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 31,
+     "rebuilt": 5
+    },
+    "format": {
+     "never": 13,
+     "rebuilt": 10
+    },
+    "prohibited": {
+     "never": 0,
+     "rebuilt": 0
+    },
+    "unknown_api": {
+     "never": 3,
+     "rebuilt": 8
+    },
+    "wrong_arguments": {
+     "never": 21,
+     "rebuilt": 11
+    }
+   }
+  },
+  {
+   "condition": "rkv_50_fixed",
+   "never_passed": 1,
+   "pairs": 49,
+   "rebuilt_passed": 4,
+   "reference": "rkv_50_never",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      -0.1509,
+      -0.0204
+     ],
+     "difference": -0.0816,
+     "never_share": 0.102,
+     "rebuilt_share": 0.0204
+    },
+    "format": {
+     "ci95": [
+      -0.0392,
+      0.1224
+     ],
+     "difference": 0.0408,
+     "never_share": 0.0816,
+     "rebuilt_share": 0.1224
+    },
+    "prohibited": {
+     "ci95": [
+      0.0,
+      0.102
+     ],
+     "difference": 0.0408,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0408
+    },
+    "unknown_api": {
+     "ci95": [
+      -0.2727,
+      0.0217
+     ],
+     "difference": -0.1224,
+     "never_share": 0.449,
+     "rebuilt_share": 0.3265
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.1277,
+      0.25
+     ],
+     "difference": 0.0612,
+     "never_share": 0.2653,
+     "rebuilt_share": 0.3265
+    }
+   },
+   "source": "dev19-recovery-v1 and v2",
+   "tasks": 19,
+   "turns_after_rebuild": {
+    "never": 1482,
+    "rebuilt": 1082
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 31,
+     "rebuilt": 1
+    },
+    "format": {
+     "never": 10,
+     "rebuilt": 8
+    },
+    "prohibited": {
+     "never": 0,
+     "rebuilt": 2
+    },
+    "unknown_api": {
+     "never": 210,
+     "rebuilt": 48
+    },
+    "wrong_arguments": {
+     "never": 18,
+     "rebuilt": 17
+    }
+   }
+  },
+  {
+   "condition": "rkv_50_dynamic",
+   "never_passed": 1,
+   "pairs": 40,
+   "rebuilt_passed": 3,
+   "reference": "rkv_50_never",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      -0.1351,
+      0.0811
+     ],
+     "difference": -0.025,
+     "never_share": 0.1,
+     "rebuilt_share": 0.075
+    },
+    "format": {
+     "ci95": [
+      -0.0541,
+      0.1111
+     ],
+     "difference": 0.025,
+     "never_share": 0.1,
+     "rebuilt_share": 0.125
+    },
+    "prohibited": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0
+    },
+    "unknown_api": {
+     "ci95": [
+      -0.2368,
+      0.0238
+     ],
+     "difference": -0.1,
+     "never_share": 0.3,
+     "rebuilt_share": 0.2
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.0698,
+      0.1667
+     ],
+     "difference": 0.05,
+     "never_share": 0.2,
+     "rebuilt_share": 0.25
+    }
+   },
+   "source": "dev19-recovery-v1 and v2",
+   "tasks": 18,
+   "turns_after_rebuild": {
+    "never": 1095,
+    "rebuilt": 912
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 30,
+     "rebuilt": 5
+    },
+    "format": {
+     "never": 9,
+     "rebuilt": 8
+    },
+    "prohibited": {
+     "never": 0,
+     "rebuilt": 0
+    },
+    "unknown_api": {
+     "never": 134,
+     "rebuilt": 56
+    },
+    "wrong_arguments": {
+     "never": 8,
+     "rebuilt": 12
+    }
+   }
+  },
+  {
+   "condition": "agentkv_80_fixed",
+   "never_passed": 17,
+   "pairs": 57,
+   "rebuilt_passed": 20,
+   "reference": "agentkv_80_never",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      -0.0526,
+      0.0
+     ],
+     "difference": -0.0175,
+     "never_share": 0.0175,
+     "rebuilt_share": 0.0
+    },
+    "format": {
+     "ci95": [
+      -0.0877,
+      0.0
+     ],
+     "difference": -0.0351,
+     "never_share": 0.0351,
+     "rebuilt_share": 0.0
+    },
+    "prohibited": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0
+    },
+    "unknown_api": {
+     "ci95": [
+      -0.0526,
+      0.0
+     ],
+     "difference": -0.0175,
+     "never_share": 0.0877,
+     "rebuilt_share": 0.0702
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.1228,
+      0.0526
+     ],
+     "difference": -0.0351,
+     "never_share": 0.1579,
+     "rebuilt_share": 0.1228
+    }
+   },
+   "source": "dev19-recovery-v1 and v2",
+   "tasks": 19,
+   "turns_after_rebuild": {
+    "never": 407,
+    "rebuilt": 428
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 1,
+     "rebuilt": 0
+    },
+    "format": {
+     "never": 3,
+     "rebuilt": 0
+    },
+    "prohibited": {
+     "never": 0,
+     "rebuilt": 0
+    },
+    "unknown_api": {
+     "never": 5,
+     "rebuilt": 4
+    },
+    "wrong_arguments": {
+     "never": 12,
+     "rebuilt": 10
+    }
+   }
+  },
+  {
+   "condition": "agentkv_80_dynamic",
+   "never_passed": 17,
+   "pairs": 57,
+   "rebuilt_passed": 19,
+   "reference": "agentkv_80_never",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0175,
+     "rebuilt_share": 0.0175
+    },
+    "format": {
+     "ci95": [
+      -0.0526,
+      0.0
+     ],
+     "difference": -0.0175,
+     "never_share": 0.0351,
+     "rebuilt_share": 0.0175
+    },
+    "prohibited": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0
+    },
+    "unknown_api": {
+     "ci95": [
+      -0.0702,
+      0.0702
+     ],
+     "difference": 0.0,
+     "never_share": 0.0702,
+     "rebuilt_share": 0.0702
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.1404,
+      -0.0175
+     ],
+     "difference": -0.0702,
+     "never_share": 0.1404,
+     "rebuilt_share": 0.0702
+    }
+   },
+   "source": "dev19-recovery-v1 and v2",
+   "tasks": 19,
+   "turns_after_rebuild": {
+    "never": 405,
+    "rebuilt": 556
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 1,
+     "rebuilt": 2
+    },
+    "format": {
+     "never": 3,
+     "rebuilt": 2
+    },
+    "prohibited": {
+     "never": 0,
+     "rebuilt": 0
+    },
+    "unknown_api": {
+     "never": 4,
+     "rebuilt": 5
+    },
+    "wrong_arguments": {
+     "never": 11,
+     "rebuilt": 5
+    }
+   }
+  },
+  {
+   "condition": "rkv_80_fixed",
+   "never_passed": 17,
+   "pairs": 57,
+   "rebuilt_passed": 20,
+   "reference": "rkv_80_never",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      -0.0702,
+      0.1053
+     ],
+     "difference": 0.0175,
+     "never_share": 0.0526,
+     "rebuilt_share": 0.0702
+    },
+    "format": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0
+    },
+    "prohibited": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0
+    },
+    "unknown_api": {
+     "ci95": [
+      -0.0526,
+      0.0526
+     ],
+     "difference": 0.0,
+     "never_share": 0.1579,
+     "rebuilt_share": 0.1579
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.0526,
+      0.0877
+     ],
+     "difference": 0.0175,
+     "never_share": 0.1404,
+     "rebuilt_share": 0.1579
+    }
+   },
+   "source": "dev19-recovery-v1 and v2",
+   "tasks": 19,
+   "turns_after_rebuild": {
+    "never": 994,
+    "rebuilt": 796
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 4,
+     "rebuilt": 6
+    },
+    "format": {
+     "never": 0,
+     "rebuilt": 0
+    },
+    "prohibited": {
+     "never": 0,
+     "rebuilt": 0
+    },
+    "unknown_api": {
+     "never": 10,
+     "rebuilt": 11
+    },
+    "wrong_arguments": {
+     "never": 9,
+     "rebuilt": 10
+    }
+   }
+  },
+  {
+   "condition": "rkv_80_dynamic",
+   "never_passed": 17,
+   "pairs": 57,
+   "rebuilt_passed": 24,
+   "reference": "rkv_80_never",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      -0.0526,
+      0.0526
+     ],
+     "difference": 0.0,
+     "never_share": 0.0526,
+     "rebuilt_share": 0.0526
+    },
+    "format": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0
+    },
+    "prohibited": {
+     "ci95": [
+      0.0,
+      0.0526
+     ],
+     "difference": 0.0175,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0175
+    },
+    "unknown_api": {
+     "ci95": [
+      -0.0877,
+      0.0
+     ],
+     "difference": -0.0351,
+     "never_share": 0.0526,
+     "rebuilt_share": 0.0175
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.0351,
+      0.0702
+     ],
+     "difference": 0.0175,
+     "never_share": 0.1228,
+     "rebuilt_share": 0.1404
+    }
+   },
+   "source": "dev19-recovery-v1 and v2",
+   "tasks": 19,
+   "turns_after_rebuild": {
+    "never": 942,
+    "rebuilt": 532
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 4,
+     "rebuilt": 4
+    },
+    "format": {
+     "never": 0,
+     "rebuilt": 0
+    },
+    "prohibited": {
+     "never": 0,
+     "rebuilt": 1
+    },
+    "unknown_api": {
+     "never": 3,
+     "rebuilt": 1
+    },
+    "wrong_arguments": {
+     "never": 8,
+     "rebuilt": 9
+    }
+   }
+  },
+  {
+   "condition": "agentkv_70_fixed",
+   "never_passed": 6,
+   "pairs": 19,
+   "rebuilt_passed": 6,
+   "reference": "agentkv_70_never",
+   "seeds": [
+    17
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      -0.2632,
+      0.1053
+     ],
+     "difference": -0.0526,
+     "never_share": 0.1053,
+     "rebuilt_share": 0.0526
+    },
+    "format": {
+     "ci95": [
+      -0.2632,
+      0.0
+     ],
+     "difference": -0.1053,
+     "never_share": 0.1053,
+     "rebuilt_share": 0.0
+    },
+    "prohibited": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0
+    },
+    "unknown_api": {
+     "ci95": [
+      -0.1579,
+      0.1579
+     ],
+     "difference": 0.0,
+     "never_share": 0.1053,
+     "rebuilt_share": 0.1053
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.3158,
+      0.1053
+     ],
+     "difference": -0.1053,
+     "never_share": 0.2105,
+     "rebuilt_share": 0.1053
+    }
+   },
+   "source": "dev19-frontier-v1",
+   "tasks": 19,
+   "turns_after_rebuild": {
+    "never": 159,
+    "rebuilt": 160
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 2,
+     "rebuilt": 1
+    },
+    "format": {
+     "never": 3,
+     "rebuilt": 0
+    },
+    "prohibited": {
+     "never": 0,
+     "rebuilt": 0
+    },
+    "unknown_api": {
+     "never": 2,
+     "rebuilt": 2
+    },
+    "wrong_arguments": {
+     "never": 6,
+     "rebuilt": 3
+    }
+   }
+  },
+  {
+   "condition": "agentkv_60_fixed",
+   "never_passed": 5,
+   "pairs": 19,
+   "rebuilt_passed": 8,
+   "reference": "agentkv_60_never",
+   "seeds": [
+    17
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      -0.5263,
+      -0.1053
+     ],
+     "difference": -0.3158,
+     "never_share": 0.3158,
+     "rebuilt_share": 0.0
+    },
+    "format": {
+     "ci95": [
+      -0.1053,
+      0.2105
+     ],
+     "difference": 0.0526,
+     "never_share": 0.0526,
+     "rebuilt_share": 0.1053
+    },
+    "prohibited": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0
+    },
+    "unknown_api": {
+     "ci95": [
+      -0.2105,
+      0.1053
+     ],
+     "difference": -0.0526,
+     "never_share": 0.1053,
+     "rebuilt_share": 0.0526
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.3684,
+      0.0526
+     ],
+     "difference": -0.1579,
+     "never_share": 0.4211,
+     "rebuilt_share": 0.2632
+    }
+   },
+   "source": "dev19-frontier-v1",
+   "tasks": 19,
+   "turns_after_rebuild": {
+    "never": 215,
+    "rebuilt": 164
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 10,
+     "rebuilt": 0
+    },
+    "format": {
+     "never": 3,
+     "rebuilt": 4
+    },
+    "prohibited": {
+     "never": 0,
+     "rebuilt": 0
+    },
+    "unknown_api": {
+     "never": 3,
+     "rebuilt": 1
+    },
+    "wrong_arguments": {
+     "never": 12,
+     "rebuilt": 5
+    }
+   }
+  },
+  {
+   "condition": "agentkv_50_fixed",
+   "never_passed": 2,
+   "pairs": 14,
+   "rebuilt_passed": 5,
+   "reference": "agentkv_50_never",
+   "seeds": [
+    17
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      -0.5,
+      -0.0714
+     ],
+     "difference": -0.2857,
+     "never_share": 0.3571,
+     "rebuilt_share": 0.0714
+    },
+    "format": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0714,
+     "rebuilt_share": 0.0714
+    },
+    "prohibited": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0
+    },
+    "unknown_api": {
+     "ci95": [
+      0.0,
+      0.2143
+     ],
+     "difference": 0.0714,
+     "never_share": 0.0714,
+     "rebuilt_share": 0.1429
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.3571,
+      0.2143
+     ],
+     "difference": -0.0714,
+     "never_share": 0.2143,
+     "rebuilt_share": 0.1429
+    }
+   },
+   "source": "dev19-frontier-v1",
+   "tasks": 14,
+   "turns_after_rebuild": {
+    "never": 168,
+    "rebuilt": 123
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 11,
+     "rebuilt": 3
+    },
+    "format": {
+     "never": 1,
+     "rebuilt": 1
+    },
+    "prohibited": {
+     "never": 0,
+     "rebuilt": 0
+    },
+    "unknown_api": {
+     "never": 1,
+     "rebuilt": 2
+    },
+    "wrong_arguments": {
+     "never": 3,
+     "rebuilt": 4
+    }
+   }
+  },
+  {
+   "condition": "agentkv_40_fixed",
+   "never_passed": 1,
+   "pairs": 19,
+   "rebuilt_passed": 3,
+   "reference": "agentkv_40_never",
+   "seeds": [
+    17
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      -0.4737,
+      0.0526
+     ],
+     "difference": -0.2105,
+     "never_share": 0.3158,
+     "rebuilt_share": 0.1053
+    },
+    "format": {
+     "ci95": [
+      -0.4211,
+      0.0
+     ],
+     "difference": -0.2105,
+     "never_share": 0.2632,
+     "rebuilt_share": 0.0526
+    },
+    "prohibited": {
+     "ci95": [
+      -0.1579,
+      0.0
+     ],
+     "difference": -0.0526,
+     "never_share": 0.0526,
+     "rebuilt_share": 0.0
+    },
+    "unknown_api": {
+     "ci95": [
+      -0.2105,
+      0.2105
+     ],
+     "difference": 0.0,
+     "never_share": 0.1579,
+     "rebuilt_share": 0.1579
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.4211,
+      0.0
+     ],
+     "difference": -0.2105,
+     "never_share": 0.3684,
+     "rebuilt_share": 0.1579
+    }
+   },
+   "source": "dev19-frontier-v1",
+   "tasks": 19,
+   "turns_after_rebuild": {
+    "never": 215,
+    "rebuilt": 144
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 11,
+     "rebuilt": 2
+    },
+    "format": {
+     "never": 9,
+     "rebuilt": 1
+    },
+    "prohibited": {
+     "never": 1,
+     "rebuilt": 0
+    },
+    "unknown_api": {
+     "never": 49,
+     "rebuilt": 6
+    },
+    "wrong_arguments": {
+     "never": 8,
+     "rebuilt": 3
+    }
+   }
+  },
+  {
+   "condition": "agentkv_30_fixed",
+   "never_passed": 0,
+   "pairs": 10,
+   "rebuilt_passed": 0,
+   "reference": "agentkv_30_never",
+   "seeds": [
+    17
+   ],
+   "share_of_pairs_with_violation": {
+    "credentials": {
+     "ci95": [
+      0.0,
+      0.5
+     ],
+     "difference": 0.2,
+     "never_share": 0.1,
+     "rebuilt_share": 0.3
+    },
+    "format": {
+     "ci95": [
+      0.0,
+      0.6
+     ],
+     "difference": 0.3,
+     "never_share": 0.0,
+     "rebuilt_share": 0.3
+    },
+    "prohibited": {
+     "ci95": [
+      0.0,
+      0.0
+     ],
+     "difference": 0.0,
+     "never_share": 0.0,
+     "rebuilt_share": 0.0
+    },
+    "unknown_api": {
+     "ci95": [
+      -0.6,
+      0.0
+     ],
+     "difference": -0.3,
+     "never_share": 0.6,
+     "rebuilt_share": 0.3
+    },
+    "wrong_arguments": {
+     "ci95": [
+      -0.3,
+      0.3
+     ],
+     "difference": 0.0,
+     "never_share": 0.1,
+     "rebuilt_share": 0.1
+    }
+   },
+   "source": "dev19-frontier-v1",
+   "tasks": 10,
+   "turns_after_rebuild": {
+    "never": 622,
+    "rebuilt": 598
+   },
+   "violation_turns_after_rebuild": {
+    "credentials": {
+     "never": 11,
+     "rebuilt": 7
+    },
+    "format": {
+     "never": 0,
+     "rebuilt": 29
+    },
+    "prohibited": {
+     "never": 0,
+     "rebuilt": 0
+    },
+    "unknown_api": {
+     "never": 51,
+     "rebuilt": 9
+    },
+    "wrong_arguments": {
+     "never": 4,
+     "rebuilt": 1
+    }
+   }
+  }
+ ],
+ "bootstrap": {
+  "draws": 10000,
+  "resampling_unit": "task family, retaining all of its twin pairs",
+  "seed": 20261114
+ },
+ "by_condition_three_seeds": {
+  "agentkv_25_dynamic": {
+   "attempts": 109,
+   "by_seed": {
+    "17": {
+     "attempts": 36,
+     "cells": 19,
+     "passing_attempts": 1,
+     "violations": {
+      "credentials": {
+       "attempts": 6,
+       "turns": 20
+      },
+      "format": {
+       "attempts": 9,
+       "turns": 15
+      },
+      "prohibited": {
+       "attempts": 5,
+       "turns": 14
+      },
+      "unknown_api": {
+       "attempts": 18,
+       "turns": 58
+      },
+      "wrong_arguments": {
+       "attempts": 5,
+       "turns": 5
+      }
+     }
+    },
+    "29": {
+     "attempts": 36,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 7,
+       "turns": 12
+      },
+      "format": {
+       "attempts": 4,
+       "turns": 9
+      },
+      "prohibited": {
+       "attempts": 9,
+       "turns": 30
+      },
+      "unknown_api": {
+       "attempts": 16,
+       "turns": 135
+      },
+      "wrong_arguments": {
+       "attempts": 3,
+       "turns": 3
+      }
+     }
+    },
+    "31": {
+     "attempts": 37,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 5,
+       "turns": 10
+      },
+      "format": {
+       "attempts": 11,
+       "turns": 19
+      },
+      "prohibited": {
+       "attempts": 6,
+       "turns": 24
+      },
+      "unknown_api": {
+       "attempts": 14,
+       "turns": 47
+      },
+      "wrong_arguments": {
+       "attempts": 8,
+       "turns": 9
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 1,
+   "violations": {
+    "credentials": {
+     "attempts": 18,
+     "turns": 42
+    },
+    "format": {
+     "attempts": 24,
+     "turns": 43
+    },
+    "prohibited": {
+     "attempts": 20,
+     "turns": 68
+    },
+    "unknown_api": {
+     "attempts": 48,
+     "turns": 240
+    },
+    "wrong_arguments": {
+     "attempts": 16,
+     "turns": 17
+    }
+   }
+  },
+  "agentkv_25_fixed": {
+   "attempts": 100,
+   "by_seed": {
+    "17": {
+     "attempts": 33,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 7,
+       "turns": 21
+      },
+      "format": {
+       "attempts": 7,
+       "turns": 13
+      },
+      "prohibited": {
+       "attempts": 5,
+       "turns": 15
+      },
+      "unknown_api": {
+       "attempts": 16,
+       "turns": 36
+      },
+      "wrong_arguments": {
+       "attempts": 5,
+       "turns": 6
+      }
+     }
+    },
+    "29": {
+     "attempts": 35,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 8,
+       "turns": 20
+      },
+      "format": {
+       "attempts": 6,
+       "turns": 10
+      },
+      "prohibited": {
+       "attempts": 10,
+       "turns": 32
+      },
+      "unknown_api": {
+       "attempts": 15,
+       "turns": 98
+      },
+      "wrong_arguments": {
+       "attempts": 3,
+       "turns": 3
+      }
+     }
+    },
+    "31": {
+     "attempts": 32,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 6,
+       "turns": 14
+      },
+      "format": {
+       "attempts": 9,
+       "turns": 15
+      },
+      "prohibited": {
+       "attempts": 4,
+       "turns": 16
+      },
+      "unknown_api": {
+       "attempts": 15,
+       "turns": 102
+      },
+      "wrong_arguments": {
+       "attempts": 8,
+       "turns": 11
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 21,
+     "turns": 55
+    },
+    "format": {
+     "attempts": 22,
+     "turns": 38
+    },
+    "prohibited": {
+     "attempts": 19,
+     "turns": 63
+    },
+    "unknown_api": {
+     "attempts": 46,
+     "turns": 236
+    },
+    "wrong_arguments": {
+     "attempts": 16,
+     "turns": 20
+    }
+   }
+  },
+  "agentkv_25_never": {
+   "attempts": 100,
+   "by_seed": {
+    "17": {
+     "attempts": 32,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 5,
+       "turns": 9
+      },
+      "format": {
+       "attempts": 11,
+       "turns": 22
+      },
+      "prohibited": {
+       "attempts": 5,
+       "turns": 14
+      },
+      "unknown_api": {
+       "attempts": 14,
+       "turns": 53
+      },
+      "wrong_arguments": {
+       "attempts": 4,
+       "turns": 4
+      }
+     }
+    },
+    "29": {
+     "attempts": 33,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 6,
+       "turns": 12
+      },
+      "format": {
+       "attempts": 5,
+       "turns": 5
+      },
+      "prohibited": {
+       "attempts": 9,
+       "turns": 28
+      },
+      "unknown_api": {
+       "attempts": 12,
+       "turns": 92
+      },
+      "wrong_arguments": {
+       "attempts": 4,
+       "turns": 7
+      }
+     }
+    },
+    "31": {
+     "attempts": 35,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 6,
+       "turns": 43
+      },
+      "format": {
+       "attempts": 8,
+       "turns": 12
+      },
+      "prohibited": {
+       "attempts": 6,
+       "turns": 24
+      },
+      "unknown_api": {
+       "attempts": 12,
+       "turns": 83
+      },
+      "wrong_arguments": {
+       "attempts": 9,
+       "turns": 12
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 17,
+     "turns": 64
+    },
+    "format": {
+     "attempts": 24,
+     "turns": 39
+    },
+    "prohibited": {
+     "attempts": 20,
+     "turns": 66
+    },
+    "unknown_api": {
+     "attempts": 38,
+     "turns": 228
+    },
+    "wrong_arguments": {
+     "attempts": 17,
+     "turns": 23
+    }
+   }
+  },
+  "agentkv_50_dynamic": {
+   "attempts": 114,
+   "by_seed": {
+    "17": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 8,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 3
+      },
+      "format": {
+       "attempts": 6,
+       "turns": 7
+      },
+      "prohibited": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "unknown_api": {
+       "attempts": 11,
+       "turns": 11
+      },
+      "wrong_arguments": {
+       "attempts": 12,
+       "turns": 13
+      }
+     }
+    },
+    "29": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 15,
+     "violations": {
+      "credentials": {
+       "attempts": 6,
+       "turns": 11
+      },
+      "format": {
+       "attempts": 3,
+       "turns": 3
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 8,
+       "turns": 8
+      },
+      "wrong_arguments": {
+       "attempts": 9,
+       "turns": 12
+      }
+     }
+    },
+    "31": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 11,
+     "violations": {
+      "credentials": {
+       "attempts": 4,
+       "turns": 6
+      },
+      "format": {
+       "attempts": 5,
+       "turns": 8
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 8,
+       "turns": 10
+      },
+      "wrong_arguments": {
+       "attempts": 16,
+       "turns": 16
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 34,
+   "violations": {
+    "credentials": {
+     "attempts": 12,
+     "turns": 20
+    },
+    "format": {
+     "attempts": 14,
+     "turns": 18
+    },
+    "prohibited": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "unknown_api": {
+     "attempts": 27,
+     "turns": 29
+    },
+    "wrong_arguments": {
+     "attempts": 37,
+     "turns": 41
+    }
+   }
+  },
+  "agentkv_50_fixed": {
+   "attempts": 113,
+   "by_seed": {
+    "17": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 10,
+     "violations": {
+      "credentials": {
+       "attempts": 5,
+       "turns": 7
+      },
+      "format": {
+       "attempts": 5,
+       "turns": 5
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 8,
+       "turns": 8
+      },
+      "wrong_arguments": {
+       "attempts": 12,
+       "turns": 16
+      }
+     }
+    },
+    "29": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 9,
+     "violations": {
+      "credentials": {
+       "attempts": 3,
+       "turns": 7
+      },
+      "format": {
+       "attempts": 3,
+       "turns": 3
+      },
+      "prohibited": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "unknown_api": {
+       "attempts": 9,
+       "turns": 9
+      },
+      "wrong_arguments": {
+       "attempts": 8,
+       "turns": 12
+      }
+     }
+    },
+    "31": {
+     "attempts": 37,
+     "cells": 19,
+     "passing_attempts": 10,
+     "violations": {
+      "credentials": {
+       "attempts": 5,
+       "turns": 6
+      },
+      "format": {
+       "attempts": 4,
+       "turns": 5
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 6,
+       "turns": 6
+      },
+      "wrong_arguments": {
+       "attempts": 15,
+       "turns": 19
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 29,
+   "violations": {
+    "credentials": {
+     "attempts": 13,
+     "turns": 20
+    },
+    "format": {
+     "attempts": 12,
+     "turns": 13
+    },
+    "prohibited": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "unknown_api": {
+     "attempts": 23,
+     "turns": 23
+    },
+    "wrong_arguments": {
+     "attempts": 35,
+     "turns": 47
+    }
+   }
+  },
+  "agentkv_50_never": {
+   "attempts": 112,
+   "by_seed": {
+    "17": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 4,
+     "violations": {
+      "credentials": {
+       "attempts": 12,
+       "turns": 24
+      },
+      "format": {
+       "attempts": 6,
+       "turns": 8
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 7,
+       "turns": 7
+      },
+      "wrong_arguments": {
+       "attempts": 15,
+       "turns": 16
+      }
+     }
+    },
+    "29": {
+     "attempts": 37,
+     "cells": 19,
+     "passing_attempts": 6,
+     "violations": {
+      "credentials": {
+       "attempts": 16,
+       "turns": 26
+      },
+      "format": {
+       "attempts": 6,
+       "turns": 8
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 8,
+       "turns": 8
+      },
+      "wrong_arguments": {
+       "attempts": 14,
+       "turns": 18
+      }
+     }
+    },
+    "31": {
+     "attempts": 37,
+     "cells": 19,
+     "passing_attempts": 6,
+     "violations": {
+      "credentials": {
+       "attempts": 17,
+       "turns": 24
+      },
+      "format": {
+       "attempts": 8,
+       "turns": 8
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 5,
+       "turns": 5
+      },
+      "wrong_arguments": {
+       "attempts": 18,
+       "turns": 25
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 16,
+   "violations": {
+    "credentials": {
+     "attempts": 45,
+     "turns": 74
+    },
+    "format": {
+     "attempts": 20,
+     "turns": 24
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 20,
+     "turns": 20
+    },
+    "wrong_arguments": {
+     "attempts": 47,
+     "turns": 59
+    }
+   }
+  },
+  "agentkv_80_dynamic": {
+   "attempts": 111,
+   "by_seed": {
+    "17": {
+     "attempts": 36,
+     "cells": 19,
+     "passing_attempts": 10,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 3
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 4,
+       "turns": 4
+      },
+      "wrong_arguments": {
+       "attempts": 4,
+       "turns": 4
+      }
+     }
+    },
+    "29": {
+     "attempts": 37,
+     "cells": 19,
+     "passing_attempts": 11,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 2
+      },
+      "format": {
+       "attempts": 1,
+       "turns": 2
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 5,
+       "turns": 6
+      },
+      "wrong_arguments": {
+       "attempts": 5,
+       "turns": 5
+      }
+     }
+    },
+    "31": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 12,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "format": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 3,
+       "turns": 4
+      },
+      "wrong_arguments": {
+       "attempts": 7,
+       "turns": 8
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 33,
+   "violations": {
+    "credentials": {
+     "attempts": 5,
+     "turns": 6
+    },
+    "format": {
+     "attempts": 2,
+     "turns": 3
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 12,
+     "turns": 14
+    },
+    "wrong_arguments": {
+     "attempts": 16,
+     "turns": 17
+    }
+   }
+  },
+  "agentkv_80_fixed": {
+   "attempts": 114,
+   "by_seed": {
+    "17": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 11,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 6,
+       "turns": 6
+      },
+      "wrong_arguments": {
+       "attempts": 4,
+       "turns": 6
+      }
+     }
+    },
+    "29": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 13,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 2
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 3,
+       "turns": 3
+      },
+      "wrong_arguments": {
+       "attempts": 3,
+       "turns": 4
+      }
+     }
+    },
+    "31": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 11,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 2
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 4,
+       "turns": 4
+      },
+      "wrong_arguments": {
+       "attempts": 8,
+       "turns": 10
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 35,
+   "violations": {
+    "credentials": {
+     "attempts": 4,
+     "turns": 4
+    },
+    "format": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 13,
+     "turns": 13
+    },
+    "wrong_arguments": {
+     "attempts": 15,
+     "turns": 20
+    }
+   }
+  },
+  "agentkv_80_never": {
+   "attempts": 113,
+   "by_seed": {
+    "17": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 11,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 2
+      },
+      "format": {
+       "attempts": 1,
+       "turns": 2
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 4,
+       "turns": 4
+      },
+      "wrong_arguments": {
+       "attempts": 4,
+       "turns": 5
+      }
+     }
+    },
+    "29": {
+     "attempts": 37,
+     "cells": 19,
+     "passing_attempts": 11,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 2
+      },
+      "format": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 5,
+       "turns": 6
+      },
+      "wrong_arguments": {
+       "attempts": 6,
+       "turns": 7
+      }
+     }
+    },
+    "31": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 11,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "format": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 3,
+       "turns": 3
+      },
+      "wrong_arguments": {
+       "attempts": 9,
+       "turns": 12
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 33,
+   "violations": {
+    "credentials": {
+     "attempts": 4,
+     "turns": 5
+    },
+    "format": {
+     "attempts": 3,
+     "turns": 4
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 12,
+     "turns": 13
+    },
+    "wrong_arguments": {
+     "attempts": 19,
+     "turns": 24
+    }
+   }
+  },
+  "full_best_of_n": {
+   "attempts": 114,
+   "by_seed": {
+    "17": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 9,
+     "violations": {
+      "credentials": {
+       "attempts": 4,
+       "turns": 4
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 5,
+       "turns": 5
+      },
+      "wrong_arguments": {
+       "attempts": 6,
+       "turns": 7
+      }
+     }
+    },
+    "29": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 12,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "format": {
+       "attempts": 2,
+       "turns": 3
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 3,
+       "turns": 4
+      },
+      "wrong_arguments": {
+       "attempts": 7,
+       "turns": 7
+      }
+     }
+    },
+    "31": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 12,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 5,
+       "turns": 6
+      },
+      "wrong_arguments": {
+       "attempts": 4,
+       "turns": 5
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 33,
+   "violations": {
+    "credentials": {
+     "attempts": 6,
+     "turns": 6
+    },
+    "format": {
+     "attempts": 2,
+     "turns": 3
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 13,
+     "turns": 15
+    },
+    "wrong_arguments": {
+     "attempts": 17,
+     "turns": 19
+    }
+   }
+  },
+  "full_once": {
+   "attempts": 57,
+   "by_seed": {
+    "17": {
+     "attempts": 19,
+     "cells": 19,
+     "passing_attempts": 6,
+     "violations": {
+      "credentials": {
+       "attempts": 3,
+       "turns": 3
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 3,
+       "turns": 3
+      },
+      "wrong_arguments": {
+       "attempts": 2,
+       "turns": 3
+      }
+     }
+    },
+    "29": {
+     "attempts": 19,
+     "cells": 19,
+     "passing_attempts": 7,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 2,
+       "turns": 3
+      },
+      "wrong_arguments": {
+       "attempts": 3,
+       "turns": 3
+      }
+     }
+    },
+    "31": {
+     "attempts": 19,
+     "cells": 19,
+     "passing_attempts": 7,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 3,
+       "turns": 3
+      },
+      "wrong_arguments": {
+       "attempts": 1,
+       "turns": 2
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 20,
+   "violations": {
+    "credentials": {
+     "attempts": 4,
+     "turns": 4
+    },
+    "format": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 8,
+     "turns": 9
+    },
+    "wrong_arguments": {
+     "attempts": 6,
+     "turns": 8
+    }
+   }
+  },
+  "rkv_25_dynamic": {
+   "attempts": 98,
+   "by_seed": {
+    "17": {
+     "attempts": 34,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 5,
+       "turns": 20
+      },
+      "format": {
+       "attempts": 19,
+       "turns": 102
+      },
+      "prohibited": {
+       "attempts": 13,
+       "turns": 24
+      },
+      "unknown_api": {
+       "attempts": 14,
+       "turns": 73
+      },
+      "wrong_arguments": {
+       "attempts": 3,
+       "turns": 3
+      }
+     }
+    },
+    "29": {
+     "attempts": 31,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 8
+      },
+      "format": {
+       "attempts": 18,
+       "turns": 236
+      },
+      "prohibited": {
+       "attempts": 12,
+       "turns": 21
+      },
+      "unknown_api": {
+       "attempts": 6,
+       "turns": 13
+      },
+      "wrong_arguments": {
+       "attempts": 2,
+       "turns": 4
+      }
+     }
+    },
+    "31": {
+     "attempts": 33,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 3
+      },
+      "format": {
+       "attempts": 16,
+       "turns": 221
+      },
+      "prohibited": {
+       "attempts": 14,
+       "turns": 25
+      },
+      "unknown_api": {
+       "attempts": 10,
+       "turns": 80
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 7,
+     "turns": 31
+    },
+    "format": {
+     "attempts": 53,
+     "turns": 559
+    },
+    "prohibited": {
+     "attempts": 39,
+     "turns": 70
+    },
+    "unknown_api": {
+     "attempts": 30,
+     "turns": 166
+    },
+    "wrong_arguments": {
+     "attempts": 5,
+     "turns": 7
+    }
+   }
+  },
+  "rkv_25_fixed": {
+   "attempts": 96,
+   "by_seed": {
+    "17": {
+     "attempts": 34,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 8,
+       "turns": 15
+      },
+      "format": {
+       "attempts": 20,
+       "turns": 52
+      },
+      "prohibited": {
+       "attempts": 14,
+       "turns": 28
+      },
+      "unknown_api": {
+       "attempts": 14,
+       "turns": 61
+      },
+      "wrong_arguments": {
+       "attempts": 4,
+       "turns": 7
+      }
+     }
+    },
+    "29": {
+     "attempts": 33,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 5
+      },
+      "format": {
+       "attempts": 21,
+       "turns": 237
+      },
+      "prohibited": {
+       "attempts": 13,
+       "turns": 23
+      },
+      "unknown_api": {
+       "attempts": 8,
+       "turns": 17
+      },
+      "wrong_arguments": {
+       "attempts": 2,
+       "turns": 2
+      }
+     }
+    },
+    "31": {
+     "attempts": 29,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 15,
+       "turns": 144
+      },
+      "prohibited": {
+       "attempts": 14,
+       "turns": 26
+      },
+      "unknown_api": {
+       "attempts": 9,
+       "turns": 98
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 10,
+     "turns": 20
+    },
+    "format": {
+     "attempts": 56,
+     "turns": 433
+    },
+    "prohibited": {
+     "attempts": 41,
+     "turns": 77
+    },
+    "unknown_api": {
+     "attempts": 31,
+     "turns": 176
+    },
+    "wrong_arguments": {
+     "attempts": 6,
+     "turns": 9
+    }
+   }
+  },
+  "rkv_25_never": {
+   "attempts": 93,
+   "by_seed": {
+    "17": {
+     "attempts": 33,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 3,
+       "turns": 31
+      },
+      "format": {
+       "attempts": 19,
+       "turns": 132
+      },
+      "prohibited": {
+       "attempts": 13,
+       "turns": 25
+      },
+      "unknown_api": {
+       "attempts": 11,
+       "turns": 55
+      },
+      "wrong_arguments": {
+       "attempts": 2,
+       "turns": 2
+      }
+     }
+    },
+    "29": {
+     "attempts": 29,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 3,
+       "turns": 12
+      },
+      "format": {
+       "attempts": 18,
+       "turns": 230
+      },
+      "prohibited": {
+       "attempts": 12,
+       "turns": 22
+      },
+      "unknown_api": {
+       "attempts": 6,
+       "turns": 16
+      },
+      "wrong_arguments": {
+       "attempts": 2,
+       "turns": 2
+      }
+     }
+    },
+    "31": {
+     "attempts": 31,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 3
+      },
+      "format": {
+       "attempts": 15,
+       "turns": 216
+      },
+      "prohibited": {
+       "attempts": 14,
+       "turns": 25
+      },
+      "unknown_api": {
+       "attempts": 9,
+       "turns": 81
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 7,
+     "turns": 46
+    },
+    "format": {
+     "attempts": 52,
+     "turns": 578
+    },
+    "prohibited": {
+     "attempts": 39,
+     "turns": 72
+    },
+    "unknown_api": {
+     "attempts": 26,
+     "turns": 152
+    },
+    "wrong_arguments": {
+     "attempts": 4,
+     "turns": 4
+    }
+   }
+  },
+  "rkv_50_dynamic": {
+   "attempts": 100,
+   "by_seed": {
+    "17": {
+     "attempts": 32,
+     "cells": 19,
+     "passing_attempts": 3,
+     "violations": {
+      "credentials": {
+       "attempts": 4,
+       "turns": 6
+      },
+      "format": {
+       "attempts": 5,
+       "turns": 7
+      },
+      "prohibited": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "unknown_api": {
+       "attempts": 21,
+       "turns": 89
+      },
+      "wrong_arguments": {
+       "attempts": 12,
+       "turns": 20
+      }
+     }
+    },
+    "29": {
+     "attempts": 35,
+     "cells": 19,
+     "passing_attempts": 2,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 5
+      },
+      "format": {
+       "attempts": 4,
+       "turns": 8
+      },
+      "prohibited": {
+       "attempts": 1,
+       "turns": 2
+      },
+      "unknown_api": {
+       "attempts": 19,
+       "turns": 90
+      },
+      "wrong_arguments": {
+       "attempts": 13,
+       "turns": 17
+      }
+     }
+    },
+    "31": {
+     "attempts": 33,
+     "cells": 19,
+     "passing_attempts": 1,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "format": {
+       "attempts": 4,
+       "turns": 5
+      },
+      "prohibited": {
+       "attempts": 2,
+       "turns": 2
+      },
+      "unknown_api": {
+       "attempts": 19,
+       "turns": 114
+      },
+      "wrong_arguments": {
+       "attempts": 16,
+       "turns": 18
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 6,
+   "violations": {
+    "credentials": {
+     "attempts": 7,
+     "turns": 12
+    },
+    "format": {
+     "attempts": 13,
+     "turns": 20
+    },
+    "prohibited": {
+     "attempts": 4,
+     "turns": 5
+    },
+    "unknown_api": {
+     "attempts": 59,
+     "turns": 293
+    },
+    "wrong_arguments": {
+     "attempts": 41,
+     "turns": 55
+    }
+   }
+  },
+  "rkv_50_fixed": {
+   "attempts": 100,
+   "by_seed": {
+    "17": {
+     "attempts": 32,
+     "cells": 19,
+     "passing_attempts": 2,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "format": {
+       "attempts": 6,
+       "turns": 7
+      },
+      "prohibited": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "unknown_api": {
+       "attempts": 22,
+       "turns": 62
+      },
+      "wrong_arguments": {
+       "attempts": 14,
+       "turns": 17
+      }
+     }
+    },
+    "29": {
+     "attempts": 34,
+     "cells": 19,
+     "passing_attempts": 3,
+     "violations": {
+      "credentials": {
+       "attempts": 3,
+       "turns": 6
+      },
+      "format": {
+       "attempts": 3,
+       "turns": 5
+      },
+      "prohibited": {
+       "attempts": 2,
+       "turns": 3
+      },
+      "unknown_api": {
+       "attempts": 20,
+       "turns": 55
+      },
+      "wrong_arguments": {
+       "attempts": 17,
+       "turns": 22
+      }
+     }
+    },
+    "31": {
+     "attempts": 34,
+     "cells": 19,
+     "passing_attempts": 1,
+     "violations": {
+      "credentials": {
+       "attempts": 3,
+       "turns": 8
+      },
+      "format": {
+       "attempts": 5,
+       "turns": 8
+      },
+      "prohibited": {
+       "attempts": 3,
+       "turns": 3
+      },
+      "unknown_api": {
+       "attempts": 16,
+       "turns": 57
+      },
+      "wrong_arguments": {
+       "attempts": 19,
+       "turns": 21
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 6,
+   "violations": {
+    "credentials": {
+     "attempts": 7,
+     "turns": 15
+    },
+    "format": {
+     "attempts": 14,
+     "turns": 20
+    },
+    "prohibited": {
+     "attempts": 6,
+     "turns": 7
+    },
+    "unknown_api": {
+     "attempts": 58,
+     "turns": 174
+    },
+    "wrong_arguments": {
+     "attempts": 50,
+     "turns": 60
+    }
+   }
+  },
+  "rkv_50_never": {
+   "attempts": 94,
+   "by_seed": {
+    "17": {
+     "attempts": 30,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 4,
+       "turns": 10
+      },
+      "format": {
+       "attempts": 5,
+       "turns": 8
+      },
+      "prohibited": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "unknown_api": {
+       "attempts": 22,
+       "turns": 100
+      },
+      "wrong_arguments": {
+       "attempts": 10,
+       "turns": 17
+      }
+     }
+    },
+    "29": {
+     "attempts": 34,
+     "cells": 19,
+     "passing_attempts": 2,
+     "violations": {
+      "credentials": {
+       "attempts": 4,
+       "turns": 27
+      },
+      "format": {
+       "attempts": 4,
+       "turns": 10
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 19,
+       "turns": 110
+      },
+      "wrong_arguments": {
+       "attempts": 14,
+       "turns": 17
+      }
+     }
+    },
+    "31": {
+     "attempts": 30,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 2
+      },
+      "format": {
+       "attempts": 2,
+       "turns": 2
+      },
+      "prohibited": {
+       "attempts": 2,
+       "turns": 2
+      },
+      "unknown_api": {
+       "attempts": 15,
+       "turns": 127
+      },
+      "wrong_arguments": {
+       "attempts": 15,
+       "turns": 18
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 2,
+   "violations": {
+    "credentials": {
+     "attempts": 10,
+     "turns": 39
+    },
+    "format": {
+     "attempts": 11,
+     "turns": 20
+    },
+    "prohibited": {
+     "attempts": 3,
+     "turns": 3
+    },
+    "unknown_api": {
+     "attempts": 56,
+     "turns": 337
+    },
+    "wrong_arguments": {
+     "attempts": 39,
+     "turns": 52
+    }
+   }
+  },
+  "rkv_80_dynamic": {
+   "attempts": 112,
+   "by_seed": {
+    "17": {
+     "attempts": 36,
+     "cells": 19,
+     "passing_attempts": 14,
+     "violations": {
+      "credentials": {
+       "attempts": 3,
+       "turns": 4
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 6,
+       "turns": 7
+      },
+      "wrong_arguments": {
+       "attempts": 5,
+       "turns": 6
+      }
+     }
+    },
+    "29": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 15,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 2
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "unknown_api": {
+       "attempts": 7,
+       "turns": 7
+      },
+      "wrong_arguments": {
+       "attempts": 4,
+       "turns": 4
+      }
+     }
+    },
+    "31": {
+     "attempts": 38,
+     "cells": 19,
+     "passing_attempts": 12,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 2
+      },
+      "format": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 6,
+       "turns": 7
+      },
+      "wrong_arguments": {
+       "attempts": 8,
+       "turns": 11
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 41,
+   "violations": {
+    "credentials": {
+     "attempts": 7,
+     "turns": 8
+    },
+    "format": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "prohibited": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "unknown_api": {
+     "attempts": 19,
+     "turns": 21
+    },
+    "wrong_arguments": {
+     "attempts": 17,
+     "turns": 21
+    }
+   }
+  },
+  "rkv_80_fixed": {
+   "attempts": 111,
+   "by_seed": {
+    "17": {
+     "attempts": 37,
+     "cells": 19,
+     "passing_attempts": 12,
+     "violations": {
+      "credentials": {
+       "attempts": 6,
+       "turns": 7
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 7,
+       "turns": 10
+      },
+      "wrong_arguments": {
+       "attempts": 6,
+       "turns": 7
+      }
+     }
+    },
+    "29": {
+     "attempts": 37,
+     "cells": 19,
+     "passing_attempts": 10,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 8,
+       "turns": 8
+      },
+      "wrong_arguments": {
+       "attempts": 4,
+       "turns": 4
+      }
+     }
+    },
+    "31": {
+     "attempts": 37,
+     "cells": 19,
+     "passing_attempts": 12,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 4
+      },
+      "format": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 5,
+       "turns": 5
+      },
+      "wrong_arguments": {
+       "attempts": 5,
+       "turns": 8
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 34,
+   "violations": {
+    "credentials": {
+     "attempts": 8,
+     "turns": 11
+    },
+    "format": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 20,
+     "turns": 23
+    },
+    "wrong_arguments": {
+     "attempts": 15,
+     "turns": 19
+    }
+   }
+  },
+  "rkv_80_never": {
+   "attempts": 109,
+   "by_seed": {
+    "17": {
+     "attempts": 35,
+     "cells": 19,
+     "passing_attempts": 12,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 2
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 6,
+       "turns": 7
+      },
+      "wrong_arguments": {
+       "attempts": 8,
+       "turns": 10
+      }
+     }
+    },
+    "29": {
+     "attempts": 37,
+     "cells": 19,
+     "passing_attempts": 8,
+     "violations": {
+      "credentials": {
+       "attempts": 2,
+       "turns": 3
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 7,
+       "turns": 7
+      },
+      "wrong_arguments": {
+       "attempts": 6,
+       "turns": 9
+      }
+     }
+    },
+    "31": {
+     "attempts": 37,
+     "cells": 19,
+     "passing_attempts": 10,
+     "violations": {
+      "credentials": {
+       "attempts": 3,
+       "turns": 4
+      },
+      "format": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "prohibited": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "unknown_api": {
+       "attempts": 6,
+       "turns": 7
+      },
+      "wrong_arguments": {
+       "attempts": 7,
+       "turns": 11
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 30,
+   "violations": {
+    "credentials": {
+     "attempts": 7,
+     "turns": 9
+    },
+    "format": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 19,
+     "turns": 21
+    },
+    "wrong_arguments": {
+     "attempts": 21,
+     "turns": 30
+    }
+   }
+  },
+  "streamingllm_25_dynamic": {
+   "attempts": 84,
+   "by_seed": {
+    "17": {
+     "attempts": 28,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 22,
+       "turns": 656
+      },
+      "prohibited": {
+       "attempts": 4,
+       "turns": 7
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "29": {
+     "attempts": 27,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 23,
+       "turns": 543
+      },
+      "prohibited": {
+       "attempts": 3,
+       "turns": 3
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "31": {
+     "attempts": 29,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 23,
+       "turns": 755
+      },
+      "prohibited": {
+       "attempts": 6,
+       "turns": 9
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "format": {
+     "attempts": 68,
+     "turns": 1954
+    },
+    "prohibited": {
+     "attempts": 13,
+     "turns": 19
+    },
+    "unknown_api": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "wrong_arguments": {
+     "attempts": 0,
+     "turns": 0
+    }
+   }
+  },
+  "streamingllm_25_fixed": {
+   "attempts": 83,
+   "by_seed": {
+    "17": {
+     "attempts": 28,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 22,
+       "turns": 678
+      },
+      "prohibited": {
+       "attempts": 4,
+       "turns": 6
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "29": {
+     "attempts": 27,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 21,
+       "turns": 507
+      },
+      "prohibited": {
+       "attempts": 3,
+       "turns": 3
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "31": {
+     "attempts": 28,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 22,
+       "turns": 588
+      },
+      "prohibited": {
+       "attempts": 5,
+       "turns": 8
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "format": {
+     "attempts": 65,
+     "turns": 1773
+    },
+    "prohibited": {
+     "attempts": 12,
+     "turns": 17
+    },
+    "unknown_api": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "wrong_arguments": {
+     "attempts": 0,
+     "turns": 0
+    }
+   }
+  },
+  "streamingllm_25_never": {
+   "attempts": 87,
+   "by_seed": {
+    "17": {
+     "attempts": 29,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 24,
+       "turns": 626
+      },
+      "prohibited": {
+       "attempts": 4,
+       "turns": 6
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "29": {
+     "attempts": 28,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 4
+      },
+      "format": {
+       "attempts": 23,
+       "turns": 527
+      },
+      "prohibited": {
+       "attempts": 3,
+       "turns": 5
+      },
+      "unknown_api": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "31": {
+     "attempts": 30,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 23,
+       "turns": 755
+      },
+      "prohibited": {
+       "attempts": 6,
+       "turns": 9
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 1,
+     "turns": 4
+    },
+    "format": {
+     "attempts": 70,
+     "turns": 1908
+    },
+    "prohibited": {
+     "attempts": 13,
+     "turns": 20
+    },
+    "unknown_api": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "wrong_arguments": {
+     "attempts": 0,
+     "turns": 0
+    }
+   }
+  },
+  "streamingllm_50_dynamic": {
+   "attempts": 90,
+   "by_seed": {
+    "17": {
+     "attempts": 30,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 19,
+       "turns": 370
+      },
+      "prohibited": {
+       "attempts": 13,
+       "turns": 25
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "29": {
+     "attempts": 28,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "format": {
+       "attempts": 19,
+       "turns": 496
+      },
+      "prohibited": {
+       "attempts": 16,
+       "turns": 22
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "31": {
+     "attempts": 32,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 15,
+       "turns": 381
+      },
+      "prohibited": {
+       "attempts": 17,
+       "turns": 47
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "format": {
+     "attempts": 53,
+     "turns": 1247
+    },
+    "prohibited": {
+     "attempts": 46,
+     "turns": 94
+    },
+    "unknown_api": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "wrong_arguments": {
+     "attempts": 0,
+     "turns": 0
+    }
+   }
+  },
+  "streamingllm_50_fixed": {
+   "attempts": 90,
+   "by_seed": {
+    "17": {
+     "attempts": 31,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "format": {
+       "attempts": 18,
+       "turns": 254
+      },
+      "prohibited": {
+       "attempts": 15,
+       "turns": 61
+      },
+      "unknown_api": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "29": {
+     "attempts": 28,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 18,
+       "turns": 416
+      },
+      "prohibited": {
+       "attempts": 16,
+       "turns": 23
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "31": {
+     "attempts": 31,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 13,
+       "turns": 194
+      },
+      "prohibited": {
+       "attempts": 18,
+       "turns": 53
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "format": {
+     "attempts": 49,
+     "turns": 864
+    },
+    "prohibited": {
+     "attempts": 49,
+     "turns": 137
+    },
+    "unknown_api": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "wrong_arguments": {
+     "attempts": 0,
+     "turns": 0
+    }
+   }
+  },
+  "streamingllm_50_never": {
+   "attempts": 91,
+   "by_seed": {
+    "17": {
+     "attempts": 29,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 19,
+       "turns": 363
+      },
+      "prohibited": {
+       "attempts": 14,
+       "turns": 23
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "29": {
+     "attempts": 29,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 20,
+       "turns": 539
+      },
+      "prohibited": {
+       "attempts": 16,
+       "turns": 22
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "31": {
+     "attempts": 33,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 1,
+       "turns": 1
+      },
+      "format": {
+       "attempts": 14,
+       "turns": 337
+      },
+      "prohibited": {
+       "attempts": 18,
+       "turns": 50
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "format": {
+     "attempts": 53,
+     "turns": 1239
+    },
+    "prohibited": {
+     "attempts": 48,
+     "turns": 95
+    },
+    "unknown_api": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "wrong_arguments": {
+     "attempts": 0,
+     "turns": 0
+    }
+   }
+  },
+  "streamingllm_80_dynamic": {
+   "attempts": 98,
+   "by_seed": {
+    "17": {
+     "attempts": 33,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 18,
+       "turns": 89
+      },
+      "prohibited": {
+       "attempts": 23,
+       "turns": 39
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "29": {
+     "attempts": 33,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 14,
+       "turns": 39
+      },
+      "prohibited": {
+       "attempts": 26,
+       "turns": 75
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "31": {
+     "attempts": 32,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 17,
+       "turns": 26
+      },
+      "prohibited": {
+       "attempts": 18,
+       "turns": 31
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 1,
+       "turns": 1
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "format": {
+     "attempts": 49,
+     "turns": 154
+    },
+    "prohibited": {
+     "attempts": 67,
+     "turns": 145
+    },
+    "unknown_api": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "wrong_arguments": {
+     "attempts": 1,
+     "turns": 1
+    }
+   }
+  },
+  "streamingllm_80_fixed": {
+   "attempts": 98,
+   "by_seed": {
+    "17": {
+     "attempts": 34,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 19,
+       "turns": 90
+      },
+      "prohibited": {
+       "attempts": 22,
+       "turns": 39
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "29": {
+     "attempts": 33,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 12,
+       "turns": 31
+      },
+      "prohibited": {
+       "attempts": 26,
+       "turns": 76
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "31": {
+     "attempts": 31,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 16,
+       "turns": 21
+      },
+      "prohibited": {
+       "attempts": 18,
+       "turns": 31
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 1,
+       "turns": 1
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "format": {
+     "attempts": 47,
+     "turns": 142
+    },
+    "prohibited": {
+     "attempts": 66,
+     "turns": 146
+    },
+    "unknown_api": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "wrong_arguments": {
+     "attempts": 1,
+     "turns": 1
+    }
+   }
+  },
+  "streamingllm_80_never": {
+   "attempts": 97,
+   "by_seed": {
+    "17": {
+     "attempts": 34,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 19,
+       "turns": 106
+      },
+      "prohibited": {
+       "attempts": 22,
+       "turns": 39
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "29": {
+     "attempts": 32,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 13,
+       "turns": 99
+      },
+      "prohibited": {
+       "attempts": 24,
+       "turns": 75
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 0,
+       "turns": 0
+      }
+     }
+    },
+    "31": {
+     "attempts": 31,
+     "cells": 19,
+     "passing_attempts": 0,
+     "violations": {
+      "credentials": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "format": {
+       "attempts": 16,
+       "turns": 20
+      },
+      "prohibited": {
+       "attempts": 18,
+       "turns": 33
+      },
+      "unknown_api": {
+       "attempts": 0,
+       "turns": 0
+      },
+      "wrong_arguments": {
+       "attempts": 1,
+       "turns": 2
+      }
+     }
+    }
+   },
+   "cells": 57,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "format": {
+     "attempts": 48,
+     "turns": 225
+    },
+    "prohibited": {
+     "attempts": 64,
+     "turns": 147
+    },
+    "unknown_api": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "wrong_arguments": {
+     "attempts": 1,
+     "turns": 2
+    }
+   }
+  }
+ },
+ "frontier_seed_17": {
+  "agentkv_30_fixed": {
+   "attempts": 35,
+   "cells": 19,
+   "passing_attempts": 1,
+   "violations": {
+    "credentials": {
+     "attempts": 5,
+     "turns": 17
+    },
+    "format": {
+     "attempts": 6,
+     "turns": 36
+    },
+    "prohibited": {
+     "attempts": 1,
+     "turns": 4
+    },
+    "unknown_api": {
+     "attempts": 15,
+     "turns": 39
+    },
+    "wrong_arguments": {
+     "attempts": 7,
+     "turns": 8
+    }
+   }
+  },
+  "agentkv_30_never": {
+   "attempts": 33,
+   "cells": 19,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 2,
+     "turns": 14
+    },
+    "format": {
+     "attempts": 3,
+     "turns": 8
+    },
+    "prohibited": {
+     "attempts": 2,
+     "turns": 5
+    },
+    "unknown_api": {
+     "attempts": 15,
+     "turns": 84
+    },
+    "wrong_arguments": {
+     "attempts": 5,
+     "turns": 9
+    }
+   }
+  },
+  "agentkv_40_fixed": {
+   "attempts": 38,
+   "cells": 19,
+   "passing_attempts": 6,
+   "violations": {
+    "credentials": {
+     "attempts": 8,
+     "turns": 9
+    },
+    "format": {
+     "attempts": 3,
+     "turns": 3
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 20,
+     "turns": 29
+    },
+    "wrong_arguments": {
+     "attempts": 17,
+     "turns": 21
+    }
+   }
+  },
+  "agentkv_40_never": {
+   "attempts": 35,
+   "cells": 19,
+   "passing_attempts": 2,
+   "violations": {
+    "credentials": {
+     "attempts": 12,
+     "turns": 21
+    },
+    "format": {
+     "attempts": 8,
+     "turns": 12
+    },
+    "prohibited": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "unknown_api": {
+     "attempts": 20,
+     "turns": 74
+    },
+    "wrong_arguments": {
+     "attempts": 18,
+     "turns": 23
+    }
+   }
+  },
+  "agentkv_50_fixed": {
+   "attempts": 38,
+   "cells": 19,
+   "passing_attempts": 10,
+   "violations": {
+    "credentials": {
+     "attempts": 5,
+     "turns": 7
+    },
+    "format": {
+     "attempts": 5,
+     "turns": 5
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 8,
+     "turns": 8
+    },
+    "wrong_arguments": {
+     "attempts": 12,
+     "turns": 16
+    }
+   }
+  },
+  "agentkv_50_never": {
+   "attempts": 38,
+   "cells": 19,
+   "passing_attempts": 4,
+   "violations": {
+    "credentials": {
+     "attempts": 12,
+     "turns": 24
+    },
+    "format": {
+     "attempts": 5,
+     "turns": 6
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 6,
+     "turns": 6
+    },
+    "wrong_arguments": {
+     "attempts": 14,
+     "turns": 15
+    }
+   }
+  },
+  "agentkv_60_fixed": {
+   "attempts": 37,
+   "cells": 19,
+   "passing_attempts": 15,
+   "violations": {
+    "credentials": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "format": {
+     "attempts": 4,
+     "turns": 6
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 7,
+     "turns": 8
+    },
+    "wrong_arguments": {
+     "attempts": 14,
+     "turns": 18
+    }
+   }
+  },
+  "agentkv_60_never": {
+   "attempts": 37,
+   "cells": 19,
+   "passing_attempts": 9,
+   "violations": {
+    "credentials": {
+     "attempts": 11,
+     "turns": 23
+    },
+    "format": {
+     "attempts": 2,
+     "turns": 4
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 9,
+     "turns": 11
+    },
+    "wrong_arguments": {
+     "attempts": 22,
+     "turns": 28
+    }
+   }
+  },
+  "agentkv_70_fixed": {
+   "attempts": 36,
+   "cells": 19,
+   "passing_attempts": 13,
+   "violations": {
+    "credentials": {
+     "attempts": 4,
+     "turns": 4
+    },
+    "format": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 7,
+     "turns": 7
+    },
+    "wrong_arguments": {
+     "attempts": 6,
+     "turns": 7
+    }
+   }
+  },
+  "agentkv_70_never": {
+   "attempts": 38,
+   "cells": 19,
+   "passing_attempts": 13,
+   "violations": {
+    "credentials": {
+     "attempts": 7,
+     "turns": 7
+    },
+    "format": {
+     "attempts": 3,
+     "turns": 5
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 6,
+     "turns": 6
+    },
+    "wrong_arguments": {
+     "attempts": 10,
+     "turns": 13
+    }
+   }
+  },
+  "full_best_of_n": {
+   "attempts": 38,
+   "cells": 19,
+   "passing_attempts": 9,
+   "violations": {
+    "credentials": {
+     "attempts": 4,
+     "turns": 4
+    },
+    "format": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 5,
+     "turns": 5
+    },
+    "wrong_arguments": {
+     "attempts": 6,
+     "turns": 7
+    }
+   }
+  },
+  "rkv_30_fixed": {
+   "attempts": 32,
+   "cells": 19,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 6,
+     "turns": 9
+    },
+    "format": {
+     "attempts": 19,
+     "turns": 179
+    },
+    "prohibited": {
+     "attempts": 9,
+     "turns": 15
+    },
+    "unknown_api": {
+     "attempts": 16,
+     "turns": 49
+    },
+    "wrong_arguments": {
+     "attempts": 5,
+     "turns": 5
+    }
+   }
+  },
+  "rkv_30_never": {
+   "attempts": 33,
+   "cells": 19,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 5,
+     "turns": 11
+    },
+    "format": {
+     "attempts": 16,
+     "turns": 176
+    },
+    "prohibited": {
+     "attempts": 10,
+     "turns": 17
+    },
+    "unknown_api": {
+     "attempts": 10,
+     "turns": 56
+    },
+    "wrong_arguments": {
+     "attempts": 3,
+     "turns": 3
+    }
+   }
+  },
+  "rkv_40_fixed": {
+   "attempts": 31,
+   "cells": 19,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 6,
+     "turns": 8
+    },
+    "format": {
+     "attempts": 9,
+     "turns": 19
+    },
+    "prohibited": {
+     "attempts": 6,
+     "turns": 14
+    },
+    "unknown_api": {
+     "attempts": 15,
+     "turns": 92
+    },
+    "wrong_arguments": {
+     "attempts": 7,
+     "turns": 12
+    }
+   }
+  },
+  "rkv_40_never": {
+   "attempts": 31,
+   "cells": 19,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 8,
+     "turns": 21
+    },
+    "format": {
+     "attempts": 11,
+     "turns": 16
+    },
+    "prohibited": {
+     "attempts": 6,
+     "turns": 15
+    },
+    "unknown_api": {
+     "attempts": 15,
+     "turns": 93
+    },
+    "wrong_arguments": {
+     "attempts": 5,
+     "turns": 7
+    }
+   }
+  },
+  "rkv_50_fixed": {
+   "attempts": 32,
+   "cells": 19,
+   "passing_attempts": 2,
+   "violations": {
+    "credentials": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "format": {
+     "attempts": 6,
+     "turns": 7
+    },
+    "prohibited": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "unknown_api": {
+     "attempts": 22,
+     "turns": 62
+    },
+    "wrong_arguments": {
+     "attempts": 14,
+     "turns": 16
+    }
+   }
+  },
+  "rkv_50_never": {
+   "attempts": 30,
+   "cells": 19,
+   "passing_attempts": 0,
+   "violations": {
+    "credentials": {
+     "attempts": 4,
+     "turns": 10
+    },
+    "format": {
+     "attempts": 5,
+     "turns": 8
+    },
+    "prohibited": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "unknown_api": {
+     "attempts": 22,
+     "turns": 99
+    },
+    "wrong_arguments": {
+     "attempts": 10,
+     "turns": 17
+    }
+   }
+  },
+  "rkv_60_fixed": {
+   "attempts": 36,
+   "cells": 19,
+   "passing_attempts": 6,
+   "violations": {
+    "credentials": {
+     "attempts": 2,
+     "turns": 2
+    },
+    "format": {
+     "attempts": 2,
+     "turns": 2
+    },
+    "prohibited": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "unknown_api": {
+     "attempts": 16,
+     "turns": 98
+    },
+    "wrong_arguments": {
+     "attempts": 12,
+     "turns": 15
+    }
+   }
+  },
+  "rkv_60_never": {
+   "attempts": 35,
+   "cells": 19,
+   "passing_attempts": 8,
+   "violations": {
+    "credentials": {
+     "attempts": 5,
+     "turns": 6
+    },
+    "format": {
+     "attempts": 4,
+     "turns": 7
+    },
+    "prohibited": {
+     "attempts": 1,
+     "turns": 1
+    },
+    "unknown_api": {
+     "attempts": 14,
+     "turns": 85
+    },
+    "wrong_arguments": {
+     "attempts": 13,
+     "turns": 16
+    }
+   }
+  },
+  "rkv_70_fixed": {
+   "attempts": 37,
+   "cells": 19,
+   "passing_attempts": 11,
+   "violations": {
+    "credentials": {
+     "attempts": 3,
+     "turns": 3
+    },
+    "format": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 11,
+     "turns": 58
+    },
+    "wrong_arguments": {
+     "attempts": 10,
+     "turns": 13
+    }
+   }
+  },
+  "rkv_70_never": {
+   "attempts": 35,
+   "cells": 19,
+   "passing_attempts": 6,
+   "violations": {
+    "credentials": {
+     "attempts": 4,
+     "turns": 5
+    },
+    "format": {
+     "attempts": 2,
+     "turns": 2
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 8,
+     "turns": 105
+    },
+    "wrong_arguments": {
+     "attempts": 6,
+     "turns": 9
+    }
+   }
+  }
+ },
+ "method": "Offline counts of turns that break an explicit prompt rule, read from saved actions and observation text with comet.instruction_errors; no model, tool or evaluator was run.",
+ "prompt_layout": {
+  "first_turn_context_tokens": {
+   "by_task": {
+    "0d8a4ee_2": 3360,
+    "23cf851_2": 3348,
+    "37a8675_1": 3356,
+    "383cbac_1": 3393,
+    "396c5a2_3": 3354,
+    "3ab5b8b_2": 3344,
+    "4ec8de5_3": 3347,
+    "4fab96f_3": 3359,
+    "50e1ac9_3": 3356,
+    "530b157_2": 3382,
+    "57c3486_1": 3343,
+    "6171bbc_2": 3358,
+    "68ee2c9_2": 3381,
+    "6bdbc26_3": 3345,
+    "6c2c621_1": 3380,
+    "b119b1f_1": 3349,
+    "d4e9306_1": 3345,
+    "df61dc5_3": 3347,
+    "fac291d_3": 3348
+   },
+   "max": 3393,
+   "median": 3354,
+   "min": 3343
+  },
+  "method": "Tokenizer only, pinned Qwen3.5-9B chat template with thinking disabled; first-turn lengths are the first trigger check of saved seed-17 attempts.",
+  "rule_token_spans": [
+   {
+    "rule": "one fenced code block per turn",
+    "tokens": [
+     14,
+     45
+    ]
+   },
+   {
+    "rule": "apis already exists; never import; no requests or URLs",
+    "tokens": [
+     45,
+     97
+    ]
+   },
+   {
+    "rule": "first action lists API names",
+    "tokens": [
+     97,
+     162
+    ]
+   },
+   {
+    "rule": "read one API's documentation before calling it",
+    "tokens": [
+     161,
+     201
+    ]
+   },
+   {
+    "rule": "do not guess names or arguments",
+    "tokens": [
+     201,
+     247
+    ]
+   },
+   {
+    "rule": "obtain credentials; password record by app name",
+    "tokens": [
+     247,
+     337
+    ]
+   },
+   {
+    "rule": "work in short steps; complete_task",
+    "tokens": [
+     337,
+     453
+    ]
+   },
+   {
+    "rule": "username is email or phone; app name is never the username",
+    "tokens": [
+     453,
+     516
+    ]
+   },
+   {
+    "rule": "working login pattern",
+    "tokens": [
+     516,
+     594
+    ]
+   },
+   {
+    "rule": "keep access_token; avoid printing collections",
+    "tokens": [
+     594,
+     672
+    ]
+   }
+  ],
+  "streamingllm": {
+   "before_first_action": [
+    {
+     "evicted_span_end_max": 694,
+     "evicted_span_end_min": 684,
+     "retention": 0.8,
+     "rules": [
+      {
+       "kept_max": 2,
+       "kept_min": 2,
+       "rule": "one fenced code block per turn",
+       "tokens": 31
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "apis already exists; never import; no requests or URLs",
+       "tokens": 52
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "first action lists API names",
+       "tokens": 65
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "read one API's documentation before calling it",
+       "tokens": 40
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "do not guess names or arguments",
+       "tokens": 46
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "obtain credentials; password record by app name",
+       "tokens": 90
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "work in short steps; complete_task",
+       "tokens": 116
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "username is email or phone; app name is never the username",
+       "tokens": 63
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "working login pattern",
+       "tokens": 78
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "keep access_token; avoid printing collections",
+       "tokens": 78
+      }
+     ],
+     "system_prompt_tokens_kept_max": 13,
+     "system_prompt_tokens_kept_min": 13
+    },
+    {
+     "evicted_span_end_max": 1712,
+     "evicted_span_end_min": 1687,
+     "retention": 0.5,
+     "rules": [
+      {
+       "kept_max": 2,
+       "kept_min": 2,
+       "rule": "one fenced code block per turn",
+       "tokens": 31
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "apis already exists; never import; no requests or URLs",
+       "tokens": 52
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "first action lists API names",
+       "tokens": 65
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "read one API's documentation before calling it",
+       "tokens": 40
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "do not guess names or arguments",
+       "tokens": 46
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "obtain credentials; password record by app name",
+       "tokens": 90
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "work in short steps; complete_task",
+       "tokens": 116
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "username is email or phone; app name is never the username",
+       "tokens": 63
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "working login pattern",
+       "tokens": 78
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "keep access_token; avoid printing collections",
+       "tokens": 78
+      }
+     ],
+     "system_prompt_tokens_kept_max": 13,
+     "system_prompt_tokens_kept_min": 13
+    },
+    {
+     "evicted_span_end_max": 2560,
+     "evicted_span_end_min": 2523,
+     "retention": 0.25,
+     "rules": [
+      {
+       "kept_max": 2,
+       "kept_min": 2,
+       "rule": "one fenced code block per turn",
+       "tokens": 31
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "apis already exists; never import; no requests or URLs",
+       "tokens": 52
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "first action lists API names",
+       "tokens": 65
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "read one API's documentation before calling it",
+       "tokens": 40
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "do not guess names or arguments",
+       "tokens": 46
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "obtain credentials; password record by app name",
+       "tokens": 90
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "work in short steps; complete_task",
+       "tokens": 116
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "username is email or phone; app name is never the username",
+       "tokens": 63
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "working login pattern",
+       "tokens": 78
+      },
+      {
+       "kept_max": 0,
+       "kept_min": 0,
+       "rule": "keep access_token; avoid printing collections",
+       "tokens": 78
+      }
+     ],
+     "system_prompt_tokens_kept_max": 13,
+     "system_prompt_tokens_kept_min": 13
+    }
+   ],
+   "kept_set": "the first sink tokens and the most recent target minus sink tokens, where target is the retention ceiling at the first action",
+   "sink_tokens": 16
+  },
+  "system_prompt_token_span": [
+   3,
+   672
+  ],
+  "system_prompt_tokens": 669
+ },
+ "schema_version": 1,
+ "sources": {
+  "dev19-frontier-v1": "afecfc7a19a3091e8a21ec81bce83f1525b1f1949edc11bd19c03842f6743b76",
+  "dev19-recovery-v1": "7b7b43252075b0be189024debcb9ecc3b027ce5df579a122a0f792f5f7b6948c",
+  "dev19-recovery-v2": "4ec4a6e4a8e36f543c8bcf74ed3b9faf93f50a3c8da5fb38054850a3f3e25130",
+  "dev19-trigger-v1": "86e39a69ca4c0ac29ca3765beb1afd7d4125fbb03ee2848a7adf8b5667f5c015"
+ },
+ "split": "dev",
+ "tasks": 19,
+ "trigger_timing_seed_17": [
+  {
+   "attempts": 38,
+   "cells": 19,
+   "passing_attempts": 11,
+   "rebuild_after_tool_calls": 1,
+   "violations": {
+    "credentials": {
+     "attempts": 2,
+     "turns": 2
+    },
+    "format": {
+     "attempts": 2,
+     "turns": 2
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 9,
+     "turns": 10
+    },
+    "wrong_arguments": {
+     "attempts": 10,
+     "turns": 11
+    }
+   }
+  },
+  {
+   "attempts": 38,
+   "cells": 19,
+   "passing_attempts": 13,
+   "rebuild_after_tool_calls": 2,
+   "violations": {
+    "credentials": {
+     "attempts": 3,
+     "turns": 3
+    },
+    "format": {
+     "attempts": 3,
+     "turns": 3
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 9,
+     "turns": 10
+    },
+    "wrong_arguments": {
+     "attempts": 12,
+     "turns": 12
+    }
+   }
+  },
+  {
+   "attempts": 38,
+   "cells": 19,
+   "passing_attempts": 6,
+   "rebuild_after_tool_calls": 6,
+   "violations": {
+    "credentials": {
+     "attempts": 7,
+     "turns": 9
+    },
+    "format": {
+     "attempts": 4,
+     "turns": 5
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 9,
+     "turns": 9
+    },
+    "wrong_arguments": {
+     "attempts": 17,
+     "turns": 21
+    }
+   }
+  },
+  {
+   "attempts": 37,
+   "cells": 19,
+   "passing_attempts": 6,
+   "rebuild_after_tool_calls": 8,
+   "violations": {
+    "credentials": {
+     "attempts": 9,
+     "turns": 17
+    },
+    "format": {
+     "attempts": 4,
+     "turns": 4
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 6,
+     "turns": 6
+    },
+    "wrong_arguments": {
+     "attempts": 15,
+     "turns": 18
+    }
+   }
+  },
+  {
+   "attempts": 38,
+   "cells": 19,
+   "passing_attempts": 10,
+   "rebuild_after_tool_calls": 4,
+   "violations": {
+    "credentials": {
+     "attempts": 5,
+     "turns": 7
+    },
+    "format": {
+     "attempts": 5,
+     "turns": 5
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 8,
+     "turns": 8
+    },
+    "wrong_arguments": {
+     "attempts": 12,
+     "turns": 16
+    }
+   }
+  },
+  {
+   "attempts": 38,
+   "cells": 19,
+   "passing_attempts": 4,
+   "rebuild_after_tool_calls": "never",
+   "violations": {
+    "credentials": {
+     "attempts": 12,
+     "turns": 24
+    },
+    "format": {
+     "attempts": 6,
+     "turns": 8
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    },
+    "unknown_api": {
+     "attempts": 7,
+     "turns": 7
+    },
+    "wrong_arguments": {
+     "attempts": 15,
+     "turns": 16
+    }
+   }
+  }
+ ],
+ "violations": [
+  "format",
+  "credentials",
+  "unknown_api",
+  "wrong_arguments",
+  "prohibited"
+ ]
+}
