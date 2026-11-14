@@ -31,6 +31,9 @@ selection among attempts; these small samples do not establish a general ranking
   first study did not use. A declaration, not completed-result evidence.
 - [Dev claims review](qwen9b/dev19-claims-review.md): an independent reading of
   which claims the dev records support, and a prior-work check.
+- [RTX A6000 dev cohort design](qwen9b/a6000-cohort-design.md): qualification
+  of a second device at the 24 GiB cap and the three dev studies declared for
+  it. A declaration, not completed-result evidence.
 - [Dev prompt-rule violations](qwen9b/dev19-instruction-errors.md): which
   system-prompt rules each compressed method breaks, what a rebuild removes
   against its never-rebuild twin, and why StreamingLLM keeps none of the

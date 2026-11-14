@@ -1,0 +1,8 @@
+{
+  "extends": "../checks/resume-blackwell-v2.json",
+  "experiment_id": "qwen9b-resume-check-a6000-v1",
+  "engine": {
+    "device_name": "NVIDIA RTX A6000"
+  },
+  "notes": "Process-interruption check for qualifying the RTX A6000 at the 16K context and 24 GiB cap: the Blackwell check with only the device name changed. Integration only."
+}

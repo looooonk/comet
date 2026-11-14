@@ -1,0 +1,8 @@
+{
+  "extends": "../blackwell/dev19-prefill-v1.json",
+  "experiment_id": "qwen9b-dev19-prefill-once-a6000-v1",
+  "engine": {
+    "device_name": "NVIDIA RTX A6000"
+  },
+  "notes": "The rebuild-before-the-first-action study on the RTX A6000 cohort, declared before any execution: qwen9b-dev19-prefill-once-blackwell-v1 with only the device name changed. 228 fresh-start cells; its never-rebuild arms are in qwen9b-dev19-core-a6000-v1. Compared only within this cohort. See documents/records/qwen9b/a6000-cohort-design.md."
+}

@@ -1,0 +1,8 @@
+{
+  "extends": "../blackwell/test50-smoke-v1.json",
+  "experiment_id": "qwen9b-a6000-dev-smoke-v1",
+  "engine": {
+    "device_name": "NVIDIA RTX A6000"
+  },
+  "notes": "One-task dev integration smoke for qualifying the RTX A6000 at the 24 GiB study cap: the Blackwell smoke's four cells with only the device name changed. Integration only; no outcome-dependent selection or tuning."
+}

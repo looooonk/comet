@@ -1,0 +1,20 @@
+{
+  "extends": "../dev19-core-v1.json",
+  "conditions": [
+    {
+      "id": "agentkv_50_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_never",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Condition group 1 of 4 of qwen9b-dev19-core-a6000-v1 for one-GPU workers; every other setting, task and seed is inherited unchanged. Analyze the groups together."
+}

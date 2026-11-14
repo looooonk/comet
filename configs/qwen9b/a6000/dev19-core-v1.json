@@ -1,0 +1,64 @@
+{
+  "extends": "../blackwell/dev19-recovery-v1.json",
+  "experiment_id": "qwen9b-dev19-core-a6000-v1",
+  "engine": {
+    "device_name": "NVIDIA RTX A6000"
+  },
+  "seeds": [
+    17,
+    29,
+    31
+  ],
+  "conditions": [
+    {
+      "id": "full_best_of_n",
+      "method": "full",
+      "retention": 1.0,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_25_never",
+      "method": "agentkv",
+      "retention": 0.25,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_never",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "rkv_50_never",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_dynamic",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "dynamic",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Reference arms of the nineteen-family dev recovery study on the RTX A6000 cohort, declared before any execution: the two-attempt full-cache control, AgentKV at 50 percent under never, fixed and dynamic recovery, and the never-rebuild arms of R-KV 50, StreamingLLM 50 and AgentKV 25 percent, on the same 19 tasks at seeds 17, 29 and 31 with only the device name changed. 399 fresh-start cells. Compared only within this cohort. See documents/records/qwen9b/a6000-cohort-design.md."
+}
