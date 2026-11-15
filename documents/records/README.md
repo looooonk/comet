@@ -1,5 +1,9 @@
 # Results
 
+For a guided view of the studies, settings, figures and reproducibility conditions,
+start with the [experiment ledger](../../experiments/README.md). This directory
+retains the dated evidence and canonical artifacts that ledger entries cite.
+
 The completed Qwen3.5-9B studies use AppWorld, paired tasks and offline scoring.
 The Blackwell compression grid has 50 held-out task families per condition;
 the separate recovery matrix has 19 dev families and one seed. Earlier L4 and

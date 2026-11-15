@@ -66,6 +66,7 @@ require a new version.
 | `tests/` | State, recovery, budget and evaluation checks |
 | `documents/` | Shared decisions and operating guides |
 | `documents/records/` | Compact results, validation evidence and selected figures |
+| `experiments/` | Human-readable study ledger, periodically synchronized with repository evidence |
 
 Inspect callers before changing shared interfaces. Update affected consumers
 and documentation together; preserve configuration hashes, checkpoint formats

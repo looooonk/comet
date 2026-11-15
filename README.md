@@ -23,8 +23,9 @@ A separate [recovery study](documents/records/qwen9b/dev19-recovery.md) covers
 raised AgentKV oracle success from 3/19 to 7/19 in this one-seed study.
 This is preliminary dev evidence; the cohorts are reported separately.
 
-The [results index](documents/records/README.md) collects both studies, their
-plots and evidence, earlier pilots, and the recorded status of followups.
+The [experiment ledger](experiments/README.md) brings together study settings,
+figures, interpretations and reproducibility details. It is updated occasionally
+from the repository's [dated evidence records](documents/records/README.md).
 
 ## Getting started
 
