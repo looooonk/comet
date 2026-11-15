@@ -247,5 +247,15 @@ model's behavior in both. Tool output order is therefore a source of
 divergence between twins that does not come from the model. As declared, no
 analysis of matched turns across the two sources is used.
 
-No outcome of a control arm or of the 80% study exists. Smoke outcomes are not
-results.
+The first controls study ran on November 15, 2026 without a guard trip and
+its 19-task part is [reported](a6000-dev19-controls.md). That record also
+identifies a confound this design did not foresee. The pinned prompt is
+counted inside the budget and the engine compacts after every 128-token
+chunk, so until the transcript passes 1,393 tokens the pinned arm keeps the
+prompt and 24 further entries. The task instruction is the first thing after
+the prompt and what is evicted there does not return without a rebuild. The
+statement above that the targets agree from 1,393 tokens is correct and does
+not cover this. C1 as run therefore does not test whether a pinned prompt is
+enough, and the second study carries the same arm. The second study is
+running and the 80% study is queued; neither has a reported outcome. Smoke
+outcomes are not results.

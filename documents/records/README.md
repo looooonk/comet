@@ -54,6 +54,10 @@ selection among attempts; these small samples do not establish a general ranking
   attempts per task and arm at 50% retention, best of k and a self-report
   selector, compared at equal occupied KV. Rebuilding leads retrying at every
   tier with intervals that include zero. In-sample tasks.
+- [RTX A6000 controls on the first 19 tasks](qwen9b/a6000-dev19-controls.md):
+  pinned prompt, text reminder and symptom-triggered rebuild, the 19-task
+  part of the declared analysis, with a confound found in the pinned arm.
+  Exploratory and not reviewed by the team.
 - [Controls for the recovery result](qwen9b/a6000-controls-design.md): the
   decisions on a protected prompt, a text reminder, a symptom-triggered
   rebuild and a held-out run, and the two dev studies declared for the first
