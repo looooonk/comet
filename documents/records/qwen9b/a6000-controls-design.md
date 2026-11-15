@@ -215,7 +215,37 @@ the first controls study, from the same source pin.
 Submitted on November 14, 2026. The runtime for the new source was built from
 the same locks: its 118 pinned packages match the reference runtime, and the
 staged digests of the cohort's existing studies are unchanged under the new
-code. Qualification, the smoke run and the two studies had not finished when
-this was written, and no outcome of a control arm exists. The
-[reference arms](a6000-dev19-core.md) these controls are compared with were
-reported after this design was declared and committed.
+code. Qualification passed the same day: 55 in-process checks, which include
+the control checks against the installed selectors, and the
+process-interruption check. The [reference arms](a6000-dev19-core.md) these
+controls are compared with were reported after this design was declared and
+committed.
+
+The 14-cell smoke run met the three declared conditions. All 15 attempts of
+protected arms report `system_prompt_retained` of 1 at every turn, with a
+protected prefix of 673 tokens. Each of the three reminder attempts received
+one reminder of 682 tokens, on the turn of its fourth tool call. Each of the
+four symptom rebuilds was decided at the check after the first observation
+containing a marker.
+
+The smoke check job still exited with a failure, which cancelled the queued
+studies before any cell started. Its script also failed on any attempt that
+ended in an error, and one StreamingLLM attempt ended at the agent protocol's
+limit of four consecutive failures. That is an ordinary attempt outcome the
+declared conditions do not cover. The script now fails only on infeasible
+attempts and on errors other than that limit. The first report is kept beside
+the run, the corrected check passed when read against the saved run, and the
+check and the studies were resubmitted. The resubmitted job also exercises
+scoring, analysis and export on control arms and had not finished when this
+was written.
+
+Of the two unchanged cells, one matched the reference study token for token
+through 11,322 tokens. The other matched through 6,855 tokens and twelve turns
+of identical model responses, then differed in a tool observation that
+printed the same eight values in another order. The new source reproduced the
+model's behavior in both. Tool output order is therefore a source of
+divergence between twins that does not come from the model. As declared, no
+analysis of matched turns across the two sources is used.
+
+No outcome of a control arm or of the 80% study exists. Smoke outcomes are not
+results.
