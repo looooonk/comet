@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from pathlib import Path
 
 from comet.engine.contracts import retention_target, validate_model
@@ -34,6 +34,7 @@ class Triggers:
     dynamic_context_tokens: int
     dynamic_tool_calls: int
     dynamic_rule: str
+    symptom_markers: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -56,6 +57,15 @@ class Condition:
     retention: float
     recovery: str
     max_attempts: int
+    protect_prompt: bool = False
+    reminder: bool = False
+
+    def to_dict(self) -> dict:
+        data = asdict(self)
+        for name in ("protect_prompt", "reminder"):
+            if data[name] is False:
+                del data[name]
+        return data
 
 
 @dataclass(frozen=True)
@@ -91,6 +101,7 @@ class Experiment:
     notes: str
     agent: AgentProtocol = field(default_factory=AgentProtocol)
     environment_warmup: EnvironmentWarmup | None = None
+    retention_diagnostic: bool = False
 
     @classmethod
     def load(cls, path: str | Path, *, allow_unfrozen: bool = False) -> Experiment:
@@ -101,6 +112,9 @@ class Experiment:
         data = dict(data)
         for name, kind in (("engine", Engine), ("sampling", Sampling), ("triggers", Triggers)):
             data[name] = kind(**data[name])
+        markers = data["triggers"].symptom_markers
+        if isinstance(markers, list):
+            data["triggers"] = replace(data["triggers"], symptom_markers=tuple(markers))
         data["agent"] = AgentProtocol(**data.get("agent", {}))
         if data.get("environment_warmup") is not None:
             data["environment_warmup"] = EnvironmentWarmup(**data["environment_warmup"])
@@ -175,6 +189,23 @@ class Experiment:
                 raise ValueError("environment_warmup seed must be an integer")
         if self.triggers.dynamic_rule not in {"and", "or"}:
             raise ValueError("dynamic_rule must be and or or")
+        markers = self.triggers.symptom_markers
+        if (
+            not isinstance(markers, tuple)
+            or any(not isinstance(m, str) or not m.strip() for m in markers)
+            or len(set(markers)) != len(markers)
+        ):
+            raise ValueError("symptom_markers must be unique nonempty strings")
+        if not isinstance(self.retention_diagnostic, bool):
+            raise ValueError("retention_diagnostic must be boolean")
+        controls = markers or any(c.reminder or c.protect_prompt for c in self.conditions)
+        if controls and self.stage == "diagnostic":
+            # A restored branch inherits tool and symptom counts from its full-cache source.
+            raise ValueError("Exploratory controls are undefined for checkpoint diagnostics")
+        if self.engine.backend != "transformers_hybrid" and (
+            self.retention_diagnostic or any(c.protect_prompt for c in self.conditions)
+        ):
+            raise ValueError("Prompt protection and its diagnostic require the hybrid backend")
         if self.engine.dtype != "bfloat16":
             raise ValueError("All supported models require BF16")
         if self.engine.device_name is not None and (
@@ -204,11 +235,15 @@ class Experiment:
                 raise ValueError("Condition IDs must be safe lowercase names")
             if c.method not in {"full", "streamingllm", "rkv", "agentkv"}:
                 raise ValueError(f"Unknown eviction method: {c.method}")
-            if c.recovery not in {"never", "fixed", "dynamic"}:
+            if c.recovery not in {"never", "fixed", "dynamic", "symptom"}:
                 raise ValueError(f"Unknown recovery policy: {c.recovery}")
+            if c.recovery == "symptom" and not markers:
+                raise ValueError("Symptom recovery requires symptom_markers")
+            if not isinstance(c.protect_prompt, bool) or not isinstance(c.reminder, bool):
+                raise ValueError("protect_prompt and reminder must be boolean")
             retention_target(0, c.retention, c.method)
             if c.method == "full":
-                if c.retention != 1 or c.recovery != "never":
+                if c.retention != 1 or c.recovery != "never" or c.protect_prompt:
                     raise ValueError("Full-cache controls disable eviction and recovery")
             if (
                 isinstance(c.max_attempts, bool)
@@ -227,6 +262,11 @@ class Experiment:
 
     def to_dict(self) -> dict:
         data = asdict(self)
+        data["conditions"] = [c.to_dict() for c in self.conditions]
+        if self.triggers.symptom_markers:
+            data["triggers"]["symptom_markers"] = list(self.triggers.symptom_markers)
+        else:
+            del data["triggers"]["symptom_markers"]
         if self.engine.device_name is None:
             del data["engine"]["device_name"]
         if self.engine.backend == "native_minisgl":
@@ -235,6 +275,8 @@ class Experiment:
             del data["agent"]["require_executable"]
         if self.environment_warmup is None:
             del data["environment_warmup"]
+        if not self.retention_diagnostic:
+            del data["retention_diagnostic"]
         return data
 
     @property

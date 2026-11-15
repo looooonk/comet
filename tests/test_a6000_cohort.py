@@ -45,7 +45,8 @@ def test_a6000_core_study_reruns_first_study_arms_on_the_same_tasks():
 
 
 def test_a6000_parts_cover_every_condition_once_without_changing_settings():
-    for name in ("dev19-core-v1", "dev19-prefill-v1", "dev38-recovery-v1", "dev19-retry-v1"):
+    for name in ("dev19-core-v1", "dev19-prefill-v1", "dev38-recovery-v1", "dev19-retry-v1",
+                 "dev19-controls-v1", "dev38-controls-v1"):
         study = Experiment.load(CONFIGS / f"a6000/{name}.json")
         parent = {k: v for k, v in study.to_dict().items() if k not in ("conditions", "notes")}
         seen = []
@@ -73,3 +74,38 @@ def test_a6000_retry_study_runs_single_attempts_of_the_core_arms_at_new_seeds():
         assert (condition.method, condition.retention, condition.recovery) == (twin.method, twin.retention, twin.recovery)
         assert condition.max_attempts == 1 and twin.max_attempts == 2
     assert differing(retry, core) == {"experiment_id", "notes", "seeds", "conditions"}
+
+
+def test_a6000_controls_add_only_conditions_and_symptom_markers_to_their_reference_studies():
+    studies = {}
+    for name, reference in (("dev19-controls-v1", "dev19-core-v1"), ("dev38-controls-v1", "dev38-recovery-v1")):
+        study, base = Experiment.load(CONFIGS / f"a6000/{name}.json"), Experiment.load(CONFIGS / f"a6000/{reference}.json")
+        assert study.retention_diagnostic and not base.retention_diagnostic
+        plain = Experiment.from_dict({k: v for k, v in study.to_dict().items() if k != "retention_diagnostic"})
+        assert differing(plain, base) == {"experiment_id", "notes", "conditions", "triggers"}
+        triggers = study.to_dict()["triggers"]
+        assert len(triggers.pop("symptom_markers")) == 5 and triggers == base.to_dict()["triggers"]
+        assert study.seeds == [17, 29, 31] and study.stage == "pilot" and study.split == "dev"
+        assert all(c.retention == 0.5 and c.max_attempts == 2 for c in study.conditions)
+        studies[name] = study
+    dev19, dev38 = studies["dev19-controls-v1"], studies["dev38-controls-v1"]
+    assert [c for c in dev19.conditions if c.method == "agentkv"] == dev38.conditions
+    assert {c.id: (c.method, c.recovery, c.protect_prompt, c.reminder) for c in dev19.conditions} == {
+        "agentkv_50_protect_never": ("agentkv", "never", True, False),
+        "agentkv_50_protect_fixed": ("agentkv", "fixed", True, False),
+        "agentkv_50_remind_never": ("agentkv", "never", False, True),
+        "agentkv_50_symptom": ("agentkv", "symptom", False, False),
+        "streamingllm_50_protect_never": ("streamingllm", "never", True, False),
+        "rkv_50_protect_never": ("rkv", "never", True, False),
+    }
+
+
+def test_a6000_controls_smoke_keeps_one_unchanged_arm_for_a_token_comparison():
+    core = Experiment.load(CONFIGS / "a6000/dev19-core-v1.json")
+    controls = Experiment.load(CONFIGS / "a6000/dev19-controls-v1.json")
+    smoke = Experiment.load(CONFIGS / "a6000/controls-smoke-v1.json")
+    assert differing(smoke, controls) == {"experiment_id", "notes", "conditions", "task_ids", "seeds"}
+    assert smoke.task_ids == core.task_ids[:2] and smoke.seeds == [17]
+    unchanged = next(c for c in core.conditions if c.id == "agentkv_50_never")
+    assert smoke.conditions == [unchanged, *controls.conditions]
+

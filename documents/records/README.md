@@ -38,6 +38,10 @@ selection among attempts; these small samples do not establish a general ranking
   system-prompt rules each compressed method breaks, what a rebuild removes
   against its never-rebuild twin, and why StreamingLLM keeps none of the
   prompt. Offline, post hoc.
+- [Controls for the recovery result](qwen9b/a6000-controls-design.md): the
+  decisions on a protected prompt, a text reminder, a symptom-triggered
+  rebuild and a held-out run, and the two dev studies declared for the first
+  three. A declaration, not completed-result evidence.
 - [Validation evidence](qwen9b/validation/): live state, memory, AppWorld and
   interruption checks, including the failed Blackwell 21 GiB qualification and
   the RTX A6000 qualification at 24 GiB.

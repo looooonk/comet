@@ -1,0 +1,22 @@
+{
+  "extends": "../dev19-controls-v1.json",
+  "conditions": [
+    {
+      "id": "agentkv_50_protect_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2,
+      "protect_prompt": true
+    },
+    {
+      "id": "rkv_50_protect_never",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "protect_prompt": true
+    }
+  ],
+  "notes": "Condition group 1 of 4 of qwen9b-dev19-controls-a6000-v1 for one-GPU workers; every other setting, task and seed is inherited unchanged. Analyze the groups together."
+}

@@ -12,7 +12,13 @@ from comet.clocks import monotonic
 from comet.errors import BudgetExpired, MemoryCapExceeded, UnsupportedPath
 
 from . import hybrid_state
-from .contracts import GenerationResult, RecoveryResult, model_storage, retention_target
+from .contracts import (
+    GenerationResult,
+    RecoveryResult,
+    model_storage,
+    retention_target,
+    selector_overrides,
+)
 
 
 def hybrid_attention(module, query, key, value, attention_mask, scaling=None, **kwargs):
@@ -61,6 +67,8 @@ def delta_kernel(
 
 
 class HybridEngine:
+    supports_protected_prefix = True
+
     TRANSFORMERS_VERSION = "5.22.2"
 
     def __init__(self, settings):
@@ -244,7 +252,10 @@ class HybridEngine:
             "physical_cached_tokens": self.cache.get_seq_length(),
             "logical_cached_tokens": len(self._raw),
             "retention_target_tokens": retention_target(
-                len(self._raw), self.settings.retention, self.settings.method
+                len(self._raw),
+                self.settings.retention,
+                self.settings.method,
+                self.settings.protected_prefix_tokens,
             ),
             "memory_sample_interval_seconds": 0.01,
             "total_peak_kind": "device-wide samples every 10ms and at forward boundaries",
@@ -277,9 +288,26 @@ class HybridEngine:
         self.torch.cuda.manual_seed_all(seed)
         self._check_memory()
 
-    def set_policy(self, method, retention):
-        self.settings = replace(self.settings, method=method, retention=retention)
+    def set_policy(self, method, retention, protected_prefix_tokens=0):
+        self.settings = replace(
+            self.settings,
+            method=method,
+            retention=retention,
+            protected_prefix_tokens=protected_prefix_tokens,
+        )
         self._clear()
+
+    def retained_fraction(self, start, stop):
+        """Share of logical positions [start, stop) still cached, over attention layers and heads."""
+        stop = min(stop, len(self._raw))
+        if stop <= start or not self._positions:
+            return None
+        kept = sum(
+            ((self._positions[index] >= start) & (self._positions[index] < stop)).sum()
+            for index in self.attention_layers
+        )
+        heads = self.text_config.num_key_value_heads
+        return float(kept) / (len(self.attention_layers) * heads * (stop - start))
 
     def _observe(self, index, query):
         torch = self.torch
@@ -311,21 +339,19 @@ class HybridEngine:
 
         if self.settings.method == "full":
             return 0.0
-        target = retention_target(len(self._raw), self.settings.retention, self.settings.method)
+        protected = self.settings.protected_prefix_tokens
+        target = retention_target(
+            len(self._raw), self.settings.retention, self.settings.method, protected
+        )
         before = self.cache.get_seq_length()
         if before <= target:
             return 0.0
         self.synchronize()
         started = monotonic()
         plan = create_eviction_plan(self.settings.method)
-        plan = (
-            replace(
-                plan,
-                window_tokens=target - min(target, plan.sink_tokens),
-                sink_tokens=min(target, plan.sink_tokens),
-            )
-            if self.settings.method == "streamingllm"
-            else replace(plan, budget=target)
+        # Sink entries are never candidates, so the first `protected` positions stay cached.
+        plan = replace(
+            plan, **selector_overrides(self.settings.method, target, plan.sink_tokens, protected)
         )
         torch = self.torch
         for index in self.attention_layers:

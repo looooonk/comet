@@ -116,7 +116,7 @@ process interruption; it needs a dedicated configuration and artifact directory.
 
 For a partition's full hybrid qualification, set `COMET_RESUME_CONFIG` and a fresh
 `COMET_CHECK_OUTPUT`, then run `bash scripts/qualify_hybrid.sh`. It runs the
-state, memory and AppWorld checks first, exits that CUDA-owning process, and runs
+state, memory, AppWorld and exploratory-control checks first, exits that CUDA-owning process, and runs
 the CLI interruption/resume check in a separate process. Otherwise retained CUDA
 allocations in the test parent can consume the child runner's memory allowance.
 Both phases must pass; their reports and the qualification exit status are saved

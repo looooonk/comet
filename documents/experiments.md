@@ -149,6 +149,12 @@ prefill logits; the observation is not appended twice. No past tool action is
 executed again. [engine.md](reference/engine.md) defines KV rounding and memory
 accounting.
 
+Three opt-in controls sit outside the main matrix: a protected system prompt,
+a text reminder at the fixed trigger, and a `symptom` policy that rebuilds
+after the first tool observation containing a configured marker.
+[exploratory-controls.md](exploratory-controls.md) defines their configuration
+fields, accounting and status.
+
 The raw token stream is append-only across tool turns. Qwen chat role delimiters
 and `<tool_response>` markers preserve phase information for AgentKV. We never
 re-tokenize the entire conversation to silently reconstruct an evicted cache.

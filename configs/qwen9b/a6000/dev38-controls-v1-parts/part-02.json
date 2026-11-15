@@ -1,0 +1,14 @@
+{
+  "extends": "../dev38-controls-v1.json",
+  "conditions": [
+    {
+      "id": "agentkv_50_remind_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "reminder": true
+    }
+  ],
+  "notes": "Condition group 2 of 4 of qwen9b-dev38-controls-a6000-v1 for one-GPU workers; every other setting, task and seed is inherited unchanged. Analyze the groups together."
+}

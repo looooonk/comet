@@ -1,0 +1,68 @@
+{
+  "extends": "dev19-controls-v1.json",
+  "experiment_id": "qwen9b-controls-smoke-a6000-v1",
+  "task_ids": [
+    "0d8a4ee_2",
+    "23cf851_2"
+  ],
+  "seeds": [
+    17
+  ],
+  "conditions": [
+    {
+      "id": "agentkv_50_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_protect_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "protect_prompt": true
+    },
+    {
+      "id": "agentkv_50_protect_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2,
+      "protect_prompt": true
+    },
+    {
+      "id": "agentkv_50_remind_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "reminder": true
+    },
+    {
+      "id": "agentkv_50_symptom",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "symptom",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_protect_never",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "protect_prompt": true
+    },
+    {
+      "id": "rkv_50_protect_never",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "protect_prompt": true
+    }
+  ],
+  "notes": "Smoke for the control arms on the new source pin: two dev tasks at seed 17 under the unchanged AgentKV 50 percent never arm and the six control arms. The unchanged arm is compared token by token with qwen9b-dev19-core-a6000-v1; its outcomes and those of the other arms are not used as results. 14 cells. See documents/records/qwen9b/a6000-controls-design.md."
+}

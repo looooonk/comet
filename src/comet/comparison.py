@@ -9,7 +9,6 @@ import json
 import math
 import random
 from collections import Counter, defaultdict
-from dataclasses import asdict
 from pathlib import Path
 from statistics import mean
 
@@ -54,7 +53,7 @@ def _validated_cells(directory: Path, manifest: dict, scores: dict) -> list[dict
         cell = scored[identity]
         if (
             not recorded.get("completed")
-            or recorded.get("condition") != asdict(conditions[identity[1]])
+            or recorded.get("condition") != conditions[identity[1]].to_dict()
             or (recorded.get("task_id"), recorded.get("seed")) != (identity[0], identity[2])
             or any(
                 recorded.get(key) != manifest[key] for key in ("run_id", "stage", "config_digest")

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import dataclasses
 import uuid
+from functools import partial
 from pathlib import Path
 from typing import Callable
 
@@ -121,7 +122,7 @@ class Runner:
                             pending = pending[: max_cells - launch["completed_cells"]]
                         if not pending:
                             continue
-                        engine.set_policy(condition.method, condition.retention)
+                        self._set_policy(engine, condition)
                         for reference in pending:
                             self._run_cell(manifest, reference, condition, engine)
                             launch["completed_cells"] += 1
@@ -368,7 +369,7 @@ class Runner:
             "config_digest": self.config.digest,
             "task_id": reference["task_id"],
             "split": self.config.split,
-            "condition": dataclasses.asdict(condition),
+            "condition": condition.to_dict(),
             "seed": reference["seed"],
             "budget_seconds": self.config.budget_seconds,
             "elapsed_seconds": 0.0,
@@ -377,11 +378,11 @@ class Runner:
             "attempts": [],
         }
 
-    def _initial_tokens(self, engine, environment) -> list[int]:
+    def _chat_tokens(self, engine, user: str) -> list[int]:
         return engine.tokenizer.apply_chat_template(
             [
                 {"role": "system", "content": self.config.prompt},
-                {"role": "user", "content": environment.initial_prompt()},
+                {"role": "user", "content": user},
             ],
             tokenize=True,
             return_dict=False,
@@ -389,24 +390,85 @@ class Runner:
             enable_thinking=self.config.sampling.enable_thinking,
         )
 
-    def _observation_tokens(self, engine, observation: str, *, finished: bool) -> list[int]:
+    def _initial_tokens(self, engine, environment) -> list[int]:
+        return self._chat_tokens(engine, environment.initial_prompt())
+
+    def _system_prefix(self, engine) -> list[int]:
+        """Tokens of the system turn through its end marker; they do not depend on the task."""
+        convert = getattr(engine.tokenizer, "convert_tokens_to_ids", None)
+        if convert is None:
+            return []
+        tokens, end = list(self._chat_tokens(engine, "task")), convert("<|im_end|>")
+        return tokens[: tokens.index(end) + 1] if end in tokens else []
+
+    def _set_policy(self, engine, condition: Condition) -> None:
+        self.system_prefix, self.protected_prefix = [], []
+        if self.config.retention_diagnostic or condition.protect_prompt:
+            self.system_prefix = self._system_prefix(engine)
+        if not condition.protect_prompt:
+            engine.set_policy(condition.method, condition.retention)
+            return
+        if not getattr(engine, "supports_protected_prefix", False) or not self.system_prefix:
+            raise UnsupportedPath("This engine or prompt format cannot protect the system prompt")
+        self.protected_prefix = self.system_prefix
+        engine.set_policy(
+            condition.method,
+            condition.retention,
+            protected_prefix_tokens=len(self.protected_prefix),
+        )
+
+    def _retention_diagnostic(self, engine, state: dict, budget: Budget) -> dict:
+        """Opt-in measurement; it adds no budget check, so it cannot move where an attempt ends."""
+        measure = getattr(engine, "retained_fraction", None)
+        prefix = getattr(self, "system_prefix", [])
+        if not self.config.retention_diagnostic or measure is None or not prefix:
+            return {}
+        started = self.clock()
+        record = {"system_prompt_retained": measure(0, len(prefix))}
+        if state.get("reminder_span"):
+            record["reminder_retained"] = measure(*state["reminder_span"])
+        budget.timings["retention_diagnostic"] = (
+            budget.timings.get("retention_diagnostic", 0) + self.clock() - started
+        )
+        return record
+
+    def _observation_parts(
+        self, observation: str, finished: bool, reminder: str = ""
+    ) -> tuple[str, str, str]:
+        """Text of the next user turn: tool response, optional reminder block, generation prompt."""
         prefix = "" if finished else "<|im_end|>"
-        if self.config.engine.model == "Qwen/Qwen3-4B-Instruct-2507":
-            turn = engine.tokenizer.apply_chat_template(
-                [{"role": "user", "content": f"<tool_response>\n{observation}\n</tool_response>"}],
-                tokenize=False,
-                add_generation_prompt=True,
-            )
-            return engine.tokenizer.encode(prefix + "\n" + turn, add_special_tokens=False)
         suffix = "" if self.config.sampling.enable_thinking else "<think>\n\n</think>\n\n"
         # The pinned 3.5 template rejects isolated tool turns; its suffix is checked on a full dialogue.
         if self.config.engine.model == "Qwen/Qwen3.5-9B" and self.config.sampling.enable_thinking:
             suffix = "<think>\n"
-        text = (
-            f"{prefix}\n<|im_start|>user\n<tool_response>\n{observation}\n"
-            f"</tool_response><|im_end|>\n<|im_start|>assistant\n{suffix}"
+        return (
+            f"{prefix}\n<|im_start|>user\n<tool_response>\n{observation}\n</tool_response>",
+            f"\n\n<system_reminder>\n{reminder}\n</system_reminder>" if reminder else "",
+            f"<|im_end|>\n<|im_start|>assistant\n{suffix}",
         )
-        return engine.tokenizer.encode(text, add_special_tokens=False)
+
+    def _observation_tokens(
+        self, engine, observation: str, *, finished: bool, reminder: str = ""
+    ) -> list[int]:
+        head, block, tail = self._observation_parts(observation, finished, reminder)
+        if self.config.engine.model == "Qwen/Qwen3-4B-Instruct-2507":
+            content = f"<tool_response>\n{observation}\n</tool_response>{block}"
+            turn = engine.tokenizer.apply_chat_template(
+                [{"role": "user", "content": content}],
+                tokenize=False,
+                add_generation_prompt=True,
+            )
+            prefix = "" if finished else "<|im_end|>"
+            return engine.tokenizer.encode(prefix + "\n" + turn, add_special_tokens=False)
+        return engine.tokenizer.encode(head + block + tail, add_special_tokens=False)
+
+    def _reminder_span(self, engine, observation: str, finished: bool, reminder: str):
+        """Reminder offsets inside the turn's tokens, to within one boundary token."""
+        if self.config.engine.model == "Qwen/Qwen3-4B-Instruct-2507":
+            return None
+        head, block, _ = self._observation_parts(observation, finished, reminder)
+        encode = partial(engine.tokenizer.encode, add_special_tokens=False)
+        return len(encode(head)), len(encode(head + block))
 
     def _attempt(
         self,
@@ -431,6 +493,9 @@ class Runner:
                 engine.start(attempt["seed"])
                 environment.reset(cell["task_id"], attempt["seed"], directory / "environment")
                 state["pending_tokens"] = self._initial_tokens(engine, environment)
+                protected = getattr(self, "protected_prefix", [])
+                if list(state["pending_tokens"][: len(protected)]) != protected:
+                    raise UnsupportedPath("Transcript does not start with the protected prompt")
             if self.config.stage == "diagnostic":
                 state = restore_checkpoint(self, cell, environment, engine, budget)
             self._trajectory(
@@ -483,6 +548,10 @@ class Runner:
             attempt["timings"] = {k: v - old_timings.get(k, 0) for k, v in budget.timings.items()}
             attempt["tool_calls"] = state["tool_calls"]
             attempt["rebuilds"] = state["rebuilds"]
+            if condition.reminder:
+                attempt["reminders"] = state.get("reminders", 0)
+            if condition.protect_prompt:
+                attempt["protected_prefix_tokens"] = len(getattr(self, "protected_prefix", []))
             try:
                 memory = _plain(engine.memory_stats()) if engine_started else {}
             except Exception as error:
@@ -579,6 +648,7 @@ class Runner:
                 context,
                 state["tool_calls"],
                 state["rebuilds"],
+                state.get("symptoms", 0),
             )
             event = decision.to_dict()
             attempt["recovery_events"].append(event)
@@ -658,6 +728,7 @@ class Runner:
                     attempt.setdefault("generation_failures", []).append(recorded)
                     write_json(directory / "attempt.json", attempt)
             response = engine.tokenizer.decode(result["token_ids"], skip_special_tokens=True)
+            retained = self._retention_diagnostic(engine, state, budget)
             try:
                 action = parse_action(
                     response,
@@ -675,7 +746,11 @@ class Runner:
                 with budget.charge("tool"):
                     observation = environment.execute(action, timeout_seconds=budget.remaining)
                     state["tool_calls"] += 1
-            turn = {"response": response, "action": action, "observation": observation}
+            turn = {"response": response, "action": action, "observation": observation, **retained}
+            markers = self.config.triggers.symptom_markers
+            if markers and any(marker in observation for marker in markers):
+                state["symptoms"] = state.get("symptoms", 0) + 1
+                turn["symptom"] = True
             feedback = ""
             limit = self.config.agent.max_consecutive_errors
             if limit:
@@ -691,9 +766,26 @@ class Runner:
                 visible_observation += (
                     f"\n\n<execution_feedback>\n{feedback}\n</execution_feedback>"
                 )
-            state["pending_tokens"] = self._observation_tokens(
-                engine, visible_observation, finished=result["finished"]
+            # The reminder is the text-only counterpart of the fixed rebuild: once, at its trigger.
+            remind = (
+                condition.reminder
+                and not state.get("reminders")
+                and state["tool_calls"] >= self.config.triggers.fixed_tool_calls
             )
+            reminder = self.config.prompt if remind else ""
+            state["pending_tokens"] = self._observation_tokens(
+                engine, visible_observation, finished=result["finished"], reminder=reminder
+            )
+            if remind:
+                state["reminders"] = 1
+                turn["reminder"] = True
+                span = self._reminder_span(
+                    engine, visible_observation, result["finished"], reminder
+                )
+                if span is not None:
+                    start = len(engine.raw_token_ids)
+                    state["reminder_span"] = [start + span[0], start + span[1]]
+                    turn["reminder_tokens"] = span[1] - span[0]
             with budget.charge("trajectory_save"):
                 write_json(
                     directory / "trajectory.json",

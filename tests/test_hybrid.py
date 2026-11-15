@@ -67,7 +67,7 @@ def test_device_peak_is_distinct_from_noncoincident_upper_bound():
     engine._raw = []
     engine._state_bytes = lambda: (0, 0)
     engine.cache = SimpleNamespace(get_seq_length=lambda: 0)
-    engine.settings = SimpleNamespace(retention=1.0, method="full")
+    engine.settings = SimpleNamespace(retention=1.0, method="full", protected_prefix_tokens=0)
     engine.torch = SimpleNamespace(cuda=SimpleNamespace(
         memory_reserved=lambda: 20, mem_get_info=lambda: (65, 100),
         max_memory_reserved=lambda: 80, max_memory_allocated=lambda: 70))

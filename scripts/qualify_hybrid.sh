@@ -8,7 +8,7 @@ mkdir -p "$(dirname "$qualification_root")"
 mkdir "$qualification_root"
 trap 'status=$?; printf "%s\n" "$status" > "$qualification_root/exit-status.txt"' EXIT
 export COMET_CHECK_OUTPUT="$qualification_root/inprocess"
-export PYTEST_ADDOPTS='tests/test_hybrid.py tests/test_hybrid_appworld.py tests/test_rkv_memory.py tests/test_appworld_integration.py tests/test_environment_warmup.py'
+export PYTEST_ADDOPTS='tests/test_hybrid.py tests/test_hybrid_appworld.py tests/test_rkv_memory.py tests/test_appworld_integration.py tests/test_environment_warmup.py tests/test_controls.py'
 bash "$COMET_REPO/scripts/run_checks.sh" hybrid
 # CLI children need the full cap; the earlier CUDA-owning pytest process must exit first.
 export COMET_CHECK_OUTPUT="$qualification_root/process-resume"

@@ -1,0 +1,48 @@
+{
+  "extends": "dev38-recovery-v1.json",
+  "experiment_id": "qwen9b-dev38-controls-a6000-v1",
+  "triggers": {
+    "symptom_markers": [
+      "Invalid action",
+      "Invalid credentials",
+      "No API named",
+      "No APIs with name",
+      "Unexpected parameter"
+    ]
+  },
+  "retention_diagnostic": true,
+  "conditions": [
+    {
+      "id": "agentkv_50_protect_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "protect_prompt": true
+    },
+    {
+      "id": "agentkv_50_protect_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2,
+      "protect_prompt": true
+    },
+    {
+      "id": "agentkv_50_remind_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "reminder": true
+    },
+    {
+      "id": "agentkv_50_symptom",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "symptom",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Exploratory controls on the thirty-eight dev tasks unused by the nineteen-family study, authorized by one contributor and declared before any execution: the four AgentKV 50 percent control arms of qwen9b-dev19-controls-a6000-v1 with the tasks, seeds, budget, cap and settings of qwen9b-dev38-recovery-a6000-v1. 456 fresh-start cells. Outside the main experiment matrix; compared only within this cohort. See documents/records/qwen9b/a6000-controls-design.md."
+}

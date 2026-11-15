@@ -1,0 +1,64 @@
+{
+  "extends": "dev19-core-v1.json",
+  "experiment_id": "qwen9b-dev19-controls-a6000-v1",
+  "triggers": {
+    "symptom_markers": [
+      "Invalid action",
+      "Invalid credentials",
+      "No API named",
+      "No APIs with name",
+      "Unexpected parameter"
+    ]
+  },
+  "retention_diagnostic": true,
+  "conditions": [
+    {
+      "id": "agentkv_50_protect_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "protect_prompt": true
+    },
+    {
+      "id": "agentkv_50_protect_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2,
+      "protect_prompt": true
+    },
+    {
+      "id": "agentkv_50_remind_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "reminder": true
+    },
+    {
+      "id": "agentkv_50_symptom",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "symptom",
+      "max_attempts": 2
+    },
+    {
+      "id": "streamingllm_50_protect_never",
+      "method": "streamingllm",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "protect_prompt": true
+    },
+    {
+      "id": "rkv_50_protect_never",
+      "method": "rkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "protect_prompt": true
+    }
+  ],
+  "notes": "Exploratory controls for the RTX A6000 reference arms, authorized by one contributor and declared before any execution: a protected system prompt with and without the fixed rebuild, a text reminder at the fixed trigger, and a rebuild triggered by an error marker in a tool observation, for AgentKV at 50 percent; a protected system prompt alone for StreamingLLM and R-KV at 50 percent. Same 19 tasks, seeds 17, 29 and 31, budget, cap and settings as qwen9b-dev19-core-a6000-v1. 342 fresh-start cells. Outside the main experiment matrix; compared only within this cohort. See documents/records/qwen9b/a6000-controls-design.md."
+}
