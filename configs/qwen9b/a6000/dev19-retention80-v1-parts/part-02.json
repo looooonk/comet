@@ -1,0 +1,13 @@
+{
+  "extends": "../dev19-retention80-v1.json",
+  "conditions": [
+    {
+      "id": "agentkv_80_symptom",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "symptom",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Condition group 2 of 3 of qwen9b-dev19-retention80-a6000-v1 for one-GPU workers; every other setting, task and seed is inherited unchanged. Analyze the groups together."
+}

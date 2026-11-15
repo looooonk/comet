@@ -135,6 +135,53 @@ Expected size, recorded so it cannot be adjusted afterward: with 57 tasks in
 19 families, a difference near 10 points has a family interval of roughly 12
 points either side, so several comparisons may stay unresolved.
 
+## Mild compression, where a choice could matter
+
+Added on November 14, 2026, after the [reference arms](a6000-dev19-core.md)
+were reported and before any execution of this study or any outcome of a
+control arm. The contract's recovery policies decide when to rebuild from
+token and tool counts. A policy that decides from the workload whether to
+rebuild at all is only worth building where rebuilding is sometimes the wrong
+choice, so that was checked first on saved runs.
+
+A rebuilt first attempt and its never-rebuilt twin take the same actions until
+the rebuild, which shows what each rebuild changed. Offline, on the first 19
+dev tasks at three seeds, counting first attempts out of 57:
+
+| Saved runs | Never | Fixed | Twins reaching the rebuild | Rebuild helped | Rebuild hurt |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| A6000, AgentKV 50% | 7 | 12 | 48 | 5 | 0 |
+| Blackwell, AgentKV 50% | 7 | 16 | 51 | 10 | 1 |
+| Blackwell, AgentKV 80% | 17 | 20 | 57 | 7 | 4 |
+
+At 50% retention a perfect choice between the two arms equals always
+rebuilding on the A6000 and gains one run on Blackwell, so a predictor has no
+room there. At 80% the rebuild hurt in 4 of 11 pairs whose outcomes differ. A
+rebuild also changes the rest of the trajectory, so some of those 11 are
+chance. This reading is exploratory and used the tasks of every earlier one.
+
+The [declared study](../../../configs/qwen9b/a6000/dev19-retention80-v1.json)
+runs AgentKV at 80% retention with no rebuild, the fixed rebuild and the
+symptom-triggered rebuild on the same 19 tasks and three seeds, 171 cells,
+with the markers, measurement and settings of the controls. It reports, with
+the intervals used above and no confirmation criterion:
+
+- Fixed minus never, symptom minus never and symptom minus fixed, in oracle
+  and first-attempt success.
+- Among first-attempt twins whose outcomes differ, how many the rebuild
+  helped and how many it hurt, with an exact binomial interval, beside the
+  same counts at 50% from the reference arms.
+- Rebuilds per attempt under the fixed and symptom triggers.
+- Any rule for choosing between the never and fixed arms from what the runner
+  has seen by the rebuild point, scored on these twins with whole task
+  families held out.
+
+Expected size, recorded in advance: with 57 pairs a difference near 5 points
+has an interval of roughly 12 points either side, and about 11 discordant
+pairs cannot separate a 4-to-7 split from an even one. The study can show
+whether rebuild harm at mild compression repeats on this device; it cannot
+establish a predictor.
+
 ## Execution
 
 The controls need new code, so they run from a new source pin with its own
@@ -151,7 +198,8 @@ paired by task and seed and any analysis of matched turns is dropped.
 Workers, node-local storage, guard limits and the four-worker ceiling are
 those of the [cohort design](a6000-cohort-design.md). The two studies run one
 after the other, behind the cohort's queued studies. A study the guard stops
-is void as a whole.
+is void as a whole. The 80% study has three condition groups and runs after
+the first controls study, from the same source pin.
 
 ## Limitations known in advance
 

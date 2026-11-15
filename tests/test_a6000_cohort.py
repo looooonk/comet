@@ -109,3 +109,23 @@ def test_a6000_controls_smoke_keeps_one_unchanged_arm_for_a_token_comparison():
     unchanged = next(c for c in core.conditions if c.id == "agentkv_50_never")
     assert smoke.conditions == [unchanged, *controls.conditions]
 
+
+def test_a6000_retention80_study_changes_only_the_conditions_of_the_controls_study():
+    controls = Experiment.load(CONFIGS / "a6000/dev19-controls-v1.json")
+    study = Experiment.load(CONFIGS / "a6000/dev19-retention80-v1.json")
+    assert differing(study, controls) == {"experiment_id", "notes", "conditions"}
+    assert [(c.id, c.method, c.retention, c.recovery, c.max_attempts, c.protect_prompt, c.reminder)
+            for c in study.conditions] == [
+        ("agentkv_80_never", "agentkv", 0.8, "never", 2, False, False),
+        ("agentkv_80_fixed", "agentkv", 0.8, "fixed", 2, False, False),
+        ("agentkv_80_symptom", "agentkv", 0.8, "symptom", 2, False, False),
+    ]
+    parent = {k: v for k, v in study.to_dict().items() if k not in ("conditions", "notes")}
+    paths = sorted((CONFIGS / "a6000/dev19-retention80-v1-parts").glob("part-*.json"))
+    seen = []
+    for path in paths:
+        part = Experiment.load(path)
+        assert {k: v for k, v in part.to_dict().items() if k not in ("conditions", "notes")} == parent
+        seen += [condition.id for condition in part.conditions]
+    assert len(paths) == 3 and seen == [condition.id for condition in study.conditions]
+

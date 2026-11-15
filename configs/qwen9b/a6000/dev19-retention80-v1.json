@@ -1,0 +1,28 @@
+{
+  "extends": "dev19-controls-v1.json",
+  "experiment_id": "qwen9b-dev19-retention80-a6000-v1",
+  "conditions": [
+    {
+      "id": "agentkv_80_never",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_80_fixed",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "fixed",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_80_symptom",
+      "method": "agentkv",
+      "retention": 0.8,
+      "recovery": "symptom",
+      "max_attempts": 2
+    }
+  ],
+  "notes": "Exploratory study of mild compression on the RTX A6000 cohort, authorized by one contributor and declared before any execution: AgentKV at 80 percent retention with no rebuild, the fixed rebuild and the symptom-triggered rebuild, on the 19 tasks, seeds 17, 29 and 31, markers, measurement, budget, cap and settings of qwen9b-dev19-controls-a6000-v1. 171 fresh-start cells. It asks whether a rebuild helps or hurts when little has been evicted, which is where a choice between rebuilding and not could matter. Outside the main experiment matrix; compared only within this cohort. See documents/records/qwen9b/a6000-controls-design.md."
+}
