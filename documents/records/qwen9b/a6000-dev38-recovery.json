@@ -1,0 +1,1452 @@
+{
+ "schema_version": 1,
+ "record": "documents/records/qwen9b/a6000-dev38-recovery.md",
+ "study_id": "qwen9b-dev38-recovery-a6000-v1",
+ "stage": "pilot",
+ "split": "dev",
+ "device": "NVIDIA RTX A6000",
+ "method": "Declared analysis of documents/records/qwen9b/dev38-recovery-design.md within the A6000 cohort: scored slim export and the shared analysis (10,000 paired task-bootstrap draws) of the four condition groups analyzed together; family intervals and resampling p-values from comet.family_bootstrap with a Holm adjustment across H1 to H5; M1 and M2 from comet.instruction_errors with a Holm adjustment across the two. Offline only.",
+ "sources": {
+  "slim_export_sha256": "da011e5f57078c57cdc9586bb7e0ad5bd320fcb7ad1e7db677372c3492e10192",
+  "shared_analysis_sha256": "f8e3520ef6889bbabbaa0730896372f1d907a5c007a5681cb597f888ca5f0b7f"
+ },
+ "parts": [
+  {
+   "group": "part-00",
+   "run_id": "c0bde09a-f3fa-4736-a608-47f5b74e9c16",
+   "config_digest": "049e9ed1f0e94ccc2bc485a8d24c54bf2ea47e114013be9107fc9bbee6a68110",
+   "execution_digest": "eed84312a3d00b2fddd8b6b4c1f7f79584a2f388f1ad509b73505da42688b0fc",
+   "experiment_id": "qwen9b-dev38-recovery-a6000-v1",
+   "device": "NVIDIA RTX A6000",
+   "source_commit": "6164ba9047348c7a270589a386648d34de5373fc",
+   "manifest_cells": 114,
+   "scored_cells": 114,
+   "scores_status": "completed",
+   "status": "completed"
+  },
+  {
+   "group": "part-01",
+   "run_id": "babe88ca-b441-4827-96f6-4259fb4f3713",
+   "config_digest": "2732a6ca02501619aa848d8a6666825711e54cf1cb3ce8a51ae679b26b49844b",
+   "execution_digest": "f741db132519da3fec9767a49d4eb0b0b5ed0e3ee6bce69674c27e0024fdd283",
+   "experiment_id": "qwen9b-dev38-recovery-a6000-v1",
+   "device": "NVIDIA RTX A6000",
+   "source_commit": "6164ba9047348c7a270589a386648d34de5373fc",
+   "manifest_cells": 114,
+   "scored_cells": 114,
+   "scores_status": "completed",
+   "status": "completed"
+  },
+  {
+   "group": "part-02",
+   "run_id": "e88a450f-bb59-4097-ba0f-da22561a9387",
+   "config_digest": "aa310bdcb6a5c0c5fcd3ca3584fa2028db73138f8a65f2699237f93e2ddbe99d",
+   "execution_digest": "f269618bfe850a9fb6cf8886c9a260b66344bc46e1010ff34b873fa0897be266",
+   "experiment_id": "qwen9b-dev38-recovery-a6000-v1",
+   "device": "NVIDIA RTX A6000",
+   "source_commit": "6164ba9047348c7a270589a386648d34de5373fc",
+   "manifest_cells": 114,
+   "scored_cells": 114,
+   "scores_status": "completed",
+   "status": "completed"
+  },
+  {
+   "group": "part-03",
+   "run_id": "e2ead494-4acf-4bdd-a560-3fa15ae76fac",
+   "config_digest": "ee7593b516937f174d1e6b36c92ba22282afd5c16eedc4d5e598f300b80b72a3",
+   "execution_digest": "af45a1ef7a20b5ea5076589d2b4d0007d6976c43d8989e8fd7eb932d92228eab",
+   "experiment_id": "qwen9b-dev38-recovery-a6000-v1",
+   "device": "NVIDIA RTX A6000",
+   "source_commit": "6164ba9047348c7a270589a386648d34de5373fc",
+   "manifest_cells": 114,
+   "scored_cells": 114,
+   "scores_status": "completed",
+   "status": "completed"
+  }
+ ],
+ "execution": {
+  "cells": 456,
+  "completed_cells": 456,
+  "attempts": 885,
+  "attempt_status": {
+   "completed": 468,
+   "context_limit": 257,
+   "error": 33,
+   "timeout": 127
+  },
+  "failure_reasons": {
+   "error: AgentProtocolError: 4 consecutive execution/action failures": 33,
+   "timeout: Budget expired during inference": 123,
+   "timeout: Budget expired during trajectory_save": 1,
+   "timeout: Shared task/configuration wall-clock budget expired": 2,
+   "timeout: shared task deadline reached during hybrid inference": 1
+  },
+  "cells_by_seed": {
+   "17": 152,
+   "29": 152,
+   "31": 152
+  },
+  "slurm_jobs": {
+   "workers": "13911176",
+   "score": "13911177",
+   "export": "13911178"
+  }
+ },
+ "per_cell_charged_io": {
+  "means_all_cells": {
+   "cells": 456,
+   "cells_at_budget": 131,
+   "elapsed_seconds": 84.11,
+   "inference_seconds": 78.58,
+   "max_reset_seconds": 2.61,
+   "max_save_seconds": 1.18,
+   "max_tool_seconds": 78.37,
+   "rebuild_seconds": 3.397,
+   "reset_seconds": 1.098,
+   "save_seconds": 0.083,
+   "tool_seconds": 0.839
+  },
+  "rolling_10_cell_medians": {
+   "reset": {
+    "max_median": 1.26,
+    "over_limit": 0,
+    "windows": 447
+   },
+   "tool": {
+    "max_median": 1.74,
+    "over_limit": 0,
+    "windows": 447
+   },
+   "trajectory_save": {
+    "max_median": 0.13,
+    "over_limit": 0,
+    "windows": 447
+   }
+  },
+  "guard_limits_seconds": {
+   "reset": 5.0,
+   "trajectory_save": 8.0,
+   "tool": 8.0
+  },
+  "guard_tripped": false
+ },
+ "tasks": 38,
+ "families": 19,
+ "seeds": [
+  17,
+  29,
+  31
+ ],
+ "family_bootstrap": {
+  "draws": 10000,
+  "seed": 20261114
+ },
+ "conditions": {
+  "agentkv_50_dynamic": {
+   "attempt_statuses": {
+    "completed": 98,
+    "context_limit": 76,
+    "error": 11,
+    "timeout": 37
+   },
+   "attempts": 222,
+   "by_seed": {
+    "17": {
+     "first_attempt_solved": 7,
+     "oracle_solved": 12
+    },
+    "29": {
+     "first_attempt_solved": 5,
+     "oracle_solved": 7
+    },
+    "31": {
+     "first_attempt_solved": 11,
+     "oracle_solved": 13
+    }
+   },
+   "context_limit_attempts": 76,
+   "first_attempt_ci95": [
+    0.114,
+    0.307
+   ],
+   "first_attempt_success_rate": 0.2018,
+   "mean_latency_seconds": 91.5628,
+   "mean_peak_kv_bytes": 288707350.4561,
+   "mean_peak_total_vram_bytes": 24681992407.5789,
+   "oracle_ci95": [
+    0.1754,
+    0.3947
+   ],
+   "oracle_success_rate": 0.2807,
+   "passing_attempts": 40,
+   "rebuilt_attempts": 186,
+   "recovery": {
+    "admitted_count": 186,
+    "failure_reasons": {},
+    "mean_cell_budget_fraction": 0.0583,
+    "recorded_seconds": 797.5466,
+    "refusal_reasons": {},
+    "requested_count": 186
+   }
+  },
+  "agentkv_50_fixed": {
+   "attempt_statuses": {
+    "completed": 105,
+    "context_limit": 79,
+    "error": 3,
+    "timeout": 34
+   },
+   "attempts": 221,
+   "by_seed": {
+    "17": {
+     "first_attempt_solved": 9,
+     "oracle_solved": 14
+    },
+    "29": {
+     "first_attempt_solved": 5,
+     "oracle_solved": 7
+    },
+    "31": {
+     "first_attempt_solved": 10,
+     "oracle_solved": 10
+    }
+   },
+   "context_limit_attempts": 79,
+   "first_attempt_ci95": [
+    0.1228,
+    0.307
+   ],
+   "first_attempt_success_rate": 0.2105,
+   "mean_latency_seconds": 88.7088,
+   "mean_peak_kv_bytes": 290672711.8596,
+   "mean_peak_total_vram_bytes": 24675597473.6842,
+   "oracle_ci95": [
+    0.1754,
+    0.3772
+   ],
+   "oracle_success_rate": 0.2719,
+   "passing_attempts": 43,
+   "rebuilt_attempts": 182,
+   "recovery": {
+    "admitted_count": 182,
+    "failure_reasons": {},
+    "mean_cell_budget_fraction": 0.0549,
+    "recorded_seconds": 751.4545,
+    "refusal_reasons": {},
+    "requested_count": 182
+   }
+  },
+  "agentkv_50_never": {
+   "attempt_statuses": {
+    "completed": 70,
+    "context_limit": 88,
+    "error": 16,
+    "timeout": 42
+   },
+   "attempts": 216,
+   "by_seed": {
+    "17": {
+     "first_attempt_solved": 3,
+     "oracle_solved": 7
+    },
+    "29": {
+     "first_attempt_solved": 4,
+     "oracle_solved": 5
+    },
+    "31": {
+     "first_attempt_solved": 5,
+     "oracle_solved": 6
+    }
+   },
+   "context_limit_attempts": 88,
+   "first_attempt_ci95": [
+    0.0439,
+    0.1842
+   ],
+   "first_attempt_success_rate": 0.1053,
+   "mean_latency_seconds": 90.4433,
+   "mean_peak_kv_bytes": 223279068.0702,
+   "mean_peak_total_vram_bytes": 24407309186.2456,
+   "oracle_ci95": [
+    0.0702,
+    0.2632
+   ],
+   "oracle_success_rate": 0.1579,
+   "passing_attempts": 20,
+   "rebuilt_attempts": 0,
+   "recovery": {
+    "admitted_count": 0,
+    "failure_reasons": {},
+    "mean_cell_budget_fraction": 0.0,
+    "recorded_seconds": null,
+    "refusal_reasons": {},
+    "requested_count": 0
+   }
+  },
+  "full_best_of_n": {
+   "attempt_statuses": {
+    "completed": 195,
+    "context_limit": 14,
+    "error": 3,
+    "timeout": 14
+   },
+   "attempts": 226,
+   "by_seed": {
+    "17": {
+     "first_attempt_solved": 15,
+     "oracle_solved": 17
+    },
+    "29": {
+     "first_attempt_solved": 10,
+     "oracle_solved": 12
+    },
+    "31": {
+     "first_attempt_solved": 10,
+     "oracle_solved": 13
+    }
+   },
+   "context_limit_attempts": 14,
+   "first_attempt_ci95": [
+    0.1842,
+    0.4298
+   ],
+   "first_attempt_success_rate": 0.307,
+   "mean_latency_seconds": 65.7061,
+   "mean_peak_kv_bytes": 340691662.5965,
+   "mean_peak_total_vram_bytes": 24621844156.6316,
+   "oracle_ci95": [
+    0.2368,
+    0.5
+   ],
+   "oracle_success_rate": 0.3684,
+   "passing_attempts": 67,
+   "rebuilt_attempts": 0,
+   "recovery": {
+    "admitted_count": 0,
+    "failure_reasons": {},
+    "mean_cell_budget_fraction": 0.0,
+    "recorded_seconds": null,
+    "refusal_reasons": {},
+    "requested_count": 0
+   }
+  }
+ },
+ "hypotheses": [
+  {
+   "both_intervals_exclude_zero_as_expected": true,
+   "confirmed": true,
+   "confirmed_after_holm": true,
+   "difference": 0.114,
+   "expected_sign": 1,
+   "families": 19,
+   "family_ci95": [
+    0.0351,
+    0.2018
+   ],
+   "family_p": 0.0028,
+   "holm_adjusted_p": 0.0056,
+   "hypothesis": "H1",
+   "left": "agentkv_50_fixed",
+   "metric": "oracle_success",
+   "right": "agentkv_50_never",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "shared_bounded_ci95": [
+    -0.3266,
+    0.5547
+   ],
+   "shared_task_ci95": [
+    0.0351,
+    0.2018
+   ],
+   "tasks": 38,
+   "tasks_gained": 11,
+   "tasks_lost": 3,
+   "tasks_gained_list": [
+    "37a8675_3",
+    "396c5a2_1",
+    "4ec8de5_1",
+    "50e1ac9_1",
+    "50e1ac9_2",
+    "6171bbc_3",
+    "6c2c621_2",
+    "6c2c621_3",
+    "b119b1f_3",
+    "d4e9306_2",
+    "fac291d_1"
+   ],
+   "tasks_lost_list": [
+    "23cf851_1",
+    "396c5a2_2",
+    "d4e9306_3"
+   ]
+  },
+  {
+   "both_intervals_exclude_zero_as_expected": true,
+   "confirmed": true,
+   "confirmed_after_holm": true,
+   "difference": 0.1228,
+   "expected_sign": 1,
+   "families": 19,
+   "family_ci95": [
+    0.0526,
+    0.2105
+   ],
+   "family_p": 0.0001,
+   "holm_adjusted_p": 0.0005,
+   "hypothesis": "H2",
+   "left": "agentkv_50_dynamic",
+   "metric": "oracle_success",
+   "right": "agentkv_50_never",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "shared_bounded_ci95": [
+    -0.3178,
+    0.5634
+   ],
+   "shared_task_ci95": [
+    0.0439,
+    0.2105
+   ],
+   "tasks": 38,
+   "tasks_gained": 12,
+   "tasks_lost": 1,
+   "tasks_gained_list": [
+    "23cf851_1",
+    "396c5a2_1",
+    "50e1ac9_1",
+    "530b157_3",
+    "57c3486_3",
+    "6171bbc_1",
+    "6171bbc_3",
+    "b119b1f_2",
+    "b119b1f_3",
+    "d4e9306_2",
+    "fac291d_1",
+    "fac291d_2"
+   ],
+   "tasks_lost_list": [
+    "d4e9306_3"
+   ]
+  },
+  {
+   "both_intervals_exclude_zero_as_expected": true,
+   "confirmed": true,
+   "confirmed_after_holm": true,
+   "difference": 0.1053,
+   "expected_sign": 1,
+   "families": 19,
+   "family_ci95": [
+    0.0351,
+    0.1842
+   ],
+   "family_p": 0.0066,
+   "holm_adjusted_p": 0.0066,
+   "hypothesis": "H3",
+   "left": "agentkv_50_fixed",
+   "metric": "single_attempt_success",
+   "right": "agentkv_50_never",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "shared_bounded_ci95": [
+    -0.3354,
+    0.5459
+   ],
+   "shared_task_ci95": [
+    0.0351,
+    0.1842
+   ],
+   "tasks": 38,
+   "tasks_gained": 9,
+   "tasks_lost": 1,
+   "tasks_gained_list": [
+    "37a8675_3",
+    "396c5a2_1",
+    "50e1ac9_1",
+    "6171bbc_3",
+    "6c2c621_2",
+    "6c2c621_3",
+    "b119b1f_3",
+    "d4e9306_2",
+    "d4e9306_3"
+   ],
+   "tasks_lost_list": [
+    "23cf851_1"
+   ]
+  },
+  {
+   "both_intervals_exclude_zero_as_expected": true,
+   "confirmed": true,
+   "confirmed_after_holm": true,
+   "difference": 0.0965,
+   "expected_sign": 1,
+   "families": 19,
+   "family_ci95": [
+    0.0439,
+    0.1579
+   ],
+   "family_p": 0.0001,
+   "holm_adjusted_p": 0.0005,
+   "hypothesis": "H4",
+   "left": "agentkv_50_dynamic",
+   "metric": "single_attempt_success",
+   "right": "agentkv_50_never",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "shared_bounded_ci95": [
+    -0.3441,
+    0.5371
+   ],
+   "shared_task_ci95": [
+    0.0439,
+    0.1579
+   ],
+   "tasks": 38,
+   "tasks_gained": 9,
+   "tasks_lost": 0,
+   "tasks_gained_list": [
+    "23cf851_1",
+    "50e1ac9_1",
+    "530b157_3",
+    "57c3486_3",
+    "6171bbc_3",
+    "b119b1f_2",
+    "b119b1f_3",
+    "d4e9306_2",
+    "fac291d_2"
+   ],
+   "tasks_lost_list": []
+  },
+  {
+   "both_intervals_exclude_zero_as_expected": true,
+   "confirmed": true,
+   "confirmed_after_holm": true,
+   "difference": -0.2105,
+   "expected_sign": -1,
+   "families": 19,
+   "family_ci95": [
+    -0.3333,
+    -0.0965
+   ],
+   "family_p": 0.0001,
+   "holm_adjusted_p": 0.0005,
+   "hypothesis": "H5",
+   "left": "agentkv_50_never",
+   "metric": "oracle_success",
+   "right": "full_best_of_n",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "shared_bounded_ci95": [
+    -0.6512,
+    0.2301
+   ],
+   "shared_task_ci95": [
+    -0.3158,
+    -0.114
+   ],
+   "tasks": 38,
+   "tasks_gained": 1,
+   "tasks_lost": 15,
+   "tasks_gained_list": [
+    "b119b1f_3"
+   ],
+   "tasks_lost_list": [
+    "23cf851_1",
+    "23cf851_3",
+    "37a8675_3",
+    "383cbac_3",
+    "396c5a2_1",
+    "396c5a2_2",
+    "4ec8de5_2",
+    "50e1ac9_1",
+    "50e1ac9_2",
+    "6171bbc_1",
+    "6c2c621_2",
+    "6c2c621_3",
+    "d4e9306_2",
+    "fac291d_1",
+    "fac291d_2"
+   ]
+  }
+ ],
+ "descriptive": [
+  {
+   "difference": -0.0965,
+   "families": 19,
+   "family_ci95": [
+    -0.2193,
+    0.0175
+   ],
+   "family_p": 0.1222,
+   "left": "agentkv_50_fixed",
+   "metric": "oracle_success",
+   "right": "full_best_of_n",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "shared_bounded_ci95": [
+    -0.5371,
+    0.3441
+   ],
+   "shared_task_ci95": [
+    -0.2018,
+    0.0175
+   ],
+   "tasks": 38,
+   "tasks_gained": 5,
+   "tasks_lost": 12,
+   "tasks_gained_list": [
+    "4ec8de5_1",
+    "50e1ac9_1",
+    "6171bbc_3",
+    "6c2c621_3",
+    "b119b1f_3"
+   ],
+   "tasks_lost_list": [
+    "23cf851_1",
+    "23cf851_3",
+    "383cbac_3",
+    "396c5a2_1",
+    "396c5a2_2",
+    "4ec8de5_2",
+    "50e1ac9_2",
+    "6171bbc_1",
+    "6c2c621_2",
+    "d4e9306_2",
+    "d4e9306_3",
+    "fac291d_2"
+   ]
+  },
+  {
+   "difference": -0.0877,
+   "families": 19,
+   "family_ci95": [
+    -0.2193,
+    0.0439
+   ],
+   "family_p": 0.1896,
+   "left": "agentkv_50_dynamic",
+   "metric": "oracle_success",
+   "right": "full_best_of_n",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "shared_bounded_ci95": [
+    -0.5283,
+    0.3529
+   ],
+   "shared_task_ci95": [
+    -0.193,
+    0.0263
+   ],
+   "tasks": 38,
+   "tasks_gained": 5,
+   "tasks_lost": 13,
+   "tasks_gained_list": [
+    "530b157_3",
+    "57c3486_3",
+    "6171bbc_3",
+    "b119b1f_2",
+    "b119b1f_3"
+   ],
+   "tasks_lost_list": [
+    "23cf851_1",
+    "23cf851_3",
+    "37a8675_3",
+    "383cbac_3",
+    "396c5a2_1",
+    "396c5a2_2",
+    "4ec8de5_2",
+    "50e1ac9_2",
+    "6c2c621_2",
+    "6c2c621_3",
+    "d4e9306_2",
+    "d4e9306_3",
+    "fac291d_1"
+   ]
+  },
+  {
+   "difference": -0.0965,
+   "families": 19,
+   "family_ci95": [
+    -0.2368,
+    0.0263
+   ],
+   "family_p": 0.1492,
+   "left": "agentkv_50_fixed",
+   "metric": "single_attempt_success",
+   "right": "full_best_of_n",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "shared_bounded_ci95": [
+    -0.5371,
+    0.3441
+   ],
+   "shared_task_ci95": [
+    -0.2105,
+    0.0175
+   ],
+   "tasks": 38,
+   "tasks_gained": 5,
+   "tasks_lost": 12,
+   "tasks_gained_list": [
+    "50e1ac9_1",
+    "6171bbc_3",
+    "6c2c621_3",
+    "b119b1f_2",
+    "b119b1f_3"
+   ],
+   "tasks_lost_list": [
+    "23cf851_1",
+    "23cf851_3",
+    "383cbac_3",
+    "396c5a2_1",
+    "396c5a2_2",
+    "50e1ac9_2",
+    "6171bbc_1",
+    "6bdbc26_1",
+    "6c2c621_2",
+    "d4e9306_2",
+    "fac291d_1",
+    "fac291d_2"
+   ]
+  },
+  {
+   "difference": -0.1053,
+   "families": 19,
+   "family_ci95": [
+    -0.2456,
+    0.0351
+   ],
+   "family_p": 0.1494,
+   "left": "agentkv_50_dynamic",
+   "metric": "single_attempt_success",
+   "right": "full_best_of_n",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "shared_bounded_ci95": [
+    -0.5459,
+    0.3354
+   ],
+   "shared_task_ci95": [
+    -0.2281,
+    0.0175
+   ],
+   "tasks": 38,
+   "tasks_gained": 5,
+   "tasks_lost": 14,
+   "tasks_gained_list": [
+    "530b157_3",
+    "57c3486_3",
+    "6171bbc_3",
+    "b119b1f_2",
+    "b119b1f_3"
+   ],
+   "tasks_lost_list": [
+    "23cf851_1",
+    "23cf851_3",
+    "37a8675_3",
+    "383cbac_3",
+    "396c5a2_1",
+    "396c5a2_2",
+    "50e1ac9_2",
+    "6171bbc_1",
+    "6bdbc26_1",
+    "6c2c621_2",
+    "6c2c621_3",
+    "d4e9306_2",
+    "d4e9306_3",
+    "fac291d_1"
+   ]
+  },
+  {
+   "difference": -0.2018,
+   "families": 19,
+   "family_ci95": [
+    -0.3333,
+    -0.0789
+   ],
+   "family_p": 0.0014,
+   "left": "agentkv_50_never",
+   "metric": "single_attempt_success",
+   "right": "full_best_of_n",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "shared_bounded_ci95": [
+    -0.6424,
+    0.2389
+   ],
+   "shared_task_ci95": [
+    -0.3072,
+    -0.0965
+   ],
+   "tasks": 38,
+   "tasks_gained": 2,
+   "tasks_lost": 16,
+   "tasks_gained_list": [
+    "b119b1f_2",
+    "b119b1f_3"
+   ],
+   "tasks_lost_list": [
+    "23cf851_1",
+    "23cf851_3",
+    "37a8675_3",
+    "383cbac_3",
+    "396c5a2_1",
+    "396c5a2_2",
+    "50e1ac9_1",
+    "50e1ac9_2",
+    "6171bbc_1",
+    "6bdbc26_1",
+    "6c2c621_2",
+    "6c2c621_3",
+    "d4e9306_2",
+    "d4e9306_3",
+    "fac291d_1",
+    "fac291d_2"
+   ]
+  },
+  {
+   "difference": 0.0088,
+   "families": 19,
+   "family_ci95": [
+    -0.0877,
+    0.0965
+   ],
+   "family_p": 0.9126,
+   "left": "agentkv_50_dynamic",
+   "metric": "oracle_success",
+   "right": "agentkv_50_fixed",
+   "seeds": [
+    17,
+    29,
+    31
+   ],
+   "shared_bounded_ci95": [
+    -0.4319,
+    0.4494
+   ],
+   "shared_task_ci95": [
+    -0.0789,
+    0.1053
+   ],
+   "tasks": 38,
+   "tasks_gained": 9,
+   "tasks_lost": 9,
+   "tasks_gained_list": [
+    "23cf851_1",
+    "396c5a2_2",
+    "530b157_3",
+    "57c3486_3",
+    "6171bbc_1",
+    "6171bbc_3",
+    "b119b1f_2",
+    "d4e9306_2",
+    "fac291d_2"
+   ],
+   "tasks_lost_list": [
+    "37a8675_3",
+    "396c5a2_1",
+    "4ec8de5_1",
+    "50e1ac9_1",
+    "50e1ac9_2",
+    "6c2c621_2",
+    "6c2c621_3",
+    "d4e9306_3",
+    "fac291d_1"
+   ]
+  }
+ ],
+ "mechanism": [
+  {
+   "hypothesis": "M1",
+   "condition": "agentkv_50_fixed",
+   "pairs": 95,
+   "tasks": 36,
+   "families": 19,
+   "rebuilt_share": 0.1368,
+   "never_share": 0.4105,
+   "difference": -0.2737,
+   "ci95": [
+    -0.4157,
+    -0.1176
+   ],
+   "family_p": 0.0016,
+   "rebuilt_passed": 24,
+   "never_passed": 12,
+   "other_violations": {
+    "format": {
+     "rebuilt_share": 0.0421,
+     "never_share": 0.0947,
+     "difference": -0.0526,
+     "ci95": [
+      -0.1277,
+      0.0196
+     ]
+    },
+    "unknown_api": {
+     "rebuilt_share": 0.0947,
+     "never_share": 0.0947,
+     "difference": 0.0,
+     "ci95": [
+      -0.0851,
+      0.098
+     ]
+    },
+    "wrong_arguments": {
+     "rebuilt_share": 0.1684,
+     "never_share": 0.3579,
+     "difference": -0.1895,
+     "ci95": [
+      -0.283,
+      -0.0882
+     ]
+    },
+    "prohibited": {
+     "rebuilt_share": 0.0,
+     "never_share": 0.0316,
+     "difference": -0.0316,
+     "ci95": [
+      -0.0825,
+      0.0
+     ]
+    }
+   },
+   "holm_p": 0.0016,
+   "confirmed": true,
+   "confirmed_after_holm": true
+  },
+  {
+   "hypothesis": "M2",
+   "condition": "agentkv_50_dynamic",
+   "pairs": 97,
+   "tasks": 36,
+   "families": 19,
+   "rebuilt_share": 0.1031,
+   "never_share": 0.3608,
+   "difference": -0.2577,
+   "ci95": [
+    -0.3763,
+    -0.1327
+   ],
+   "family_p": 0.0001,
+   "rebuilt_passed": 23,
+   "never_passed": 12,
+   "other_violations": {
+    "format": {
+     "rebuilt_share": 0.0309,
+     "never_share": 0.0928,
+     "difference": -0.0619,
+     "ci95": [
+      -0.129,
+      0.0
+     ]
+    },
+    "unknown_api": {
+     "rebuilt_share": 0.134,
+     "never_share": 0.0825,
+     "difference": 0.0515,
+     "ci95": [
+      -0.0312,
+      0.1313
+     ]
+    },
+    "wrong_arguments": {
+     "rebuilt_share": 0.1546,
+     "never_share": 0.3814,
+     "difference": -0.2268,
+     "ci95": [
+      -0.3535,
+      -0.0968
+     ]
+    },
+    "prohibited": {
+     "rebuilt_share": 0.0103,
+     "never_share": 0.0309,
+     "difference": -0.0206,
+     "ci95": [
+      -0.0761,
+      0.0211
+     ]
+    }
+   },
+   "holm_p": 0.0002,
+   "confirmed": true,
+   "confirmed_after_holm": true
+  }
+ ],
+ "instruction_errors_by_condition": {
+  "agentkv_50_dynamic": {
+   "attempts": 222,
+   "violations": {
+    "format": {
+     "attempts": 6,
+     "turns": 6
+    },
+    "credentials": {
+     "attempts": 32,
+     "turns": 53
+    },
+    "unknown_api": {
+     "attempts": 52,
+     "turns": 65
+    },
+    "wrong_arguments": {
+     "attempts": 62,
+     "turns": 76
+    },
+    "prohibited": {
+     "attempts": 1,
+     "turns": 1
+    }
+   }
+  },
+  "agentkv_50_fixed": {
+   "attempts": 221,
+   "violations": {
+    "format": {
+     "attempts": 8,
+     "turns": 9
+    },
+    "credentials": {
+     "attempts": 30,
+     "turns": 42
+    },
+    "unknown_api": {
+     "attempts": 48,
+     "turns": 58
+    },
+    "wrong_arguments": {
+     "attempts": 67,
+     "turns": 79
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    }
+   }
+  },
+  "agentkv_50_never": {
+   "attempts": 216,
+   "violations": {
+    "format": {
+     "attempts": 16,
+     "turns": 18
+    },
+    "credentials": {
+     "attempts": 82,
+     "turns": 152
+    },
+    "unknown_api": {
+     "attempts": 49,
+     "turns": 57
+    },
+    "wrong_arguments": {
+     "attempts": 102,
+     "turns": 126
+    },
+    "prohibited": {
+     "attempts": 3,
+     "turns": 3
+    }
+   }
+  },
+  "full_best_of_n": {
+   "attempts": 226,
+   "violations": {
+    "format": {
+     "attempts": 3,
+     "turns": 4
+    },
+    "credentials": {
+     "attempts": 12,
+     "turns": 13
+    },
+    "unknown_api": {
+     "attempts": 29,
+     "turns": 31
+    },
+    "wrong_arguments": {
+     "attempts": 33,
+     "turns": 41
+    },
+    "prohibited": {
+     "attempts": 0,
+     "turns": 0
+    }
+   }
+  }
+ },
+ "second_attempts": {
+  "agentkv_50_dynamic": {
+   "second_attempts": 108,
+   "passing": 17
+  },
+  "agentkv_50_fixed": {
+   "second_attempts": 107,
+   "passing": 19
+  },
+  "agentkv_50_never": {
+   "second_attempts": 102,
+   "passing": 8
+  },
+  "full_best_of_n": {
+   "second_attempts": 112,
+   "passing": 32
+  }
+ },
+ "openings": {
+  "full_best_of_n": {
+   "attempts": 226,
+   "by_opening": {
+    "listing": {
+     "attempts": 226,
+     "passed": 67,
+     "context_limit": 14
+    }
+   },
+   "rebuilt_attempts": 0,
+   "rebuilt_passing_attempts": 0,
+   "context_limit_without_rebuild": 14
+  },
+  "agentkv_50_never": {
+   "attempts": 216,
+   "by_opening": {
+    "listing": {
+     "attempts": 88,
+     "passed": 8,
+     "context_limit": 10
+    },
+    "search": {
+     "attempts": 79,
+     "passed": 11,
+     "context_limit": 56
+    },
+    "other": {
+     "attempts": 49,
+     "passed": 1,
+     "context_limit": 22
+    }
+   },
+   "rebuilt_attempts": 0,
+   "rebuilt_passing_attempts": 0,
+   "context_limit_without_rebuild": 88
+  },
+  "agentkv_50_fixed": {
+   "attempts": 221,
+   "by_opening": {
+    "listing": {
+     "attempts": 89,
+     "passed": 23,
+     "context_limit": 8
+    },
+    "search": {
+     "attempts": 81,
+     "passed": 14,
+     "context_limit": 53
+    },
+    "other": {
+     "attempts": 51,
+     "passed": 6,
+     "context_limit": 18
+    }
+   },
+   "rebuilt_attempts": 182,
+   "rebuilt_passing_attempts": 43,
+   "context_limit_without_rebuild": 35
+  },
+  "agentkv_50_dynamic": {
+   "attempts": 222,
+   "by_opening": {
+    "listing": {
+     "attempts": 91,
+     "passed": 17,
+     "context_limit": 6
+    },
+    "search": {
+     "attempts": 81,
+     "passed": 17,
+     "context_limit": 52
+    },
+    "other": {
+     "attempts": 50,
+     "passed": 6,
+     "context_limit": 18
+    }
+   },
+   "rebuilt_attempts": 186,
+   "rebuilt_passing_attempts": 40,
+   "context_limit_without_rebuild": 31
+  }
+ },
+ "dev57_with_reference_arms": {
+  "conditions": {
+   "full_best_of_n": {
+    "cells": 171,
+    "oracle_solved": 62,
+    "first_attempt_solved": 51
+   },
+   "agentkv_50_never": {
+    "cells": 171,
+    "oracle_solved": 28,
+    "first_attempt_solved": 19
+   },
+   "agentkv_50_fixed": {
+    "cells": 171,
+    "oracle_solved": 48,
+    "first_attempt_solved": 36
+   },
+   "agentkv_50_dynamic": {
+    "cells": 171,
+    "oracle_solved": 52,
+    "first_attempt_solved": 38
+   }
+  },
+  "comparisons": [
+   {
+    "left": "agentkv_50_fixed",
+    "right": "agentkv_50_never",
+    "metric": "oracle_success",
+    "difference": 0.117,
+    "task_ci95": [
+     0.0526,
+     0.1871
+    ],
+    "family_ci95": [
+     0.0468,
+     0.1988
+    ],
+    "tasks_gained": 17,
+    "tasks_lost": 4,
+    "tasks": 57,
+    "families": 19
+   },
+   {
+    "left": "agentkv_50_fixed",
+    "right": "agentkv_50_never",
+    "metric": "single_attempt_success",
+    "difference": 0.0994,
+    "task_ci95": [
+     0.0468,
+     0.1579
+    ],
+    "family_ci95": [
+     0.0409,
+     0.1637
+    ],
+    "tasks_gained": 13,
+    "tasks_lost": 1,
+    "tasks": 57,
+    "families": 19
+   },
+   {
+    "left": "agentkv_50_dynamic",
+    "right": "agentkv_50_never",
+    "metric": "oracle_success",
+    "difference": 0.1404,
+    "task_ci95": [
+     0.0702,
+     0.2164
+    ],
+    "family_ci95": [
+     0.0643,
+     0.2222
+    ],
+    "tasks_gained": 18,
+    "tasks_lost": 1,
+    "tasks": 57,
+    "families": 19
+   },
+   {
+    "left": "agentkv_50_dynamic",
+    "right": "agentkv_50_never",
+    "metric": "single_attempt_success",
+    "difference": 0.1111,
+    "task_ci95": [
+     0.0585,
+     0.1696
+    ],
+    "family_ci95": [
+     0.0526,
+     0.1813
+    ],
+    "tasks_gained": 14,
+    "tasks_lost": 0,
+    "tasks": 57,
+    "families": 19
+   },
+   {
+    "left": "agentkv_50_never",
+    "right": "full_best_of_n",
+    "metric": "oracle_success",
+    "difference": -0.1988,
+    "task_ci95": [
+     -0.2807,
+     -0.1228
+    ],
+    "family_ci95": [
+     -0.3216,
+     -0.0819
+    ],
+    "tasks_gained": 3,
+    "tasks_lost": 23,
+    "tasks": 57,
+    "families": 19
+   },
+   {
+    "left": "agentkv_50_never",
+    "right": "full_best_of_n",
+    "metric": "single_attempt_success",
+    "difference": -0.1871,
+    "task_ci95": [
+     -0.2749,
+     -0.1053
+    ],
+    "family_ci95": [
+     -0.3216,
+     -0.0643
+    ],
+    "tasks_gained": 4,
+    "tasks_lost": 22,
+    "tasks": 57,
+    "families": 19
+   },
+   {
+    "left": "agentkv_50_fixed",
+    "right": "full_best_of_n",
+    "metric": "oracle_success",
+    "difference": -0.0819,
+    "task_ci95": [
+     -0.1637,
+     0.0
+    ],
+    "family_ci95": [
+     -0.1813,
+     0.0234
+    ],
+    "tasks_gained": 6,
+    "tasks_lost": 17,
+    "tasks": 57,
+    "families": 19
+   },
+   {
+    "left": "agentkv_50_fixed",
+    "right": "full_best_of_n",
+    "metric": "single_attempt_success",
+    "difference": -0.0877,
+    "task_ci95": [
+     -0.1813,
+     0.0
+    ],
+    "family_ci95": [
+     -0.2105,
+     0.0351
+    ],
+    "tasks_gained": 7,
+    "tasks_lost": 16,
+    "tasks": 57,
+    "families": 19
+   },
+   {
+    "left": "agentkv_50_dynamic",
+    "right": "full_best_of_n",
+    "metric": "oracle_success",
+    "difference": -0.0585,
+    "task_ci95": [
+     -0.152,
+     0.0292
+    ],
+    "family_ci95": [
+     -0.1813,
+     0.0702
+    ],
+    "tasks_gained": 9,
+    "tasks_lost": 17,
+    "tasks": 57,
+    "families": 19
+   },
+   {
+    "left": "agentkv_50_dynamic",
+    "right": "full_best_of_n",
+    "metric": "single_attempt_success",
+    "difference": -0.076,
+    "task_ci95": [
+     -0.1754,
+     0.0175
+    ],
+    "family_ci95": [
+     -0.2047,
+     0.0526
+    ],
+    "tasks_gained": 8,
+    "tasks_lost": 17,
+    "tasks": 57,
+    "families": 19
+   },
+   {
+    "left": "agentkv_50_dynamic",
+    "right": "agentkv_50_fixed",
+    "metric": "oracle_success",
+    "difference": 0.0234,
+    "task_ci95": [
+     -0.0526,
+     0.0994
+    ],
+    "family_ci95": [
+     -0.0702,
+     0.1053
+    ],
+    "tasks_gained": 14,
+    "tasks_lost": 12,
+    "tasks": 57,
+    "families": 19
+   },
+   {
+    "left": "agentkv_50_dynamic",
+    "right": "agentkv_50_fixed",
+    "metric": "single_attempt_success",
+    "difference": 0.0117,
+    "task_ci95": [
+     -0.0526,
+     0.076
+    ],
+    "family_ci95": [
+     -0.0585,
+     0.076
+    ],
+    "tasks_gained": 9,
+    "tasks_lost": 8,
+    "tasks": 57,
+    "families": 19
+   }
+  ]
+ }
+}

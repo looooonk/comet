@@ -143,5 +143,9 @@ rebuild, and its saved environments were scored. The reference arms started
 at 17:04 the same day, finished without a guard trip and are
 [reported](a6000-dev19-core.md). The prefill study started at 18:41, finished
 without a guard trip and is [reported](a6000-dev19-prefill.md). The
-confirmation started at 20:51 and the retry curve is queued; neither is
-reported yet.
+confirmation started at 20:51, finished on November 15 without a guard trip
+and is [reported](a6000-dev38-recovery.md): all five hypotheses and both
+mechanism hypotheses are confirmed within this cohort. The retry curve
+started at 22:21, finished without a guard trip and is
+[reported](a6000-dev19-retry.md); one of its two recorded expectations did
+not hold.

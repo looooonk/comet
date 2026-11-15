@@ -46,6 +46,14 @@ selection among attempts; these small samples do not establish a general ranking
   on the second device, compacting the first turn once instead of chunk by
   chunk restores prompt-following and success for AgentKV and R-KV at the
   same retention, and not for StreamingLLM. In-sample tasks, three seeds.
+- [RTX A6000 confirmation on 38 new tasks](qwen9b/a6000-dev38-recovery.md):
+  the declared confirmation on the second device. All five hypotheses and
+  both mechanism hypotheses are confirmed; the recovery arms stay about nine
+  points below full cache. New variants of the same 19 task families.
+- [RTX A6000 retry curve](qwen9b/a6000-dev19-retry.md): eight independent
+  attempts per task and arm at 50% retention, best of k and a self-report
+  selector, compared at equal occupied KV. Rebuilding leads retrying at every
+  tier with intervals that include zero. In-sample tasks.
 - [Controls for the recovery result](qwen9b/a6000-controls-design.md): the
   decisions on a protected prompt, a text reminder, a symptom-triggered
   rebuild and a held-out run, and the two dev studies declared for the first
