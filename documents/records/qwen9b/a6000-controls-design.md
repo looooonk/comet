@@ -256,6 +256,12 @@ prompt and 24 further entries. The task instruction is the first thing after
 the prompt and what is evicted there does not return without a rebuild. The
 statement above that the targets agree from 1,393 tokens is correct and does
 not cover this. C1 as run therefore does not test whether a pinned prompt is
-enough, and the second study carries the same arm. The second study is
-running and the 80% study is queued; neither has a reported outcome. Smoke
-outcomes are not results.
+enough, and the second study carries the same arm. Smoke outcomes are not
+results.
+
+The 80% study ran on November 15, 2026 without a guard trip and is
+[reported](a6000-dev19-retention80.md). It found 5 first-attempt twin pairs
+with different outcomes where about 11 were expected, 3 helped and 2 hurt by
+the rebuild, and no choice rule distinguishable from always or never
+rebuilding. The second controls study is still running and has no reported
+outcome.
