@@ -42,6 +42,10 @@ selection among attempts; these small samples do not establish a general ranking
   recovery arms on the second device over three seeds, with paired intervals,
   the rejected-login reading and failures. A repeat on the tasks that produced
   the hypothesis, not a confirmation.
+- [One compaction after the whole first turn](qwen9b/a6000-dev19-prefill.md):
+  on the second device, compacting the first turn once instead of chunk by
+  chunk restores prompt-following and success for AgentKV and R-KV at the
+  same retention, and not for StreamingLLM. In-sample tasks, three seeds.
 - [Controls for the recovery result](qwen9b/a6000-controls-design.md): the
   decisions on a protected prompt, a text reminder, a symptom-triggered
   rebuild and a held-out run, and the two dev studies declared for the first
