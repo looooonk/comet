@@ -1,8 +1,9 @@
 # Qwen3.5-9B on the RTX A6000: controls on the first 19 tasks
 
 This is the first of the two controls studies. The declared primary analysis
-covers 57 tasks and waits for the second study; the design reports the
-19-task part descriptively, and that is what follows.
+covers 57 tasks and is [reported separately](a6000-dev57-controls.md) now
+that the second study has finished; the design reports the 19-task part
+descriptively, and that is what follows.
 
 Pinning the system prompt stopped the rule-breaking and lowered success.
 AgentKV at 50% retention with the prompt pinned and no rebuild solves 4 of 57

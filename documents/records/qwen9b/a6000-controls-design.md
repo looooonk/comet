@@ -263,5 +263,11 @@ The 80% study ran on November 15, 2026 without a guard trip and is
 [reported](a6000-dev19-retention80.md). It found 5 first-attempt twin pairs
 with different outcomes where about 11 were expected, 3 helped and 2 hurt by
 the rebuild, and no choice rule distinguishable from always or never
-rebuilding. The second controls study is still running and has no reported
-outcome.
+rebuilding.
+
+The second controls study ran on November 15, 2026 without a guard trip, and
+the declared analysis over the 57 tasks is
+[reported](a6000-dev57-controls.md). C2, C3, C4 and C5 are supported after
+the Holm adjustment and C6 is unresolved. C1 found a negative difference
+where a positive one was expected, with the confound above repeating on the
+new tasks, so whether a pinned prompt alone suffices is still open.

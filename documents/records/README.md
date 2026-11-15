@@ -58,6 +58,10 @@ selection among attempts; these small samples do not establish a general ranking
   pinned prompt, text reminder and symptom-triggered rebuild, the 19-task
   part of the declared analysis, with a confound found in the pinned arm.
   Exploratory and not reviewed by the team.
+- [RTX A6000 controls on 57 tasks](qwen9b/a6000-dev57-controls.md): the
+  declared analysis of the pinned prompt, text reminder and symptom-triggered
+  rebuild over both controls studies, with the second study's execution.
+  Exploratory and not reviewed by the team.
 - [RTX A6000 at 80% retention](qwen9b/a6000-dev19-retention80.md): AgentKV
   with no rebuild, the fixed rebuild and the symptom-triggered rebuild on the
   first 19 tasks, first-attempt twins and rebuild-or-not choice rules.
