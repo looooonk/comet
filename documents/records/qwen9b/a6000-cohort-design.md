@@ -140,5 +140,7 @@ analysis on its own. A study the guard stops is void as a whole.
 Qualified on November 14, 2026. The prefill smoke rebuilt all four of its
 attempts at the first trigger check, in 1.6 to 3.3 seconds, with no later
 rebuild, and its saved environments were scored. The reference arms started
-at 17:04 and the prefill study at 18:41 the same day; the confirmation and
-the retry curve are queued behind them. No study result is reported yet.
+at 17:04 the same day, finished without a guard trip and are
+[reported](a6000-dev19-core.md). The prefill study started at 18:41 and the
+confirmation at 20:51; the retry curve is queued. No other study result is
+reported yet.

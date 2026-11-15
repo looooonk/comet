@@ -164,4 +164,10 @@ is void as a whole.
 
 ## Status
 
-Declared. Nothing has run.
+Submitted on November 14, 2026. The runtime for the new source was built from
+the same locks: its 118 pinned packages match the reference runtime, and the
+staged digests of the cohort's existing studies are unchanged under the new
+code. Qualification, the smoke run and the two studies had not finished when
+this was written, and no outcome of a control arm exists. The
+[reference arms](a6000-dev19-core.md) these controls are compared with were
+reported after this design was declared and committed.

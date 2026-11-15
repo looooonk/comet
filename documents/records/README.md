@@ -38,6 +38,10 @@ selection among attempts; these small samples do not establish a general ranking
   system-prompt rules each compressed method breaks, what a rebuild removes
   against its never-rebuild twin, and why StreamingLLM keeps none of the
   prompt. Offline, post hoc.
+- [RTX A6000 reference arms](qwen9b/a6000-dev19-core.md): the 19-task
+  recovery arms on the second device over three seeds, with paired intervals,
+  the rejected-login reading and failures. A repeat on the tasks that produced
+  the hypothesis, not a confirmation.
 - [Controls for the recovery result](qwen9b/a6000-controls-design.md): the
   decisions on a protected prompt, a text reminder, a symptom-triggered
   rebuild and a held-out run, and the two dev studies declared for the first
