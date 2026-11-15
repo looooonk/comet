@@ -235,9 +235,9 @@ limit of four consecutive failures. That is an ordinary attempt outcome the
 declared conditions do not cover. The script now fails only on infeasible
 attempts and on errors other than that limit. The first report is kept beside
 the run, the corrected check passed when read against the saved run, and the
-check and the studies were resubmitted. The resubmitted job also exercises
-scoring, analysis and export on control arms and had not finished when this
-was written.
+check and the studies were resubmitted. The resubmitted job passed. It also
+scored the 14 cells, ran the shared analysis on control arms and exported all
+287 turns with their retention measurement.
 
 Of the two unchanged cells, one matched the reference study token for token
 through 11,322 tokens. The other matched through 6,855 tokens and twelve turns
