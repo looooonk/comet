@@ -1,0 +1,14 @@
+{
+  "extends": "../dev19-prompt-budget-v1.json",
+  "conditions": [
+    {
+      "id": "agentkv_50_extra_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "prompt_outside_budget": true
+    }
+  ],
+  "notes": "Condition group 2 of 3 of qwen9b-dev19-prompt-budget-a6000-v1 for one-GPU workers; every other setting, task and seed is inherited unchanged. Analyze the groups together."
+}

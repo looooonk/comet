@@ -1,0 +1,33 @@
+{
+  "extends": "dev38-controls-v1.json",
+  "experiment_id": "qwen9b-dev38-prompt-budget-a6000-v1",
+  "conditions": [
+    {
+      "id": "agentkv_50_pinned_extra_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "protect_prompt": true,
+      "prompt_outside_budget": true
+    },
+    {
+      "id": "agentkv_50_pinned_extra_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2,
+      "protect_prompt": true,
+      "prompt_outside_budget": true
+    },
+    {
+      "id": "agentkv_50_extra_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "prompt_outside_budget": true
+    }
+  ],
+  "notes": "Exploratory correction of the protected-prompt control on the RTX A6000 cohort, authorized by one contributor and declared before any execution: AgentKV at 50 percent with the system prompt pinned and counted outside the retention budget, with no rebuild and with the fixed rebuild, and an arm that stores the same number of entries with nothing pinned. The retention fraction applies to the tokens after the prompt, so these arms hold more entries than a 50 percent arm. On the 38 tasks, seeds 17, 29 and 31, markers, measurement, budget, cap and settings of qwen9b-dev38-controls-a6000-v1. 342 fresh-start cells. Outside the main experiment matrix; compared only within this cohort. See documents/records/qwen9b/a6000-controls-design.md."
+}

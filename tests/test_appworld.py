@@ -108,6 +108,14 @@ def test_fresh_attempt_and_saved_outcome_are_isolated(adapter, tmp_path):
         adapter.reset("task1", 17, tmp_path / "first")
 
 
+def test_task_statement_is_the_instruction_as_the_first_prompt_renders_it(adapter, tmp_path):
+    adapter.reset("task1", 3, tmp_path / "first")
+    adapter.world.task.instruction = 'Say "hi" to Zo\u00eb\nand leave'
+    statement = adapter.task_statement()
+    assert json.loads(statement) == adapter.world.task.instruction
+    assert adapter.initial_prompt().count(statement) == 1
+
+
 def test_checkpoint_roundtrip_preserves_state_aliases_and_rng_without_replay(adapter, tmp_path):
     adapter.reset("task1", 3, tmp_path / "first")
     adapter.execute("value = [1]; alias = value")

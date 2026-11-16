@@ -402,20 +402,24 @@ class Runner:
         return tokens[: tokens.index(end) + 1] if end in tokens else []
 
     def _set_policy(self, engine, condition: Condition) -> None:
-        self.system_prefix, self.protected_prefix = [], []
-        if self.config.retention_diagnostic or condition.protect_prompt:
+        self.system_prefix, self.policy_prefix = [], []
+        prefixed = condition.protect_prompt or condition.prompt_outside_budget
+        if self.config.retention_diagnostic or prefixed:
             self.system_prefix = self._system_prefix(engine)
-        if not condition.protect_prompt:
+        if not prefixed:
             engine.set_policy(condition.method, condition.retention)
             return
         if not getattr(engine, "supports_protected_prefix", False) or not self.system_prefix:
-            raise UnsupportedPath("This engine or prompt format cannot protect the system prompt")
-        self.protected_prefix = self.system_prefix
-        engine.set_policy(
-            condition.method,
-            condition.retention,
-            protected_prefix_tokens=len(self.protected_prefix),
-        )
+            raise UnsupportedPath(
+                "This engine or prompt format cannot protect or exempt the system prompt"
+            )
+        self.policy_prefix = self.system_prefix
+        options = {}
+        if condition.protect_prompt:
+            options["protected_prefix_tokens"] = len(self.policy_prefix)
+        if condition.prompt_outside_budget:
+            options["unbudgeted_prefix_tokens"] = len(self.policy_prefix)
+        engine.set_policy(condition.method, condition.retention, **options)
 
     def _retention_diagnostic(self, engine, state: dict, budget: Budget) -> dict:
         """Opt-in measurement; it adds no budget check, so it cannot move where an attempt ends."""
@@ -425,12 +429,43 @@ class Runner:
             return {}
         started = self.clock()
         record = {"system_prompt_retained": measure(0, len(prefix))}
-        if state.get("reminder_span"):
-            record["reminder_retained"] = measure(*state["reminder_span"])
+        for key, span in (("task_statement", "statement_span"), ("reminder", "reminder_span")):
+            if state.get(span):
+                record[f"{key}_retained"] = measure(*state[span])
         budget.timings["retention_diagnostic"] = (
             budget.timings.get("retention_diagnostic", 0) + self.clock() - started
         )
         return record
+
+    def _statement_span(self, engine, environment) -> list[int] | None:
+        """Where the first transcript states the task, to within one boundary token."""
+        statement = getattr(environment, "task_statement", lambda: "")()
+        user = environment.initial_prompt()
+        at = user.find(statement) if statement else -1
+        if at < 0:
+            return None
+        tokens = self._chat_tokens(engine, user)
+
+        def shared(cut):
+            head = self._chat_tokens(engine, user[:cut])
+            differ = (i for i, (a, b) in enumerate(zip(head, tokens)) if a != b)
+            return next(differ, min(len(head), len(tokens)))
+
+        span = [shared(at), shared(at + len(statement))]
+        return span if span[0] < span[1] else None
+
+    def _locate_statement(self, engine, environment, state: dict, budget: Budget) -> None:
+        started = self.clock()
+        try:
+            span = self._statement_span(engine, environment)
+            if span:
+                state["statement_span"] = span
+        except Exception as error:
+            # The measurement is optional: its failure is recorded and must not end the attempt.
+            state["statement_span_error"] = f"{type(error).__name__}: {error}"
+        budget.timings["retention_diagnostic"] = (
+            budget.timings.get("retention_diagnostic", 0) + self.clock() - started
+        )
 
     def _observation_parts(
         self, observation: str, finished: bool, reminder: str = ""
@@ -493,11 +528,13 @@ class Runner:
                 engine.start(attempt["seed"])
                 environment.reset(cell["task_id"], attempt["seed"], directory / "environment")
                 state["pending_tokens"] = self._initial_tokens(engine, environment)
-                protected = getattr(self, "protected_prefix", [])
-                if list(state["pending_tokens"][: len(protected)]) != protected:
-                    raise UnsupportedPath("Transcript does not start with the protected prompt")
+                prefix = getattr(self, "policy_prefix", [])
+                if list(state["pending_tokens"][: len(prefix)]) != prefix:
+                    raise UnsupportedPath("Transcript does not start with the system prompt")
             if self.config.stage == "diagnostic":
                 state = restore_checkpoint(self, cell, environment, engine, budget)
+            if self.config.retention_diagnostic:
+                self._locate_statement(engine, environment, state, budget)
             self._trajectory(
                 cell, attempt, directory, condition, engine, environment, budget, state
             )
@@ -550,8 +587,11 @@ class Runner:
             attempt["rebuilds"] = state["rebuilds"]
             if condition.reminder:
                 attempt["reminders"] = state.get("reminders", 0)
+            prefix = len(getattr(self, "policy_prefix", []))
             if condition.protect_prompt:
-                attempt["protected_prefix_tokens"] = len(getattr(self, "protected_prefix", []))
+                attempt["protected_prefix_tokens"] = prefix
+            if condition.prompt_outside_budget:
+                attempt["unbudgeted_prefix_tokens"] = prefix
             try:
                 memory = _plain(engine.memory_stats()) if engine_started else {}
             except Exception as error:

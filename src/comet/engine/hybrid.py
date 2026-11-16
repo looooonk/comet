@@ -251,12 +251,7 @@ class HybridEngine:
             "reserved_kv_bytes": 0,
             "physical_cached_tokens": self.cache.get_seq_length(),
             "logical_cached_tokens": len(self._raw),
-            "retention_target_tokens": retention_target(
-                len(self._raw),
-                self.settings.retention,
-                self.settings.method,
-                self.settings.protected_prefix_tokens,
-            ),
+            "retention_target_tokens": self._target(),
             "memory_sample_interval_seconds": 0.01,
             "total_peak_kind": "device-wide samples every 10ms and at forward boundaries",
         }
@@ -288,14 +283,25 @@ class HybridEngine:
         self.torch.cuda.manual_seed_all(seed)
         self._check_memory()
 
-    def set_policy(self, method, retention, protected_prefix_tokens=0):
+    def set_policy(self, method, retention, protected_prefix_tokens=0, unbudgeted_prefix_tokens=0):
         self.settings = replace(
             self.settings,
             method=method,
             retention=retention,
             protected_prefix_tokens=protected_prefix_tokens,
+            unbudgeted_prefix_tokens=unbudgeted_prefix_tokens,
         )
         self._clear()
+
+    def _target(self):
+        settings = self.settings
+        return retention_target(
+            len(self._raw),
+            settings.retention,
+            settings.method,
+            settings.protected_prefix_tokens,
+            settings.unbudgeted_prefix_tokens,
+        )
 
     def retained_fraction(self, start, stop):
         """Share of logical positions [start, stop) still cached, over attention layers and heads."""
@@ -339,10 +345,7 @@ class HybridEngine:
 
         if self.settings.method == "full":
             return 0.0
-        protected = self.settings.protected_prefix_tokens
-        target = retention_target(
-            len(self._raw), self.settings.retention, self.settings.method, protected
-        )
+        protected, target = self.settings.protected_prefix_tokens, self._target()
         before = self.cache.get_seq_length()
         if before <= target:
             return 0.0

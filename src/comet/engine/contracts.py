@@ -72,26 +72,35 @@ def validate_model(model: str, revision: str, tokenizer_revision: str) -> dict:
     return profile
 
 
-def retention_target(logical_tokens: int, retention: float, method: str, protected: int = 0) -> int:
-    """Count per layer/head; mandatory and protected entries are inside the denominator."""
+def retention_target(
+    logical_tokens: int, retention: float, method: str, protected: int = 0, unbudgeted: int = 0
+) -> int:
+    """Count per layer/head; mandatory and protected entries are inside the denominator.
+
+    An unbudgeted prefix is outside it: the fraction applies to the tokens after the prefix
+    and the prefix's own entries are added to the target.
+    """
     if method not in METHODS or logical_tokens < 0:
         raise ValueError("invalid method or logical token count")
     if isinstance(retention, bool) or not isinstance(retention, (int, float)):
         raise ValueError("retention must be numeric")
-    if isinstance(protected, bool) or not isinstance(protected, int) or protected < 0:
-        raise ValueError("protected prefix must be a nonnegative token count")
+    for prefix in (protected, unbudgeted):
+        if isinstance(prefix, bool) or not isinstance(prefix, int) or prefix < 0:
+            raise ValueError("a protected or unbudgeted prefix must be a nonnegative token count")
     if method == "full":
-        if retention != 1 or protected:
-            raise ValueError("full cache requires retention=1 and no protected prefix")
+        if retention != 1 or protected or unbudgeted:
+            raise ValueError(
+                "full cache requires retention=1 and no protected or unbudgeted prefix"
+            )
         return logical_tokens
     if not 0 < retention < 1:
         raise ValueError("compressed retention must be strictly between 0 and 1")
     fraction = Fraction(str(retention))
-    requested = (
-        logical_tokens * fraction.numerator + fraction.denominator - 1
-    ) // fraction.denominator
-    mandatory = {"streamingllm": 16, "rkv": 8, "agentkv": 24}[method] + protected
-    return min(logical_tokens, max(requested, mandatory))
+    counted = max(logical_tokens - unbudgeted, 0)
+    requested = (counted * fraction.numerator + fraction.denominator - 1) // fraction.denominator
+    mandatory = {"streamingllm": 16, "rkv": 8, "agentkv": 24}[method]
+    mandatory += max(protected - unbudgeted, 0)
+    return min(logical_tokens, logical_tokens - counted + max(requested, mandatory))
 
 
 def selector_overrides(method: str, target: int, sink_tokens: int, protected: int = 0) -> dict:
@@ -119,9 +128,16 @@ class EngineSettings:
     device_name: str | None = None
     backend: str = "native_minisgl"
     protected_prefix_tokens: int = 0
+    unbudgeted_prefix_tokens: int = 0
 
     def __post_init__(self):
-        retention_target(0, self.retention, self.method, self.protected_prefix_tokens)
+        retention_target(
+            0,
+            self.retention,
+            self.method,
+            self.protected_prefix_tokens,
+            self.unbudgeted_prefix_tokens,
+        )
         profile = validate_model(self.model, self.model_revision, self.tokenizer_revision)
         if self.backend != profile.get("backend", "native_minisgl"):
             raise ValueError("model architecture does not match the selected backend")
@@ -160,8 +176,9 @@ class EngineSettings:
             data.pop("device_name")
         if self.backend == "native_minisgl":
             data.pop("backend")
-        if not policy or not self.protected_prefix_tokens:
-            data.pop("protected_prefix_tokens")
+        for name in ("protected_prefix_tokens", "unbudgeted_prefix_tokens"):
+            if not policy or not data[name]:
+                data.pop(name)
         if not policy:
             data.pop("method")
             data.pop("retention")

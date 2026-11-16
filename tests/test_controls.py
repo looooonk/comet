@@ -1,4 +1,4 @@
-"""Protected system prompt, text reminder and symptom-triggered rebuild."""
+"""Protected or unbudgeted system prompt, text reminder and symptom-triggered rebuild."""
 
 from dataclasses import replace
 from pathlib import Path
@@ -97,7 +97,13 @@ class Environment(FakeEnvironment):
         return self.count == len(self.observations)
 
 
-def run(config, output, observations=("ok", "ok", "ok", "ok"), engine_type=Engine):
+def run(
+    config,
+    output,
+    observations=("ok", "ok", "ok", "ok"),
+    engine_type=Engine,
+    environment_type=Environment,
+):
     clock, engines = Clock(), []
 
     def factory(condition):
@@ -105,7 +111,7 @@ def run(config, output, observations=("ok", "ok", "ok", "ok"), engine_type=Engin
         return engines[-1]
 
     def environment():
-        instance = Environment(clock, [])
+        instance = environment_type(clock, [])
         instance.observations = list(observations)
         return instance
 
@@ -119,6 +125,8 @@ def test_existing_configurations_keep_their_digests():
     assert core.digest == "3a5db0cca34104a385ff57eb307f834fe4eea68edc28b3a8e7e2645781a32ec0"
     retry = Experiment.load(ROOT / "configs/qwen9b/a6000/dev19-retry-v1.json")
     assert retry.digest == "7be6ceb0c04683153c5780e96a56c38ef15e833f9fe53472a1457adee07d90f8"
+    controls = Experiment.load(ROOT / "configs/qwen9b/a6000/dev38-controls-v1.json")
+    assert controls.digest == "468dd986ae9599098f5221545215f030c8835a1d632c62532695038262034ea1"
     condition = core.to_dict()["conditions"][0]
     assert set(condition) == {"id", "method", "retention", "recovery", "max_attempts"}
     assert "symptom_markers" not in core.to_dict()["triggers"]
@@ -150,6 +158,8 @@ def test_control_fields_round_trip_and_change_the_digest():
         ([arm(protect_prompt="yes")], {}),
         ([arm(reminder=1)], {}),
         ([arm(method="full", retention=1.0, protect_prompt=True)], {}),
+        ([arm(prompt_outside_budget="yes")], {}),
+        ([arm(method="full", retention=1.0, prompt_outside_budget=True)], {}),
         ([arm(recovery="sometimes")], {}),
     ],
 )
@@ -171,10 +181,12 @@ BRANCH = {"stage": "diagnostic", "checkpoint_after_tool_calls": 1}
     "conditions,options",
     [
         ([arm(protect_prompt=True)], {"changes": {"engine": NATIVE}}),
+        ([arm(prompt_outside_budget=True)], {"changes": {"engine": NATIVE}}),
         ([arm()], {"changes": {"engine": NATIVE}, "diagnostic": True}),
         ([arm()], {"changes": {"retention_diagnostic": "yes"}}),
         ([arm(reminder=True)], {"changes": BRANCH}),
         ([arm(protect_prompt=True)], {"changes": BRANCH}),
+        ([arm(prompt_outside_budget=True)], {"changes": BRANCH}),
         ([arm()], {"changes": BRANCH, "symptom_markers": ["boom"]}),
     ],
 )
@@ -268,7 +280,7 @@ def test_protected_prefix_is_part_of_the_policy_fingerprint_only_when_set():
         settings(method="full", retention=1.0, protected_prefix_tokens=4)
 
 
-def compacting_engine(method, protected, heads=2, width=8):
+def compacting_engine(method, protected, heads=2, width=8, unbudgeted=0):
     torch = pytest.importorskip("torch")
     pytest.importorskip("comet_agentkv")
     from comet.engine.hybrid import HybridEngine
@@ -276,7 +288,9 @@ def compacting_engine(method, protected, heads=2, width=8):
     torch.manual_seed(0)
     engine = HybridEngine.__new__(HybridEngine)
     engine.torch, engine.synchronize = torch, lambda: None
-    engine.settings = settings(method=method, protected_prefix_tokens=protected)
+    engine.settings = settings(
+        method=method, protected_prefix_tokens=protected, unbudgeted_prefix_tokens=unbudgeted
+    )
     engine.attention_layers = [0, 1]
     engine.text_config = SimpleNamespace(num_key_value_heads=heads, head_dim=width)
     layers = [
@@ -466,3 +480,173 @@ def test_declared_markers_are_the_recorded_instruction_error_markers():
     config = Experiment.load(ROOT / "configs/qwen9b/a6000/dev19-controls-v1.json")
     recorded = sorted(marker for group in OBSERVATION_MARKERS.values() for marker in group)
     assert sorted(config.triggers.symptom_markers) == recorded
+
+
+def test_prompt_outside_budget_round_trips_and_changes_the_digest():
+    plain = experiment([arm()])
+    inside = experiment([arm(protect_prompt=True)])
+    outside = experiment([arm(protect_prompt=True, prompt_outside_budget=True)])
+    matched = experiment([arm(prompt_outside_budget=True)])
+    assert len({plain.digest, inside.digest, outside.digest, matched.digest}) == 4
+    assert outside.to_dict()["conditions"][0]["prompt_outside_budget"] is True
+    assert "prompt_outside_budget" not in inside.to_dict()["conditions"][0]
+    assert Experiment.from_dict(matched.to_dict()).digest == matched.digest
+
+
+def test_unbudgeted_prefix_sits_outside_the_retention_target():
+    assert retention_target(3000, 0.5, "agentkv", 673, 673) == 673 + 1164
+    assert retention_target(3000, 0.5, "agentkv", 0, 673) == 673 + 1164
+    # Inside the budget, the 95 tokens after a 673-token prompt share 24 entries; outside, half.
+    assert retention_target(768, 0.5, "agentkv", 673) == 673 + 24
+    assert retention_target(768, 0.5, "agentkv", 673, 673) == 673 + 48
+    assert retention_target(700, 0.5, "agentkv", 673, 673) == 673 + 24
+    assert retention_target(690, 0.5, "agentkv", 673, 673) == 690
+    assert retention_target(600, 0.5, "agentkv", 673, 673) == 600
+    assert retention_target(700, 0.5, "rkv", 0, 673) == 673 + 14
+    assert retention_target(1000, 0.25, "streamingllm", 673, 673) == 673 + 82
+    assert retention_target(1000, 0.5, "agentkv", 673, 0) == 673 + 24
+    for unbudgeted in (-1, 1.5, True):
+        with pytest.raises(ValueError):
+            retention_target(100, 0.5, "rkv", 0, unbudgeted)
+    with pytest.raises(ValueError):
+        retention_target(100, 1, "full", 0, 4)
+
+
+def test_unbudgeted_prefix_is_part_of_the_policy_fingerprint_only_when_set():
+    plain = settings()
+    fingerprints = {
+        plain.fingerprint(),
+        settings(protected_prefix_tokens=673).fingerprint(),
+        settings(unbudgeted_prefix_tokens=673).fingerprint(),
+        settings(protected_prefix_tokens=673, unbudgeted_prefix_tokens=673).fingerprint(),
+    }
+    assert len(fingerprints) == 4
+    unbudgeted = settings(unbudgeted_prefix_tokens=673)
+    assert unbudgeted.fingerprint(policy=False) == plain.fingerprint(policy=False)
+    with pytest.raises(ValueError):
+        settings(unbudgeted_prefix_tokens=-1)
+    with pytest.raises(ValueError):
+        settings(method="full", retention=1.0, unbudgeted_prefix_tokens=4)
+
+
+@pytest.mark.parametrize("method", ["agentkv", "rkv", "streamingllm"])
+def test_unbudgeted_prefix_leaves_later_tokens_their_configured_share(method):
+    prefix = 40
+    pinned, grow_pinned = compacting_engine(method, prefix, unbudgeted=prefix)
+    matched, grow_matched = compacting_engine(method, 0, unbudgeted=prefix)
+    inside, grow_inside = compacting_engine(method, prefix)
+    for chunk in [16] * 20 + [1] * 30:
+        for grow in (grow_pinned, grow_matched, grow_inside):
+            grow(chunk)
+        target = retention_target(len(pinned._raw), 0.5, method, prefix, prefix)
+        assert pinned.cache.get_seq_length() == matched.cache.get_seq_length() == target
+        assert pinned.retained_fraction(0, prefix) == 1.0
+    assert pinned.cache.get_seq_length() == prefix + 155
+    assert inside.cache.get_seq_length() == 175
+    assert pinned.retained_fraction(prefix, 350) == 0.5
+    assert inside.retained_fraction(prefix, 350) == 135 / 310
+    assert matched.retained_fraction(0, prefix) < 1.0
+
+    rebuilt, grow_rebuilt = compacting_engine(method, prefix, unbudgeted=prefix)
+    grow_rebuilt(350)
+    assert rebuilt.cache.get_seq_length() == prefix + 155
+    assert rebuilt.retained_fraction(0, prefix) == 1.0
+
+
+def test_runner_passes_the_unbudgeted_prefix_with_or_without_protection(tmp_path):
+    config = experiment(
+        [
+            arm("plain"),
+            arm("pinned", protect_prompt=True, prompt_outside_budget=True),
+            arm("matched", prompt_outside_budget=True),
+        ]
+    )
+    cells, engine = run(config, tmp_path)
+    assert engine.policies == [
+        ("agentkv", 0.5, {}),
+        ("agentkv", 0.5, {"protected_prefix_tokens": 4, "unbudgeted_prefix_tokens": 4}),
+        ("agentkv", 0.5, {"unbudgeted_prefix_tokens": 4}),
+    ]
+    plain, pinned, matched = (cell["attempts"][0] for cell in cells)
+    assert "prompt_outside_budget" not in cells[0]["condition"]
+    assert "unbudgeted_prefix_tokens" not in plain and "protected_prefix_tokens" not in plain
+    assert cells[1]["condition"]["prompt_outside_budget"] is True
+    assert pinned["protected_prefix_tokens"] == pinned["unbudgeted_prefix_tokens"] == 4
+    assert matched["unbudgeted_prefix_tokens"] == 4 and "protected_prefix_tokens" not in matched
+    assert all(a["status"] == "completed" for c in cells for a in c["attempts"])
+
+
+def test_runner_refuses_an_unbudgeted_prefix_the_engine_cannot_apply(tmp_path):
+    class Unsupported(Engine):
+        supports_protected_prefix = False
+
+    config = experiment([arm("matched", prompt_outside_budget=True)])
+    with pytest.raises(UnsupportedPath, match="system prompt"):
+        run(config, tmp_path, engine_type=Unsupported)
+
+
+class Worded(Engine):
+    """One token per word of the first user turn, so a statement can be located in it."""
+
+    def __init__(self, clock):
+        super().__init__(clock)
+        self.tokenizer.apply_chat_template = lambda messages, **kw: [
+            1,
+            5,
+            5,
+            END,
+            1,
+            *(40 + len(word) for word in messages[1]["content"].split()),
+            END,
+        ]
+
+
+class Stated(Environment):
+    statement = "do the thing"
+
+    def initial_prompt(self):
+        return "context: do the thing please now"
+
+    def task_statement(self):
+        return self.statement
+
+
+def test_retention_diagnostic_measures_the_task_statement_the_environment_names(tmp_path):
+    config = experiment([arm()], diagnostic=True)
+    cells, engine = run(config, tmp_path / "on", engine_type=Worded, environment_type=Stated)
+    attempt = cells[0]["attempts"][0]
+    trajectory = read_json(tmp_path / "on" / attempt["artifact_dir"] / "trajectory.json")
+    # Five template tokens and "context:" precede the three words of the statement.
+    assert trajectory["statement_span"] == [6, 9]
+    assert [turn["task_statement_retained"] for turn in trajectory["turns"]] == [0.5] * 4
+    assert set(engine.measured) == {(0, 4), (6, 9)}
+
+    class Elsewhere(Stated):
+        statement = "something the prompt does not say"
+
+    for name, options in (
+        ("off", {"engine_type": Worded, "environment_type": Stated}),
+        ("unnamed", {"engine_type": Worded}),
+        ("absent", {"engine_type": Worded, "environment_type": Elsewhere}),
+    ):
+        config = experiment([arm()], diagnostic=name != "off")
+        cells, engine = run(config, tmp_path / name, **options)
+        attempt = cells[0]["attempts"][0]
+        trajectory = read_json(tmp_path / name / attempt["artifact_dir"] / "trajectory.json")
+        assert "statement_span" not in trajectory
+        assert not any("task_statement_retained" in turn for turn in trajectory["turns"])
+
+
+def test_a_failed_statement_lookup_is_recorded_and_does_not_end_the_attempt(tmp_path):
+    class Broken(Stated):
+        def task_statement(self):
+            raise RuntimeError("no task loaded")
+
+    config = experiment([arm()], diagnostic=True)
+    cells, engine = run(config, tmp_path, engine_type=Worded, environment_type=Broken)
+    attempt = cells[0]["attempts"][0]
+    trajectory = read_json(tmp_path / attempt["artifact_dir"] / "trajectory.json")
+    assert attempt["status"] == "completed" and "retention_diagnostic" in attempt["timings"]
+    assert trajectory["statement_span_error"] == "RuntimeError: no task loaded"
+    assert "statement_span" not in trajectory
+    assert [turn["system_prompt_retained"] for turn in trajectory["turns"]] == [0.5] * 4

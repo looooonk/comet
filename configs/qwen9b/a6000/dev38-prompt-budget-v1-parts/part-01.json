@@ -1,0 +1,15 @@
+{
+  "extends": "../dev38-prompt-budget-v1.json",
+  "conditions": [
+    {
+      "id": "agentkv_50_pinned_extra_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2,
+      "protect_prompt": true,
+      "prompt_outside_budget": true
+    }
+  ],
+  "notes": "Condition group 1 of 3 of qwen9b-dev38-prompt-budget-a6000-v1 for one-GPU workers; every other setting, task and seed is inherited unchanged. Analyze the groups together."
+}

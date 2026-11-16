@@ -59,10 +59,11 @@ class Condition:
     max_attempts: int
     protect_prompt: bool = False
     reminder: bool = False
+    prompt_outside_budget: bool = False
 
     def to_dict(self) -> dict:
         data = asdict(self)
-        for name in ("protect_prompt", "reminder"):
+        for name in ("protect_prompt", "reminder", "prompt_outside_budget"):
             if data[name] is False:
                 del data[name]
         return data
@@ -198,14 +199,13 @@ class Experiment:
             raise ValueError("symptom_markers must be unique nonempty strings")
         if not isinstance(self.retention_diagnostic, bool):
             raise ValueError("retention_diagnostic must be boolean")
-        controls = markers or any(c.reminder or c.protect_prompt for c in self.conditions)
+        prefixed = any(c.protect_prompt or c.prompt_outside_budget for c in self.conditions)
+        controls = markers or prefixed or any(c.reminder for c in self.conditions)
         if controls and self.stage == "diagnostic":
             # A restored branch inherits tool and symptom counts from its full-cache source.
             raise ValueError("Exploratory controls are undefined for checkpoint diagnostics")
-        if self.engine.backend != "transformers_hybrid" and (
-            self.retention_diagnostic or any(c.protect_prompt for c in self.conditions)
-        ):
-            raise ValueError("Prompt protection and its diagnostic require the hybrid backend")
+        if self.engine.backend != "transformers_hybrid" and (self.retention_diagnostic or prefixed):
+            raise ValueError("Prompt controls and their diagnostic require the hybrid backend")
         if self.engine.dtype != "bfloat16":
             raise ValueError("All supported models require BF16")
         if self.engine.device_name is not None and (
@@ -239,11 +239,15 @@ class Experiment:
                 raise ValueError(f"Unknown recovery policy: {c.recovery}")
             if c.recovery == "symptom" and not markers:
                 raise ValueError("Symptom recovery requires symptom_markers")
-            if not isinstance(c.protect_prompt, bool) or not isinstance(c.reminder, bool):
-                raise ValueError("protect_prompt and reminder must be boolean")
+            flags = (c.protect_prompt, c.reminder, c.prompt_outside_budget)
+            if not all(isinstance(flag, bool) for flag in flags):
+                raise ValueError(
+                    "protect_prompt, reminder and prompt_outside_budget must be boolean"
+                )
             retention_target(0, c.retention, c.method)
             if c.method == "full":
-                if c.retention != 1 or c.recovery != "never" or c.protect_prompt:
+                prefixed = c.protect_prompt or c.prompt_outside_budget
+                if c.retention != 1 or c.recovery != "never" or prefixed:
                     raise ValueError("Full-cache controls disable eviction and recovery")
             if (
                 isinstance(c.max_attempts, bool)

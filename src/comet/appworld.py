@@ -224,6 +224,10 @@ class AppWorldAdapter:
         }
         return json.dumps(context, ensure_ascii=False, indent=2)
 
+    def task_statement(self) -> str:
+        """The instruction exactly as initial_prompt renders it, for retention measurement."""
+        return json.dumps(self._active().task.instruction, ensure_ascii=False)
+
     def execute(self, code: str, *, timeout_seconds: float | None = None) -> str:
         """The runner's outer wall timer enforces timeout_seconds, including saving."""
         if timeout_seconds is not None and timeout_seconds <= 0:

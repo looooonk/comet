@@ -129,3 +129,39 @@ def test_a6000_retention80_study_changes_only_the_conditions_of_the_controls_stu
         seen += [condition.id for condition in part.conditions]
     assert len(paths) == 3 and seen == [condition.id for condition in study.conditions]
 
+
+
+def test_a6000_prompt_budget_studies_change_only_the_conditions_of_the_controls_studies():
+    expected = [
+        ("agentkv_50_pinned_extra_never", "never", True, True),
+        ("agentkv_50_pinned_extra_fixed", "fixed", True, True),
+        ("agentkv_50_extra_never", "never", False, True),
+    ]
+    for key in ("dev19", "dev38"):
+        study = Experiment.load(CONFIGS / f"a6000/{key}-prompt-budget-v1.json")
+        controls = Experiment.load(CONFIGS / f"a6000/{key}-controls-v1.json")
+        assert differing(study, controls) == {"experiment_id", "notes", "conditions"}
+        assert [(c.id, c.recovery, c.protect_prompt, c.prompt_outside_budget)
+                for c in study.conditions] == expected
+        assert all((c.method, c.retention, c.max_attempts, c.reminder) == ("agentkv", 0.5, 2, False)
+                   for c in study.conditions)
+        parent = {k: v for k, v in study.to_dict().items() if k not in ("conditions", "notes")}
+        paths = sorted((CONFIGS / f"a6000/{key}-prompt-budget-v1-parts").glob("part-*.json"))
+        seen = []
+        for path in paths:
+            part = Experiment.load(path)
+            assert {k: v for k, v in part.to_dict().items() if k not in ("conditions", "notes")} == parent
+            seen += [condition.id for condition in part.conditions]
+        assert len(paths) == 3 and seen == [condition.id for condition in study.conditions]
+
+
+def test_a6000_prompt_budget_smoke_keeps_the_unchanged_arm_and_the_inside_budget_arm():
+    core = Experiment.load(CONFIGS / "a6000/dev19-core-v1.json")
+    controls = Experiment.load(CONFIGS / "a6000/dev19-controls-v1.json")
+    study = Experiment.load(CONFIGS / "a6000/dev19-prompt-budget-v1.json")
+    smoke = Experiment.load(CONFIGS / "a6000/prompt-budget-smoke-v1.json")
+    assert differing(smoke, study) == {"experiment_id", "notes", "conditions", "task_ids", "seeds"}
+    assert smoke.task_ids == core.task_ids[:2] and smoke.seeds == [17]
+    unchanged = next(c for c in core.conditions if c.id == "agentkv_50_never")
+    inside = next(c for c in controls.conditions if c.id == "agentkv_50_protect_never")
+    assert smoke.conditions == [unchanged, inside, *study.conditions]

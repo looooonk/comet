@@ -182,6 +182,120 @@ pairs cannot separate a 4-to-7 split from an even one. The study can show
 whether rebuild harm at mild compression repeats on this device; it cannot
 establish a predictor.
 
+## The protected-prompt control, corrected
+
+Added on November 15, 2026, after the
+[57-task analysis](a6000-dev57-controls.md) was reported and before any
+execution of the studies below. One contributor authorized it and the team has
+not reviewed it.
+
+C1 could not test whether a pinned prompt is enough. The protected arm counted
+the prompt inside the budget, so it kept only 24 entries of everything else
+until the transcript passed 1,393 tokens, and the task instruction is the
+first thing after the prompt. Two additions, defined in
+[exploratory-controls.md](../../exploratory-controls.md), address this:
+
+- `prompt_outside_budget` applies the retention fraction to the tokens after
+  the system turn and adds the system turn's entries to the target. The later
+  tokens then keep half their entries at every length. In the unpinned 50%
+  arms the prompt holds a median 39% of its entries at the first action,
+  which leaves the later tokens about 53% of theirs.
+- The measurement also records `task_statement_retained`, the share of the
+  task instruction's entries still cached when each action is generated.
+
+An arm with the option holds more entries than a 50% arm: about 337 more per
+layer and head, which is 60% of a 3,355-token transcript. A gain over the 50%
+arms could therefore come from the extra entries and not from pinning. A
+third arm stores the same number of entries with nothing pinned and separates
+the two.
+
+| Study | Tasks | Conditions | Cells |
+| --- | --- | --- | ---: |
+| [Prompt budget, first tasks](../../../configs/qwen9b/a6000/dev19-prompt-budget-v1.json) | The 19 tasks of the reference arms | Prompt pinned outside the budget with no rebuild and with the fixed rebuild; the same entry count with nothing pinned and no rebuild | 171 |
+| [Prompt budget, new tasks](../../../configs/qwen9b/a6000/dev38-prompt-budget-v1.json) | The 38 tasks of the confirmation | The same three conditions | 342 |
+
+Model, prompt, sampling, seeds, budget, attempts, cap, thresholds, markers and
+measurement are those of the controls studies. Reference outcomes are the
+cohort's never, fixed and full-cache arms from source `6164ba9` and the two
+protected arms from source `0dd8ece`.
+
+All differences are in oracle success within the 120-second budget, paired by
+task and seed within the A6000 cohort, over the 57 dev tasks.
+
+| | Comparison (AgentKV, 50% of the tokens after the prompt) | Expectation |
+| --- | --- | --- |
+| D1 | Pinned outside the budget, no rebuild, minus the same entry count unpinned | Positive |
+| D2 | Pinned outside the budget, no rebuild, minus never | Positive |
+| D3 | Pinned outside the budget, fixed rebuild minus no rebuild | None declared |
+| D4 | Fixed minus pinned outside the budget, no rebuild | None declared |
+| D5 | Same entry count unpinned minus never | None declared |
+| D6 | Pinned outside the budget, no rebuild, minus full cache | None declared |
+
+D1 and D3 decide the reading. If D1 is supported and D3 is not, a prompt that
+stays cached does most of what the rebuild does and the recovery result is
+largely prompt eviction. If D3 is supported, a rebuild restores more than a
+pinned prompt and an intact share of the later tokens. D5 shows what the
+extra entries alone buy. A positive D2 without a positive D1 is attributable
+to them and not to pinning.
+
+Intervals and criteria are those of C1 to C6: the paired task bootstrap and
+the family bootstrap at 10,000 draws, a Holm adjustment across D1 to D6,
+support only when both intervals exclude zero, and for D1 and D2 only in the
+expected direction. An interval that includes zero is unresolved, not
+equivalence. In particular, an unresolved D3 does not show that a rebuild adds
+nothing.
+
+Reported descriptively, without a criterion:
+
+- The six comparisons on first-attempt success, and on the 19 and the 38
+  tasks separately.
+- Each new pinned arm against its inside-budget counterpart, which solved 9
+  and 60 of 171 cells.
+- `task_statement_retained` and `system_prompt_retained` at the first action,
+  at the fixed trigger and at the last turn, by arm.
+- Entries held against the nominal 50% at the end of each attempt, and peak
+  KV bytes by arm.
+- How attempts open, rejected logins, completed attempts and required-API
+  coverage, as in the 57-task record.
+- Rebuilds per attempt, rebuild seconds, attempts per cell, decode throughput,
+  every runtime failure and per-cell charged I/O.
+
+Expected size, recorded so it cannot be adjusted afterward: family intervals
+in the 57-task analysis were 6 to 16 points either side, so a difference
+under about 8 points is likely to stay unresolved.
+
+The new code runs from a third source pin with its own managed runtime,
+qualified with the same live checks. A 10-cell
+[smoke run](../../../configs/qwen9b/a6000/prompt-budget-smoke-v1.json) on two
+tasks precedes the studies and is kept outside them. It runs the unchanged
+never arm, the inside-budget protected arm and the three new arms, and must
+show that:
+
+- both pinned accountings report `system_prompt_retained` of 1 at every turn;
+- the retention target recorded at the end of every attempt is
+  $p + \lceil (n - p) / 2 \rceil$ in the three new arms, for a transcript
+  of $n$ tokens and the prompt's $p$, and $\lceil n / 2 \rceil$ in the
+  other two;
+- every turn records `task_statement_retained`, and the measured span decodes
+  to the task's instruction to within one token at each end.
+
+It also compares the unchanged arm's first-attempt token stream with the
+reference study and reports `task_statement_retained` at the first action in
+all five arms, neither as a gate. That is the only measurement of the
+confound on the two earlier arms: two tasks, a check of the mechanism and not
+a result. The two studies run one after the other with three workers each,
+node-local storage and the cohort's guard limits. A study the guard stops is
+void as a whole.
+
+Known in advance:
+
+- The new arms hold more entries than every 50% arm they are compared with.
+  Only D1 is free of that difference.
+- They run from a later source and at a later time than the reference arms,
+  so decode throughput is reported by arm.
+- The reference arms carry no statement measurement.
+- The 38 tasks are variants of the 19 task families.
+
 ## Execution
 
 The controls need new code, so they run from a new source pin with its own

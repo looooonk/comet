@@ -151,7 +151,9 @@ accounting.
 
 Three opt-in controls sit outside the main matrix: a protected system prompt,
 a text reminder at the fixed trigger, and a `symptom` policy that rebuilds
-after the first tool observation containing a configured marker.
+after the first tool observation containing a configured marker. A further
+option counts the system prompt outside the retention budget, which stores
+more entries than the nominal retention.
 [exploratory-controls.md](exploratory-controls.md) defines their configuration
 fields, accounting and status.
 

@@ -1,0 +1,55 @@
+{
+  "extends": "dev19-prompt-budget-v1.json",
+  "experiment_id": "qwen9b-prompt-budget-smoke-a6000-v1",
+  "task_ids": [
+    "0d8a4ee_2",
+    "23cf851_2"
+  ],
+  "seeds": [
+    17
+  ],
+  "conditions": [
+    {
+      "id": "agentkv_50_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2
+    },
+    {
+      "id": "agentkv_50_protect_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "protect_prompt": true
+    },
+    {
+      "id": "agentkv_50_pinned_extra_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "protect_prompt": true,
+      "prompt_outside_budget": true
+    },
+    {
+      "id": "agentkv_50_pinned_extra_fixed",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "fixed",
+      "max_attempts": 2,
+      "protect_prompt": true,
+      "prompt_outside_budget": true
+    },
+    {
+      "id": "agentkv_50_extra_never",
+      "method": "agentkv",
+      "retention": 0.5,
+      "recovery": "never",
+      "max_attempts": 2,
+      "prompt_outside_budget": true
+    }
+  ],
+  "notes": "Smoke for the prompt-budget arms on their source pin: two dev tasks at seed 17 under the unchanged AgentKV 50 percent never arm, the earlier protected arm that counts the prompt inside the budget, and the three new arms. The unchanged arm is compared token by token with qwen9b-dev19-core-a6000-v1 and every arm records how much of the task statement stays cached; outcomes are not used as results. 10 cells. See documents/records/qwen9b/a6000-controls-design.md."
+}
