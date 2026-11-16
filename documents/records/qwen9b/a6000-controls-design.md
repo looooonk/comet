@@ -385,3 +385,13 @@ the declared analysis over the 57 tasks is
 the Holm adjustment and C6 is unresolved. C1 found a negative difference
 where a positive one was expected, with the confound above repeating on the
 new tasks, so whether a pinned prompt alone suffices is still open.
+
+The corrected protected-prompt control was submitted on November 15, 2026
+from source `c49fb91`. Before submission the statement lookup was checked
+with the pinned tokenizer and chat template on the saved first transcripts of
+the 19 first tasks, without a GPU. Every span starts ten tokens after the
+673-token system turn, covers 12 to 60 tokens and decodes to the task's
+instruction less its closing punctuation, and a lookup takes 7 ms. Each
+instruction therefore ends by token 743, inside the stretch where the
+inside-budget arm kept 24 entries of all later tokens. No cell of the smoke
+run or the studies had started when this was recorded.
