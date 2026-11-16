@@ -395,3 +395,39 @@ instruction less its closing punctuation, and a lookup takes 7 ms. Each
 instruction therefore ends by token 743, inside the stretch where the
 inside-budget arm kept 24 entries of all later tokens. No cell of the smoke
 run or the studies had started when this was recorded.
+
+Setup, qualification and the smoke run passed the same evening. The runtime's
+118 pinned packages match the reference runtime, and the staged digests of
+the seven earlier A6000 studies are unchanged under the new source.
+Qualification ran 69 in-process checks, which include the new target and
+measurement checks against the installed selectors, and the
+process-interruption check.
+
+The 10-cell smoke run met the three declared conditions on all 18 attempts.
+Both pinned accountings report `system_prompt_retained` of 1 at every turn.
+Every recorded target equals the declared rule and every completed attempt
+holds exactly its target, which for the new arms is 53% to 55% of the final
+transcript. Every turn records `task_statement_retained`, and each span
+decodes to its task's instruction.
+
+Share of the task instruction still cached at the first action, on the two
+smoke tasks:
+
+| Arm | First task | Second task |
+| --- | ---: | ---: |
+| Unpinned, 50% | 67% | 86% |
+| Pinned inside the budget | 6% | 19% |
+| Pinned outside the budget | 52% | 79% |
+| Same entry count, unpinned | 78% | 96% |
+
+This is the first measurement of the confound. The inside-budget arm had
+lost most of the instruction before its first action, and the share did not
+change afterward. Counting the prompt outside the budget keeps most of the
+instruction, though less than the unpinned arms keep. It is two tasks, a
+check of the mechanism and not a result.
+
+Of the two unchanged cells, one matched the reference study token for token
+through 11,322 tokens. The other matched through 6,855 tokens and then
+differed in a tool observation that printed the same values in another
+order, as in the controls smoke. Smoke outcomes are not results. The first
+study started once the check passed.
